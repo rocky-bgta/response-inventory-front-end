@@ -6,7 +6,6 @@ import {CategoryComponent} from "./category/category.component";
 export const inventoryRoutes: Routes = [
   {
     path: '',
-    component: InventoryComponent,
     children: [
       {path: 'category', component: CategoryComponent}
     ]
