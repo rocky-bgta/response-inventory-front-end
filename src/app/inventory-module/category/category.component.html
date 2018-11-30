@@ -1,3 +1,49 @@
-<p>
-  category works!
-</p>
+<!--<div [@routerTransition]>-->
+  <form name="form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-header text-center">
+          <strong> Category</strong>
+        </div>
+        <div class="card-body">
+          <div class="form-group row">
+            <label for="name" class="col-sm-2">Name</label>
+            <div class="col-sm-10">
+              <input
+                id="name"
+                class="form-control"
+                name="name"
+                type="text"
+                [(ngModel)]="categoryModel.name"
+                formControlName="name"
+                [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+            </div>
+            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+              <div *ngIf="f.name.errors.required">Category name required</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="description" class="col-sm-2">Description</label>
+            <div class="col-sm-10">
+              <textarea
+                name="description"
+                [(ngModel)]="categoryModel.description"
+                formControlName="description"
+                class="form-control rounded-0"
+                id="description"></textarea>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="card-footer">
+          <div class="form-group">
+            <button type="submit" class="btn btn-success">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+<!--
+</div>
+-->
