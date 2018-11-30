@@ -5,6 +5,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestMessage} from "../../core/model/request-message";
 import {Util} from "../../core/Util";
 import {HttpErrorResponse} from "@angular/common/http";
+import {ResponseMessage} from "../../core/model/response-message";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-category',
@@ -17,10 +19,14 @@ export class CategoryComponent implements OnInit {
 
   private requestMessage: RequestMessage;
 
-  categoryForm: FormGroup;
-  submitted: boolean = false;
+  public categoryForm: FormGroup;
+  public submitted: boolean = false;
 
-  constructor(private categoryService: CategoryService, private formBuilder: FormBuilder) {
+  constructor(private categoryService: CategoryService,
+              private formBuilder: FormBuilder,
+              private toastr: ToastrService)
+  {
+
   }
 
   // convenience getter for easy access to form fields
@@ -50,9 +56,11 @@ export class CategoryComponent implements OnInit {
 
 
     this.requestMessage = Util.getRequestObject(this.categoryModel);
-    this.categoryService.save(this.requestMessage).subscribe(
-      response => {
 
+    this.categoryService.save(this.requestMessage).subscribe(
+      (responseMessage:ResponseMessage) => {
+        this.toastr.success('Hello world!', 'Toastr fun!');
+        this.categoryModel = <CateogyModel> responseMessage.data;
       },
       (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {

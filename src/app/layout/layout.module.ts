@@ -9,6 +9,7 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {HeaderComponent} from './components/header/header.component';
 import {LoaderComponent} from "../core/loader/loader.component";
 import {NgxSpinnerModule} from "ngx-spinner";
+import {ToastrModule} from "ngx-toastr";
 
 @NgModule({
     imports: [
@@ -16,7 +17,7 @@ import {NgxSpinnerModule} from "ngx-spinner";
         LayoutRoutingModule,
         TranslateModule,
         NgbDropdownModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent,LoaderComponent]
 })

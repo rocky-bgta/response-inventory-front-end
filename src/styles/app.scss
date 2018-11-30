@@ -6,6 +6,9 @@
 @import "responsive";
 @import "loader"; //top red loader
 
+// regular style toast
+@import '~ngx-toastr/toastr.css';
+
 @media print {
     .breadcrumb {
         display: none !important;

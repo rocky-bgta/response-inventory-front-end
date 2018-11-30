@@ -11,6 +11,7 @@ import {AppComponent} from './app.component';
 import {AuthGuard} from './shared';
 import {HttpRequestInterceptor} from "./core/http-request-interceptor";
 import {LoaderInterceptorService} from "./core/loader/loader-interceptor.service";
+import {ToastrModule} from "ngx-toastr";
 
 // AoT requires an exported function for factories
 export const createTranslateLoader = (http: HttpClient) => {
@@ -37,6 +38,7 @@ export const createTranslateLoader = (http: HttpClient) => {
       }
     }),
     AppRoutingModule,
+    ToastrModule.forRoot() //
   ],
   declarations: [AppComponent],
 
