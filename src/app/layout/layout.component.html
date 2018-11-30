@@ -1,5 +1,8 @@
+<app-loader></app-loader>
 <app-header></app-header>
 <app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar>
+
 <section class="main-container" [ngClass]="{collapsed: collapedSideBar}" style="padding:2%">
+  <div *ngIf="showPageLoader" class="spinner"></div>
     <router-outlet></router-outlet>
 </section>

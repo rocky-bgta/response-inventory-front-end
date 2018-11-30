@@ -4,6 +4,7 @@ import {CategoryService} from "../service/category.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestMessage} from "../../core/model/request-message";
 import {Util} from "../../core/Util";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-category',
@@ -12,27 +13,30 @@ import {Util} from "../../core/Util";
 })
 export class CategoryComponent implements OnInit {
 
-  public categoryModel: CateogyModel=new CateogyModel();
+  public categoryModel: CateogyModel = new CateogyModel();
 
   private requestMessage: RequestMessage;
 
   categoryForm: FormGroup;
-  submitted:boolean=false;
+  submitted: boolean = false;
 
-  constructor(private categoryService:CategoryService,private formBuilder: FormBuilder) { }
+  constructor(private categoryService: CategoryService, private formBuilder: FormBuilder) {
+  }
 
   // convenience getter for easy access to form fields
-  get f() { return this.categoryForm.controls; }
+  get f() {
+    return this.categoryForm.controls;
+  }
 
 
   ngOnInit() {
     this.categoryForm = this.formBuilder.group({
-      name: ['',Validators.required],
-      description:['',Validators.maxLength(200)]
+      name: ['', Validators.required],
+      description: ['', Validators.maxLength(200)]
     })
   }
 
-  save(){
+  save() {
 
   }
 
@@ -45,17 +49,21 @@ export class CategoryComponent implements OnInit {
     }
 
 
-    this.requestMessage=Util.getRequestObject(this.categoryModel);
+    this.requestMessage = Util.getRequestObject(this.categoryModel);
     this.categoryService.save(this.requestMessage).subscribe(
-      response=>{
+      response => {
 
       },
-      error=>{
-
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          console.log("Client-side error occured.");
+        } else {
+          console.log("Server-side error occured.");
+        }
       }
     );
 
-   // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.categoryModel))
+    // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.categoryModel))
   }
 
 }
