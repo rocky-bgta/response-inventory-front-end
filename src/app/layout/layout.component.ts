@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, NavigationStart, Router, RouterEvent} from "@angular/router";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
     selector: 'app-layout',
@@ -17,15 +18,17 @@ export class LayoutComponent implements OnInit {
     }
 
   showPageLoader:boolean=false;
-  constructor(private _router:Router) {
+  constructor(private _router:Router, private ngxSpinnerService: NgxSpinnerService) {
     this._router.events.subscribe((routerEvent:RouterEvent)=>{
 
       if(routerEvent instanceof NavigationStart){
         this.showPageLoader=true;
+        this.ngxSpinnerService.show();
       }
 
       if(routerEvent instanceof NavigationEnd){
         this.showPageLoader=false;
+        this.ngxSpinnerService.hide();
       }
     })
   }

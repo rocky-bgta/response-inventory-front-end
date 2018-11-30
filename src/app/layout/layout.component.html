@@ -3,6 +3,14 @@
 <app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar>
 
 <section class="main-container" [ngClass]="{collapsed: collapedSideBar}" style="padding:2%">
-  <div *ngIf="showPageLoader" class="spinner"></div>
+ <!-- <div *ngIf="showPageLoader" class="spinner"></div>-->
+  <!--spinner for routing-->
+  <ngx-spinner
+    bdColor = "rgba(51, 51, 51, 0.8)"
+    size = "large"
+    color = "#fff"
+    type = "ball-spin-clockwise">
+  </ngx-spinner>
+
     <router-outlet></router-outlet>
 </section>

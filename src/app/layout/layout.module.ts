@@ -8,13 +8,15 @@ import {LayoutComponent} from './layout.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {HeaderComponent} from './components/header/header.component';
 import {LoaderComponent} from "../core/loader/loader.component";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 @NgModule({
     imports: [
         CommonModule,
         LayoutRoutingModule,
         TranslateModule,
-        NgbDropdownModule
+        NgbDropdownModule,
+        NgxSpinnerModule
     ],
     declarations: [LayoutComponent, SidebarComponent, HeaderComponent,LoaderComponent]
 })

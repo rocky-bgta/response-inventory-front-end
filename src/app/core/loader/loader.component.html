@@ -1,5 +1,16 @@
 <div [class.hidden]="!show">
-  <div class="loader-overlay">
-    <div *ngIf="show" class="loader"></div>
-  </div>
+
+    <div class="loader-overlay">
+      <div *ngIf="show" class="loader"></div>
+    </div>
+
+    <div *ngIf="show">
+      <ngx-spinner
+        bdColor = "rgba(51, 51, 51, 0.8)"
+        size = "large"
+        color = "#fff"
+        type = "ball-spin-clockwise">
+      </ngx-spinner>
+    </div>
 </div>
+
