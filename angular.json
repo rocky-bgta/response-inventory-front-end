@@ -24,6 +24,7 @@
               "node_modules/font-awesome/css/font-awesome.css",
               "src/styles/app.scss",
 
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles/_pagination.css",
               "src/styles/_dataTables.bootstrap4.scss"
             ],
@@ -31,7 +32,9 @@
               "node_modules/chart.js/dist/Chart.js",
 
               "node_modules/jquery/dist/jquery.js",
-              "node_modules/datatables.net/js/jquery.dataTables.js"
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+
             ]
           },
           "configurations": {

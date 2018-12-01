@@ -1,6 +1,20 @@
 <!--<div [@routerTransition]>-->
-  <form name="form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
-    <div class="col-sm-6">
+
+
+
+
+  <button class="btn btn-primary"
+          type="button"
+          data-toggle="collapse"
+          data-target="#collapseCategoryForm"
+          aria-expanded="false"
+          aria-controls="collapseCategoryForm">
+    Add New Category
+  </button>
+
+<div style="margin-top: 1%">
+  <form class="collapse" id="collapseCategoryForm" name="form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <div class="col-sm-6" style="padding-left: 0%;">
       <div class="card">
         <div class="card-header text-center">
           <strong> Category</strong>
@@ -44,7 +58,7 @@
       </div>
     </div>
   </form>
-
+</div>
 
 <div class="">
   <div class="card" style="margin-top: 1%">
@@ -55,16 +69,23 @@
       <table datatable [dtOptions]="dtOptions"  class="table-hover table table-sm table-striped table-bordered nowrap" style="width: 100%">
         <thead>
         <tr>
-          <th>ID</th>
-          <th>First name</th>
-          <th>Last name</th>
+         <!-- <th>ID</th>-->
+          <th style="width: 10%">Category Name</th>
+          <th style="width: 20%">Description</th>
+          <th style="width: 5%">Action</th>
         </tr>
         </thead>
         <tbody *ngIf="categoryModelList?.length != 0">
         <tr *ngFor="let category of categoryModelList">
-          <td>{{ category.id }}</td>
+         <!-- <td>{{ category.id }}</td>-->
           <td>{{ category.name }}</td>
           <td>{{ category.description }}</td>
+          <td style="padding-left: 3%">
+            <button type="button" class="btn btn-secondary" (click)="onClickEdit(category.id)" style="margin-right: 5%">Edit</button>
+            <button type="button" class="btn btn-danger" (click)="onClickDelete(category.id)">Delete</button>
+
+          </td>
+
 
         </tr>
         </tbody>

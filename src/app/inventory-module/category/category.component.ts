@@ -138,4 +138,12 @@ export class CategoryComponent implements OnInit {
     // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.categoryModel))
   }
 
+
+  onClickEdit(id){
+    console.log(id);
+  }
+
+  onClickDelete(id){
+    console.log(id);
+  }
 }
