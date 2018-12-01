@@ -46,7 +46,7 @@ export class CategoryComponent implements OnInit {
   }
 
   dtOptions: DataTables.Settings = {};
-  categoryModelList: CateogyModel[];
+  categoryModelList:Array<CateogyModel> =new Array();
 
 
   ngOnInit() {
@@ -56,7 +56,7 @@ export class CategoryComponent implements OnInit {
     });
 
 
-    const that = this;
+    //const that = this;
 
 
     this.dtOptions = {
@@ -64,14 +64,15 @@ export class CategoryComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
+      searching:false,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
         this.categoryService.getList(InventoryApiEndPoint.category+"getAll",
-          dataTablesParameters).subscribe((resp: DataTablesResponse) => {
-          this.categoryModelList = resp.data;
+          dataTablesParameters).subscribe((resp: ResponseMessage) => {
+          this.categoryModelList = resp.dataTableResponse.data;
 
           callback({
-            recordsTotal: resp.recordsTotal,
-            recordsFiltered: resp.recordsTotal,
+            recordsTotal: resp.dataTableResponse.recordsTotal,
+            recordsFiltered: resp.dataTableResponse.recordsTotal,
             data: []
           });
         });
