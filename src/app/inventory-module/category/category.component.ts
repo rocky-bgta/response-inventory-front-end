@@ -8,6 +8,8 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ResponseMessage} from "../../core/model/response-message";
 import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../core/model/data-table-request";
+import {InventoryApiEndPoint} from "../inventory-api-end-point";
+import {DataTablesResponse} from "../../core/model/data-table-response";
 
 
 class Person {
@@ -44,7 +46,7 @@ export class CategoryComponent implements OnInit {
   }
 
   dtOptions: DataTables.Settings = {};
-  persons: Person[];
+  categoryModelList: CateogyModel[];
 
 
   ngOnInit() {
@@ -63,18 +65,18 @@ export class CategoryComponent implements OnInit {
       serverSide: true,
       processing: true,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
-        this.categoryService.getList('https://angular-datatables-demo-server.herokuapp.com/',
-          dataTablesParameters).subscribe((resp: any) => {
-          this.persons = resp.data;
+        this.categoryService.getList(InventoryApiEndPoint.category+"getAll",
+          dataTablesParameters).subscribe((resp: DataTablesResponse) => {
+          this.categoryModelList = resp.data;
 
           callback({
             recordsTotal: resp.recordsTotal,
-            recordsFiltered: resp.recordsFiltered,
+            recordsFiltered: resp.recordsTotal,
             data: []
           });
         });
       },
-      columns: [{data: 'id'}, {data: 'firstName'}, {data: 'lastName'},{data:'id'}]
+      columns: [{data: 'id'}, {data: 'name'}, {data: 'description'}]
     };
 
 

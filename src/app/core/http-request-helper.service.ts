@@ -1,6 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/index";
+import {RequestMessage} from "./model/request-message";
+import {Util} from "./Util";
 
 
 @Injectable({
@@ -36,7 +38,10 @@ export class HttpRequestHelperService {
   }
 
   public getRequest(requestUrl: string,parameter:any): Observable<any> {
-    let response = this.httpClient.post<any>(requestUrl, parameter,{});
+    let requestMessage: RequestMessage;
+    requestMessage = Util.getRequestObject(null,parameter);
+
+    let response = this.httpClient.post<any>(requestUrl, requestMessage, {});
     return response;
   }
 
