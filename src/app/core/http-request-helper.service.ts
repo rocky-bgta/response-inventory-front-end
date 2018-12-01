@@ -41,7 +41,7 @@ export class HttpRequestHelperService {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestObject(null,parameter);
 
-    let response = this.httpClient.post<any>(requestUrl, requestMessage, {});
+    let response = this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions);
     return response;
   }
 

@@ -8,6 +8,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TranslateModule} from "@ngx-translate/core";
 import {DataTablesModule} from "angular-datatables";
+import {NgSelectModule} from "@ng-select/ng-select";
 
 @NgModule({
   declarations: [CategoryComponent],
@@ -19,7 +20,8 @@ import {DataTablesModule} from "angular-datatables";
       FormsModule,
       HttpClientModule,
       TranslateModule,
-      DataTablesModule
+      DataTablesModule,
+      NgSelectModule
   ],
   bootstrap: [
   ]

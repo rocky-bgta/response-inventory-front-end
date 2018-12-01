@@ -1,16 +1,14 @@
 <!--<div [@routerTransition]>-->
 
 
-
-
-  <button class="btn btn-primary"
-          type="button"
-          data-toggle="collapse"
-          data-target="#collapseCategoryForm"
-          aria-expanded="false"
-          aria-controls="collapseCategoryForm">
-    Add New Category
-  </button>
+<button class="btn btn-primary"
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapseCategoryForm"
+        aria-expanded="false"
+        aria-controls="collapseCategoryForm">
+  Add New Category
+</button>
 
 <div style="margin-top: 1%">
   <form class="collapse" id="collapseCategoryForm" name="form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
@@ -60,16 +58,42 @@
   </form>
 </div>
 
+<div class="row">
+  <div class="col-sm-6 pull-right">
+    <div class="card">
+      <div class="card-header">
+
+      </div>
+      <div class="card-body">
+        <!-- <ng-select [items]="photosBuffer"
+                    [virtualScroll]="true"
+                    [loading]="loading"
+                    bindLabel="title"
+                    bindValue="thumbnailUrl"
+                    placeholder="Select photo"
+                    (scroll)="onScroll($event)"
+                    (scrollToEnd)="onScrollToEnd()">-->
+        <h1>ng-select to load data on scrolling</h1>
+
+      </div>
+      <div class="card-footer"></div>
+    </div>
+
+  </div>
+</div>
+
+
 <div class="">
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
       <strong>Category List</strong>
     </div>
     <div class="card-body">
-      <table datatable [dtOptions]="dtOptions"  class="table-hover table table-sm table-striped table-bordered nowrap" style="width: 100%">
+      <table datatable [dtOptions]="dtOptions" class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
         <thead>
         <tr>
-         <!-- <th>ID</th>-->
+          <!-- <th>ID</th>-->
           <th style="width: 10%">Category Name</th>
           <th style="width: 20%">Description</th>
           <th style="width: 5%">Action</th>
@@ -77,11 +101,13 @@
         </thead>
         <tbody *ngIf="categoryModelList?.length != 0">
         <tr *ngFor="let category of categoryModelList">
-         <!-- <td>{{ category.id }}</td>-->
+          <!-- <td>{{ category.id }}</td>-->
           <td>{{ category.name }}</td>
           <td>{{ category.description }}</td>
           <td style="padding-left: 3%">
-            <button type="button" class="btn btn-secondary" (click)="onClickEdit(category.id)" style="margin-right: 5%">Edit</button>
+            <button type="button" class="btn btn-secondary" (click)="onClickEdit(category.id)" style="margin-right: 5%">
+              Edit
+            </button>
             <button type="button" class="btn btn-danger" (click)="onClickDelete(category.id)">Delete</button>
 
           </td>
@@ -95,7 +121,6 @@
         </tr>
         <tbody>
       </table>
-
 
 
     </div>
