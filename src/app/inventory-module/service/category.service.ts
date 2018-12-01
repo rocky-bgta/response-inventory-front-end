@@ -16,8 +16,12 @@ export class CategoryService {
     return this.httpRequestHelperService.postRequest(InventoryApiEndPoint.category+"save", data);
   }
 
-  getList(): Observable<any> {
-    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category);
+ /* getList(): Observable<any> {
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category+"getAll");
+  }
+*/
+  getList(endPoint:string,parameter:any): Observable<any> {
+    return this.httpRequestHelperService.getRequest(endPoint,parameter);
   }
 
 

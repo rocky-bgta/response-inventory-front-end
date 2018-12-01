@@ -10,6 +10,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {LoaderComponent} from "../core/loader/loader.component";
 import {NgxSpinnerModule} from "ngx-spinner";
 import {ToastrModule} from "ngx-toastr";
+import {DataTablesModule} from "angular-datatables";
 
 @NgModule({
     imports: [

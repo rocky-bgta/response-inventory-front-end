@@ -7,6 +7,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {TranslateModule} from "@ngx-translate/core";
+import {DataTablesModule} from "angular-datatables";
 
 @NgModule({
   declarations: [CategoryComponent],
@@ -17,7 +18,8 @@ import {TranslateModule} from "@ngx-translate/core";
       ReactiveFormsModule,
       FormsModule,
       HttpClientModule,
-    TranslateModule
+      TranslateModule,
+      DataTablesModule
   ],
   bootstrap: [
   ]

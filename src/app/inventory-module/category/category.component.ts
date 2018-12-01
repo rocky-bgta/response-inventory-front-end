@@ -4,9 +4,18 @@ import {CategoryService} from "../service/category.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestMessage} from "../../core/model/request-message";
 import {Util} from "../../core/Util";
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ResponseMessage} from "../../core/model/response-message";
 import {ToastrService} from "ngx-toastr";
+import {DataTableRequest} from "../../core/model/data-table-request";
+
+
+class Person {
+  id: number;
+  firstName: string;
+  lastName: string;
+}
+
 
 @Component({
   selector: 'app-category',
@@ -24,8 +33,8 @@ export class CategoryComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private formBuilder: FormBuilder,
-              private toastr: ToastrService)
-  {
+              private toastr: ToastrService,
+              private http: HttpClient) {
 
   }
 
@@ -34,17 +43,69 @@ export class CategoryComponent implements OnInit {
     return this.categoryForm.controls;
   }
 
+  dtOptions: DataTables.Settings = {};
+  persons: Person[];
+
 
   ngOnInit() {
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.maxLength(200)]
-    })
+    });
+
+
+    const that = this;
+
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      ajax: (dataTablesParameters: DataTableRequest, callback) => {
+        this.categoryService.getList('https://angular-datatables-demo-server.herokuapp.com/',
+          dataTablesParameters).subscribe((resp: any) => {
+          this.persons = resp.data;
+
+          callback({
+            recordsTotal: resp.recordsTotal,
+            recordsFiltered: resp.recordsFiltered,
+            data: []
+          });
+        });
+      },
+      columns: [{data: 'id'}, {data: 'firstName'}, {data: 'lastName'},{data:'id'}]
+    };
+
+
+
+
+   /* this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: true,
+      ajax: (dataTablesParameters: any, callback) => {
+        that.http
+          .post<any>(
+            'https://angular-datatables-demo-server.herokuapp.com/',
+            dataTablesParameters, {}
+          ).subscribe((resp: any) => {
+          that.persons = resp.data;
+
+          callback({
+            recordsTotal: resp.recordsTotal,
+            recordsFiltered: resp.recordsFiltered,
+            data: []
+          });
+        });
+      },
+      columns: [{data: 'id'}, {data: 'firstName'}, {data: 'lastName'},{data:'id'}]
+    };*/
+
+
   }
 
-  save() {
-
-  }
 
   onSubmit() {
     this.submitted = true;
@@ -58,7 +119,7 @@ export class CategoryComponent implements OnInit {
     this.requestMessage = Util.getRequestObject(this.categoryModel);
 
     this.categoryService.save(this.requestMessage).subscribe(
-      (responseMessage:ResponseMessage) => {
+      (responseMessage: ResponseMessage) => {
         this.toastr.success('Hello world!', 'Toastr fun!');
         this.categoryModel = <CateogyModel> responseMessage.data;
       },
