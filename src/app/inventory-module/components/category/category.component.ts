@@ -8,8 +8,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ResponseMessage} from "../../../core/model/response-message";
 import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../../core/model/data-table-request";
-import {InventoryApiEndPoint} from "../../inventory-api-end-point";
-
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-category',
@@ -45,6 +44,17 @@ export class CategoryComponent implements OnInit {
 
 
   ngOnInit() {
+
+    /*
+
+    $("#collapseCategoryForm").collapse();
+    $("#collapseCategoryForm").collapsing();
+    $("#collapseCategoryForm").show();
+
+    */
+
+
+
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.maxLength(200)]
@@ -59,7 +69,7 @@ export class CategoryComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
-      searching:false,
+      searching:  true,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
 
         this.getCategoryList(dataTablesParameters,callback);
