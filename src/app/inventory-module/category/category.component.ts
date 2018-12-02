@@ -9,14 +9,6 @@ import {ResponseMessage} from "../../core/model/response-message";
 import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../core/model/data-table-request";
 import {InventoryApiEndPoint} from "../inventory-api-end-point";
-import {DataTablesResponse} from "../../core/model/data-table-response";
-
-
-class Person {
-  id: number;
-  firstName: string;
-  lastName: string;
-}
 
 
 @Component({
@@ -48,6 +40,9 @@ export class CategoryComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   categoryModelList:Array<CateogyModel> =new Array();
 
+  private dataTablesCallBackParameters: DataTableRequest;
+  private dataTableCallbackFunction:any;
+
 
   ngOnInit() {
     this.categoryForm = this.formBuilder.group({
@@ -66,48 +61,30 @@ export class CategoryComponent implements OnInit {
       processing: true,
       searching:false,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
-        this.categoryService.getList(InventoryApiEndPoint.category+"getAll",
-          dataTablesParameters).subscribe((resp: ResponseMessage) => {
-          this.categoryModelList = resp.dataTableResponse.data;
 
-          callback({
-            recordsTotal: resp.dataTableResponse.recordsTotal,
-            recordsFiltered: resp.dataTableResponse.recordsTotal,
-            data: []
-          });
-        });
+        this.getCategoryList(dataTablesParameters,callback);
+
       },
       columns: [{data: 'id'}, {data: 'name'}, {data: 'description'}]
     };
-
-
-
-
-   /* this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: true,
-      ajax: (dataTablesParameters: any, callback) => {
-        that.http
-          .post<any>(
-            'https://angular-datatables-demo-server.herokuapp.com/',
-            dataTablesParameters, {}
-          ).subscribe((resp: any) => {
-          that.persons = resp.data;
-
-          callback({
-            recordsTotal: resp.recordsTotal,
-            recordsFiltered: resp.recordsFiltered,
-            data: []
-          });
-        });
-      },
-      columns: [{data: 'id'}, {data: 'firstName'}, {data: 'lastName'},{data:'id'}]
-    };*/
-
-
   }
+
+  private getCategoryList(dataTablesParameters: DataTableRequest, callback:any){
+   this.dataTablesCallBackParameters=dataTablesParameters;
+   this.dataTableCallbackFunction=callback;
+
+    this.categoryService.getList(InventoryApiEndPoint.category+"getAll",
+      dataTablesParameters).subscribe((resp: ResponseMessage) => {
+      this.categoryModelList = resp.dataTableResponse.data;
+
+      callback({
+        recordsTotal: resp.dataTableResponse.recordsTotal,
+        recordsFiltered: resp.dataTableResponse.recordsTotal,
+        data: []
+      });
+    });
+  }
+
 
 
   onSubmit() {
@@ -123,8 +100,9 @@ export class CategoryComponent implements OnInit {
 
     this.categoryService.save(this.requestMessage).subscribe(
       (responseMessage: ResponseMessage) => {
-        this.toastr.success('Hello world!', 'Toastr fun!');
+        this.toastr.success('Category', responseMessage.message);
         this.categoryModel = <CateogyModel> responseMessage.data;
+        this.getCategoryList(this.dataTablesCallBackParameters,this.dataTableCallbackFunction);
       },
       (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {
