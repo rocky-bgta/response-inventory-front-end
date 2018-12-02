@@ -2,13 +2,14 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from "@angular/router";
 import {inventoryRoutes} from "./inventory-routing";
-import {CategoryComponent} from "./category/category.component";
+import {CategoryComponent} from "./components/category/category.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {TranslateModule} from "@ngx-translate/core";
 import {DataTablesModule} from "angular-datatables";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {ProductComponent} from './product/product.component';
+import {ProductComponent} from './components/product/product.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [CategoryComponent, ProductComponent],
@@ -21,7 +22,8 @@ import {ProductComponent} from './product/product.component';
       HttpClientModule,
       TranslateModule,
       DataTablesModule,
-      NgSelectModule
+      NgSelectModule,
+      NgbModule.forRoot(),
   ],
   bootstrap: [
   ]

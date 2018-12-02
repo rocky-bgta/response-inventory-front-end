@@ -1,0 +1,81 @@
+<div class="row">
+  <div class="col-sm-6 pull-right">
+    <div class="card">
+      <div class="card-header">
+
+      </div>
+      <div class="card-body">
+        <ng-select [items]="photosBuffer"
+                   [virtualScroll]="true"
+                   [loading]="loading"
+                   bindLabel="title"
+                   bindValue="thumbnailUrl"
+                   placeholder="Select photo"
+                   (scroll)="onScroll($event)"
+                   (scrollToEnd)="onScrollToEnd()"
+                   (search)="onSearch($event)"
+        >
+
+
+        </ng-select>
+
+        <!-- <ng-select [items]="photosBuffer"
+                    [virtualScroll]="true"
+                    [loading]="loading"
+                    bindLabel="title"
+                    bindValue="thumbnailUrl"
+                    placeholder="Select photo"
+                    (scroll)="onScroll($event)"
+                    (scrollToEnd)="onScrollToEnd()">-->
+        <h1>ng-select to load data on scrolling</h1>
+
+        <p>
+          In this example we are loading many items but only ~30 of them are rendered in the dom.
+          This allows to load as big data as you want.
+        </p>
+
+
+        <!-- <ng-template ng-header-tmp>
+           <small class="form-text text-muted">Loaded {{photosBuffer.length}} of {{photos.length}}</small>
+         </ng-template>
+         <ng-template ng-option-tmp let-item="item" let-index="index">
+           <b>{{index}}</b> {{item.title}}
+         </ng-template>-->
+
+
+      </div>
+      <div class="card-footer"></div>
+    </div>
+
+  </div>
+</div>
+
+<div>
+  <button
+    class="btn btn-pill btn-outline-danger customBtn"
+    type="button"
+    tooltip="delete"
+    (click)="openDeleteModal(deleteConfirmationModal)"
+    tooltip="Delete">
+    <i class="fa fa-trash"></i>
+  </button>
+
+
+  <div class="card-body">
+    <ng-template #deleteConfirmationModal let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ 'Delete confirmation' | translate }} </h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p> {{ 'Are you sure?' | translate }} </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closeModal()">{{ 'Delete' | translate }}</button>
+        <button type="button" class="btn btn-secondary" (click)="d('Cross click')">{{ 'Close' | translate }}</button>
+      </div>
+    </ng-template>
+  </div>
+</div>

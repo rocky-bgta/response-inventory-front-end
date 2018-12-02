@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {CateogyModel} from "../model/cateogy-model";
-import {CategoryService} from "../service/category.service";
+import {CateogyModel} from "../../model/cateogy-model";
+import {CategoryService} from "../../service/category.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {RequestMessage} from "../../core/model/request-message";
-import {Util} from "../../core/Util";
+import {RequestMessage} from "../../../core/model/request-message";
+import {Util} from "../../../core/Util";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {ResponseMessage} from "../../core/model/response-message";
+import {ResponseMessage} from "../../../core/model/response-message";
 import {ToastrService} from "ngx-toastr";
-import {DataTableRequest} from "../../core/model/data-table-request";
-import {InventoryApiEndPoint} from "../inventory-api-end-point";
+import {DataTableRequest} from "../../../core/model/data-table-request";
+import {InventoryApiEndPoint} from "../../inventory-api-end-point";
 
 
 @Component({
