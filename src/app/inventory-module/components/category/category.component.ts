@@ -8,7 +8,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {ResponseMessage} from "../../../core/model/response-message";
 import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../../core/model/data-table-request";
-import * as $ from 'jquery';
+import * as Jquery from 'jquery';
 
 @Component({
   selector: 'app-category',
@@ -31,6 +31,7 @@ export class CategoryComponent implements OnInit {
 
   }
 
+
   // convenience getter for easy access to form fields
   get f() {
     return this.categoryForm.controls;
@@ -43,15 +44,23 @@ export class CategoryComponent implements OnInit {
   private dataTableCallbackFunction:any;
 
 
+  test(){
+    Jquery('#createCategory').trigger('click');
+  }
+
   ngOnInit() {
 
-    /*
+    //Jquery
 
-    $("#collapseCategoryForm").collapse();
-    $("#collapseCategoryForm").collapsing();
-    $("#collapseCategoryForm").show();
 
-    */
+    //Jquery("#collapseCategoryForm").collapse();
+    //Jquery("#collapseCategoryForm").collapsing();
+    //Jquery("#collapseCategoryForm").show();
+
+
+    //$('.panel-title a').bind('mouseover focus',function(){
+
+    //});
 
 
 
