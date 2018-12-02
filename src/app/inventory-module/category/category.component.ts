@@ -73,8 +73,8 @@ export class CategoryComponent implements OnInit {
    this.dataTablesCallBackParameters=dataTablesParameters;
    this.dataTableCallbackFunction=callback;
 
-    this.categoryService.getList(InventoryApiEndPoint.category+"getAll",
-      dataTablesParameters).subscribe((resp: ResponseMessage) => {
+    this.categoryService.getList(dataTablesParameters)
+      .subscribe((resp: ResponseMessage) => {
       this.categoryModelList = resp.dataTableResponse.data;
 
       callback({

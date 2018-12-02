@@ -20,8 +20,8 @@ export class CategoryService {
     return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category+"getAll");
   }
 */
-  getList(endPoint:string,parameter:any): Observable<any> {
-    return this.httpRequestHelperService.getRequest(endPoint,parameter);
+  getList(parameter:any): Observable<any> {
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category+"getAll",parameter);
   }
 
 
