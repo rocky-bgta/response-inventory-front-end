@@ -46,7 +46,7 @@ export class HttpRequestHelperService {
   }
 
   public getRequestById(requestUrl: string, id: string): Observable<any> {
-    let response = this.httpClient.get<any>(requestUrl + "/" + id, this.httpHeaderOptions);
+    let response = this.httpClient.get<any>(requestUrl + id, this.httpHeaderOptions);
     return response;
   }
 

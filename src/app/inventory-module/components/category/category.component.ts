@@ -38,19 +38,14 @@ export class CategoryComponent implements OnInit {
   }
 
   dtOptions: DataTables.Settings = {};
-  categoryModelList:Array<CateogyModel> =new Array();
+  public categoryModelList:Array<CateogyModel> =new Array();
 
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction:any;
 
 
-  test(){
-    Jquery('#createCategory').trigger('click');
-  }
-
   ngOnInit() {
 
-    //Jquery
 
 
     //Jquery("#collapseCategoryForm").collapse();
@@ -59,7 +54,6 @@ export class CategoryComponent implements OnInit {
 
 
     //$('.panel-title a').bind('mouseover focus',function(){
-
     //});
 
 
@@ -78,7 +72,7 @@ export class CategoryComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: true,
-      searching:  true,
+      searching:  false,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
 
         this.getCategoryList(dataTablesParameters,callback);
@@ -114,7 +108,6 @@ export class CategoryComponent implements OnInit {
       return;
     }
 
-
     this.requestMessage = Util.getRequestObject(this.categoryModel);
 
     this.categoryService.save(this.requestMessage).subscribe(
@@ -136,11 +129,30 @@ export class CategoryComponent implements OnInit {
   }
 
 
-  onClickEdit(id){
+  public onClickEdit(id){
+     this.categoryService.getById(id).subscribe(
+       (responseMessage:ResponseMessage)=>{
+         //this.toastr.success('Category', responseMessage.message);
+         this.categoryModel = <CateogyModel> responseMessage.data;
+         this.openCategoryCreateForm();
+       },
+       (httpErrorResponse: HttpErrorResponse) => {
+         if (httpErrorResponse.error instanceof Error) {
+           console.log("Client-side error occured.");
+         } else {
+           console.log("Server-side error occured.");
+         }
+       }
+     );
+
+  }
+
+  public onClickDelete(id){
     console.log(id);
   }
 
-  onClickDelete(id){
-    console.log(id);
+  private openCategoryCreateForm(){
+    //Jquery('#createCategory').trigger('click');
+    Jquery("#collapseCategoryForm").show();
   }
 }
