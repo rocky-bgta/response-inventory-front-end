@@ -38,12 +38,12 @@ export class CategoryComponent implements OnInit {
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction:any;
 
-  public pageStateIsUpdate:boolean;
+  public isPageUpdateState:boolean;
 
   ngOnInit() {
 
     //========== Page data initialization ============
-    this.pageStateIsUpdate = false;
+    this.isPageUpdateState = false;
     this.dataTablesCallBackParameters = new DataTableRequest();
     this.dataTablesCallBackParameters.start=0;
     this.dataTablesCallBackParameters.length=10;
@@ -85,7 +85,7 @@ export class CategoryComponent implements OnInit {
 
     this.categoryService.getList(dataTablesParameters)
       .subscribe((resp: ResponseMessage) => {
-      this.categoryModelList = <Array>resp.data;
+      this.categoryModelList = <Array<CateogyModel>>resp.data;
 
       callback({
         recordsTotal: resp.dataTableResponse.recordsTotal,
@@ -101,12 +101,12 @@ export class CategoryComponent implements OnInit {
 
     let requestMessage: RequestMessage;
 
-    if(this.pageStateIsUpdate==true && !this.categoryForm.invalid){
+    if(this.isPageUpdateState==true && !this.categoryForm.invalid){
       this.updateCategory();
       return;
     }
 
-    if(this.pageStateIsUpdate==false) {
+    if(this.isPageUpdateState==false) {
       // stop here if form is invalid
       if (this.categoryForm.invalid) {
         return;
@@ -171,18 +171,23 @@ export class CategoryComponent implements OnInit {
     console.log(id);
   }
 
+  onClickCancel(){
+    this.categoryModel=new CateogyModel();
+    this.isPageUpdateState = false;
+  }
+
   private openCategoryCreateForm(){
     //Jquery('#createCategory').trigger('click');
     Jquery("#collapseCategoryForm").show();
     Jquery('html, body').animate({scrollTop: '0px'}, 500);
     Jquery("#collapseCategoryForm").scrollTop();
-    this.pageStateIsUpdate = true;
+    this.isPageUpdateState = true;
   }
 
   private resetPage(){
     this.categoryModel=new CateogyModel();
-    this.pageStateIsUpdate = false;
-    Jquery("#collapseCategoryForm").hide();
+    this.isPageUpdateState = false;
+    //Jquery("#collapseCategoryForm").hide();
     this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }
 }
