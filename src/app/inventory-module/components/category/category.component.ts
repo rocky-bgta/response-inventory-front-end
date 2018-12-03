@@ -154,5 +154,7 @@ export class CategoryComponent implements OnInit {
   private openCategoryCreateForm(){
     //Jquery('#createCategory').trigger('click');
     Jquery("#collapseCategoryForm").show();
+    Jquery('html, body').animate({scrollTop: '0px'}, 500);
+    Jquery("#collapseCategoryForm").scrollTop();
   }
 }
