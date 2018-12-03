@@ -18,16 +18,11 @@ import * as Jquery from 'jquery';
 export class CategoryComponent implements OnInit {
 
   public categoryModel: CateogyModel = new CateogyModel();
-
-  private requestMessage: RequestMessage;
-
   public categoryForm: FormGroup;
-  public submitted: boolean = false;
 
   constructor(private categoryService: CategoryService,
               private formBuilder: FormBuilder,
-              private toastr: ToastrService,
-              private http: HttpClient) {
+              private toastr: ToastrService) {
 
   }
 
@@ -43,10 +38,15 @@ export class CategoryComponent implements OnInit {
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction:any;
 
+  public pageStateIsUpdate:boolean;
 
   ngOnInit() {
 
-
+    //========== Page data initialization ============
+    this.pageStateIsUpdate = false;
+    this.dataTablesCallBackParameters = new DataTableRequest();
+    this.dataTablesCallBackParameters.start=0;
+    this.dataTablesCallBackParameters.length=10;
 
     //Jquery("#collapseCategoryForm").collapse();
     //Jquery("#collapseCategoryForm").collapsing();
@@ -57,29 +57,26 @@ export class CategoryComponent implements OnInit {
     //});
 
 
-
+    //========== form validation ==========
     this.categoryForm = this.formBuilder.group({
       name: ['', Validators.required],
       description: ['', Validators.maxLength(200)]
     });
 
-
-    //const that = this;
-
-
+    //========== DataTable option start ===========
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
       serverSide: true,
-      processing: true,
+      processing: false,
       searching:  false,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
-
         this.getCategoryList(dataTablesParameters,callback);
-
       },
       columns: [{data: 'id'}, {data: 'name'}, {data: 'description'}]
     };
+    //========== DataTable option end ==============
+
   }
 
   private getCategoryList(dataTablesParameters: DataTableRequest, callback:any){
@@ -88,7 +85,7 @@ export class CategoryComponent implements OnInit {
 
     this.categoryService.getList(dataTablesParameters)
       .subscribe((resp: ResponseMessage) => {
-      this.categoryModelList = resp.dataTableResponse.data;
+      this.categoryModelList = <Array>resp.data;
 
       callback({
         recordsTotal: resp.dataTableResponse.recordsTotal,
@@ -99,40 +96,46 @@ export class CategoryComponent implements OnInit {
   }
 
 
-
+  //work as a save and update method
   onSubmit() {
-    this.submitted = true;
 
-    // stop here if form is invalid
-    if (this.categoryForm.invalid) {
+    let requestMessage: RequestMessage;
+
+    if(this.pageStateIsUpdate==true && !this.categoryForm.invalid){
+      this.updateCategory();
       return;
     }
 
-    this.requestMessage = Util.getRequestObject(this.categoryModel);
-
-    this.categoryService.save(this.requestMessage).subscribe(
-      (responseMessage: ResponseMessage) => {
-        this.toastr.success('Category', responseMessage.message);
-        this.categoryModel = <CateogyModel> responseMessage.data;
-        this.getCategoryList(this.dataTablesCallBackParameters,this.dataTableCallbackFunction);
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        if (httpErrorResponse.error instanceof Error) {
-          console.log("Client-side error occured.");
-        } else {
-          console.log("Server-side error occured.");
-        }
+    if(this.pageStateIsUpdate==false) {
+      // stop here if form is invalid
+      if (this.categoryForm.invalid) {
+        return;
       }
-    );
 
-    // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.categoryModel))
+      requestMessage = Util.getRequestObject(this.categoryModel);
+
+      this.categoryService.save(requestMessage).subscribe(
+        (responseMessage: ResponseMessage) => {
+          this.toastr.success('Category', responseMessage.message);
+          this.categoryModel = <CateogyModel> responseMessage.data;
+          this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+        },
+        (httpErrorResponse: HttpErrorResponse) => {
+          if (httpErrorResponse.error instanceof Error) {
+            console.log("Client-side error occured.");
+          } else {
+            console.log("Server-side error occured.");
+          }
+        }
+      );
+      // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.categoryModel))
+    }
   }
 
 
   public onClickEdit(id){
      this.categoryService.getById(id).subscribe(
        (responseMessage:ResponseMessage)=>{
-         //this.toastr.success('Category', responseMessage.message);
          this.categoryModel = <CateogyModel> responseMessage.data;
          this.openCategoryCreateForm();
        },
@@ -144,7 +147,24 @@ export class CategoryComponent implements OnInit {
          }
        }
      );
+  }
 
+  private updateCategory(){
+    let requestMessage:RequestMessage;
+    requestMessage = Util.getRequestObject(this.categoryModel);
+    this.categoryService.update(requestMessage).subscribe(
+      (responseMessage:ResponseMessage)=>{
+        this.toastr.success('Category', responseMessage.message);
+        this.resetPage();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          console.log("Client-side error occured.");
+        } else {
+          console.log("Server-side error occured.");
+        }
+      }
+    );
   }
 
   public onClickDelete(id){
@@ -156,5 +176,13 @@ export class CategoryComponent implements OnInit {
     Jquery("#collapseCategoryForm").show();
     Jquery('html, body').animate({scrollTop: '0px'}, 500);
     Jquery("#collapseCategoryForm").scrollTop();
+    this.pageStateIsUpdate = true;
+  }
+
+  private resetPage(){
+    this.categoryModel=new CateogyModel();
+    this.pageStateIsUpdate = false;
+    Jquery("#collapseCategoryForm").hide();
+    this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }
 }

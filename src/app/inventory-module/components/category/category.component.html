@@ -8,7 +8,7 @@
         data-target="#collapseCategoryForm"
         aria-expanded="false"
         aria-controls="collapseCategoryForm">
-  Add New Category
+        {{pageStateIsUpdate==true?'Update ':'Add '}}Category
 </button>
 
 <div style="margin-top: 1%">
@@ -51,7 +51,9 @@
         </div>
         <div class="card-footer">
           <div class="form-group">
-            <button type="submit" class="btn btn-success">Save</button>
+            <button type="submit" class="btn btn-success">
+              {{pageStateIsUpdate==true?'Update ':'Save '}}
+            </button>
           </div>
         </div>
       </div>

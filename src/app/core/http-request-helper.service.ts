@@ -46,7 +46,7 @@ export class HttpRequestHelperService {
   }
 
   public getRequestById(requestUrl: string, id: string): Observable<any> {
-    let response = this.httpClient.get<any>(requestUrl + id, this.httpHeaderOptions);
+    let response = this.httpClient.get<any>(requestUrl + "/"+ id, this.httpHeaderOptions);
     return response;
   }
 
@@ -60,9 +60,9 @@ export class HttpRequestHelperService {
     return response;
   }
 
-  public updateRequest(requestUrl: string, id: string, requestPayload: any): Observable<any> {
+  public updateRequest(requestUrl: string, requestPayload: any): Observable<any> {
     let putUrl: string;
-    putUrl = requestUrl + "/" + id;
+    putUrl = requestUrl;
 
     let response = this.httpClient.put<any>
     (

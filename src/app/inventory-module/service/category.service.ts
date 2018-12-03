@@ -13,7 +13,7 @@ export class CategoryService {
   }
 
   save(data): Observable<any> {
-    return this.httpRequestHelperService.postRequest(InventoryApiEndPoint.category+"save", data);
+    return this.httpRequestHelperService.postRequest(InventoryApiEndPoint.category, data);
   }
 
  /* getList(): Observable<any> {
@@ -21,7 +21,7 @@ export class CategoryService {
   }
 */
   getList(parameter:any): Observable<any> {
-    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category+"getAll",parameter);
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category+"/getAll",parameter);
   }
 
 
@@ -29,8 +29,8 @@ export class CategoryService {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.category, id);
   }
 
-  update(data, id) {
-    return this.httpRequestHelperService.updateRequest(InventoryApiEndPoint.category, id, data);
+  update(data) {
+    return this.httpRequestHelperService.updateRequest(InventoryApiEndPoint.category, data);
   }
 
   delete(id) {
