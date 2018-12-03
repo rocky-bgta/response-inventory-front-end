@@ -4,11 +4,12 @@ import {CategoryService} from "../../service/category.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestMessage} from "../../../core/model/request-message";
 import {Util} from "../../../core/Util";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse} from "@angular/common/http";
 import {ResponseMessage} from "../../../core/model/response-message";
 import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../../core/model/data-table-request";
-import * as Jquery from 'jquery';
+
+declare var jQuery: any;
 
 @Component({
   selector: 'app-category',
@@ -39,11 +40,13 @@ export class CategoryComponent implements OnInit {
   private dataTableCallbackFunction:any;
 
   public isPageUpdateState:boolean;
+  public hideCategoryInputForm:boolean;
 
   ngOnInit() {
 
     //========== Page data initialization ============
     this.isPageUpdateState = false;
+    this.hideCategoryInputForm=false;
     this.dataTablesCallBackParameters = new DataTableRequest();
     this.dataTablesCallBackParameters.start=0;
     this.dataTablesCallBackParameters.length=10;
@@ -173,14 +176,19 @@ export class CategoryComponent implements OnInit {
 
   onClickCancel(){
     this.categoryModel=new CateogyModel();
+    if(this.isPageUpdateState)
+        this.hideCategoryInputForm=true;
+   /* if(this.isPageUpdateState)
+      jQuery('#createCategory').trigger('click');*/
+    //jQuery('.collapse').collapse();
     this.isPageUpdateState = false;
   }
 
   private openCategoryCreateForm(){
     //Jquery('#createCategory').trigger('click');
-    Jquery("#collapseCategoryForm").show();
-    Jquery('html, body').animate({scrollTop: '0px'}, 500);
-    Jquery("#collapseCategoryForm").scrollTop();
+    jQuery("#collapseCategoryForm").show();
+    jQuery('html, body').animate({scrollTop: '0px'}, 500);
+    jQuery("#collapseCategoryForm").scrollTop();
     this.isPageUpdateState = true;
   }
 
