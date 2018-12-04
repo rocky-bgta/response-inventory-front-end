@@ -181,7 +181,7 @@ export class CategoryComponent implements OnInit {
     if(_.isEmpty(this.categoryModel.name)
         &&_.isEmpty(this.categoryModel.description)
         && !this.isPageUpdateState) {
-      jQuery('#addCategoryBtn').trigger('click');
+      jQuery('#collapseCategoryForm').collapse('hide');
       return;
     }
 
@@ -192,40 +192,23 @@ export class CategoryComponent implements OnInit {
 
       this.isPageUpdateState=false;
       this.categoryModel = new CategoryModel();
-      jQuery('#addCategoryBtn').trigger('click');
+      //jQuery('#addCategoryBtn').trigger('click');
       return;
     }
 
     this.categoryModel.name=null;
     this.categoryModel.description=null;
 
+  }
 
-
-   /*
-
-    //this.categoryModel=new CategoryModel();
-    if(this.isPageUpdateState && !_.isEmpty(this.categoryModel)){
-      this.categoryModel.name="";
-      this.categoryModel.description="";
-    }else if(_.isEmpty(this.categoryModel)) {
-      jQuery('#addCategoryBtn').trigger('click');
-    }else {
-      this.categoryModel = new CategoryModel();
-      this.isPageUpdateState = false;
-    }
-    */
-
-
-    //    this.hideCategoryInputForm=true;
-   /* if(this.isPageUpdateState)
-      jQuery('#createCategory').trigger('click');*/
-    //jQuery('.collapse').collapse();
-
+  onClickAddOrUpdateBtn(){
+    //jQuery("#collapseCategoryForm").collapse();
   }
 
   private openCategoryCreateForm(){
     //Jquery('#createCategory').trigger('click');
-    jQuery("#collapseCategoryForm").show();
+    jQuery('#collapseCategoryForm').collapse('show');
+    //jQuery("#collapseCategoryForm").show();
     jQuery('html, body').animate({scrollTop: '0px'}, 500);
     jQuery("#collapseCategoryForm").scrollTop();
     this.isPageUpdateState = true;
