@@ -37,29 +37,25 @@ export class CategoryComponent implements OnInit {
   }
 
   public dtOptions: DataTables.Settings = {};
-  public categoryModelList:Array<CategoryModel> =new Array();
+  public categoryModelList: Array<CategoryModel> = new Array();
 
   private dataTablesCallBackParameters: DataTableRequest;
-  private dataTableCallbackFunction:any;
+  private dataTableCallbackFunction: any;
 
-  public isPageUpdateState:boolean;
-  public hideCategoryInputForm:boolean;
+  public isPageUpdateState: boolean;
+  public hideCategoryInputForm: boolean;
 
-  public disableElementOnDetailsView:boolean;
+  public disableElementOnDetailsView: boolean;
 
   ngOnInit() {
 
     //========== Page data initialization ============
     this.isPageUpdateState = false;
-    this.hideCategoryInputForm=false;
+    this.hideCategoryInputForm = false;
     this.disableElementOnDetailsView = false;
     this.dataTablesCallBackParameters = new DataTableRequest();
-    this.dataTablesCallBackParameters.start=0;
-    this.dataTablesCallBackParameters.length=10;
-
-    //Jquery("#collapseCategoryForm").collapse();
-    //Jquery("#collapseCategoryForm").collapsing();
-    //Jquery("#collapseCategoryForm").show();
+    this.dataTablesCallBackParameters.start = 0;
+    this.dataTablesCallBackParameters.length = 10;
 
 
     //========== form validation ==========
@@ -74,9 +70,9 @@ export class CategoryComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: false,
-      searching:  false,
+      searching: false,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
-        this.getCategoryList(dataTablesParameters,callback);
+        this.getCategoryList(dataTablesParameters, callback);
       },
       columns: [{data: 'id'}, {data: 'name'}, {data: 'description'}]
     };
@@ -84,20 +80,20 @@ export class CategoryComponent implements OnInit {
 
   }
 
-  private getCategoryList(dataTablesParameters: DataTableRequest, callback:any){
-   this.dataTablesCallBackParameters=dataTablesParameters;
-   this.dataTableCallbackFunction=callback;
+  private getCategoryList(dataTablesParameters: DataTableRequest, callback: any) {
+    this.dataTablesCallBackParameters = dataTablesParameters;
+    this.dataTableCallbackFunction = callback;
 
     this.categoryService.getList(dataTablesParameters)
       .subscribe((resp: ResponseMessage) => {
-      this.categoryModelList = <Array<CategoryModel>>resp.data;
+        this.categoryModelList = <Array<CategoryModel>>resp.data;
 
-      callback({
-        recordsTotal: resp.dataTableResponse.recordsTotal,
-        recordsFiltered: resp.dataTableResponse.recordsTotal,
-        data: []
+        callback({
+          recordsTotal: resp.dataTableResponse.recordsTotal,
+          recordsFiltered: resp.dataTableResponse.recordsTotal,
+          data: []
+        });
       });
-    });
   }
 
 
@@ -106,12 +102,12 @@ export class CategoryComponent implements OnInit {
 
     let requestMessage: RequestMessage;
 
-    if(this.isPageUpdateState==true && !this.categoryForm.invalid){
+    if (this.isPageUpdateState == true && !this.categoryForm.invalid) {
       this.updateCategory();
       return;
     }
 
-    if(this.isPageUpdateState==false) {
+    if (this.isPageUpdateState == false) {
       // stop here if form is invalid
       if (this.categoryForm.invalid) {
         return;
@@ -138,38 +134,36 @@ export class CategoryComponent implements OnInit {
   }
 
 
-  public onClickEdit(id){
-     this.categoryService.getById(id).subscribe(
-       (responseMessage:ResponseMessage)=>{
-         this.categoryModel = <CategoryModel> responseMessage.data;
-         this.openCategoryCreateForm();
-       },
-       (httpErrorResponse: HttpErrorResponse) => {
-         if (httpErrorResponse.error instanceof Error) {
-           console.log("Client-side error occured.");
-         } else {
-           console.log("Server-side error occured.");
-         }
-       }
-     );
+  public onClickEdit(id) {
+    this.categoryService.getById(id).subscribe(
+      (responseMessage: ResponseMessage) => {
+        this.categoryModel = <CategoryModel> responseMessage.data;
+        this.openCategoryCreateForm();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          console.log("Client-side error occured.");
+        } else {
+          console.log("Server-side error occured.");
+        }
+      }
+    );
   }
 
-  public onClickDetails(id){
+  public onClickDetails(id) {
     let detailsCategoryModel: CategoryModel;
-    this.disableElementOnDetailsView=true;
+    this.disableElementOnDetailsView = true;
     jQuery('#collapseCategoryForm').collapse('show');
-    detailsCategoryModel =_.find(this.categoryModelList, {id});
+    detailsCategoryModel = _.find(this.categoryModelList, {id});
     this.categoryModel = detailsCategoryModel;
-
     //Util.logConsole(detailsCategoryModel);
-
   }
 
-  private updateCategory(){
-    let requestMessage:RequestMessage;
+  private updateCategory() {
+    let requestMessage: RequestMessage;
     requestMessage = Util.getRequestObject(this.categoryModel);
     this.categoryService.update(requestMessage).subscribe(
-      (responseMessage:ResponseMessage)=>{
+      (responseMessage: ResponseMessage) => {
         this.toastr.success('Category', responseMessage.message);
         this.resetPage();
       },
@@ -183,57 +177,41 @@ export class CategoryComponent implements OnInit {
     );
   }
 
-  public onClickReset(){
-    this.categoryModel.description=null;
-    this.categoryModel.name=null;
+  public onClickReset() {
+    this.categoryModel.description = null;
+    this.categoryModel.name = null;
   }
 
-  public onClickDelete(id){
+  public onClickDelete(id) {
+    let deleteCategory: CategoryModel;
+    deleteCategory = _.find(this.categoryModelList, {id});
+    this.categoryModel = deleteCategory;
+    this.ngxSmartModalService.setModalData(deleteCategory.name, 'deleteConfirmationModal');
+    this.ngxSmartModalService.getModal('deleteConfirmationModal').open();
     console.log(id);
   }
 
-
-  onClickCancel(){
-
-    if(this.disableElementOnDetailsView){
+  onClickCancel() {
+    if (this.disableElementOnDetailsView) {
       jQuery('#collapseCategoryForm').collapse('hide');
-      setTimeout((this)=> {
+      setTimeout(() => {
         this.categoryModel = new CategoryModel();
-        this.disableElementOnDetailsView=false;
-      },500);
-
+        this.disableElementOnDetailsView = false;
+      }, 500);
       return;
     }
 
     jQuery('#collapseCategoryForm').collapse('hide');
     this.categoryModel = new CategoryModel();
-    this.isPageUpdateState=false;
-
-   /*
-
-    if(_.isEmpty(this.categoryModel.name)
-        &&_.isEmpty(this.categoryModel.description)
-        && !this.isPageUpdateState) {
-      jQuery('#collapseCategoryForm').collapse('hide');
-      return;
-    }
-
-    if(this.isPageUpdateState &&
-      (_.isEmpty(this.categoryModel.name) &&_.isEmpty(this.categoryModel.description))) {
-      this.isPageUpdateState=false;
-      this.categoryModel = new CategoryModel();
-      //jQuery('#addCategoryBtn').trigger('click');
-      return;
-    }
-   */
+    this.isPageUpdateState = false;
 
   }
 
-  onClickAddOrUpdateBtn(){
+  onClickAddOrUpdateBtn() {
     //jQuery("#collapseCategoryForm").collapse();
   }
 
-  private openCategoryCreateForm(){
+  private openCategoryCreateForm() {
     //Jquery('#createCategory').trigger('click');
     jQuery('#collapseCategoryForm').collapse('show');
     //jQuery("#collapseCategoryForm").show();
@@ -242,10 +220,26 @@ export class CategoryComponent implements OnInit {
     this.isPageUpdateState = true;
   }
 
-  private resetPage(){
-    this.categoryModel=new CategoryModel();
+  private resetPage() {
+    this.categoryModel = new CategoryModel();
     this.isPageUpdateState = false;
-    //Jquery("#collapseCategoryForm").hide();
     this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }
+
+  onClickDeleteOfModal(id) {
+    this.categoryService.delete(id).subscribe(
+      (responseMessage: ResponseMessage) => {
+        this.toastr.success('Category', responseMessage.message);
+        this.resetPage();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          console.log("Client-side error occured.");
+        } else {
+          console.log("Server-side error occured.");
+        }
+      });
+    this.ngxSmartModalService.getModal('deleteConfirmationModal').close();
+  }
+
 }
