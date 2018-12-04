@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CateogyModel} from "../../model/cateogy-model";
+
 import {CategoryService} from "../../service/category.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {RequestMessage} from "../../../core/model/request-message";
@@ -8,6 +8,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ResponseMessage} from "../../../core/model/response-message";
 import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../../core/model/data-table-request";
+import {CategoryModel} from "../../model/category-model";
+import * as _ from 'lodash';
 
 declare var jQuery: any;
 
@@ -18,7 +20,7 @@ declare var jQuery: any;
 })
 export class CategoryComponent implements OnInit {
 
-  public categoryModel: CateogyModel = new CateogyModel();
+  public categoryModel: CategoryModel = new CategoryModel();
   public categoryForm: FormGroup;
 
   constructor(private categoryService: CategoryService,
@@ -34,7 +36,7 @@ export class CategoryComponent implements OnInit {
   }
 
   dtOptions: DataTables.Settings = {};
-  public categoryModelList:Array<CateogyModel> =new Array();
+  public categoryModelList:Array<CategoryModel> =new Array();
 
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction:any;
@@ -88,7 +90,7 @@ export class CategoryComponent implements OnInit {
 
     this.categoryService.getList(dataTablesParameters)
       .subscribe((resp: ResponseMessage) => {
-      this.categoryModelList = <Array<CateogyModel>>resp.data;
+      this.categoryModelList = <Array<CategoryModel>>resp.data;
 
       callback({
         recordsTotal: resp.dataTableResponse.recordsTotal,
@@ -120,7 +122,7 @@ export class CategoryComponent implements OnInit {
       this.categoryService.save(requestMessage).subscribe(
         (responseMessage: ResponseMessage) => {
           this.toastr.success('Category', responseMessage.message);
-          this.categoryModel = <CateogyModel> responseMessage.data;
+          this.categoryModel = <CategoryModel> responseMessage.data;
           this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
         },
         (httpErrorResponse: HttpErrorResponse) => {
@@ -139,7 +141,7 @@ export class CategoryComponent implements OnInit {
   public onClickEdit(id){
      this.categoryService.getById(id).subscribe(
        (responseMessage:ResponseMessage)=>{
-         this.categoryModel = <CateogyModel> responseMessage.data;
+         this.categoryModel = <CategoryModel> responseMessage.data;
          this.openCategoryCreateForm();
        },
        (httpErrorResponse: HttpErrorResponse) => {
@@ -175,13 +177,50 @@ export class CategoryComponent implements OnInit {
   }
 
   onClickCancel(){
-    this.categoryModel=new CateogyModel();
-    if(this.isPageUpdateState)
-        this.hideCategoryInputForm=true;
+
+    if(_.isEmpty(this.categoryModel.name)
+        &&_.isEmpty(this.categoryModel.description)
+        && !this.isPageUpdateState) {
+      jQuery('#addCategoryBtn').trigger('click');
+      return;
+    }
+
+
+
+    if(this.isPageUpdateState &&
+      (_.isEmpty(this.categoryModel.name) &&_.isEmpty(this.categoryModel.description))) {
+
+      this.isPageUpdateState=false;
+      this.categoryModel = new CategoryModel();
+      jQuery('#addCategoryBtn').trigger('click');
+      return;
+    }
+
+    this.categoryModel.name=null;
+    this.categoryModel.description=null;
+
+
+
+   /*
+
+    //this.categoryModel=new CategoryModel();
+    if(this.isPageUpdateState && !_.isEmpty(this.categoryModel)){
+      this.categoryModel.name="";
+      this.categoryModel.description="";
+    }else if(_.isEmpty(this.categoryModel)) {
+      jQuery('#addCategoryBtn').trigger('click');
+    }else {
+      this.categoryModel = new CategoryModel();
+      this.isPageUpdateState = false;
+    }
+    */
+
+
+    //    this.hideCategoryInputForm=true;
    /* if(this.isPageUpdateState)
       jQuery('#createCategory').trigger('click');*/
     //jQuery('.collapse').collapse();
-    this.isPageUpdateState = false;
+
   }
 
   private openCategoryCreateForm(){
@@ -193,7 +232,7 @@ export class CategoryComponent implements OnInit {
   }
 
   private resetPage(){
-    this.categoryModel=new CateogyModel();
+    this.categoryModel=new CategoryModel();
     this.isPageUpdateState = false;
     //Jquery("#collapseCategoryForm").hide();
     this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
