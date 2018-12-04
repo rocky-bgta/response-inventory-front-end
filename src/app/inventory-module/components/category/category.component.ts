@@ -10,6 +10,7 @@ import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../../core/model/data-table-request";
 import {CategoryModel} from "../../model/category-model";
 import * as _ from 'lodash';
+import {NgxSmartModalService} from "ngx-smart-modal";
 
 declare var jQuery: any;
 
@@ -25,17 +26,17 @@ export class CategoryComponent implements OnInit {
 
   constructor(private categoryService: CategoryService,
               private formBuilder: FormBuilder,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              public ngxSmartModalService: NgxSmartModalService) {
 
   }
-
 
   // convenience getter for easy access to form fields
   get f() {
     return this.categoryForm.controls;
   }
 
-  dtOptions: DataTables.Settings = {};
+  public dtOptions: DataTables.Settings = {};
   public categoryModelList:Array<CategoryModel> =new Array();
 
   private dataTablesCallBackParameters: DataTableRequest;
@@ -44,11 +45,14 @@ export class CategoryComponent implements OnInit {
   public isPageUpdateState:boolean;
   public hideCategoryInputForm:boolean;
 
+  public disableElementOnDetailsView:boolean;
+
   ngOnInit() {
 
     //========== Page data initialization ============
     this.isPageUpdateState = false;
     this.hideCategoryInputForm=false;
+    this.disableElementOnDetailsView = false;
     this.dataTablesCallBackParameters = new DataTableRequest();
     this.dataTablesCallBackParameters.start=0;
     this.dataTablesCallBackParameters.length=10;
@@ -56,10 +60,6 @@ export class CategoryComponent implements OnInit {
     //Jquery("#collapseCategoryForm").collapse();
     //Jquery("#collapseCategoryForm").collapsing();
     //Jquery("#collapseCategoryForm").show();
-
-
-    //$('.panel-title a').bind('mouseover focus',function(){
-    //});
 
 
     //========== form validation ==========
@@ -154,6 +154,17 @@ export class CategoryComponent implements OnInit {
      );
   }
 
+  public onClickDetails(id){
+    let detailsCategoryModel: CategoryModel;
+    this.disableElementOnDetailsView=true;
+    jQuery('#collapseCategoryForm').collapse('show');
+    detailsCategoryModel =_.find(this.categoryModelList, {id});
+    this.categoryModel = detailsCategoryModel;
+
+    //Util.logConsole(detailsCategoryModel);
+
+  }
+
   private updateCategory(){
     let requestMessage:RequestMessage;
     requestMessage = Util.getRequestObject(this.categoryModel);
@@ -172,11 +183,33 @@ export class CategoryComponent implements OnInit {
     );
   }
 
+  public onClickReset(){
+    this.categoryModel.description=null;
+    this.categoryModel.name=null;
+  }
+
   public onClickDelete(id){
     console.log(id);
   }
 
+
   onClickCancel(){
+
+    if(this.disableElementOnDetailsView){
+      jQuery('#collapseCategoryForm').collapse('hide');
+      setTimeout((this)=> {
+        this.categoryModel = new CategoryModel();
+        this.disableElementOnDetailsView=false;
+      },500);
+
+      return;
+    }
+
+    jQuery('#collapseCategoryForm').collapse('hide');
+    this.categoryModel = new CategoryModel();
+    this.isPageUpdateState=false;
+
+   /*
 
     if(_.isEmpty(this.categoryModel.name)
         &&_.isEmpty(this.categoryModel.description)
@@ -185,19 +218,14 @@ export class CategoryComponent implements OnInit {
       return;
     }
 
-
-
     if(this.isPageUpdateState &&
       (_.isEmpty(this.categoryModel.name) &&_.isEmpty(this.categoryModel.description))) {
-
       this.isPageUpdateState=false;
       this.categoryModel = new CategoryModel();
       //jQuery('#addCategoryBtn').trigger('click');
       return;
     }
-
-    this.categoryModel.name=null;
-    this.categoryModel.description=null;
+   */
 
   }
 

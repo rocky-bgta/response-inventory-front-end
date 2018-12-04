@@ -20,4 +20,10 @@ export class Util{
 
   }
 
+  public static logConsole(data:any,message?:string) {
+    if (message != null)
+      console.log(message + ": " + JSON.stringify(data, null, 2));
+    else console.log(JSON.stringify(data, null, 2));
+  }
+
 }

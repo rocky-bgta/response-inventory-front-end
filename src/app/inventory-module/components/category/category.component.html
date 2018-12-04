@@ -1,6 +1,4 @@
 <!--<div [@routerTransition]>-->
-
-
 <button class="btn btn-primary"
         type="button"
         [disabled]="isPageUpdateState"
@@ -14,7 +12,8 @@
 </button>
 
 <div style="margin-top: 1%" [hidden]="hideCategoryInputForm">
-  <form class="collapse" id="collapseCategoryForm" data-toggle="collapse" name="form" [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+  <form class="collapse" id="collapseCategoryForm" data-toggle="collapse" name="form" [formGroup]="categoryForm"
+        (ngSubmit)="onSubmit()">
     <div class="col-sm-6" style="padding-left: 0%;">
       <div class="card">
         <div class="card-header text-center">
@@ -28,6 +27,7 @@
                 id="name"
                 class="form-control"
                 name="name"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 [(ngModel)]="categoryModel.name"
                 formControlName="name"
@@ -42,6 +42,7 @@
             <div class="col-sm-8">
               <textarea
                 name="description"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
                 [(ngModel)]="categoryModel.description"
                 formControlName="description"
                 class="form-control rounded-0"
@@ -53,17 +54,33 @@
         </div>
         <div class="card-footer">
           <div class="row">
-          <div class="form-group" style="padding-right: 1%">
-            <button type="submit" class="btn btn-success">
-              {{isPageUpdateState==true?'Update ':'Save '}}
-            </button>
-          </div>
+            <div class="col-sm-12">
 
-          <div class="form-group">
-            <button type="button" (click)="onClickCancel()" class="btn btn-danger">
-              Cancel
-            </button>
-          </div>
+              <button *ngIf="!disableElementOnDetailsView"
+                      type="submit"
+                      class="btn btn-success">
+                {{isPageUpdateState==true?'Update ':'Save '}}
+              </button>
+
+
+
+              <button *ngIf="!disableElementOnDetailsView"
+                      type="button"
+                      style="margin-left: 1%"
+                      (click)="onClickReset()"
+                      class="btn btn-danger">
+                Reset
+              </button>
+
+
+
+              <button type="button"
+                      (click)="onClickCancel()"
+                      class="btn btn-danger pull-right">
+                Cancel
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
@@ -85,8 +102,8 @@
         <tr>
           <!-- <th>ID</th>-->
           <th style="width: 10%">Category Name</th>
-          <th style="width: 20%">Description</th>
-          <th style="width: 5%">Action</th>
+          <th style="width: 80%">Description</th>
+          <th style="width: 10%">Action</th>
         </tr>
         </thead>
         <tbody *ngIf="categoryModelList?.length != 0">
@@ -94,11 +111,18 @@
           <!-- <td>{{ category.id }}</td>-->
           <td>{{ category.name }}</td>
           <td>{{ category.description }}</td>
-          <td style="padding-left: 3%">
-            <button type="button" class="btn btn-secondary" (click)="onClickEdit(category.id)" style="margin-right: 5%">
+          <td>
+            <button type="button" class="btn btn-secondary" (click)="onClickEdit(category.id)" style="margin-left: 1%">
               Edit
             </button>
-            <button type="button" class="btn btn-danger" (click)="onClickDelete(category.id)">Delete</button>
+
+            <button type="button" class="btn btn-info" (click)="onClickDetails(category.id)" style="margin-left: 1%">
+              Details
+            </button>
+
+            <button type="button" class="btn btn-danger" (click)="onClickDelete(category.id)" style="margin-left: 1%">
+              Delete
+            </button>
 
           </td>
 
