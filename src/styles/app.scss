@@ -32,3 +32,11 @@
 .dataTables_empty {
   display: none;
 }
+
+/* limit data-table <td> element display character*/
+.ellipsis {
+  max-width: 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

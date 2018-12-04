@@ -207,17 +207,12 @@ export class CategoryComponent implements OnInit {
 
   }
 
-  onClickAddOrUpdateBtn() {
-    //jQuery("#collapseCategoryForm").collapse();
-  }
-
   private openCategoryCreateForm() {
-    //Jquery('#createCategory').trigger('click');
     jQuery('#collapseCategoryForm').collapse('show');
-    //jQuery("#collapseCategoryForm").show();
     jQuery('html, body').animate({scrollTop: '0px'}, 500);
     jQuery("#collapseCategoryForm").scrollTop();
     this.isPageUpdateState = true;
+    this.disableElementOnDetailsView=false;
   }
 
   private resetPage() {

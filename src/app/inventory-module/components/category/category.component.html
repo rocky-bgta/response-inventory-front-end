@@ -4,7 +4,6 @@
         [disabled]="isPageUpdateState"
         id="addCategoryBtn"
         data-toggle="collapse"
-        (click)="onClickAddOrUpdateBtn()"
         data-target="#collapseCategoryForm"
         aria-expanded="false"
         aria-controls="collapseCategoryForm">
@@ -110,7 +109,7 @@
         <tr *ngFor="let category of categoryModelList">
           <!-- <td>{{ category.id }}</td>-->
           <td>{{ category.name }}</td>
-          <td>{{ category.description }}</td>
+          <td class="ellipsis">{{ category.description }}</td>
           <td>
             <button type="button" class="btn btn-secondary" (click)="onClickEdit(category.id)" style="margin-left: 1%">
               Edit
