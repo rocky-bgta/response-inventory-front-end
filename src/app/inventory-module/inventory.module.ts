@@ -24,7 +24,6 @@ import {NgxSmartModalModule} from "ngx-smart-modal";
       TranslateModule,
       DataTablesModule,
       NgSelectModule,
-      NgbModule.forRoot(),
       NgxSmartModalModule.forRoot()
   ],
   bootstrap: [
