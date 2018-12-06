@@ -21,7 +21,7 @@
                 </div>
 
 
-
+                <img [src]="'data:image/png;base64,'+productModel.image" height="200"> <br/>
                 <input type="file" (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf" />
                 <img *ngFor="let item of base64textString"  height="200" src={{item}} alt="" id="img">
 
@@ -69,8 +69,16 @@
 
                     <button *ngIf="!disableElementOnDetailsView"
                             type="submit"
+                            (click)="onClickSave()"
                             class="btn btn-success">
                       {{isPageUpdateState==true?'Update ':'Save '}}
+                    </button>
+
+                    <button *ngIf="!disableElementOnDetailsView"
+                            type="button"
+                            (click)="getImage()"
+                            class="btn btn-success">
+                      Get Image
                     </button>
 
 

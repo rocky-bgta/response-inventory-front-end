@@ -37,7 +37,7 @@ export class HttpRequestHelperService {
     return response;
   }
 
-  public getRequest(requestUrl: string,parameter:any): Observable<any> {
+  public getRequest(requestUrl: string,parameter?:any): Observable<any> {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestObject(null,parameter);
 

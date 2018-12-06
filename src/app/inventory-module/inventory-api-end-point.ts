@@ -5,4 +5,7 @@ export class InventoryApiEndPoint{
 
   public static readonly category:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"category";
 
+  public static readonly product:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"product";
+
+
 }
