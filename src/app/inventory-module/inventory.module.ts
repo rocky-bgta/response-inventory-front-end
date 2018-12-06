@@ -9,7 +9,6 @@ import {TranslateModule} from "@ngx-translate/core";
 import {DataTablesModule} from "angular-datatables";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {ProductComponent} from './components/product/product.component';
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {NgxSmartModalModule} from "ngx-smart-modal";
 
 @NgModule({

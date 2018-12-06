@@ -53,6 +53,7 @@ export class ProductComponent implements OnInit {
   }
 
   onUploadChange(evt: any) {
+    console.log(evt);
     const file = evt.target.files[0];
 
     if (file) {
@@ -66,7 +67,7 @@ export class ProductComponent implements OnInit {
   handleReaderLoaded(e) {
     Util.logConsole(btoa(e.target.result),"Image");
 
-    this.base64textString.push(btoa(e.target.result));
+    this.base64textString.push('data:image/png;base64,' + btoa(e.target.result));
   }
 
 }
