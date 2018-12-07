@@ -10,7 +10,11 @@
 </button>
 
 <div style="margin-top: 1%" [hidden]="hideInputForm">
-  <form id="collapseInputForm" class="collapse" data-toggle="collapse" name="productForm">
+  <form id="collapseInputForm"
+        class="collapse"
+        data-toggle="collapse"
+        name="productForm"
+        (ngSubmit)="onSubmit()">
 
     <div class="col-sm-6" style="padding-left: 0%;">
 
@@ -42,6 +46,7 @@
               <ng-select [items]="categoryModelList"
                          id="categoryList"
                          bindLabel="name"
+                         [disabled]="disableElementOnDetailsView"
                          name="categoryList"
                          [(ngModel)]="productModel.categoryId"
                          bindValue="id"
@@ -69,7 +74,7 @@
               <input
                 id="modelNo"
                 class="form-control"
-                name="name"
+                name="modelNo"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 [(ngModel)]="productModel.modelNo">
@@ -135,7 +140,10 @@
             <label for="image" class="col-sm-4">Image:</label>
             <div class="col-sm-6">
               <!--<label for="exampleFormControlFile1">Example file input</label>-->
-              <input type="file" class="form-control-file" id="image"
+              <input *ngIf="!disableElementOnDetailsView"
+                type="file"
+                     class="form-control-file"
+                     id="image"
                      (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf">
             </div>
           </div>
@@ -145,7 +153,9 @@
               <!--<img [src]="'data:image/png;base64,'+productModel.image" height="200" width="200">-->
               <img *ngFor="let item of base64textString" height="200" src={{item}} alt="" id="img">
               <br>
-              <button *ngIf="base64textString.length>0" type="button" (click)="onClickClear()">Clear</button>
+              <button *ngIf="base64textString.length>0 && !disableElementOnDetailsView"
+                      type="button"
+                      (click)="onClickClear()">Clear</button>
             </div>
           </div>
 
@@ -167,7 +177,6 @@
 
               <button *ngIf="!disableElementOnDetailsView"
                       type="submit"
-                      (click)="onClickSave()"
                       class="btn btn-success">
                 {{isPageUpdateState==true?'Update ':'Save '}}
               </button>
@@ -232,7 +241,7 @@
   </form>
 </div>
 
-<div class="">
+<div [hidden]="productModelList.length==0" class="">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">

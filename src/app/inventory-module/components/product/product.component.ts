@@ -64,6 +64,32 @@ export class ProductComponent implements OnInit {
 
   }
 
+  //work as a save and update method
+  public onSubmit() {
+
+
+
+    if (this.isPageUpdateState == true) {
+      this.updateProduct();
+      return;
+    }
+
+    if (this.isPageUpdateState == false) {
+      // stop here if form is invalid
+      // if (this.categoryForm.invalid) {
+      //   return;
+      // }
+
+      this.saveProduct();
+
+      console.log("I come herer");
+
+
+    }
+  }
+  /*
+
+
   public onClickSave(){
     let requestMessage:RequestMessage;
     //first set converted base64 image string to model then build request message
@@ -91,7 +117,7 @@ export class ProductComponent implements OnInit {
 
 
 
-    /*
+    /!*
     this.productService.saveImage(this.base64textString).subscribe(
       response=>{
         Util.logConsole(response)
@@ -100,9 +126,11 @@ export class ProductComponent implements OnInit {
         Util.logConsole(error)
       }
     );
-    */
+    *!/
 
   }
+
+  */
 
   public onClickClear(){
     this.base64textString=[];
@@ -120,6 +148,44 @@ export class ProductComponent implements OnInit {
     detailsProductModel = _.find(this.productModelList, {id});
     this.productModel = detailsProductModel;
     this.setImagePathForProductDetails();
+  }
+
+  public onClickEdit(id) {
+    this.productService.getById(id).subscribe(
+      (responseMessage: ResponseMessage) => {
+        this.productModel=null;
+        this.productModel = <ProductModel> responseMessage.data;
+        Util.logConsole(this.productModel);
+        this.setImage(this.productModel.image);
+        this.openEntryForm();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          console.log("Client-side error occured.");
+        } else {
+          console.log("Server-side error occured.");
+        }
+      }
+    );
+  }
+
+  public onClickCancel(){
+    if (this.disableElementOnDetailsView) {
+      jQuery('#collapseInputForm').collapse('hide');
+      setTimeout(() => {
+        //reset model
+        this.productModel = new ProductModel();
+        //reset image
+        this.base64textString=[];
+        this.disableElementOnDetailsView = false;
+      }, 500);
+      return;
+    }
+
+    jQuery('#collapseInputForm').collapse('hide');
+    this.productModel = new ProductModel();
+    this.isPageUpdateState = false;
+    this.base64textString=[];
   }
 
   private getCategoryList(){
@@ -177,6 +243,7 @@ export class ProductComponent implements OnInit {
 
 
   public onUploadChange(event: any) {
+    this.base64textString=[];
     let file = event.target.files[0];
     if (file) {
       let reader = new FileReader();
@@ -238,6 +305,71 @@ export class ProductComponent implements OnInit {
   private setImagePathForProductDetails(){
     this.base64textString=[];
     this.base64textString.push(this.productModel.image);
+  }
+
+  private openEntryForm() {
+    jQuery('#collapseInputForm').collapse('show');
+    jQuery('html, body').animate({scrollTop: '0px'}, 500);
+    jQuery("#collapseInputForm").scrollTop();
+    this.isPageUpdateState = true;
+    this.disableElementOnDetailsView=false;
+  }
+
+  private updateProduct() {
+    let requestMessage: RequestMessage;
+    //first set converted base64 image string to model then build request message
+    this.productModel.base64ImageString = this.base64imageString;
+    requestMessage = Util.getRequestMessage(this.productModel);
+    this.productService.update(requestMessage).subscribe(
+      (responseMessage: ResponseMessage) => {
+        this.toastr.success('Product', responseMessage.message);
+        this.resetPage();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          console.log("Client-side error occured.");
+        } else {
+          console.log("Server-side error occured.");
+        }
+      }
+    );
+  }
+
+  private saveProduct(){
+    let requestMessage:RequestMessage;
+    //first set converted base64 image string to model then build request message
+    this.productModel.base64ImageString = this.base64imageString;
+    requestMessage = Util.getRequestMessage(this.productModel);
+    //==========================================================================
+
+    this.productService.save(requestMessage).subscribe(
+      (responseMessage: ResponseMessage) => {
+        this.toastr.success('Product', responseMessage.message);
+        this.productModel = <ProductModel> responseMessage.data;
+        this.setImage(this.productModel.image);
+        // update data of data table
+        this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          this.toastr.success('Product', "Client-side error occured");
+          console.log("Client-side error occured.");
+        } else {
+          this.toastr.success('Product', "Server-side error occured.");
+          console.log("Server-side error occured.");
+        }
+      }
+    );
+
+  }
+
+
+
+  private resetPage() {
+    this.productModel = new ProductModel();
+    this.base64textString=[];
+    this.isPageUpdateState = false;
+    this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }
 
 }

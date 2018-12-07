@@ -11,8 +11,13 @@
 </button>
 
 <div style="margin-top: 1%" [hidden]="hideCategoryInputForm">
-  <form class="collapse" id="collapseCategoryForm" data-toggle="collapse" name="form" [formGroup]="categoryForm"
+  <form class="collapse"
+        id="collapseCategoryForm"
+        data-toggle="collapse"
+        name="categoryForm"
+        [formGroup]="categoryForm"
         (ngSubmit)="onSubmit()">
+
     <div class="col-sm-6" style="padding-left: 0%;">
       <div class="card">
         <div class="card-header text-center">
