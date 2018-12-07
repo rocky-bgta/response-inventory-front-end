@@ -5,7 +5,6 @@ import {inventoryRoutes} from "./inventory-routing";
 import {CategoryComponent} from "./components/category/category.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
-import {TranslateModule} from "@ngx-translate/core";
 import {DataTablesModule} from "angular-datatables";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {ProductComponent} from './components/product/product.component';
@@ -21,7 +20,6 @@ import {ConfirmationModalComponent} from "../core/components/confirmation-modal/
       ReactiveFormsModule,
       FormsModule,
       HttpClientModule,
-      TranslateModule,
       DataTablesModule,
       NgSelectModule,
       NgxSmartModalModule.forRoot()
