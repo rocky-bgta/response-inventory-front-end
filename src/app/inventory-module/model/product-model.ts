@@ -8,5 +8,5 @@ export class ProductModel {
   price: number;
   description: string;
   barcode: string;
-  image: any[];
+  base64ImageString: string;
 }

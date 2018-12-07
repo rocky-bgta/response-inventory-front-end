@@ -112,7 +112,7 @@ export class CategoryComponent implements OnInit {
         return;
       }
 
-      requestMessage = Util.getRequestObject(this.categoryModel);
+      requestMessage = Util.getRequestMessage(this.categoryModel);
 
       this.categoryService.save(requestMessage).subscribe(
         (responseMessage: ResponseMessage) => {
@@ -121,11 +121,12 @@ export class CategoryComponent implements OnInit {
           this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
         },
         (httpErrorResponse: HttpErrorResponse) => {
-          if (httpErrorResponse.error instanceof Error) {
+          Util.errorHandler(httpErrorResponse);
+         /* if (httpErrorResponse.error instanceof Error) {
             console.log("Client-side error occured.");
           } else {
             console.log("Server-side error occured.");
-          }
+          }*/
         }
       );
       // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.categoryModel))
@@ -140,11 +141,14 @@ export class CategoryComponent implements OnInit {
         this.openCategoryCreateForm();
       },
       (httpErrorResponse: HttpErrorResponse) => {
-        if (httpErrorResponse.error instanceof Error) {
+        Util.errorHandler(httpErrorResponse);
+
+      /*  if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occured.");
         } else {
           console.log("Server-side error occured.");
         }
+        */
       }
     );
   }
@@ -160,18 +164,22 @@ export class CategoryComponent implements OnInit {
 
   private updateCategory() {
     let requestMessage: RequestMessage;
-    requestMessage = Util.getRequestObject(this.categoryModel);
+    requestMessage = Util.getRequestMessage(this.categoryModel);
     this.categoryService.update(requestMessage).subscribe(
       (responseMessage: ResponseMessage) => {
         this.toastr.success('Category', responseMessage.message);
         this.resetPage();
       },
       (httpErrorResponse: HttpErrorResponse) => {
+        Util.errorHandler(httpErrorResponse);
+      /*
         if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occured.");
         } else {
           console.log("Server-side error occured.");
-        }
+        }*/
+
+
       }
     );
   }
@@ -227,11 +235,15 @@ export class CategoryComponent implements OnInit {
         this.resetPage();
       },
       (httpErrorResponse: HttpErrorResponse) => {
-        if (httpErrorResponse.error instanceof Error) {
+        Util.errorHandler(httpErrorResponse);
+
+       /* if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occured.");
         } else {
           console.log("Server-side error occured.");
         }
+        */
+
       });
     this.ngxSmartModalService.getModal('deleteConfirmationModal').close();
   }

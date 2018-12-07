@@ -37,9 +37,9 @@ export class HttpRequestHelperService {
     return response;
   }
 
-  public getRequest(requestUrl: string,parameter?:any): Observable<any> {
+  public getRequest(requestUrl: string,dataTableParameter?:any): Observable<any> {
     let requestMessage: RequestMessage;
-    requestMessage = Util.getRequestObject(null,parameter);
+    requestMessage = Util.getRequestMessage(null,dataTableParameter);
 
     let response = this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions);
     return response;

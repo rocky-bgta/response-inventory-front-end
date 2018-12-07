@@ -5,6 +5,11 @@ import {ProductService} from "../../service/product.service";
 import {ResponseMessage} from "../../../core/model/response-message";
 import {FormGroup} from "@angular/forms";
 import {CategoryModel} from "../../model/category-model";
+import {CategoryService} from "../../service/category.service";
+import {RequestMessage} from "../../../core/model/request-message";
+import {HttpErrorResponse} from "@angular/common/http";
+//var base64Img = require('base64-img');
+//var image2base64:any;
 
 @Component({
   selector: 'app-product',
@@ -23,12 +28,14 @@ export class ProductComponent implements OnInit {
   public hideCategoryInputForm: boolean;
   public disableElementOnDetailsView: boolean;
 
-  public files: any[];
+  private base64imageString:string;
   base64textString = [];
 
   public imageBack:any[];
 
-  constructor(private productService: ProductService ) {
+  constructor(private productService: ProductService,
+              private categoryService:CategoryService) {
+    //super();
   }
 
   get f() {
@@ -41,9 +48,34 @@ export class ProductComponent implements OnInit {
     this.isPageUpdateState=false;
     this.hideCategoryInputForm=false;
     this.disableElementOnDetailsView=false;
+
+    this.getCategoryList();
   }
 
   public onClickSave(){
+    let requestMessage:RequestMessage;
+    this.productModel.base64ImageString = this.base64imageString;
+    requestMessage = Util.getRequestMessage(this.productModel);
+
+    //Util.logConsole(requestMessage);
+
+
+
+    this.productService.save(requestMessage).subscribe(
+      (responseMessage: ResponseMessage) => {
+        Util.toasterService.success('Product', responseMessage.message);
+        this.productModel = <ProductModel> responseMessage.data;
+        this.setImage(this.productModel.base64ImageString);
+        //this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        Util.errorHandler(httpErrorResponse);
+      }
+    );
+
+
+
+    /*
     this.productService.saveImage(this.base64textString).subscribe(
       response=>{
         Util.logConsole(response)
@@ -51,8 +83,23 @@ export class ProductComponent implements OnInit {
       error=>{
         Util.logConsole(error)
       }
+    );
+    */
+
+  }
+
+  private getCategoryList(){
+    this.categoryService.getList().subscribe(
+      (response:ResponseMessage)=>{
+        this.categoryModelList = <Array<CategoryModel>>response.data;
+      },(httpErrorResponse: HttpErrorResponse)=>{
+          Util.errorHandler(httpErrorResponse);
+      }
     )
   }
+
+
+  /*
 
   public getImage(){
     this.productService.getImage().subscribe(
@@ -69,23 +116,26 @@ export class ProductComponent implements OnInit {
       }
     )
   }
+  */
 
-  onUploadChange(evt: any) {
-    console.log(evt);
-    const file = evt.target.files[0];
 
+
+  public onUploadChange(event: any) {
+    let file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-
+      let reader = new FileReader();
       reader.onload = this.handleReaderLoaded.bind(this);
       reader.readAsBinaryString(file);
     }
   }
 
-  handleReaderLoaded(e) {
-    Util.logConsole(btoa(e.target.result),"Image");
+  private handleReaderLoaded(e) {
+    this.base64imageString=(btoa(e.target.result));
+    this.base64textString.push('data:image/png;base64,' + this.base64imageString);
+  }
 
-    this.base64textString.push('data:image/png;base64,' + btoa(e.target.result));
+  private setImage(image:string){
+    this.base64textString.push('data:image/png;base64,' + image);
   }
 
 }
