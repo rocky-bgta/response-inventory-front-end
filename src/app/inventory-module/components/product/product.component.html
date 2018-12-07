@@ -141,9 +141,12 @@
             <div class="col-sm-6">
               <!--<label for="exampleFormControlFile1">Example file input</label>-->
               <input *ngIf="!disableElementOnDetailsView"
-                type="file"
+                     type="file"
+                     #fileInput
                      class="form-control-file"
                      id="image"
+                     name="image"
+                     title="choose a product image"
                      (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf">
             </div>
           </div>
@@ -155,7 +158,7 @@
               <br>
               <button *ngIf="base64textString.length>0 && !disableElementOnDetailsView"
                       type="button"
-                      (click)="onClickClear()">Clear</button>
+                      (click)="onClickImageClear()">Clear</button>
             </div>
           </div>
 

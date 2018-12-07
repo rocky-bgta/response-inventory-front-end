@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ProductModel} from "../../model/product-model";
 import {Util} from "../../../core/Util";
 import {ProductService} from "../../service/product.service";
@@ -20,6 +20,8 @@ declare var jQuery: any;
 })
 export class ProductComponent implements OnInit {
 
+  @ViewChild('fileInput') myFileInput: ElementRef;
+
   public categoryModelList:Array<CategoryModel>;
   public productModelList:Array<ProductModel>;
   public productModel:ProductModel;
@@ -29,7 +31,6 @@ export class ProductComponent implements OnInit {
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction: any;
 
-
   public isPageUpdateState: boolean;
   public hideInputForm: boolean;
   public disableElementOnDetailsView: boolean;
@@ -37,12 +38,10 @@ export class ProductComponent implements OnInit {
   private base64imageString:string;
   base64textString= [];
 
-  //public imageBack:any[];
 
   constructor(private productService: ProductService,
               private categoryService:CategoryService,
-              private toastr: ToastrService, ) {
-    //super();
+              private toastr: ToastrService) {
   }
 
   get f() {
@@ -87,52 +86,10 @@ export class ProductComponent implements OnInit {
 
     }
   }
-  /*
 
 
-  public onClickSave(){
-    let requestMessage:RequestMessage;
-    //first set converted base64 image string to model then build request message
-    this.productModel.base64ImageString = this.base64imageString;
-    requestMessage = Util.getRequestMessage(this.productModel);
-    //==========================================================================
-
-    this.productService.save(requestMessage).subscribe(
-      (responseMessage: ResponseMessage) => {
-        this.toastr.success('Product', responseMessage.message);
-        this.productModel = <ProductModel> responseMessage.data;
-        this.setImage(this.productModel.image);
-        //this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        if (httpErrorResponse.error instanceof Error) {
-          this.toastr.success('Product', "Client-side error occured");
-          console.log("Client-side error occured.");
-        } else {
-          this.toastr.success('Product', "Server-side error occured.");
-          console.log("Server-side error occured.");
-        }
-      }
-    );
-
-
-
-    /!*
-    this.productService.saveImage(this.base64textString).subscribe(
-      response=>{
-        Util.logConsole(response)
-      },
-      error=>{
-        Util.logConsole(error)
-      }
-    );
-    *!/
-
-  }
-
-  */
-
-  public onClickClear(){
+  public onClickImageClear(){
+    console.log(this.myFileInput.nativeElement.files[0]);
     this.base64textString=[];
   }
 
@@ -218,29 +175,6 @@ export class ProductComponent implements OnInit {
       });
 
   }
-
-
-
-
-  public onClickGetImage(){
-    this.productService.getImage().subscribe(
-      (response:ResponseMessage)=>{
-        this.productModel = <ProductModel> response.data;
-        this.setImage(this.productModel.image);
-        //this.base64textString.push(this.productModel.image);
-        //this.imageBack=btoa(new Uint8Array(this.productModel.image).reduce((data, byte) => data + String.fromCharCode(byte), ''));
-
-
-        //Util.logConsole(this.productModel.image);
-        //this.base64textString = this.imageBack
-      },error=>{
-
-      }
-    )
-  }
-
-
-
 
   public onUploadChange(event: any) {
     this.base64textString=[];
@@ -363,8 +297,6 @@ export class ProductComponent implements OnInit {
 
   }
 
-
-
   private resetPage() {
     this.productModel = new ProductModel();
     this.base64textString=[];
@@ -373,3 +305,5 @@ export class ProductComponent implements OnInit {
   }
 
 }
+
+
