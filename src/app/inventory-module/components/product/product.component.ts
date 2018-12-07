@@ -3,6 +3,8 @@ import {ProductModel} from "../../model/product-model";
 import {Util} from "../../../core/Util";
 import {ProductService} from "../../service/product.service";
 import {ResponseMessage} from "../../../core/model/response-message";
+import {FormGroup} from "@angular/forms";
+import {CategoryModel} from "../../model/category-model";
 
 @Component({
   selector: 'app-product',
@@ -11,7 +13,15 @@ import {ResponseMessage} from "../../../core/model/response-message";
 })
 export class ProductComponent implements OnInit {
 
+  public categoryModelList:Array<CategoryModel>;
   public productModel:ProductModel;
+  public productForm: FormGroup;
+
+
+
+  public isPageUpdateState: boolean;
+  public hideCategoryInputForm: boolean;
+  public disableElementOnDetailsView: boolean;
 
   public files: any[];
   base64textString = [];
@@ -21,8 +31,16 @@ export class ProductComponent implements OnInit {
   constructor(private productService: ProductService ) {
   }
 
+  get f() {
+    return this.productForm.controls;
+  }
+
   ngOnInit() {
-   this.productModel = new ProductModel();
+    this.productModel = new ProductModel();
+    this.categoryModelList = new Array<CategoryModel>();
+    this.isPageUpdateState=false;
+    this.hideCategoryInputForm=false;
+    this.disableElementOnDetailsView=false;
   }
 
   public onClickSave(){

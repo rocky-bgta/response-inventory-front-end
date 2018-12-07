@@ -44,7 +44,6 @@ export class CategoryComponent implements OnInit {
 
   public isPageUpdateState: boolean;
   public hideCategoryInputForm: boolean;
-
   public disableElementOnDetailsView: boolean;
 
   ngOnInit() {

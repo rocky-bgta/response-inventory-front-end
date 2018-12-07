@@ -1,127 +1,206 @@
-<div class="row">
-  <div class="col-sm-6 pull-right">
-    <div class="card">
-      <div class="card-header">
+<div style="margin: 0%">
+  <form id="collapseProductForm" name="productForm">
 
-      </div>
-      <div class="card-body">
+    <div class="col-sm-6">
 
+      <div class="card">
 
-        <form id="collapseCategoryForm">
-          <div class="col-sm-6" style="padding-left: 0%;">
-            <div class="card">
-              <div class="card-header text-center">
-                <strong>Product</strong>
-              </div>
-              <div class="card-body">
-
-                <div class="form-group">
-                  <label for="exampleFormControlFile1">Example file input</label>
-                  <input type="file" class="form-control-file" (change)="onUploadChange($event)" id="exampleFormControlFile1">
-                </div>
+        <div class="card-header text-center">
+          <strong>Product</strong>
+        </div>
 
 
-                <img [src]="'data:image/png;base64,'+productModel.image" height="200" width="200"> <br/>
-                <input type="file" (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf" />
-                <img *ngFor="let item of base64textString"  height="200" src={{item}} alt="" id="img">
+        <div class="card-body">
 
-
-                <!--
-
-
-                <div class="form-group row">
-                  <label for="name" class="col-sm-4">Name:</label>
-                  <div class="col-sm-8">
-                    <input
-                      id="name"
-                      class="form-control"
-                      name="name"
-                      [attr.disabled]="disableElementOnDetailsView?'':null"
-                      type="text"
-                      [(ngModel)]="categoryModel.name"
-                      formControlName="name"
-                      [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
-                  </div>
-                  <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-                    <div *ngIf="f.name.errors.required">Category name required</div>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="description" class="col-sm-4">Description:</label>
-                  <div class="col-sm-8">
-              <textarea
-                name="description"
+          <div class="form-group row">
+            <label for="name" class="col-sm-2">Name:</label>
+            <div class="col-sm-6">
+              <input
+                id="name"
+                class="form-control"
+                name="name"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
-                [(ngModel)]="categoryModel.description"
-                formControlName="description"
-                class="form-control rounded-0"
-                id="description"></textarea>
-                  </div>
-                </div>
-
-                -->
-
-
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="col-sm-12">
-
-                    <button *ngIf="!disableElementOnDetailsView"
-                            type="submit"
-                            (click)="onClickSave()"
-                            class="btn btn-success">
-                      {{isPageUpdateState==true?'Update ':'Save '}}
-                    </button>
-
-                    <button *ngIf="!disableElementOnDetailsView"
-                            type="button"
-                            (click)="getImage()"
-                            class="btn btn-success">
-                      Get Image
-                    </button>
-
-
-
-                    <button *ngIf="!disableElementOnDetailsView"
-                            type="button"
-                            style="margin-left: 1%"
-                            (click)="onClickReset()"
-                            class="btn btn-danger">
-                      Reset
-                    </button>
-
-
-
-                    <button type="button"
-                            (click)="onClickCancel()"
-                            class="btn btn-danger pull-right">
-                      Cancel
-                    </button>
-                  </div>
-
-                </div>
-              </div>
+                type="text"
+                [(ngModel)]="productModel.name">
             </div>
           </div>
-        </form>
 
-<!--
+          <div class="form-group row">
+            <label for="categoryList" class="col-sm-2">Category:</label>
+            <div class="col-sm-6">
+              <ng-select [items]="categoryModelList"
+                         id="categoryList"
+                         bindLabel="name"
+                         name="categoryList"
+                         bindValue="id"
+                         placeholder="Select category">
+              </ng-select>
+            </div>
+          </div>
 
-        <ng-select [items]="photosBuffer"
-                   [virtualScroll]="true"
-                   [loading]="loading"
-                   bindLabel="title"
-                   bindValue="thumbnailUrl"
-                   placeholder="Select photo"
-                   (scroll)="onScroll($event)"
-                   (scrollToEnd)="onScrollToEnd()"
-                   (search)="onSearch($event)">
+          <div class="form-group row">
+            <label for="brand" class="col-sm-2">Brand:</label>
+            <div class="col-sm-6">
+              <input
+                id="brand"
+                class="form-control"
+                name="brand"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="productModel.brand">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="modelNo" class="col-sm-2">Model No:</label>
+            <div class="col-sm-6">
+              <input
+                id="modelNo"
+                class="form-control"
+                name="name"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="productModel.modelNo">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="serialNo" class="col-sm-2">Serial No:</label>
+            <div class="col-sm-6">
+              <input
+                id="serialNo"
+                class="form-control"
+                name="serialNo"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="productModel.serialNo">
+            </div>
+          </div>
 
 
-        </ng-select>
--->
+          <div class="form-group row">
+            <label for="price" class="col-sm-2">Price:</label>
+            <div class="col-sm-6">
+              <input
+                id="price"
+                class="form-control"
+                name="price"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="productModel.price">
+            </div>
+          </div>
 
+          <div class="form-group row">
+            <label for="description" class="col-sm-2">Description:</label>
+            <div class="col-sm-6">
+              <textarea
+                id="description"
+                class="form-control"
+                name="description"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="productModel.description">
+              </textarea>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="barcode" class="col-sm-2">Barcode:</label>
+            <div class="col-sm-6">
+              <input
+                id="barcode"
+                class="form-control"
+                name="barcode"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="productModel.barcode">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="image" class="col-sm-2">Image:</label>
+            <div class="col-sm-6">
+              <!--<label for="exampleFormControlFile1">Example file input</label>-->
+              <input type="file" class="form-control-file" id="image"
+                     (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf">
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-6">
+              <!--<img [src]="'data:image/png;base64,'+productModel.image" height="200" width="200">-->
+              <img *ngFor="let item of base64textString" height="200" src={{item}} alt="" id="img">
+              <br>
+              <button *ngIf="base64textString.length>0" type="button">Cancel</button>
+            </div>
+          </div>
+
+          <!--<div class="col-sm-6" style="padding-left: 0%;">-->
+          <!--  <div class="form-group">
+              <label for="image">Image</label>
+              <input type="file" id="image" (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf"/>
+            </div>-->
+          <!-- <br/>-->
+          <!-- <input type="file" (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf"/>
+           <img *ngFor="let item of base64textString" height="200" src={{item}} alt="" id="img">-->
+          <!--  </div>-->
+        </div>
+
+
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-sm-12">
+
+              <button *ngIf="!disableElementOnDetailsView"
+                      type="submit"
+                      (click)="onClickSave()"
+                      class="btn btn-success">
+                {{isPageUpdateState==true?'Update ':'Save '}}
+              </button>
+
+              <button *ngIf="!disableElementOnDetailsView"
+                      type="button"
+                      (click)="getImage()"
+                      class="btn btn-success">
+                Get Image
+              </button>
+
+
+              <button *ngIf="!disableElementOnDetailsView"
+                      type="button"
+                      style="margin-left: 1%"
+                      (click)="onClickReset()"
+                      class="btn btn-danger">
+                Reset
+              </button>
+
+
+              <button type="button"
+                      (click)="onClickCancel()"
+                      class="btn btn-danger pull-right">
+                Cancel
+              </button>
+            </div>
+
+          </div>
+        </div>
+        <!--
+
+                <ng-select [items]="photosBuffer"
+                           [virtualScroll]="true"
+                           [loading]="loading"
+                           bindLabel="title"
+                           bindValue="thumbnailUrl"
+                           placeholder="Select photo"
+                           (scroll)="onScroll($event)"
+                           (scrollToEnd)="onScrollToEnd()"
+                           (search)="onSearch($event)">
+
+
+                </ng-select>
+        -->
 
 
         <!-- <ng-template ng-header-tmp>
@@ -133,17 +212,9 @@
 
 
       </div>
-      <div class="card-footer"></div>
     </div>
-
-  </div>
+  </form>
 </div>
 
-<div>
-
-  <div class="card-body">
-
-  </div>
 
 
-</div>
