@@ -9,8 +9,8 @@ import {CategoryService} from "../../service/category.service";
 import {RequestMessage} from "../../../core/model/request-message";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
-//var base64Img = require('base64-img');
-//var image2base64:any;
+import {DataTableRequest} from "../../../core/model/data-table-request";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-product',
@@ -20,9 +20,13 @@ import {ToastrService} from "ngx-toastr";
 export class ProductComponent implements OnInit {
 
   public categoryModelList:Array<CategoryModel>;
+  public productModelList:Array<ProductModel>;
   public productModel:ProductModel;
   public productForm: FormGroup;
 
+  public dtOptions: DataTables.Settings = {};
+  private dataTablesCallBackParameters: DataTableRequest;
+  private dataTableCallbackFunction: any;
 
 
   public isPageUpdateState: boolean;
@@ -47,11 +51,16 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     this.productModel = new ProductModel();
     this.categoryModelList = new Array<CategoryModel>();
+    this.productModelList = new Array<ProductModel>();
+
     this.isPageUpdateState=false;
     this.hideCategoryInputForm=false;
     this.disableElementOnDetailsView=false;
 
     this.getCategoryList();
+    this.populateDataTable();
+
+
   }
 
   public onClickSave(){
@@ -94,6 +103,15 @@ export class ProductComponent implements OnInit {
 
   }
 
+  public onClickClear(){
+    this.base64textString=[];
+  }
+
+  public onClickReset(){
+    this.base64textString=[];
+    this.productModel=new ProductModel();
+  }
+
   private getCategoryList(){
     this.categoryService.getList().subscribe(
       (response:ResponseMessage)=>{
@@ -102,6 +120,27 @@ export class ProductComponent implements OnInit {
           Util.errorHandler(httpErrorResponse);
       }
     )
+  }
+
+  private getProductList(dataTablesParameters: DataTableRequest, callback: any){
+    this.dataTablesCallBackParameters = dataTablesParameters;
+    this.dataTableCallbackFunction = callback;
+
+    this.productService.getList(dataTablesParameters)
+      .subscribe((responseMessage:ResponseMessage)=>{
+
+      this.productModelList = <Array<ProductModel>>responseMessage.data;
+      this.setCategoryNameForProductList();
+      this.setImagePathForProductList();
+
+        callback({
+          recordsTotal: responseMessage.dataTableResponse.recordsTotal,
+          recordsFiltered: responseMessage.dataTableResponse.recordsTotal,
+          data: []
+        });
+
+      });
+
   }
 
 
@@ -144,6 +183,46 @@ export class ProductComponent implements OnInit {
   private setImage(image:string[]){
     this.base64textString=[];
     this.base64textString.push('data:image/png;base64,' + image);
+  }
+
+  private populateDataTable(){
+  //========== DataTable option start ===========
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      pageLength: 10,
+      serverSide: true,
+      processing: false,
+      searching: false,
+      ajax: (dataTablesParameters: DataTableRequest, callback) => {
+        this.getProductList(dataTablesParameters, callback);
+      },
+      columns: [
+        {data:'id'},
+        {data:'name'},
+        {data:'category'},
+        {data:'brand'},
+        {data:'modelNo'},
+        {data:'serialNo'},
+        {data:'price'},
+        {data:'image'}
+      ]
+    };
+    //========== DataTable option end ==============
+  }
+
+  private setCategoryNameForProductList(){
+    let categoryModel:CategoryModel;
+    for(let index in this.productModelList){
+      let id = this.productModelList[index].categoryId;
+      categoryModel = _.find(this.categoryModelList, {id});
+      this.productModelList[index].categoryName = categoryModel.name;
+    }
+  }
+
+  private setImagePathForProductList(){
+    for(let index in this.productModelList){
+      this.productModelList[index].image = 'data:image/png;base64,' + this.productModelList[index].image;
+    }
   }
 
 }

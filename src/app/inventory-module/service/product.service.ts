@@ -20,8 +20,8 @@ export class ProductService {
     return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.product+"getAll");
   }
 */
-  getList(parameter:any): Observable<any> {
-    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.product+"/getAll",parameter);
+  getList(dataTableParameter:any): Observable<any> {
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.product+"/get-all",dataTableParameter);
   }
 
 

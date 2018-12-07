@@ -11,4 +11,6 @@ export class ProductModel {
   image: any[];
 
   base64ImageString: string;
+
+  categoryName:string;
 }

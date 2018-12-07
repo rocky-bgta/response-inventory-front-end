@@ -62,7 +62,6 @@
               </button>
 
 
-
               <button *ngIf="!disableElementOnDetailsView"
                       type="button"
                       style="margin-left: 1%"
@@ -70,7 +69,6 @@
                       class="btn btn-danger">
                 Reset
               </button>
-
 
 
               <button type="button"
@@ -163,7 +161,7 @@
     <!--<h6>NgxSmartModal doesn't interfere with any CSS framework</h6>-->
     <!--<img src="https://lorempicsum.com/futurama/1000/400/6" class="img-fluid rounded" alt="Responsive image">-->
     <h6>
-    <p class="py-3">You are about delete category {{categoryModel.name}} !!!</p></h6>
+      <p class="py-3">You are about delete category {{categoryModel.name}} !!!</p></h6>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-danger" (click)="onClickDeleteOfModal(categoryModel.id)">Delete</button>
