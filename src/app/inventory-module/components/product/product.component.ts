@@ -11,6 +11,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../../core/model/data-table-request";
 import * as _ from 'lodash';
+declare var jQuery: any;
 
 @Component({
   selector: 'app-product',
@@ -30,7 +31,7 @@ export class ProductComponent implements OnInit {
 
 
   public isPageUpdateState: boolean;
-  public hideCategoryInputForm: boolean;
+  public hideInputForm: boolean;
   public disableElementOnDetailsView: boolean;
 
   private base64imageString:string;
@@ -54,7 +55,7 @@ export class ProductComponent implements OnInit {
     this.productModelList = new Array<ProductModel>();
 
     this.isPageUpdateState=false;
-    this.hideCategoryInputForm=false;
+    this.hideInputForm=false;
     this.disableElementOnDetailsView=false;
 
     this.getCategoryList();
@@ -110,6 +111,15 @@ export class ProductComponent implements OnInit {
   public onClickReset(){
     this.base64textString=[];
     this.productModel=new ProductModel();
+  }
+
+  public onClickDetails(id) {
+    let detailsProductModel: ProductModel;
+    this.disableElementOnDetailsView = true;
+    jQuery('#collapseInputForm').collapse('show');
+    detailsProductModel = _.find(this.productModelList, {id});
+    this.productModel = detailsProductModel;
+    this.setImagePathForProductDetails();
   }
 
   private getCategoryList(){
@@ -223,6 +233,11 @@ export class ProductComponent implements OnInit {
     for(let index in this.productModelList){
       this.productModelList[index].image = 'data:image/png;base64,' + this.productModelList[index].image;
     }
+  }
+
+  private setImagePathForProductDetails(){
+    this.base64textString=[];
+    this.base64textString.push(this.productModel.image);
   }
 
 }

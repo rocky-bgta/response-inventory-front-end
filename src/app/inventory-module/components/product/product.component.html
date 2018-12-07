@@ -1,7 +1,18 @@
-<div style="margin: 0%">
-  <form id="collapseProductForm" name="productForm">
+<button class="btn btn-primary"
+        type="button"
+        [disabled]="isPageUpdateState"
+        id="addBtn"
+        data-toggle="collapse"
+        data-target="#collapseInputForm"
+        aria-expanded="false"
+        aria-controls="collapseInputForm">
+  {{isPageUpdateState==true?'Update ':'Add '}}Product
+</button>
 
-    <div class="col-sm-6">
+<div style="margin-top: 1%" [hidden]="hideInputForm">
+  <form id="collapseInputForm" class="collapse" data-toggle="collapse" name="productForm">
+
+    <div class="col-sm-6" style="padding-left: 0%;">
 
       <div class="card">
 
@@ -161,16 +172,16 @@
                 {{isPageUpdateState==true?'Update ':'Save '}}
               </button>
 
-           <!--
+              <!--
 
-              <button *ngIf="!disableElementOnDetailsView"
-                      type="button"
-                      (click)="onClickGetImage()"
-                      class="btn btn-success">
-                Get Image
-              </button>
+                 <button *ngIf="!disableElementOnDetailsView"
+                         type="button"
+                         (click)="onClickGetImage()"
+                         class="btn btn-success">
+                   Get Image
+                 </button>
 
-              -->
+                 -->
 
 
               <button *ngIf="!disableElementOnDetailsView"
@@ -228,11 +239,11 @@
       <strong>Category List</strong>
     </div>
     <div class="card-body">
-      <table datatable [dtOptions]="dtOptions" class="table-hover table table-sm table-striped table-bordered nowrap"
+      <table datatable [dtOptions]="dtOptions"
+             class="table-hover table table-sm table-striped table-bordered nowrap"
              style="width: 100%">
         <thead>
         <tr>
-          <!-- <th>ID</th>-->
           <th style="width: 10%">Name</th>
           <th style="width: 10%">Category</th>
           <th style="width: 10%">Brand</th>
@@ -255,21 +266,18 @@
             <img [src]="product.image" height="50" width="100">
           </td>
           <td>
-            <button type="button" class="btn btn-secondary" (click)="onClickEdit(category.id)" style="margin-left: 1%">
+            <button type="button" class="btn btn-secondary" (click)="onClickEdit(product.id)" style="margin-left: 1%">
               Edit
             </button>
 
-            <button type="button" class="btn btn-info" (click)="onClickDetails(category.id)" style="margin-left: 1%">
+            <button type="button" class="btn btn-info" (click)="onClickDetails(product.id)" style="margin-left: 1%">
               Details
             </button>
 
-            <button type="button" class="btn btn-danger" (click)="onClickDelete(category.id)" style="margin-left: 1%">
+            <button type="button" class="btn btn-danger" (click)="onClickDelete(product.id)" style="margin-left: 1%">
               Delete
             </button>
-
           </td>
-
-
         </tr>
         </tbody>
         <tbody *ngIf="category?.length == 0">
