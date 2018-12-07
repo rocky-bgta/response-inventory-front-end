@@ -11,6 +11,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../../core/model/data-table-request";
 import * as _ from 'lodash';
+import {NgxSmartModalService} from "ngx-smart-modal";
+
 declare var jQuery: any;
 
 @Component({
@@ -22,9 +24,9 @@ export class ProductComponent implements OnInit {
 
   @ViewChild('fileInput') myFileInput: ElementRef;
 
-  public categoryModelList:Array<CategoryModel>;
-  public productModelList:Array<ProductModel>;
-  public productModel:ProductModel;
+  public categoryModelList: Array<CategoryModel>;
+  public productModelList: Array<ProductModel>;
+  public productModel: ProductModel;
   public productForm: FormGroup;
 
   public dtOptions: DataTables.Settings = {};
@@ -35,13 +37,15 @@ export class ProductComponent implements OnInit {
   public hideInputForm: boolean;
   public disableElementOnDetailsView: boolean;
 
-  private base64imageString:string;
-  base64textString= [];
+  private base64imageString: string;
+  base64textString = [];
 
+  public deleteObjectType: string = 'Product';
 
   constructor(private productService: ProductService,
-              private categoryService:CategoryService,
-              private toastr: ToastrService) {
+              private categoryService: CategoryService,
+              private toastr: ToastrService,
+              public ngxSmartModalService: NgxSmartModalService) {
   }
 
   get f() {
@@ -53,9 +57,9 @@ export class ProductComponent implements OnInit {
     this.categoryModelList = new Array<CategoryModel>();
     this.productModelList = new Array<ProductModel>();
 
-    this.isPageUpdateState=false;
-    this.hideInputForm=false;
-    this.disableElementOnDetailsView=false;
+    this.isPageUpdateState = false;
+    this.hideInputForm = false;
+    this.disableElementOnDetailsView = false;
 
     this.getCategoryList();
     this.populateDataTable();
@@ -80,15 +84,14 @@ export class ProductComponent implements OnInit {
     }
   }
 
-
-  public onClickImageClear(){
+  public onClickImageClear() {
     console.log(this.myFileInput.nativeElement.files[0]);
-    this.base64textString=[];
+    this.base64textString = [];
   }
 
-  public onClickReset(){
-    this.base64textString=[];
-    this.productModel=new ProductModel();
+  public onClickReset() {
+    this.base64textString = [];
+    this.productModel = new ProductModel();
   }
 
   public onClickDetails(id) {
@@ -103,7 +106,7 @@ export class ProductComponent implements OnInit {
   public onClickEdit(id) {
     this.productService.getById(id).subscribe(
       (responseMessage: ResponseMessage) => {
-        this.productModel=null;
+        this.productModel = null;
         this.productModel = <ProductModel> responseMessage.data;
         //Util.logConsole(this.productModel);
         this.setImage(this.productModel.image);
@@ -119,14 +122,14 @@ export class ProductComponent implements OnInit {
     );
   }
 
-  public onClickCancel(){
+  public onClickCancel() {
     if (this.disableElementOnDetailsView) {
       jQuery('#collapseInputForm').collapse('hide');
       setTimeout(() => {
         //reset model
         this.productModel = new ProductModel();
         //reset image
-        this.base64textString=[];
+        this.base64textString = [];
         this.disableElementOnDetailsView = false;
       }, 500);
       return;
@@ -135,30 +138,52 @@ export class ProductComponent implements OnInit {
     jQuery('#collapseInputForm').collapse('hide');
     this.productModel = new ProductModel();
     this.isPageUpdateState = false;
-    this.base64textString=[];
+    this.base64textString = [];
   }
 
-  private getCategoryList(){
+  public onClickDelete(id) {
+    let deleteProductModel: ProductModel;
+    deleteProductModel = _.find(this.productModelList, {id});
+    this.productModel = deleteProductModel;
+    this.ngxSmartModalService.getModal('deleteConfirmationModal').open();
+  }
+
+  public onDeleteConfirm(id: string) {
+    this.productService.delete(id).subscribe(
+      (responseMessage: ResponseMessage) => {
+        this.toastr.success('Product', responseMessage.message);
+        this.resetPage();
+      },
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          console.log("Client-side error occured.");
+        } else {
+          console.log("Server-side error occured.");
+        }
+      });
+  }
+
+  private getCategoryList() {
     this.categoryService.getList().subscribe(
-      (response:ResponseMessage)=>{
+      (response: ResponseMessage) => {
         this.categoryModelList = <Array<CategoryModel>>response.data;
-      },(httpErrorResponse: HttpErrorResponse)=>{
-          Util.errorHandler(httpErrorResponse);
+      }, (httpErrorResponse: HttpErrorResponse) => {
+        Util.errorHandler(httpErrorResponse);
       }
     )
   }
 
-  private getProductList(dataTablesParameters: DataTableRequest, callback: any){
+  private getProductList(dataTablesParameters: DataTableRequest, callback: any) {
     this.dataTablesCallBackParameters = dataTablesParameters;
     this.dataTableCallbackFunction = callback;
 
     this.productService.getList(dataTablesParameters)
-      .subscribe((responseMessage:ResponseMessage)=>{
+      .subscribe((responseMessage: ResponseMessage) => {
 
-      this.productModelList = <Array<ProductModel>>responseMessage.data;
-      //Util.logConsole(this.productModelList);
-      this.setCategoryNameForProductList();
-      this.setImagePathForProductList();
+        this.productModelList = <Array<ProductModel>>responseMessage.data;
+        //Util.logConsole(this.productModelList);
+        this.setCategoryNameForProductList();
+        this.setImagePathForProductList();
 
         callback({
           recordsTotal: responseMessage.dataTableResponse.recordsTotal,
@@ -171,7 +196,7 @@ export class ProductComponent implements OnInit {
   }
 
   public onUploadChange(event: any) {
-    this.base64textString=[];
+    this.base64textString = [];
     let file = event.target.files[0];
     if (file) {
       let reader = new FileReader();
@@ -181,17 +206,17 @@ export class ProductComponent implements OnInit {
   }
 
   private handleReaderLoaded(e) {
-    this.base64imageString=(btoa(e.target.result));
+    this.base64imageString = (btoa(e.target.result));
     this.base64textString.push('data:image/png;base64,' + this.base64imageString);
   }
 
-  private setImage(image:string[]){
-    this.base64textString=[];
+  private setImage(image: string[]) {
+    this.base64textString = [];
     this.base64textString.push('data:image/png;base64,' + image);
   }
 
-  private populateDataTable(){
-  //========== DataTable option start ===========
+  private populateDataTable() {
+    //========== DataTable option start ===========
     this.dtOptions = {
       pagingType: 'full_numbers',
       pageLength: 10,
@@ -202,30 +227,30 @@ export class ProductComponent implements OnInit {
         this.getProductList(dataTablesParameters, callback);
       },
       columns: [
-        {data:'id'},
-        {data:'name'},
-        {data:'category'},
-        {data:'brand'},
-        {data:'modelNo'},
-        {data:'serialNo'},
-        {data:'price'},
-        {data:'image'}
+        {data: 'id'},
+        {data: 'name'},
+        {data: 'category'},
+        {data: 'brand'},
+        {data: 'modelNo'},
+        {data: 'serialNo'},
+        {data: 'price'},
+        {data: 'image'}
       ]
     };
     //========== DataTable option end ==============
   }
 
-  private setCategoryNameForProductList(){
-    let categoryModel:CategoryModel;
-    for(let index in this.productModelList){
+  private setCategoryNameForProductList() {
+    let categoryModel: CategoryModel;
+    for (let index in this.productModelList) {
       let id = this.productModelList[index].categoryId;
       categoryModel = _.find(this.categoryModelList, {id});
       this.productModelList[index].categoryName = categoryModel.name;
     }
   }
 
-  private setImagePathForProductList(){
-    for(let index in this.productModelList){
+  private setImagePathForProductList() {
+    for (let index in this.productModelList) {
       this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
     }
   }
@@ -235,7 +260,7 @@ export class ProductComponent implements OnInit {
     jQuery('html, body').animate({scrollTop: '0px'}, 500);
     jQuery("#collapseInputForm").scrollTop();
     this.isPageUpdateState = true;
-    this.disableElementOnDetailsView=false;
+    this.disableElementOnDetailsView = false;
   }
 
   private updateProduct() {
@@ -258,8 +283,8 @@ export class ProductComponent implements OnInit {
     );
   }
 
-  private saveProduct(){
-    let requestMessage:RequestMessage;
+  private saveProduct() {
+    let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
     this.productModel.base64ImageString = this.base64imageString;
     requestMessage = Util.getRequestMessage(this.productModel);
@@ -288,7 +313,7 @@ export class ProductComponent implements OnInit {
 
   private resetPage() {
     this.productModel = new ProductModel();
-    this.base64textString=[];
+    this.base64textString = [];
     this.isPageUpdateState = false;
     this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }

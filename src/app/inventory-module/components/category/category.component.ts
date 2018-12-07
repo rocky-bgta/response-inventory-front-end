@@ -230,15 +230,11 @@ export class CategoryComponent implements OnInit {
         this.resetPage();
       },
       (httpErrorResponse: HttpErrorResponse) => {
-        Util.errorHandler(httpErrorResponse);
-
-       /* if (httpErrorResponse.error instanceof Error) {
+        if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occured.");
         } else {
           console.log("Server-side error occured.");
         }
-        */
-
       });
     this.ngxSmartModalService.getModal('deleteConfirmationModal').close();
   }

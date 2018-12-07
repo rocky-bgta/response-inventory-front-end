@@ -10,9 +10,10 @@ import {DataTablesModule} from "angular-datatables";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {ProductComponent} from './components/product/product.component';
 import {NgxSmartModalModule} from "ngx-smart-modal";
+import {ConfirmationModalComponent} from "../core/components/confirmation-modal/confirmation-modal.component";
 
 @NgModule({
-  declarations: [CategoryComponent, ProductComponent],
+  declarations: [CategoryComponent, ProductComponent,ConfirmationModalComponent],
   imports: [
     [
       RouterModule.forChild(inventoryRoutes)],
