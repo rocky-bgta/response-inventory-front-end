@@ -149,7 +149,8 @@
                      name="image"
                      title="choose a product image"
                      (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf">
-              <input type="button" value="Browse..."
+              <input *ngIf="!disableElementOnDetailsView"
+                     type="button" value="Browse..."
                      onclick="document.getElementById('selectedFile').click();"
                      class="btn btn-secondary btn-sm"/>
             </div>
@@ -280,7 +281,7 @@
           <td>{{product.serialNo }}</td>
           <td>{{product.price }}</td>
           <td class="ellipsis">
-            <img [src]="product.image" height="50" width="100">
+            <img [src]="product.base64ImageString" height="50" width="100">
           </td>
           <td>
             <button type="button" class="btn btn-secondary" (click)="onClickEdit(product.id)" style="margin-left: 1%">

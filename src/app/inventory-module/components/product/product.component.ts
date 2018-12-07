@@ -60,13 +60,10 @@ export class ProductComponent implements OnInit {
     this.getCategoryList();
     this.populateDataTable();
 
-
   }
 
   //work as a save and update method
   public onSubmit() {
-
-
 
     if (this.isPageUpdateState == true) {
       this.updateProduct();
@@ -80,10 +77,6 @@ export class ProductComponent implements OnInit {
       // }
 
       this.saveProduct();
-
-      console.log("I come herer");
-
-
     }
   }
 
@@ -104,7 +97,7 @@ export class ProductComponent implements OnInit {
     jQuery('#collapseInputForm').collapse('show');
     detailsProductModel = _.find(this.productModelList, {id});
     this.productModel = detailsProductModel;
-    this.setImagePathForProductDetails();
+    this.setImage(this.productModel.image);
   }
 
   public onClickEdit(id) {
@@ -112,7 +105,7 @@ export class ProductComponent implements OnInit {
       (responseMessage: ResponseMessage) => {
         this.productModel=null;
         this.productModel = <ProductModel> responseMessage.data;
-        Util.logConsole(this.productModel);
+        //Util.logConsole(this.productModel);
         this.setImage(this.productModel.image);
         this.openEntryForm();
       },
@@ -163,6 +156,7 @@ export class ProductComponent implements OnInit {
       .subscribe((responseMessage:ResponseMessage)=>{
 
       this.productModelList = <Array<ProductModel>>responseMessage.data;
+      //Util.logConsole(this.productModelList);
       this.setCategoryNameForProductList();
       this.setImagePathForProductList();
 
@@ -232,13 +226,8 @@ export class ProductComponent implements OnInit {
 
   private setImagePathForProductList(){
     for(let index in this.productModelList){
-      this.productModelList[index].image = 'data:image/png;base64,' + this.productModelList[index].image;
+      this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
     }
-  }
-
-  private setImagePathForProductDetails(){
-    this.base64textString=[];
-    this.base64textString.push(this.productModel.image);
   }
 
   private openEntryForm() {
