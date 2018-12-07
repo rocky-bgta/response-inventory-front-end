@@ -8,6 +8,7 @@ import {CategoryModel} from "../../model/category-model";
 import {CategoryService} from "../../service/category.service";
 import {RequestMessage} from "../../../core/model/request-message";
 import {HttpErrorResponse} from "@angular/common/http";
+import {ToastrService} from "ngx-toastr";
 //var base64Img = require('base64-img');
 //var image2base64:any;
 
@@ -29,12 +30,13 @@ export class ProductComponent implements OnInit {
   public disableElementOnDetailsView: boolean;
 
   private base64imageString:string;
-  base64textString = [];
+  base64textString= [];
 
-  public imageBack:any[];
+  //public imageBack:any[];
 
   constructor(private productService: ProductService,
-              private categoryService:CategoryService) {
+              private categoryService:CategoryService,
+              private toastr: ToastrService, ) {
     //super();
   }
 
@@ -54,22 +56,26 @@ export class ProductComponent implements OnInit {
 
   public onClickSave(){
     let requestMessage:RequestMessage;
+    //first set converted base64 image string to model then build request message
     this.productModel.base64ImageString = this.base64imageString;
     requestMessage = Util.getRequestMessage(this.productModel);
-
-    //Util.logConsole(requestMessage);
-
-
+    //==========================================================================
 
     this.productService.save(requestMessage).subscribe(
       (responseMessage: ResponseMessage) => {
-        Util.toasterService.success('Product', responseMessage.message);
+        this.toastr.success('Product', responseMessage.message);
         this.productModel = <ProductModel> responseMessage.data;
-        this.setImage(this.productModel.base64ImageString);
+        this.setImage(this.productModel.image);
         //this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
       },
       (httpErrorResponse: HttpErrorResponse) => {
-        Util.errorHandler(httpErrorResponse);
+        if (httpErrorResponse.error instanceof Error) {
+          this.toastr.success('Product', "Client-side error occured");
+          console.log("Client-side error occured.");
+        } else {
+          this.toastr.success('Product', "Server-side error occured.");
+          console.log("Server-side error occured.");
+        }
       }
     );
 
@@ -99,24 +105,25 @@ export class ProductComponent implements OnInit {
   }
 
 
-  /*
 
-  public getImage(){
+
+  public onClickGetImage(){
     this.productService.getImage().subscribe(
       (response:ResponseMessage)=>{
         this.productModel = <ProductModel> response.data;
+        this.setImage(this.productModel.image);
         //this.base64textString.push(this.productModel.image);
         //this.imageBack=btoa(new Uint8Array(this.productModel.image).reduce((data, byte) => data + String.fromCharCode(byte), ''));
 
 
-        Util.logConsole(this.productModel.image);
+        //Util.logConsole(this.productModel.image);
         //this.base64textString = this.imageBack
       },error=>{
 
       }
     )
   }
-  */
+
 
 
 
@@ -134,7 +141,8 @@ export class ProductComponent implements OnInit {
     this.base64textString.push('data:image/png;base64,' + this.base64imageString);
   }
 
-  private setImage(image:string){
+  private setImage(image:string[]){
+    this.base64textString=[];
     this.base64textString.push('data:image/png;base64,' + image);
   }
 

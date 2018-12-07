@@ -121,12 +121,12 @@ export class CategoryComponent implements OnInit {
           this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
         },
         (httpErrorResponse: HttpErrorResponse) => {
-          Util.errorHandler(httpErrorResponse);
-         /* if (httpErrorResponse.error instanceof Error) {
+          //Util.errorHandler(httpErrorResponse);
+          if (httpErrorResponse.error instanceof Error) {
             console.log("Client-side error occured.");
           } else {
             console.log("Server-side error occured.");
-          }*/
+          }
         }
       );
       // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.categoryModel))
@@ -141,14 +141,14 @@ export class CategoryComponent implements OnInit {
         this.openCategoryCreateForm();
       },
       (httpErrorResponse: HttpErrorResponse) => {
-        Util.errorHandler(httpErrorResponse);
+        //Util.errorHandler(httpErrorResponse);
 
-      /*  if (httpErrorResponse.error instanceof Error) {
+        if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occured.");
         } else {
           console.log("Server-side error occured.");
         }
-        */
+
       }
     );
   }
@@ -171,13 +171,13 @@ export class CategoryComponent implements OnInit {
         this.resetPage();
       },
       (httpErrorResponse: HttpErrorResponse) => {
-        Util.errorHandler(httpErrorResponse);
-      /*
+        //Util.errorHandler(httpErrorResponse);
+
         if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occured.");
         } else {
           console.log("Server-side error occured.");
-        }*/
+        }
 
 
       }
