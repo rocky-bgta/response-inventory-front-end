@@ -3,7 +3,7 @@ import {ProductModel} from "../../model/product-model";
 import {Util} from "../../../core/Util";
 import {ProductService} from "../../service/product.service";
 import {ResponseMessage} from "../../../core/model/response-message";
-import {FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CategoryModel} from "../../model/category-model";
 import {CategoryService} from "../../service/category.service";
 import {RequestMessage} from "../../../core/model/request-message";
@@ -27,7 +27,6 @@ export class ProductComponent implements OnInit {
   public categoryModelList: Array<CategoryModel>;
   public productModelList: Array<ProductModel>;
   public productModel: ProductModel;
-  public productForm: FormGroup;
 
   public dtOptions: DataTables.Settings = {};
   private dataTablesCallBackParameters: DataTableRequest;
@@ -40,12 +39,16 @@ export class ProductComponent implements OnInit {
   private base64imageString: string;
   base64textString = [];
 
+  //====== value pass to delete confirmation modal
   public deleteObjectType: string = 'Product';
+
+  public productForm: FormGroup;
 
   constructor(private productService: ProductService,
               private categoryService: CategoryService,
               private toastr: ToastrService,
-              public ngxSmartModalService: NgxSmartModalService) {
+              public ngxSmartModalService: NgxSmartModalService,
+              private formBuilder:FormBuilder) {
   }
 
   get f() {
@@ -64,22 +67,22 @@ export class ProductComponent implements OnInit {
     this.getCategoryList();
     this.populateDataTable();
 
+    this.initializeReactiveFormValidation();
+
   }
 
   //work as a save and update method
   public onSubmit() {
-
-    if (this.isPageUpdateState == true) {
+    if (this.isPageUpdateState == true && !this.productForm.invalid) {
       this.updateProduct();
       return;
     }
 
     if (this.isPageUpdateState == false) {
-      // stop here if form is invalid
-      // if (this.categoryForm.invalid) {
-      //   return;
-      // }
-
+       //stop here if form is invalid
+       if (this.productForm.invalid) {
+         return;
+       }
       this.saveProduct();
     }
   }
@@ -97,7 +100,10 @@ export class ProductComponent implements OnInit {
   public onClickDetails(id) {
     let detailsProductModel: ProductModel;
     this.disableElementOnDetailsView = true;
-    jQuery('#collapseInputForm').collapse('show');
+    this.showInputForm();
+    //jQuery('#collapseInputForm').collapse('show');
+    //jQuery('html, body').animate({scrollTop: '0px'}, 500);
+    //jQuery("#collapseInputForm").scrollTop()
     detailsProductModel = _.find(this.productModelList, {id});
     this.productModel = detailsProductModel;
     this.setImage(this.productModel.image);
@@ -123,23 +129,7 @@ export class ProductComponent implements OnInit {
   }
 
   public onClickCancel() {
-    if (this.disableElementOnDetailsView) {
-      jQuery('#collapseInputForm').collapse('hide');
-      setTimeout(() => {
-        //reset model
-        this.productModel = new ProductModel();
-        //reset image
-        this.base64textString = [];
-        this.disableElementOnDetailsView = false;
-        this.isPageUpdateState=false;
-      }, 500);
-      return;
-    }
-
-    jQuery('#collapseInputForm').collapse('hide');
-    this.productModel = new ProductModel();
-    this.isPageUpdateState = false;
-    this.base64textString = [];
+    this.hideAndClearInputForm();
   }
 
   public onClickDelete(id) {
@@ -154,6 +144,7 @@ export class ProductComponent implements OnInit {
       (responseMessage: ResponseMessage) => {
         this.toastr.success('Product', responseMessage.message);
         this.resetPage();
+        this.hideAndClearInputForm();
       },
       (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {
@@ -162,6 +153,11 @@ export class ProductComponent implements OnInit {
           console.log("Server-side error occured.");
         }
       });
+  }
+
+  onChangeCategory(event:any){
+    if(!_.isEmpty(event))
+      this.productModel.categoryId = event.id;
   }
 
   private getCategoryList() {
@@ -257,9 +253,10 @@ export class ProductComponent implements OnInit {
   }
 
   private openEntryForm() {
-    jQuery('#collapseInputForm').collapse('show');
-    jQuery('html, body').animate({scrollTop: '0px'}, 500);
-    jQuery("#collapseInputForm").scrollTop();
+    //jQuery('#collapseInputForm').collapse('show');
+    //jQuery('html, body').animate({scrollTop: '0px'}, 500);
+    //jQuery("#collapseInputForm").scrollTop();
+    this.showInputForm();
     this.isPageUpdateState = true;
     this.disableElementOnDetailsView = false;
   }
@@ -319,6 +316,37 @@ export class ProductComponent implements OnInit {
     this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }
 
+  private hideAndClearInputForm(){
+    jQuery('#collapseInputForm').collapse('hide');
+    setTimeout(() => {
+      //reset model
+      this.productModel = new ProductModel();
+      //reset image
+      this.base64textString = [];
+      this.disableElementOnDetailsView = false;
+      this.isPageUpdateState=false;
+    }, 500);
+  }
+
+  private showInputForm(){
+    jQuery('#collapseInputForm').collapse('show');
+    jQuery('html, body').animate({scrollTop: '0px'}, 500);
+    jQuery("#collapseInputForm").scrollTop()
+  }
+
+  private initializeReactiveFormValidation(){
+    //========== form validation ==========
+    this.productForm = this.formBuilder.group({
+      name: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+      categoryModelList: ['', Validators.required],
+      brand: ['',Validators.maxLength(20)],
+      modelNo: ['',Validators.maxLength(20)],
+      serialNo: ['',Validators.maxLength(20)],
+      price: ['',Validators.max(1000000000)],
+      description: ['',Validators.max(100)],
+      barcode: ['',Validators.maxLength(20)]
+    });
+  }
 }
 
 
