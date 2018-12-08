@@ -131,6 +131,7 @@ export class ProductComponent implements OnInit {
         //reset image
         this.base64textString = [];
         this.disableElementOnDetailsView = false;
+        this.isPageUpdateState=false;
       }, 500);
       return;
     }
