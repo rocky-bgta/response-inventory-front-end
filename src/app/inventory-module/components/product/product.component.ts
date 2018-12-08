@@ -43,6 +43,7 @@ export class ProductComponent implements OnInit {
   public deleteObjectType: string = 'Product';
 
   public productForm: FormGroup;
+  public submitted:boolean=false;
 
   constructor(private productService: ProductService,
               private categoryService: CategoryService,
@@ -73,6 +74,7 @@ export class ProductComponent implements OnInit {
 
   //work as a save and update method
   public onSubmit() {
+    this.submitted=true;
     if (this.isPageUpdateState == true && !this.productForm.invalid) {
       this.updateProduct();
       return;
@@ -80,6 +82,7 @@ export class ProductComponent implements OnInit {
 
     if (this.isPageUpdateState == false) {
        //stop here if form is invalid
+        console.log(this.productForm);
        if (this.productForm.invalid) {
          return;
        }
@@ -101,9 +104,6 @@ export class ProductComponent implements OnInit {
     let detailsProductModel: ProductModel;
     this.disableElementOnDetailsView = true;
     this.showInputForm();
-    //jQuery('#collapseInputForm').collapse('show');
-    //jQuery('html, body').animate({scrollTop: '0px'}, 500);
-    //jQuery("#collapseInputForm").scrollTop()
     detailsProductModel = _.find(this.productModelList, {id});
     this.productModel = detailsProductModel;
     this.setImage(this.productModel.image);
@@ -155,7 +155,7 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  onChangeCategory(event:any){
+  public onChangeCategory(event:any){
     if(!_.isEmpty(event))
       this.productModel.categoryId = event.id;
   }
@@ -193,8 +193,16 @@ export class ProductComponent implements OnInit {
   }
 
   public onUploadChange(event: any) {
+    let uploadFileSize:number;
+    let uploadFileSizeLimit=500000;
     this.base64textString = [];
     let file = event.target.files[0];
+    uploadFileSize = file.size;
+    if(uploadFileSize>uploadFileSizeLimit){
+      this.toastr.error("File size must not exceeded 500KB","File Upload");
+      return;
+    }
+    //console.log(file.size);
     if (file) {
       let reader = new FileReader();
       reader.onload = this.handleReaderLoaded.bind(this);
@@ -253,9 +261,6 @@ export class ProductComponent implements OnInit {
   }
 
   private openEntryForm() {
-    //jQuery('#collapseInputForm').collapse('show');
-    //jQuery('html, body').animate({scrollTop: '0px'}, 500);
-    //jQuery("#collapseInputForm").scrollTop();
     this.showInputForm();
     this.isPageUpdateState = true;
     this.disableElementOnDetailsView = false;

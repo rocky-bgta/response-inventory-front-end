@@ -38,7 +38,7 @@
                 type="text"
                 [(ngModel)]="productModel.name"
                 formControlName="name"
-                [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                [ngClass]="{ 'is-invalid': (submitted && f.name.pristine) || (submitted && f.name.touched==false) }">
             </div>
             <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
               <div *ngIf="f.name.errors.required">Category name required</div>
@@ -57,13 +57,9 @@
                          (change)="onChangeCategory($event)"
                          [ngModel]="productModel.categoryId"
                          bindValue="id"
-                         [ngClass]="{ 'is-invalid': submitted && f.categoryList.errors }"
                          formControlName="categoryModelList"
                          placeholder="Select category">
               </ng-select>
-            </div>
-            <div *ngIf="submitted && f.categoryModelList.errors" class="invalid-feedback">
-              <div *ngIf="f.categoryModelList.errors.required">Category name required</div>
             </div>
           </div>
 
@@ -123,7 +119,7 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="number"
                 formControlName="price"
-                [ngClass]="{ 'is-invalid': submitted && f.price.errors }"
+                [ngClass]="{ 'is-invalid': (submitted && f.name.pristine) || (submitted && f.name.touched==false) }"
                 [(ngModel)]="productModel.price">
             </div>
           </div>
@@ -155,7 +151,7 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="barcode"
-                [ngClass]="{ 'is-invalid': submitted && f.barcode.errors }"
+                [ngClass]="{ 'is-invalid': (submitted && f.name.pristine) || (submitted && f.name.touched==false) }"
                 [(ngModel)]="productModel.barcode">
             </div>
           </div>
