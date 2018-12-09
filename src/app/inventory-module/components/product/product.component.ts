@@ -12,6 +12,7 @@ import {ToastrService} from "ngx-toastr";
 import {DataTableRequest} from "../../../core/model/data-table-request";
 import * as _ from 'lodash';
 import {NgxSmartModalService} from "ngx-smart-modal";
+import {FileConstant} from "../../../core/constants/file-constant";
 
 declare var jQuery: any;
 
@@ -82,10 +83,21 @@ export class ProductComponent implements OnInit {
 
     if (this.isPageUpdateState == false) {
        //stop here if form is invalid
-        console.log(this.productForm);
        if (this.productForm.invalid) {
+         //======== R&D================
+         //let errors = this.productForm.errors;
+         // const invalid = [];
+         // const controls = this.productForm.controls;
+         // for (const name in controls) {
+         //   if (controls[name].invalid) {
+         //     console.log(name);
+         //     invalid.push(name);
+         //   }
+         // }
+         //======== R&D================
          return;
        }
+
       this.saveProduct();
     }
   }
@@ -194,7 +206,7 @@ export class ProductComponent implements OnInit {
 
   public onUploadChange(event: any) {
     let uploadFileSize:number;
-    let uploadFileSizeLimit=500000;
+    let uploadFileSizeLimit= FileConstant.uploadFileSizeLimit;
     this.base64textString = [];
     let file = event.target.files[0];
     uploadFileSize = file.size;
@@ -347,9 +359,9 @@ export class ProductComponent implements OnInit {
       brand: ['',Validators.maxLength(20)],
       modelNo: ['',Validators.maxLength(20)],
       serialNo: ['',Validators.maxLength(20)],
-      price: ['',Validators.max(1000000000)],
+      price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
       description: ['',Validators.max(100)],
-      barcode: ['',Validators.maxLength(20)]
+      barcode: ['',Validators.compose([Validators.required,Validators.maxLength(20)])]
     });
   }
 }
