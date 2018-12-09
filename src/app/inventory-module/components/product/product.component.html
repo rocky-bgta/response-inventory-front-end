@@ -42,6 +42,9 @@
               <div *ngIf="submitted && productForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
                 Product name required
               </div>
+              <span *ngIf="productForm.controls['name'].hasError('maxlength') " class="custom-invalid-feedback">
+                Max character for Brand Name is 20
+              </span>
             </div>
           </div>
 
@@ -68,8 +71,8 @@
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="brand" class="col-sm-4">Brand:</label>
+          <div class="form-group required row">
+            <label for="brand" class="col-sm-4 control-label">Brand:</label>
             <div class="col-sm-6">
               <input
                 id="brand"
@@ -77,30 +80,40 @@
                 name="brand"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
+                [ngClass]="{ 'is-invalid': submitted && productForm.controls['brand'].hasError('required')}"
                 formControlName="brand"
                 [(ngModel)]="productModel.brand">
+              <div *ngIf="submitted && productForm.controls['brand'].hasError('required')" class="custom-invalid-feedback">
+                Product Brand name required
+              </div>
               <span *ngIf="productForm.controls['brand'].hasError('maxlength') " class="custom-invalid-feedback">
                 Max character for Brand Name is 20
               </span>
             </div>
           </div>
 
-          <div class="form-group row">
-            <label for="modelNo" class="col-sm-4">Model No:</label>
+          <div class="form-group required row">
+            <label for="modelNo" class="col-sm-4 control-label">Model No:</label>
             <div class="col-sm-6">
               <input
                 id="modelNo"
                 class="form-control"
                 name="modelNo"
+                [ngClass]="{ 'is-invalid': submitted && productForm.controls['modelNo'].hasError('required')}"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="modelNo"
                 [(ngModel)]="productModel.modelNo">
+              <div *ngIf="submitted && productForm.controls['modelNo'].hasError('required')" class="custom-invalid-feedback">
+                Product model no required
+              </div>
               <span *ngIf="productForm.controls['modelNo'].hasError('maxlength') " class="custom-invalid-feedback">
                 Max character for Model No is 20
               </span>
             </div>
           </div>
+
+         <!--
 
           <div class="form-group row">
             <label for="serialNo" class="col-sm-4">Serial No:</label>
@@ -118,6 +131,8 @@
               </span>
             </div>
           </div>
+
+          -->
 
 
           <div class="form-group required row">
@@ -192,7 +207,7 @@
                      style="display: none;"
                      name="image"
                      title="choose a product image"
-                     (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg, .pdf">
+                     (change)="onUploadChange($event)" accept=".png, .jpg, .jpeg">
               <input *ngIf="!disableElementOnDetailsView"
                      type="button" value="Browse..."
                      onclick="document.getElementById('selectedFile').click();"

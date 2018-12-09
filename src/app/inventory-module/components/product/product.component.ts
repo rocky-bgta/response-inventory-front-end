@@ -3,7 +3,7 @@ import {ProductModel} from "../../model/product-model";
 import {Util} from "../../../core/Util";
 import {ProductService} from "../../service/product.service";
 import {ResponseMessage} from "../../../core/model/response-message";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CategoryModel} from "../../model/category-model";
 import {CategoryService} from "../../service/category.service";
 import {RequestMessage} from "../../../core/model/request-message";
@@ -367,9 +367,9 @@ export class ProductComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       categories: ['',Validators.required],
-      brand: ['',Validators.maxLength(20)],
-      modelNo: ['',Validators.maxLength(20)],
-      serialNo: ['',Validators.maxLength(20)],
+      brand: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+      modelNo: ['',Validators.compose([Validators.required, Validators.maxLength(20)])],
+      //serialNo: ['',Validators.maxLength(20)],
       price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
       description: ['',Validators.maxLength(100)],
       barcode: ['',Validators.compose([Validators.required,Validators.maxLength(20)])]

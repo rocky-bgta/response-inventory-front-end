@@ -4,7 +4,7 @@ export class ProductModel {
   categoryId: string;
   brand: string;
   modelNo: string;
-  serialNo: string;
+  //serialNo: string;
   price: number;
   description: string;
   barcode: string;
