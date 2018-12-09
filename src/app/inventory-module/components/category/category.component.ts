@@ -58,12 +58,8 @@ export class CategoryComponent implements OnInit {
     this.dataTablesCallBackParameters.start = 0;
     this.dataTablesCallBackParameters.length = 10;
 
+    this.initializeReactiveFormValidation();
 
-    //========== form validation ==========
-    this.categoryForm = this.formBuilder.group({
-      name: ['',  Validators.compose([Validators.required, Validators.maxLength(20)])],
-      description: ['', Validators.maxLength(100)]
-    });
 
     //========== DataTable option start ===========
     this.dtOptions = {
@@ -185,8 +181,12 @@ export class CategoryComponent implements OnInit {
   }
 
   public onClickReset() {
-    this.categoryModel.description = null;
-    this.categoryModel.name = null;
+    if(this.isPageUpdateState) {
+      this.categoryModel.description = null;
+      this.categoryModel.name = null;
+    }else {
+      this.categoryModel = new CategoryModel();
+    }
   }
 
   public onClickDelete(id) {
@@ -242,6 +242,14 @@ export class CategoryComponent implements OnInit {
         }
       });
     this.ngxSmartModalService.getModal('deleteConfirmationModal').close();
+  }
+
+  private initializeReactiveFormValidation(){
+    //========== form validation ==========
+    this.categoryForm = this.formBuilder.group({
+      name: ['',  Validators.compose([Validators.required, Validators.maxLength(20)])],
+      description: ['', Validators.maxLength(100)]
+    });
   }
 
 }

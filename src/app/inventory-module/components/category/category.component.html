@@ -35,7 +35,7 @@
                 type="text"
                 [(ngModel)]="categoryModel.name"
                 formControlName="name"
-                [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+                [ngClass]="{ 'is-invalid': submitted && categoryForm.controls['name'].hasError('required') }">
 
               <div *ngIf="submitted && categoryForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
                 <div *ngIf="f.name.errors.required">Category name required</div>
