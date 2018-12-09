@@ -356,7 +356,7 @@ export class ProductComponent implements OnInit {
     //========== form validation ==========
     this.productForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
-      categoryModelList: new FormControl('' ['', Validators.required]),
+      categories: ['',Validators.required],
       brand: ['',Validators.maxLength(20)],
       modelNo: ['',Validators.maxLength(20)],
       serialNo: ['',Validators.maxLength(20)],
