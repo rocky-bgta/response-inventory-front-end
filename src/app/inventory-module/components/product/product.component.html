@@ -38,10 +38,10 @@
                 type="text"
                 [(ngModel)]="productModel.name"
                 formControlName="name"
-                [ngClass]="{ 'is-invalid': (submitted && f.name.pristine) || (submitted && f.name.touched==false) }">
-            </div>
-            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-              <div *ngIf="f.name.errors.required">Category name required</div>
+                [ngClass]="{ 'is-invalid': submitted && productForm.controls['name'].hasError('required')}">
+              <div *ngIf="submitted && productForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
+                Product name required
+              </div>
             </div>
           </div>
 
@@ -58,16 +58,13 @@
                          (change)="onChangeCategory($event)"
                          [ngModel]="productModel.categoryId"
                          bindValue="id"
-                         [ngClass]="{ 'custom-invalid-ng-select': submitted && f.categories.errors, 'avoid-clicks': disableElementOnDetailsView }"
+                         [ngClass]="{ 'custom-invalid-ng-select': submitted && productForm.controls['categories'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="categories"
                          placeholder="Select category">
               </ng-select>
               <div *ngIf="submitted && productForm.controls['categories'].hasError('required')" class="custom-invalid-feedback">
-                <div *ngIf="productForm.controls['categories'].hasError('required')">Category name required</div>
+                Select a Category
               </div>
-             <!-- <div *ngIf="submitted && productForm.controls['categoryList'].hasError('required')" class="custom-invalid-feedback">
-                <div *ngIf="productForm.controls['categoryList'].hasError('required')">Category name required</div>
-              </div>-->
             </div>
           </div>
 
@@ -81,8 +78,10 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="brand"
-                [ngClass]="{ 'is-invalid': submitted && f.brand.errors }"
                 [(ngModel)]="productModel.brand">
+              <span *ngIf="productForm.controls['brand'].hasError('maxlength') " class="custom-invalid-feedback">
+                Max character for Brand Name is 20
+              </span>
             </div>
           </div>
 
@@ -96,8 +95,10 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="modelNo"
-                [ngClass]="{ 'is-invalid': submitted && f.modelNo.errors }"
                 [(ngModel)]="productModel.modelNo">
+              <span *ngIf="productForm.controls['modelNo'].hasError('maxlength') " class="custom-invalid-feedback">
+                Max character for Model No is 20
+              </span>
             </div>
           </div>
 
@@ -111,8 +112,10 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="serialNo"
-                [ngClass]="{ 'is-invalid': submitted && f.serialNo.errors }"
                 [(ngModel)]="productModel.serialNo">
+              <span *ngIf="productForm.controls['serialNo'].hasError('maxlength') " class="custom-invalid-feedback">
+                Max character forSerial No is 20
+              </span>
             </div>
           </div>
 
@@ -127,8 +130,14 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="number"
                 formControlName="price"
-                [ngClass]="{ 'is-invalid': (submitted && f.name.pristine) || (submitted && f.name.touched==false) }"
+                [ngClass]="{ 'is-invalid': submitted && productForm.controls['price'].hasError('required')}"
                 [(ngModel)]="productModel.price">
+              <div *ngIf="submitted && productForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
+                Enter Price for this product
+              </div>
+              <span *ngIf="productForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
+                Maximum value can be entered 1000000000
+              </span>
             </div>
           </div>
 
@@ -142,9 +151,11 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="description"
-                [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
                 [(ngModel)]="productModel.description">
               </textarea>
+              <span *ngIf="productForm.controls['description'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for Description is 100
+              </span>
             </div>
           </div>
 
@@ -159,8 +170,14 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="barcode"
-                [ngClass]="{ 'is-invalid': (submitted && f.name.pristine) || (submitted && f.name.touched==false) }"
+                [ngClass]="{ 'is-invalid': submitted && productForm.controls['barcode'].hasError('required')}"
                 [(ngModel)]="productModel.barcode">
+              <div *ngIf="submitted && productForm.controls['barcode'].hasError('required')" class="custom-invalid-feedback">
+                Enter Barcode for this product
+              </div>
+              <span *ngIf="productForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for Barcode is 20
+              </span>
             </div>
           </div>
 

@@ -361,7 +361,7 @@ export class ProductComponent implements OnInit {
       modelNo: ['',Validators.maxLength(20)],
       serialNo: ['',Validators.maxLength(20)],
       price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
-      description: ['',Validators.max(100)],
+      description: ['',Validators.maxLength(100)],
       barcode: ['',Validators.compose([Validators.required,Validators.maxLength(20)])]
     });
   }
