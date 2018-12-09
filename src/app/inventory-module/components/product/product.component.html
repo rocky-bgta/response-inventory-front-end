@@ -13,8 +13,7 @@
   <form id="collapseInputForm"
         class="collapse"
         data-toggle="collapse"
-        [formGroup]="productForm"
-        (ngSubmit)="onSubmit()">
+        [formGroup]="productForm">
 
     <div class="col-sm-6" style="padding-left: 0%;">
 
@@ -32,6 +31,7 @@
             <div class="col-sm-6">
               <input
                 id="name"
+                autocomplete="off"
                 class="form-control"
                 name="name"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
@@ -78,6 +78,7 @@
                 id="brand"
                 class="form-control"
                 name="brand"
+                autocomplete="off"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 [ngClass]="{ 'is-invalid': submitted && productForm.controls['brand'].hasError('required')}"
@@ -98,6 +99,7 @@
               <input
                 id="modelNo"
                 class="form-control"
+                autocomplete="off"
                 name="modelNo"
                 [ngClass]="{ 'is-invalid': submitted && productForm.controls['modelNo'].hasError('required')}"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
@@ -142,6 +144,7 @@
                 id="price"
                 class="form-control"
                 name="price"
+                autocomplete="off"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="number"
                 formControlName="price"
@@ -181,6 +184,7 @@
               <input
                 id="barcode"
                 class="form-control"
+                autocomplete="off"
                 name="barcode"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
@@ -235,7 +239,8 @@
             <div class="col-sm-12">
 
               <button *ngIf="!disableElementOnDetailsView"
-                      type="submit"
+                      type="button"
+                      (click)="onSubmit()"
                       class="btn btn-success">
                 {{isPageUpdateState==true?'Update ':'Save '}}
               </button>

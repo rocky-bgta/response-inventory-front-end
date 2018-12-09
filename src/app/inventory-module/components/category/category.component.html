@@ -15,8 +15,7 @@
         id="collapseCategoryForm"
         data-toggle="collapse"
         name="categoryForm"
-        [formGroup]="categoryForm"
-        (ngSubmit)="onSubmit()">
+        [formGroup]="categoryForm">
 
     <div class="col-sm-6" style="padding-left: 0%;">
       <div class="card">
@@ -31,6 +30,7 @@
                 id="name"
                 class="form-control"
                 name="name"
+                autocomplete="off"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 [(ngModel)]="categoryModel.name"
@@ -69,7 +69,8 @@
             <div class="col-sm-12">
 
               <button *ngIf="!disableElementOnDetailsView"
-                      type="submit"
+                      type="button"
+                      (click)="onSubmit()"
                       class="btn btn-success">
                 {{isPageUpdateState==true?'Update ':'Save '}}
               </button>

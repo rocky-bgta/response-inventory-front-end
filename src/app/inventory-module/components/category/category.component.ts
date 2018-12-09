@@ -211,6 +211,7 @@ export class CategoryComponent implements OnInit {
     jQuery('#collapseCategoryForm').collapse('hide');
     this.categoryModel = new CategoryModel();
     this.isPageUpdateState = false;
+    this.submitted=false;
 
   }
 
