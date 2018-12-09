@@ -62,7 +62,7 @@ export class CategoryComponent implements OnInit {
     //========== form validation ==========
     this.categoryForm = this.formBuilder.group({
       name: ['',  Validators.compose([Validators.required, Validators.maxLength(20)])],
-      description: ['', Validators.maxLength(200)]
+      description: ['', Validators.maxLength(100)]
     });
 
     //========== DataTable option start ===========
@@ -113,6 +113,7 @@ export class CategoryComponent implements OnInit {
     if (this.isPageUpdateState == false) {
       // stop here if form is invalid
       if (this.categoryForm.invalid) {
+        this.toastr.info("Please provide valid form data","Category");
         return;
       }
 

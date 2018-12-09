@@ -37,9 +37,12 @@
                 formControlName="name"
                 [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
 
-              <div *ngIf="submitted && f.name.invalid" class="custom-invalid-feedback">
+              <div *ngIf="submitted && categoryForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
                 <div *ngIf="f.name.errors.required">Category name required</div>
               </div>
+              <span *ngIf="categoryForm.controls['name'].hasError('maxlength') " class="custom-invalid-feedback">
+                Max character for Name is 20
+              </span>
             </div>
 
           </div>
@@ -53,6 +56,9 @@
                 formControlName="description"
                 class="form-control rounded-0"
                 id="description"></textarea>
+              <span *ngIf="categoryForm.controls['description'].hasError('maxlength') " class="custom-invalid-feedback">
+                Max character for Description is 100
+              </span>
             </div>
           </div>
 
