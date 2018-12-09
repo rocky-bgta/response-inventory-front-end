@@ -37,7 +37,7 @@
                 formControlName="name"
                 [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
             </div>
-            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div *ngIf="submitted && f.name.invalid" class="invalid-feedback">
               <div *ngIf="f.name.errors.required">Category name required</div>
             </div>
           </div>

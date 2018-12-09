@@ -22,7 +22,7 @@ declare var jQuery: any;
 export class CategoryComponent implements OnInit {
 
   public categoryModel: CategoryModel = new CategoryModel();
-  public categoryForm: FormGroup;
+
 
   constructor(private categoryService: CategoryService,
               private formBuilder: FormBuilder,
@@ -31,6 +31,8 @@ export class CategoryComponent implements OnInit {
 
   }
 
+  public categoryForm: FormGroup;
+  public submitted:boolean=false;
   // convenience getter for easy access to form fields
   get f() {
     return this.categoryForm.controls;
@@ -59,7 +61,7 @@ export class CategoryComponent implements OnInit {
 
     //========== form validation ==========
     this.categoryForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      name: ['',  Validators.compose([Validators.required, Validators.maxLength(20)])],
       description: ['', Validators.maxLength(200)]
     });
 
@@ -98,6 +100,8 @@ export class CategoryComponent implements OnInit {
 
   //work as a save and update method
   onSubmit() {
+
+    this.submitted=true;
 
     let requestMessage: RequestMessage;
 
