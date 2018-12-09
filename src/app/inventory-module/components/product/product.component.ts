@@ -3,7 +3,7 @@ import {ProductModel} from "../../model/product-model";
 import {Util} from "../../../core/Util";
 import {ProductService} from "../../service/product.service";
 import {ResponseMessage} from "../../../core/model/response-message";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {CategoryModel} from "../../model/category-model";
 import {CategoryService} from "../../service/category.service";
 import {RequestMessage} from "../../../core/model/request-message";
@@ -84,6 +84,7 @@ export class ProductComponent implements OnInit {
     if (this.isPageUpdateState == false) {
        //stop here if form is invalid
        if (this.productForm.invalid) {
+         console.log(this.productForm.controls);
          //======== R&D================
          //let errors = this.productForm.errors;
          // const invalid = [];
@@ -355,7 +356,7 @@ export class ProductComponent implements OnInit {
     //========== form validation ==========
     this.productForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
-      categoryModelList: ['', Validators.required],
+      categoryModelList: new FormControl('' ['', Validators.required]),
       brand: ['',Validators.maxLength(20)],
       modelNo: ['',Validators.maxLength(20)],
       serialNo: ['',Validators.maxLength(20)],

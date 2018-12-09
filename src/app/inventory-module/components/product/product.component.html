@@ -51,15 +51,23 @@
               <ng-select [items]="categoryModelList"
                          id="categoryList"
                          bindLabel="name"
+                         required
                          namge="categoryList"
-                         [disabled]="disableElementOnDetailsView"
+                         [attr.disabled]="disableElementOnDetailsView"
                          name="categoryList"
                          (change)="onChangeCategory($event)"
                          [ngModel]="productModel.categoryId"
                          bindValue="id"
+                         [ngClass]="{ 'is-invalid': (submitted && f.categoryModelList.pristine) || (submitted && f.categoryModelList.touched==false) }"
                          formControlName="categoryModelList"
                          placeholder="Select category">
               </ng-select>
+              <div *ngIf="submitted && productForm.controls['categoryModelList'].hasError('required')" class="custom-invalid-feedback">
+                <div *ngIf="productForm.controls['categoryModelList'].hasError('required')">Category name required</div>
+              </div>
+             <!-- <div *ngIf="submitted && productForm.controls['categoryList'].hasError('required')" class="custom-invalid-feedback">
+                <div *ngIf="productForm.controls['categoryList'].hasError('required')">Category name required</div>
+              </div>-->
             </div>
           </div>
 
@@ -226,7 +234,7 @@
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
-      <strong>Category List</strong>
+      <strong>Product List</strong>
     </div>
     <div class="card-body">
       <table datatable [dtOptions]="dtOptions"
