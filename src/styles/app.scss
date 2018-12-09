@@ -70,3 +70,17 @@ input.ng-invalid.ng-touched {
   color: whitesmoke;
 }
 
+.form-group.required .control-label:after {
+  color: #d00;
+  content: "*";
+  position: absolute;
+  margin-left: 8px;
+  top:5px;
+}
+
+img {
+  border: 2px solid red;
+  border-radius: 5px;
+  outline: 1px solid #9c79ff;
+  padding: 1%;
+}

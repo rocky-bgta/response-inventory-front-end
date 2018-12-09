@@ -109,7 +109,7 @@ export class CategoryComponent implements OnInit {
     if (this.isPageUpdateState == false) {
       // stop here if form is invalid
       if (this.categoryForm.invalid) {
-        this.toastr.info("Please provide valid form data","Category");
+        this.toastr.info("Please provide required form data","Category");
         return;
       }
 

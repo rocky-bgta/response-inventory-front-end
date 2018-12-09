@@ -84,6 +84,7 @@ export class ProductComponent implements OnInit {
     if (this.isPageUpdateState == false) {
        //stop here if form is invalid
        if (this.productForm.invalid) {
+         this.toastr.info("Please provide required form data","Product Entry");
          console.log(this.productForm.controls);
          //======== R&D================
          //let errors = this.productForm.errors;
@@ -151,6 +152,7 @@ export class ProductComponent implements OnInit {
 
   public onClickCancel() {
     this.hideAndClearInputForm();
+    this.submitted=false;
   }
 
   public onClickDelete(id) {
