@@ -186,7 +186,7 @@
           <div class="form-group row">
             <div class="col-sm-6">
               <!--<img [src]="'data:image/png;base64,'+productModel.image" height="200" width="200">-->
-              <img *ngFor="let item of base64textString" height="200" src={{item}} alt="" id="img">
+              <img *ngFor="let item of base64textString" height="200" width="200" src={{item}} alt="" id="img">
               <br>
               <button *ngIf="base64textString.length>0 && !disableElementOnDetailsView"
                       type="button"
