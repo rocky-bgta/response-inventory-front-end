@@ -58,7 +58,7 @@
                          (change)="onChangeCategory($event)"
                          [ngModel]="productModel.categoryId"
                          bindValue="id"
-                         [ngClass]="{ 'is-invalid': (submitted && f.categoryModelList.pristine) || (submitted && f.categoryModelList.touched==false) }"
+                         [ngClass]="{ 'custom-invalid-ng-select': submitted && f.categoryModelList.errors }"
                          formControlName="categoryModelList"
                          placeholder="Select category">
               </ng-select>
