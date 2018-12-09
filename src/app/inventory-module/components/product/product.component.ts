@@ -109,8 +109,16 @@ export class ProductComponent implements OnInit {
   }
 
   public onClickReset() {
+    let editObjectId:string;
+    if(this.isPageUpdateState){
+      editObjectId = this.productModel.id;
+      this.productModel = new ProductModel();
+      this.productModel.id=editObjectId;
+    }else {
+      this.productModel = new ProductModel();
+    }
     this.base64textString = [];
-    this.productModel = new ProductModel();
+    //this.productModel = new ProductModel();
   }
 
   public onClickDetails(id) {
