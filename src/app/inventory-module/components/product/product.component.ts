@@ -85,7 +85,7 @@ export class ProductComponent implements OnInit {
        //stop here if form is invalid
        if (this.productForm.invalid) {
          this.toastr.info("Please provide required form data","Product Entry");
-         console.log(this.productForm.controls);
+         //console.log(this.productForm.controls);
          //======== R&D================
          //let errors = this.productForm.errors;
          // const invalid = [];
@@ -105,7 +105,7 @@ export class ProductComponent implements OnInit {
   }
 
   public onClickImageClear() {
-    console.log(this.myFileInput.nativeElement.files[0]);
+    //console.log(this.myFileInput.nativeElement.files[0]);
     this.base64textString = [];
   }
 
@@ -241,6 +241,7 @@ export class ProductComponent implements OnInit {
   private setImage(image: string[]) {
     this.base64textString = [];
     this.base64textString.push('data:image/png;base64,' + image);
+    this.base64imageString = image.toString();
   }
 
   private populateDataTable() {
@@ -293,6 +294,7 @@ export class ProductComponent implements OnInit {
     let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
     this.productModel.base64ImageString = this.base64imageString;
+    //console.log(this.base64imageString);
     requestMessage = Util.getRequestMessage(this.productModel);
     this.productService.update(requestMessage).subscribe(
       (responseMessage: ResponseMessage) => {
@@ -326,10 +328,10 @@ export class ProductComponent implements OnInit {
       },
       (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {
-          this.toastr.success('Product', "Client-side error occured");
+          this.toastr.error('Product', "Client-side error occured");
           console.log("Client-side error occured.");
         } else {
-          this.toastr.success('Product', "Server-side error occured.");
+          this.toastr.error('Product', "Server-side error occured.");
           console.log("Server-side error occured.");
         }
       }
@@ -341,6 +343,7 @@ export class ProductComponent implements OnInit {
     this.productModel = new ProductModel();
     this.base64textString = [];
     this.isPageUpdateState = false;
+    this.submitted=false;
     this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }
 
