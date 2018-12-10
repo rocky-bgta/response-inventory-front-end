@@ -21,10 +21,14 @@ export class LoaderComponent implements OnInit {
     this.subscription = this.loaderService.loaderState
       .subscribe((state: LoaderState) => {
         this.show = state.show;
+
+       /*
         if(this.show==true)
           this.ngxSpinnerService.show();
         if(this.show==false)
           this.ngxSpinnerService.hide();
+
+        */
       });
   }
 
