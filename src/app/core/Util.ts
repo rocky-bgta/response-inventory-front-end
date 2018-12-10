@@ -42,6 +42,59 @@ export class Util{
     }
   }
 
+ /* static getStartDateFromYearMonth(year: number, month: number) {
+    let temDate = new Date(year, month - 1, 1);
+    let formatDate = moment(temDate).format('YYYY-MM-DD');
+    let buildDate = new Date(formatDate);
+    return buildDate;
+  }
+
+  static getEndDateFromYearMonth(year: number, month: number) {
+    let temDate;
+    temDate = new Date(year, month, 0);
+    let formatDate = moment(temDate).format('YYYY-MM-DD');
+    let buildDate = new Date(formatDate);
+    return buildDate;
+  }*/
+
+
+/*
+
+  static getDate(year: number = null, month: number = null, day: number = null) {
+    let temDate, dateFromat = null;
+
+    if (year != null && month != null && day != null)
+      temDate = new Date(year, month, day);
+    else
+      temDate = new Date();
+
+    dateFromat = 'YYYY-MM-DD';
+
+    let formatDate = moment(temDate).format(dateFromat);
+    let buildDate = new Date(formatDate);
+    return buildDate;
+  }
+*/
+
+/*
+  static getKeyValueFromEnum(providedEnum: any) {
+    let buildKeyValuePair: ICustomType = {};
+    let i: number = 1;
+    let enumProperties: any[] = new Array<any>();
+    for (let enumMember in providedEnum) {
+      let isValueProperty = parseInt(enumMember, 10) >= 0;
+      if (isValueProperty) {
+        buildKeyValuePair = new Object();
+        buildKeyValuePair.key = i;
+        buildKeyValuePair.value = providedEnum[enumMember];
+        enumProperties.push(buildKeyValuePair);
+        i++;
+      }
+    }
+    return enumProperties;
+  }
+
+  */
   public static getBase64Image(event:any){
     const file = event.target.files[0];
     if (file) {
