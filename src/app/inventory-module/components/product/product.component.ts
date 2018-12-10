@@ -107,7 +107,10 @@ export class ProductComponent implements OnInit {
 
   public onClickImageClear() {
     //console.log(this.myFileInput.nativeElement.files[0]);
+    this.base64imageString=null;
     this.base64textString = [];
+    this.productModel.base64ImageString = null;
+    this.productModel.image=null;
   }
 
   public onClickReset() {
@@ -120,6 +123,7 @@ export class ProductComponent implements OnInit {
       this.productModel = new ProductModel();
     }
     this.base64textString = [];
+    this.submitted=false;
     //this.productModel = new ProductModel();
   }
 
@@ -129,7 +133,8 @@ export class ProductComponent implements OnInit {
     this.showInputForm();
     detailsProductModel = _.find(this.productModelList, {id});
     this.productModel = detailsProductModel;
-    this.setImage(this.productModel.image);
+    if(this.productModel.image!=null)
+      this.setImage(this.productModel.image);
   }
 
   public onClickEdit(id) {
@@ -138,7 +143,8 @@ export class ProductComponent implements OnInit {
         this.productModel = null;
         this.productModel = <ProductModel> responseMessage.data;
         //Util.logConsole(this.productModel);
-        this.setImage(this.productModel.image);
+        if(this.productModel.image!=null)
+          this.setImage(this.productModel.image);
         this.openEntryForm();
       },
       (httpErrorResponse: HttpErrorResponse) => {
@@ -154,6 +160,7 @@ export class ProductComponent implements OnInit {
   public onClickCancel() {
     this.hideAndClearInputForm();
     this.submitted=false;
+
   }
 
   public onClickDelete(id) {
@@ -281,7 +288,8 @@ export class ProductComponent implements OnInit {
 
   private setImagePathForProductList() {
     for (let index in this.productModelList) {
-      this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
+      if(this.productModelList[index].image!=null)
+        this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
     }
   }
 
@@ -294,6 +302,7 @@ export class ProductComponent implements OnInit {
   private updateProduct() {
     let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
+    //console.info(this.base64imageString);
     this.productModel.base64ImageString = this.base64imageString;
     //console.log(this.base64imageString);
     requestMessage = Util.getRequestMessage(this.productModel);
@@ -315,7 +324,8 @@ export class ProductComponent implements OnInit {
   private saveProduct() {
     let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
-    this.productModel.base64ImageString = this.base64imageString;
+    if(this.base64imageString!=null && this.base64imageString.length>0)
+      this.productModel.base64ImageString = this.base64imageString;
     requestMessage = Util.getRequestMessage(this.productModel);
     //==========================================================================
 
@@ -327,7 +337,8 @@ export class ProductComponent implements OnInit {
         }
         this.toastr.success('Product', responseMessage.message);
         this.productModel = <ProductModel> responseMessage.data;
-        this.setImage(this.productModel.image);
+        if(this.productModel.image!=null)
+          this.setImage(this.productModel.image);
         // update data of data table
         this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
       },

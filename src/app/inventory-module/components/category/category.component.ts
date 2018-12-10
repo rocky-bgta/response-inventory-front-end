@@ -157,6 +157,8 @@ export class CategoryComponent implements OnInit {
     let detailsCategoryModel: CategoryModel;
     this.disableElementOnDetailsView = true;
     jQuery('#collapseCategoryForm').collapse('show');
+    jQuery('html, body').animate({scrollTop: '0px'}, 500);
+    jQuery("#collapseCategoryForm").scrollTop();
     detailsCategoryModel = _.find(this.categoryModelList, {id});
     this.categoryModel = detailsCategoryModel;
     //Util.logConsole(detailsCategoryModel);
@@ -187,6 +189,7 @@ export class CategoryComponent implements OnInit {
     }else {
       this.categoryModel = new CategoryModel();
     }
+    this.submitted=false;
   }
 
   public onClickDelete(id) {
