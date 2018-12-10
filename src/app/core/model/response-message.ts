@@ -3,7 +3,7 @@ import {DataTablesResponse} from "./data-table-response";
 export class ResponseMessage{
   token:string;
   data:object;
-  httpStatus:string;
+  httpStatus:number;
   message:string;
   totalRow:number;
 

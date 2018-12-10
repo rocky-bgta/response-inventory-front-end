@@ -13,6 +13,7 @@ import {DataTableRequest} from "../../../core/model/data-table-request";
 import * as _ from 'lodash';
 import {NgxSmartModalService} from "ngx-smart-modal";
 import {FileConstant} from "../../../core/constants/file-constant";
+import * as HttpStatus from 'http-status-codes'
 
 declare var jQuery: any;
 
@@ -320,6 +321,10 @@ export class ProductComponent implements OnInit {
 
     this.productService.save(requestMessage).subscribe(
       (responseMessage: ResponseMessage) => {
+        if(responseMessage.httpStatus==HttpStatus.CONFLICT) {
+          this.toastr.info(responseMessage.message,'Product');
+          return;
+        }
         this.toastr.success('Product', responseMessage.message);
         this.productModel = <ProductModel> responseMessage.data;
         this.setImage(this.productModel.image);
