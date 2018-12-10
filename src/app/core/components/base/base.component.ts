@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
+import {ToastrService} from "ngx-toastr";
+import {ICustomType} from "../../interface/ICustomType";
+import * as lodash from 'lodash';
 
 @Component({
   selector: 'app-base',
@@ -7,7 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BaseComponent implements OnInit {
 
-  constructor() { }
+  public customObject: ICustomType;
+  public lodash;
+  public toasterService: ToastrService;
+  private injector: Injector;
+
+  constructor() {
+    this.toasterService = this.injector.get(ToastrService);
+    this.customObject = {};
+    this.lodash = lodash;
+  }
 
   ngOnInit() {
   }
