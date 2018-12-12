@@ -21,7 +21,7 @@ export class ProductService {
   }
 */
   getList(dataTableParameter:any): Observable<any> {
-    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.product+"/get-all",dataTableParameter);
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.product+"/list",dataTableParameter);
   }
 
 

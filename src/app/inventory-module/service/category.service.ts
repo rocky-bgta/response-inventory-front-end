@@ -22,7 +22,7 @@ export class CategoryService {
   }
 */
   getList(dataTableParameter?:any): Observable<any> {
-    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category+"/getAll",dataTableParameter);
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category+"/list",dataTableParameter);
   }
 
 

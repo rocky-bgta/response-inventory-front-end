@@ -59,8 +59,14 @@ export class CategoryComponent implements OnInit {
     this.dataTablesCallBackParameters.length = 10;
 
     this.initializeReactiveFormValidation();
+    this.populateDataTable();
 
 
+
+
+  }
+
+  private populateDataTable(){
     //========== DataTable option start ===========
     this.dtOptions = {
       pagingType: 'full_numbers',
@@ -74,7 +80,6 @@ export class CategoryComponent implements OnInit {
       columns: [{data: 'id'}, {data: 'name'}, {data: 'description'}]
     };
     //========== DataTable option end ==============
-
   }
 
   private getCategoryList(dataTablesParameters: DataTableRequest, callback: any) {
