@@ -115,26 +115,26 @@
             </div>
           </div>
 
-         <!--
+          <!--
 
-          <div class="form-group row">
-            <label for="serialNo" class="col-sm-4">Serial No:</label>
-            <div class="col-sm-6">
-              <input
-                id="serialNo"
-                class="form-control"
-                name="serialNo"
-                [attr.disabled]="disableElementOnDetailsView?'':null"
-                type="text"
-                formControlName="serialNo"
-                [(ngModel)]="productModel.serialNo">
-              <span *ngIf="productForm.controls['serialNo'].hasError('maxlength') " class="custom-invalid-feedback">
-                Max character forSerial No is 20
-              </span>
-            </div>
-          </div>
+           <div class="form-group row">
+             <label for="serialNo" class="col-sm-4">Serial No:</label>
+             <div class="col-sm-6">
+               <input
+                 id="serialNo"
+                 class="form-control"
+                 name="serialNo"
+                 [attr.disabled]="disableElementOnDetailsView?'':null"
+                 type="text"
+                 formControlName="serialNo"
+                 [(ngModel)]="productModel.serialNo">
+               <span *ngIf="productForm.controls['serialNo'].hasError('maxlength') " class="custom-invalid-feedback">
+                 Max character forSerial No is 20
+               </span>
+             </div>
+           </div>
 
-          -->
+           -->
 
 
           <div class="form-group required row">
@@ -284,7 +284,7 @@
           <th style="width: 10%">Category</th>
           <th style="width: 10%">Brand</th>
           <th style="width: 15%">Model No</th>
-         <!-- <th style="width: 15%">Serial No</th>-->
+          <th style="width: 15%">Serial No</th>
           <th style="width: 10%">Price</th>
           <th style="width: 7%">Image</th>
           <th style="width: 10%">Action</th>
@@ -296,10 +296,10 @@
           <td>{{product.categoryName}}</td>
           <td>{{product.brand }}</td>
           <td>{{product.modelNo }}</td>
-         <!-- <td>{{product.serialNo }}</td>-->
+          <td>{{product.serialNo }}</td>
           <td>{{product.price }}</td>
           <td class="ellipsis">
-            <img [src]="product.image" height="50" width="100">
+            <img [src]="product.base64ImageString" height="50" width="100">
           </td>
           <td>
             <button type="button" class="btn btn-secondary" (click)="onClickEdit(product.id)" style="margin-left: 1%">

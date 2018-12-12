@@ -83,23 +83,23 @@ export class ProductComponent implements OnInit {
     }
 
     if (this.isPageUpdateState == false) {
-       //stop here if form is invalid
-       if (this.productForm.invalid) {
-         this.toastr.info("Please provide required form data","Product Entry");
-         //console.log(this.productForm.controls);
-         //======== R&D================
-         //let errors = this.productForm.errors;
-         // const invalid = [];
-         // const controls = this.productForm.controls;
-         // for (const name in controls) {
-         //   if (controls[name].invalid) {
-         //     console.log(name);
-         //     invalid.push(name);
-         //   }
-         // }
-         //======== R&D================
-         return;
-       }
+      //stop here if form is invalid
+      if (this.productForm.invalid) {
+        this.toastr.info("Please provide required form data","Product Entry");
+        //console.log(this.productForm.controls);
+        //======== R&D================
+        //let errors = this.productForm.errors;
+        // const invalid = [];
+        // const controls = this.productForm.controls;
+        // for (const name in controls) {
+        //   if (controls[name].invalid) {
+        //     console.log(name);
+        //     invalid.push(name);
+        //   }
+        // }
+        //======== R&D================
+        return;
+      }
 
       this.saveProduct();
     }
@@ -109,7 +109,7 @@ export class ProductComponent implements OnInit {
     //console.log(this.myFileInput.nativeElement.files[0]);
     this.base64imageString=null;
     this.base64textString = [];
-    //this.productModel.base64textString = null;
+    this.productModel.base64ImageString = null;
     this.productModel.image=null;
   }
 
@@ -244,13 +244,12 @@ export class ProductComponent implements OnInit {
   private handleReaderLoaded(e) {
     this.base64imageString = (btoa(e.target.result));
     this.base64textString.push('data:image/png;base64,' + this.base64imageString);
-    this.productModel.image='data:image/png;base64,' + this.base64imageString;
   }
 
-  private setImage(image: string) {
+  private setImage(image: string[]) {
     this.base64textString = [];
-    this.base64textString.push(image);
-    this.base64imageString = image;
+    this.base64textString.push('data:image/png;base64,' + image);
+    this.base64imageString = image.toString();
   }
 
   private populateDataTable() {
@@ -260,7 +259,7 @@ export class ProductComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: false,
-      searching: true,
+      searching: false,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
         this.getProductList(dataTablesParameters, callback);
       },
@@ -270,6 +269,7 @@ export class ProductComponent implements OnInit {
         {data: 'category'},
         {data: 'brand'},
         {data: 'modelNo'},
+        {data: 'serialNo'},
         {data: 'price'},
         {data: 'image'}
       ]
@@ -289,8 +289,7 @@ export class ProductComponent implements OnInit {
   private setImagePathForProductList() {
     for (let index in this.productModelList) {
       if(this.productModelList[index].image!=null)
-        //this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
-      this.productModelList[index].base64ImageString = this.productModelList[index].image.toString();
+        this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
     }
   }
 
@@ -304,7 +303,7 @@ export class ProductComponent implements OnInit {
     let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
     //console.info(this.base64imageString);
-    //this.productModel.image = this.base64imageString;
+    this.productModel.base64ImageString = this.base64imageString;
     //console.log(this.base64imageString);
     requestMessage = Util.getRequestMessage(this.productModel);
     this.productService.update(requestMessage).subscribe(
@@ -326,7 +325,7 @@ export class ProductComponent implements OnInit {
     let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
     if(this.base64imageString!=null && this.base64imageString.length>0)
-      this.productModel.image='data:image/png;base64,' + this.base64imageString;
+      this.productModel.base64ImageString = this.base64imageString;
     requestMessage = Util.getRequestMessage(this.productModel);
     //==========================================================================
 
@@ -396,5 +395,3 @@ export class ProductComponent implements OnInit {
     });
   }
 }
-
-
