@@ -222,7 +222,7 @@ export class ProductComponent implements OnInit {
 
         callback({
           recordsTotal: responseMessage.dataTableResponse.recordsTotal,
-          recordsFiltered: responseMessage.dataTableResponse.recordsTotal,
+          recordsFiltered: responseMessage.dataTableResponse.recordsFiltered,
           data: []
         });
 
