@@ -125,6 +125,7 @@ export class ProductComponent implements OnInit {
     }
     //this.base64textString = [];
     this.base64imageString=null;
+    this.base64textString = [];
     this.submitted=false;
     //this.productModel = new ProductModel();
   }
@@ -211,9 +212,13 @@ export class ProductComponent implements OnInit {
       .subscribe((responseMessage: ResponseMessage) => {
 
         this.productModelList = <Array<ProductModel>>responseMessage.data;
-        //Util.logConsole(this.productModelList);
-        this.setCategoryNameForProductList();
-        this.setImagePathForProductList();
+        if(this.productModelList == null || this.productModelList.length==0){
+          this.toastr.info("No result product found","Product")
+        }else {
+          //Util.logConsole(this.productModelList);
+          this.setCategoryNameForProductList();
+          this.setImagePathForProductList();
+        }
 
         callback({
           recordsTotal: responseMessage.dataTableResponse.recordsTotal,
@@ -267,7 +272,6 @@ export class ProductComponent implements OnInit {
         this.getProductList(dataTablesParameters, callback);
       },
       columns: [
-        {data: 'id'},
         {data: 'name'},
         {data: 'category'},
         {data: 'brand'},
