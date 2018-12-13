@@ -8,9 +8,10 @@ export class ProductModel {
   price: number;
   description: string;
   barcode: string;
-  image: any[];
+  image: string;
 
-  base64ImageString: string;
+  //base64ImageString: string;
+
 
   categoryName:string;
 }

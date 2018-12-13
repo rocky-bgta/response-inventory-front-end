@@ -39,7 +39,7 @@ export class ProductComponent implements OnInit {
   public disableElementOnDetailsView: boolean;
 
   private base64imageString: string;
-  base64textString = [];
+  public base64textString = [];
 
   //====== value pass to delete confirmation modal
   public deleteObjectType: string = 'Product';
@@ -50,7 +50,7 @@ export class ProductComponent implements OnInit {
   constructor(private productService: ProductService,
               private categoryService: CategoryService,
               private toastr: ToastrService,
-              public ngxSmartModalService: NgxSmartModalService,
+              public  ngxSmartModalService: NgxSmartModalService,
               private formBuilder:FormBuilder) {
   }
 
@@ -109,8 +109,9 @@ export class ProductComponent implements OnInit {
     //console.log(this.myFileInput.nativeElement.files[0]);
     this.base64imageString=null;
     this.base64textString = [];
-    this.productModel.base64ImageString = null;
     this.productModel.image=null;
+    //this.productModel.base64ImageString = null;
+    //this.productModel.image=null;
   }
 
   public onClickReset() {
@@ -122,7 +123,8 @@ export class ProductComponent implements OnInit {
     }else {
       this.productModel = new ProductModel();
     }
-    this.base64textString = [];
+    //this.base64textString = [];
+    this.base64imageString=null;
     this.submitted=false;
     //this.productModel = new ProductModel();
   }
@@ -244,12 +246,13 @@ export class ProductComponent implements OnInit {
   private handleReaderLoaded(e) {
     this.base64imageString = (btoa(e.target.result));
     this.base64textString.push('data:image/png;base64,' + this.base64imageString);
+    this.productModel.image = this.base64imageString;
   }
 
-  private setImage(image: string[]) {
+  private setImage(image: string) {
     this.base64textString = [];
     this.base64textString.push('data:image/png;base64,' + image);
-    this.base64imageString = image.toString();
+    this.base64imageString = image;
   }
 
   private populateDataTable() {
@@ -287,10 +290,12 @@ export class ProductComponent implements OnInit {
   }
 
   private setImagePathForProductList() {
-    for (let index in this.productModelList) {
-      if(this.productModelList[index].image!=null)
-        this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
-    }
+    //for (let index in this.productModelList) {
+      //if(this.productModelList[index].image!=null)
+        //this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
+      //this.productModelList[index].image = 'data:image/png;base64,' + this.productModelList[index].image;
+      //this.base64textString.push('data:image/png;base64,' + this.base64imageString);
+    //}
   }
 
   private openEntryForm() {
@@ -303,11 +308,12 @@ export class ProductComponent implements OnInit {
     let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
     //console.info(this.base64imageString);
-    this.productModel.base64ImageString = this.base64imageString;
+    //this.productModel.base64ImageString = this.base64imageString;
     //console.log(this.base64imageString);
     requestMessage = Util.getRequestMessage(this.productModel);
     this.productService.update(requestMessage).subscribe(
       (responseMessage: ResponseMessage) => {
+
         this.toastr.success('Product', responseMessage.message);
         this.resetPage();
       },
@@ -325,7 +331,7 @@ export class ProductComponent implements OnInit {
     let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
     if(this.base64imageString!=null && this.base64imageString.length>0)
-      this.productModel.base64ImageString = this.base64imageString;
+      this.productModel.image = this.base64imageString;
     requestMessage = Util.getRequestMessage(this.productModel);
     //==========================================================================
 

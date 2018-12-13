@@ -299,7 +299,7 @@
           <td>{{product.serialNo }}</td>
           <td>{{product.price }}</td>
           <td class="ellipsis">
-            <img [src]="product.base64ImageString" height="50" width="100">
+            <img [src]="'data:image/png;base64,'+product.image" height="50" width="100">
           </td>
           <td>
             <button type="button" class="btn btn-secondary" (click)="onClickEdit(product.id)" style="margin-left: 1%">
