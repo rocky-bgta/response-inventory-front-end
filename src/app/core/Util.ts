@@ -26,10 +26,13 @@ export class Util{
     return requestMessage;
   }
 
-  public static logConsole(data:any,message?:string) {
-    if (message != null)
+  public static logConsole(data?:any,message?:string) {
+    if (message != null && data!=null)
       console.log(message + ": " + JSON.stringify(data, null, 2));
-    else console.log(JSON.stringify(data, null, 2));
+    if(data==null && message!=null)
+      console.error(message);
+    if(data!=null)
+      console.log(data);
   }
 
   public static errorHandler(httpErrorResponse: HttpErrorResponse){

@@ -99,8 +99,8 @@
   </form>
 </div>
 
-
-<div [hidden]="categoryModelList.length==0" class="">
+<!--<div [hidden]="categoryModelList.length==0" class="">-->
+<div class="">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
@@ -140,7 +140,7 @@
 
         </tr>
         </tbody>
-        <tbody *ngIf="category?.length == 0">
+        <tbody *ngIf="categoryModelList?.length == 0">
         <tr>
           <td colspan="3" class="no-data-available">No data!</td>
         </tr>

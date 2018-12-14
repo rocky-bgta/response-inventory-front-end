@@ -7,5 +7,8 @@ export class InventoryApiEndPoint{
 
   public static readonly product:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"product";
 
+  public static readonly brand:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"brand";
+
+
 
 }
