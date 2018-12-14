@@ -98,7 +98,7 @@
                 name="address"
                 [attr.disabled]="disablePageElementOnDetailsView?'':null"
                 [(ngModel)]="vendorModel.address"
-                formControlName="description"
+                formControlName="address"
                 class="form-control rounded-0"
                 id="address"></textarea>
               <span *ngIf="entryForm.controls['address'].hasError('maxlength') " class="custom-invalid-feedback">
@@ -118,7 +118,7 @@
                 class="form-control rounded-0"
                 id="description"></textarea>
               <span *ngIf="entryForm.controls['description'].hasError('maxlength') " class="custom-invalid-feedback">
-                Max character for Description is 200
+                Maximum character for Description is 200
               </span>
             </div>
           </div>

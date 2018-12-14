@@ -222,6 +222,7 @@ export class VendorComponent implements OnInit {
 
   private saveProduct():void{
     let requestMessage: RequestMessage;
+    this.replaceCharacterFromModelField();
     requestMessage = Util.getRequestMessage(this.vendorModel);
     this.vendorService.save(requestMessage).subscribe
     (
@@ -254,7 +255,9 @@ export class VendorComponent implements OnInit {
 
   private updateProduct():void{
     let requestMessage: RequestMessage;
+    this.replaceCharacterFromModelField();
     requestMessage = Util.getRequestMessage(this.vendorModel);
+    //requestMessage = Util.getRequestMessage(this.vendorModel);
 
     this.vendorService.update(requestMessage).subscribe
     (
@@ -325,6 +328,15 @@ export class VendorComponent implements OnInit {
       }, 500
     );
     return;
+  }
+
+  private replaceCharacterFromModelField(){
+    this.vendorModel.name = _.replace(this.vendorModel.name,':','-');
+    this.vendorModel.address = _.replace(this.vendorModel.address,':','-');
+    this.vendorModel.description = _.replace(this.vendorModel.description,':','-');
+    this.vendorModel.name = _.replace(this.vendorModel.name,',','_');
+    this.vendorModel.address = _.replace(this.vendorModel.address,',','_');
+    this.vendorModel.description = _.replace(this.vendorModel.description,',','_');
   }
 
 }
