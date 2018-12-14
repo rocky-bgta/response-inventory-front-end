@@ -14,6 +14,8 @@ import * as _ from 'lodash';
 import {NgxSmartModalService} from "ngx-smart-modal";
 import {FileConstant} from "../../../core/constants/file-constant";
 import * as HttpStatus from 'http-status-codes'
+import {BrandService} from "../../service/brand.service";
+import {BrandModel} from "../../model/brand-model";
 
 declare var jQuery: any;
 
@@ -28,6 +30,7 @@ export class ProductComponent implements OnInit {
 
   public categoryModelList: Array<CategoryModel>;
   public productModelList: Array<ProductModel>;
+  public brandModelList: Array<BrandModel>;
   public productModel: ProductModel;
 
   public dtOptions: DataTables.Settings = {};
@@ -49,6 +52,7 @@ export class ProductComponent implements OnInit {
 
   constructor(private productService: ProductService,
               private categoryService: CategoryService,
+              private brandService: BrandService,
               private toastr: ToastrService,
               public  ngxSmartModalService: NgxSmartModalService,
               private formBuilder:FormBuilder) {
@@ -61,6 +65,7 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     this.productModel = new ProductModel();
     this.categoryModelList = new Array<CategoryModel>();
+    this.brandModelList = new Array<BrandModel>();
     this.productModelList = new Array<ProductModel>();
 
     this.isPageUpdateState = false;
@@ -68,6 +73,7 @@ export class ProductComponent implements OnInit {
     this.disableElementOnDetailsView = false;
 
     this.getCategoryList();
+    this.getBrandList();
     this.populateDataTable();
 
     this.initializeReactiveFormValidation();
@@ -194,12 +200,25 @@ export class ProductComponent implements OnInit {
       this.productModel.categoryId = event.id;
   }
 
+  public onChangeBrand(event:any){
+    if(!_.isEmpty(event))
+      this.productModel.brandId = event.id;
+  }
+
   private getCategoryList() {
     this.categoryService.getList().subscribe(
       (response: ResponseMessage) => {
         this.categoryModelList = <Array<CategoryModel>>response.data;
       }, (httpErrorResponse: HttpErrorResponse) => {
-        Util.errorHandler(httpErrorResponse);
+        //Util.errorHandler(httpErrorResponse);
+      }
+    )
+  }
+
+  private getBrandList() {
+    this.brandService.getList().subscribe(
+      (response: ResponseMessage) => {
+        this.brandModelList = <Array<BrandModel>>response.data;
       }
     )
   }
@@ -217,6 +236,7 @@ export class ProductComponent implements OnInit {
         }else {
           //Util.logConsole(this.productModelList);
           this.setCategoryNameForProductList();
+          this.setBrandNameForProductList();
           this.setImagePathForProductList();
         }
 
@@ -290,6 +310,15 @@ export class ProductComponent implements OnInit {
       let id = this.productModelList[index].categoryId;
       categoryModel = _.find(this.categoryModelList, {id});
       this.productModelList[index].categoryName = categoryModel.name;
+    }
+  }
+
+  private setBrandNameForProductList() {
+    let brandModel: BrandModel;
+    for (let index in this.productModelList) {
+      let id = this.productModelList[index].brandId;
+      brandModel = _.find(this.brandModelList, {id});
+      this.productModelList[index].brandName = brandModel.name;
     }
   }
 
@@ -396,7 +425,7 @@ export class ProductComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       categories: ['',Validators.required],
-      brand: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+      brands: ['', Validators.compose([Validators.required])],
       modelNo: ['',Validators.compose([Validators.required, Validators.maxLength(20)])],
       //serialNo: ['',Validators.maxLength(20)],
       price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],

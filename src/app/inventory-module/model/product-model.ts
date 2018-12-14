@@ -2,7 +2,7 @@ export class ProductModel {
   id: string;
   name: string;
   categoryId: string;
-  brand: string;
+  brandId: string;
   modelNo: string;
   //serialNo: string;
   price: number;
@@ -14,4 +14,5 @@ export class ProductModel {
 
 
   categoryName:string;
+  brandName:string;
 }
