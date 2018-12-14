@@ -5,7 +5,7 @@
         data-target="#collapseInputForm"
         aria-expanded="false"
         aria-controls="collapseInputForm">
-  {{isPageInUpdateState==true?'Update ':'Add '}}Brand
+  {{isPageInUpdateState==true?'Update ':'Add '+pageTitle}}
 </button>
 
 <div style="margin-top: 1%" [hidden]="hideInputForm">
@@ -159,3 +159,71 @@
     </div>
   </form>
 </div>
+
+<div class="">
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>{{pageTitle}} List</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dataTableOptions" class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <!-- <th>ID</th>-->
+          <th style="width: 10%">Name</th>
+          <th style="width: 80%">Phone</th>
+          <th style="width: 10%">Email</th>
+          <th style="width: 10%">Address</th>
+          <th style="width: 80%">Description</th>
+          <th style="width: 10%">Action</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="vendorModelList?.length != 0">
+        <tr *ngFor="let item of vendorModelList">
+          <!-- <td>{{ category.id }}</td>-->
+          <td>{{item.name }}</td>
+          <td>{{item.phoneNo}}</td>
+          <td>{{item.email}}</td>
+          <td class="ellipsis">{{item.address}}</td>
+          <td class="ellipsis">{{item.description}}</td>
+          <td>
+            <button type="button" class="btn btn-secondary" (click)="onClickEdit(item.id)" style="margin-left: 1%">
+              Edit
+            </button>
+
+            <button type="button" class="btn btn-info" (click)="onClickDetails(item.id)" style="margin-left: 1%">
+              Details
+            </button>
+
+            <button type="button" class="btn btn-danger" (click)="onClickDelete(item.id)" style="margin-left: 1%">
+              Delete
+            </button>
+
+          </td>
+
+
+        </tr>
+        </tbody>
+        <tbody *ngIf="vendorModelList?.length == 0">
+        <tr>
+          <td colspan="6" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+
+
+    </div>
+    <div class="">
+
+    </div>
+  </div>
+
+</div>
+
+<confirmation-modal [deleteObjectType]="pageTitle"
+                    [deletedObjectName]="vendorModel.name"
+                    [id]="vendorModel.id"
+                    (deleteProductId)="onDeleteConfirm($event)">
+</confirmation-modal>
