@@ -49,21 +49,18 @@ export class CategoryComponent implements OnInit {
   public disableElementOnDetailsView: boolean;
 
   ngOnInit() {
+    this.initializedPageStateVariable();
+    this.initializeReactiveFormValidation();
+    this.populateDataTable();
+  }
 
-    //========== Page data initialization ============
+  private initializedPageStateVariable(){
     this.isPageUpdateState = false;
     this.hideCategoryInputForm = false;
     this.disableElementOnDetailsView = false;
     this.dataTablesCallBackParameters = new DataTableRequest();
     this.dataTablesCallBackParameters.start = 0;
     this.dataTablesCallBackParameters.length = 10;
-
-    this.initializeReactiveFormValidation();
-    this.populateDataTable();
-
-
-
-
   }
 
   private populateDataTable(){
@@ -122,7 +119,7 @@ export class CategoryComponent implements OnInit {
 
       this.categoryService.save(requestMessage).subscribe(
         (responseMessage: ResponseMessage) => {
-          this.toastr.success('Category', responseMessage.message);
+          this.toastr.success( responseMessage.message,'Category');
           this.categoryModel = <CategoryModel> responseMessage.data;
           this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
         },
