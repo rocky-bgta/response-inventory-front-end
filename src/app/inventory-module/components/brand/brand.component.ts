@@ -9,7 +9,11 @@ import {RequestMessage} from "../../../core/model/request-message";
 import {Util} from "../../../core/Util";
 import {ResponseMessage} from "../../../core/model/response-message";
 import {HttpErrorResponse} from "@angular/common/http";
+
 import * as HttpStatus from 'http-status-codes'
+import * as _ from 'lodash';
+declare var jQuery: any;
+
 
 @Component({
   selector: 'app-brand',
@@ -17,7 +21,6 @@ import * as HttpStatus from 'http-status-codes'
   styleUrls: ['./brand.component.scss']
 })
 export class BrandComponent implements OnInit {
-
 
   public brandModel: BrandModel = new BrandModel();
 
@@ -34,6 +37,8 @@ export class BrandComponent implements OnInit {
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction: any;
 
+  //====== value pass to delete confirmation modal
+  public deleteObjectType:string='Brand';
 
   constructor(private brandService: BrandService,
               private formBuilder: FormBuilder,
@@ -49,10 +54,9 @@ export class BrandComponent implements OnInit {
 
   public onClickSubmit(){
     this.formSubmitted = true;
-    let requestMessage: RequestMessage;
 
     if(this.isPageInUpdateState && !this.entryForm.invalid){
-      // calll update method
+      this.updateProduct();
       return;
     }
 
@@ -62,62 +66,46 @@ export class BrandComponent implements OnInit {
         return;
       }
     }
-
     //======== now we safely save entry form data
-    requestMessage = Util.getRequestMessage(this.brandModel);
-    this.brandService.save(requestMessage).subscribe
-    (
-      (responseMessage: ResponseMessage) =>
-                {
-                  if(responseMessage.httpStatus==HttpStatus.CREATED) {
-                    this.toastr.success( responseMessage.message,'Brand');
-                    this.brandModel = <BrandModel> responseMessage.data;
-                    this.getBrandList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
-                  }else {
-                    this.toastr.error(responseMessage.message,'Brand');
-                  }
-                },
-
-      (httpErrorResponse: HttpErrorResponse) =>
-                {
-                  if (httpErrorResponse.error instanceof Error) {
-                    this.toastr.error('Please try again','Error')
-                     Util.logConsole(null,"Client-side error occurred.");
-                  } else {
-                    this.toastr.error('Please try again later','Error')
-                    Util.logConsole(null,"Client-side error occurred.");
-                  }
-                }
-    );
+    this.saveProduct();
     return;
   }
 
   public onClickReset(){
-
+    let editItemId:string;
+    if(!this.isPageInUpdateState){
+      this.brandModel = new BrandModel();
+    }else {
+      editItemId = this.brandModel.id;
+      this.brandModel = new BrandModel();
+      this.brandModel.id=editItemId;
+    }
   }
 
   public onClickCancel(){
-
+      this.brandModel = new BrandModel();
+      this.isPageInUpdateState=false;
+      this.disablePageElementOnDetailsView=false;
+      this.hideEntryForm();
   }
-
 
   // ========== Data table button event =====================
 
-  private populateDataTable(){
+  private populateDataTable():void{
 
-    this.dataTableOptions = {
-      pagingType: 'full_numbers',
-      pageLength: 10,
-      serverSide: true,
-      processing: false,
-      searching: false,
-      ajax: (dataTablesParameters: DataTableRequest, callback) => {
-        this.getBrandList(dataTablesParameters, callback);
-      },
-      columns: [{data: 'id'}, {data: 'name'}, {data: 'description'}]
+    this.dataTableOptions =
+      {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: false,
+        searching: false,
+        ajax: (dataTablesParameters: DataTableRequest, callback) => {
+          this.getBrandList(dataTablesParameters, callback);
+        },
+        columns: [{data: 'id'}, {data: 'name'}, {data: 'description'}]
     };
   }
-
 
   private getBrandList(dataTablesParameters: DataTableRequest, callback: any):Array<BrandModel> {
     this.dataTablesCallBackParameters = dataTablesParameters;
@@ -150,22 +138,130 @@ export class BrandComponent implements OnInit {
     return this.brandModelList;
   }
 
-  public onClickDetails(){
-
+  public onClickDetails(id){
+   this.brandModel = _.find(this.brandModelList,{id});
+   this.disablePageElementOnDetailsView=true;
+   this.isPageInUpdateState=false;
+   this.showEntryForm();
   }
 
-  public onClickEdit(){
+  public onClickEdit(id){
 
+    this.brandService.getById(id).subscribe
+    (
+(responseMessage: ResponseMessage) =>
+        {
+          this.brandModel = <BrandModel> responseMessage.data;
+        },
+(httpErrorResponse: HttpErrorResponse) =>
+        {
+          this.toastr.error('Failed to get requested brand','Brand')
+          if (httpErrorResponse.error instanceof Error) {
+            console.log("Client-side error occurred.");
+          } else {
+            console.log("Server-side error occurred.");
+          }
+        }
+    );
+
+    this.disablePageElementOnDetailsView=false;
+    this.isPageInUpdateState=true;
+    this.showEntryForm();
   }
 
-  public onClickDelete(){
+  public onClickDelete(id){
+    let deleteBrandModel: BrandModel;
+    deleteBrandModel = _.find(this.brandModelList, {id});
+    this.brandModel = deleteBrandModel;
+    this.ngxSmartModalService.getModal('deleteConfirmationModal').open();
+  }
 
+  public onDeleteConfirm(id: string) {
+    this.brandService.delete(id).subscribe
+    (
+(responseMessage: ResponseMessage) =>
+        {
+          this.toastr.success(responseMessage.message,'Brand');
+          this.resetPage();
+          this.hideEntryForm();
+        },
+(httpErrorResponse: HttpErrorResponse) =>
+        {
+          this.toastr.error('Failed to delete brand','Brand');
+          if (httpErrorResponse.error instanceof Error) {
+            console.log("Client-side error occurred.");
+          } else {
+            console.log("Server-side error occurred.");
+          }
+        }
+    );
+    return;
   }
 
   // ========== Data table button event =====================
 
+  private saveProduct():void{
+    let requestMessage: RequestMessage;
+    requestMessage = Util.getRequestMessage(this.brandModel);
+    this.brandService.save(requestMessage).subscribe
+    (
+(responseMessage: ResponseMessage) =>
+        {
+          if(responseMessage.httpStatus==HttpStatus.CREATED) {
+            this.toastr.success( responseMessage.message,'Brand');
+            this.brandModel = <BrandModel> responseMessage.data;
+            this.getBrandList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+          }else {
+            this.toastr.error(responseMessage.message,'Brand');
+          }
+        },
 
-  private initializedPageStateVariable(){
+(httpErrorResponse: HttpErrorResponse) =>
+        {
+          this.toastr.error('Failed to save brand','Brand');
+          if (httpErrorResponse.error instanceof Error) {
+            Util.logConsole(null,"Client-side error occurred.");
+          } else {
+            Util.logConsole(null,"Client-side error occurred.");
+          }
+        }
+    );
+    return;
+  }
+
+  private updateProduct():void{
+    let requestMessage: RequestMessage;
+    requestMessage = Util.getRequestMessage(this.brandModel);
+
+    this.brandService.update(requestMessage).subscribe
+    (
+(responseMessage: ResponseMessage) =>
+        {
+          this.toastr.success(responseMessage.message,'Brand');
+          this.resetPage();
+        },
+
+(httpErrorResponse: HttpErrorResponse) =>
+        {
+          this.toastr.error('Failed to update brand','Brand');
+          if (httpErrorResponse.error instanceof Error) {
+            Util.logConsole(null,"Client-side error occurred.");
+          } else {
+            Util.logConsole(null,"Client-side error occurred.");
+          }
+        }
+    );
+  }
+
+  private resetPage():void {
+    this.brandModel = new BrandModel();
+    this.isPageInUpdateState = false;
+    this.formSubmitted=false;
+    this.getBrandList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+    return;
+  }
+
+  private initializedPageStateVariable():void{
     this.isPageInUpdateState = false;
     this.hideInputForm = false;
     this.disablePageElementOnDetailsView = false;
@@ -174,11 +270,29 @@ export class BrandComponent implements OnInit {
     this.dataTablesCallBackParameters.length = 10;
   }
 
-  private initializeReactiveFormValidation(){
+  private initializeReactiveFormValidation():void{
     this.entryForm = this.formBuilder.group({
       name: ['',  Validators.compose([Validators.required, Validators.maxLength(20)])],
       description: ['', Validators.maxLength(100)]
     });
+  }
+
+  private showEntryForm():void{
+    jQuery('#collapseInputForm').collapse('show');
+    jQuery('html, body').animate({scrollTop: '0px'}, 500);
+    jQuery("#collapseInputForm").scrollTop();
+  }
+
+  private hideEntryForm():void{
+      jQuery('#collapseInputForm').collapse('hide');
+      setTimeout
+      (
+        () =>
+          {
+            this.disablePageElementOnDetailsView = false;
+          }, 500
+      );
+      return;
   }
 
 }
