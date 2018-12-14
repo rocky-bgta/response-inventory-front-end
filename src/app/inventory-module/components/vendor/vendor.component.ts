@@ -303,12 +303,13 @@ export class VendorComponent implements OnInit {
   }
 
   private initializeReactiveFormValidation():void{
+    let emailRegex = /^[A-Za-z0-9_.]+$;
     this.entryForm = this.formBuilder.group({
       name:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       phoneNo:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       email:    ['', Validators.compose([Validators.email, Validators.maxLength(20)])],
       address:  ['', Validators.maxLength(150)],
-      description: ['', Validators.maxLength(200)]
+      description: ['', Validators.maxLength(200), Validators.pattern(emailRegex)]
     });
   }
 
