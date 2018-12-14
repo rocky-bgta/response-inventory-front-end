@@ -99,11 +99,11 @@ export class BrandComponent implements OnInit {
         pageLength: 10,
         serverSide: true,
         processing: false,
-        searching: false,
+        searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
           this.getBrandList(dataTablesParameters, callback);
         },
-        columns: [{data: 'id'}, {data: 'name'}, {data: 'description'}]
+        columns: [{data: 'name'}, {data: 'description'}]
     };
   }
 
