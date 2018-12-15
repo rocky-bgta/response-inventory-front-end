@@ -12,9 +12,10 @@ import {NgxSmartModalModule} from "ngx-smart-modal";
 import {ConfirmationModalComponent} from "../core/components/confirmation-modal/confirmation-modal.component";
 import { BrandComponent } from './components/brand/brand.component';
 import { VendorComponent } from './components/vendor/vendor.component';
+import { StoreComponent } from './components/store/store.component';
 
 @NgModule({
-  declarations: [CategoryComponent, ProductComponent,ConfirmationModalComponent, BrandComponent, VendorComponent],
+  declarations: [CategoryComponent, ProductComponent,ConfirmationModalComponent, BrandComponent, VendorComponent, StoreComponent],
   imports: [
     [
       RouterModule.forChild(inventoryRoutes)],
