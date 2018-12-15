@@ -303,7 +303,8 @@ export class VendorComponent implements OnInit {
   }
 
   private initializeReactiveFormValidation():void{
-    let notAllowedCharacter = "^[A-Za-z0-9_.]+$";
+    //let notAllowedCharacter = "^[A-Za-z0-9_.]+$";
+    let notAllowedCharacter = "^[A-Za-z0-9_. \\\\ \\/ - \\n]+$";
     this.entryForm = this.formBuilder.group({
       name:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       phoneNo:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
