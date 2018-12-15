@@ -102,7 +102,10 @@
                 class="form-control rounded-0"
                 id="address"></textarea>
               <span *ngIf="entryForm.controls['address'].hasError('maxlength') " class="custom-invalid-feedback">
-                Maximum character for Address is 150
+                Maximum character for Description is 200
+              </span>
+              <span *ngIf="entryForm.controls['address'].hasError('pattern') " class="custom-invalid-feedback">
+                Allowed character a-z A-Z 0-9 . _
               </span>
             </div>
           </div>

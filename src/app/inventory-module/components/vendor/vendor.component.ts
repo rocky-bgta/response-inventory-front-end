@@ -65,7 +65,7 @@ export class VendorComponent implements OnInit {
 
     if(!this.isPageInUpdateState){
       if(this.entryForm.invalid){
-        this.toastr.info("Please provide required form data","Category");
+        this.toastr.info("Please provide required form data",this.pageTitle);
         return;
       }
     }
@@ -222,7 +222,7 @@ export class VendorComponent implements OnInit {
 
   private saveProduct():void{
     let requestMessage: RequestMessage;
-    this.replaceCharacterFromModelField();
+    //this.replaceCharacterFromModelField();
     requestMessage = Util.getRequestMessage(this.vendorModel);
     this.vendorService.save(requestMessage).subscribe
     (
@@ -255,7 +255,7 @@ export class VendorComponent implements OnInit {
 
   private updateProduct():void{
     let requestMessage: RequestMessage;
-    this.replaceCharacterFromModelField();
+    //this.replaceCharacterFromModelField();
     requestMessage = Util.getRequestMessage(this.vendorModel);
     //requestMessage = Util.getRequestMessage(this.vendorModel);
 
@@ -303,13 +303,13 @@ export class VendorComponent implements OnInit {
   }
 
   private initializeReactiveFormValidation():void{
-    let emailRegex = "^[A-Za-z0-9_.]+$"
+    let notAllowedCharacter = "^[A-Za-z0-9_.]+$"
     this.entryForm = this.formBuilder.group({
       name:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       phoneNo:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       email:    ['', Validators.compose([Validators.email, Validators.maxLength(20)])],
-      address:  ['', Validators.maxLength(150)],
-      description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(emailRegex)])]
+      address: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])],
+      description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])]
     });
   }
 
