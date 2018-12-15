@@ -304,13 +304,17 @@ export class VendorComponent implements OnInit {
 
   private initializeReactiveFormValidation():void{
     //let notAllowedCharacter = "^[A-Za-z0-9_.]+$";
-    let notAllowedCharacter = "^[A-Za-z0-9-_. \\\\ \\/ - \\n]+$";
+    //let notAllowedCharacter = "^[A-Za-z0-9-_. \\\\ \\/ - \\n]+$";
     this.entryForm = this.formBuilder.group({
       name:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       phoneNo:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       email:    ['', Validators.compose([Validators.email, Validators.maxLength(20)])],
       address: ['', Validators.compose([Validators.maxLength(200)])],
       description: ['', Validators.compose([Validators.maxLength(200)])]
+
+      //address: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])],
+      //description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])]
+
     });
   }
 
@@ -331,14 +335,4 @@ export class VendorComponent implements OnInit {
     );
     return;
   }
-
-  private replaceCharacterFromModelField(){
-    this.vendorModel.name = _.replace(this.vendorModel.name,':','-');
-    this.vendorModel.address = _.replace(this.vendorModel.address,':','-');
-    this.vendorModel.description = _.replace(this.vendorModel.description,':','-');
-    this.vendorModel.name = _.replace(this.vendorModel.name,',','_');
-    this.vendorModel.address = _.replace(this.vendorModel.address,',','_');
-    this.vendorModel.description = _.replace(this.vendorModel.description,',','_');
-  }
-
 }
