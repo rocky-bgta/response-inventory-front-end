@@ -135,10 +135,10 @@ export class VendorComponent implements OnInit {
       (httpErrorResponse: HttpErrorResponse) =>
       {
         if (httpErrorResponse.error instanceof Error) {
-          this.toastr.error('Datatable population ','Error')
+          this.toastr.error('Datatable population ',this.pageTitle);
           Util.logConsole(httpErrorResponse,"Client-side error occurred.");
         } else {
-          this.toastr.error('Please try again later','Error')
+          this.toastr.error('Please try again later',this.pageTitle);
           Util.logConsole(httpErrorResponse,"Client-side error occurred.");
         }
         return;
