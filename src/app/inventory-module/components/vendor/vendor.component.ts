@@ -10,6 +10,8 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Util} from "../../../core/Util";
 import {RequestMessage} from "../../../core/model/request-message";
 
+import * as Models from '../../model';
+
 import * as _ from 'lodash';
 import * as HttpStatus from 'http-status-codes'
 declare var jQuery: any;
@@ -51,6 +53,7 @@ export class VendorComponent implements OnInit {
     this.initializeReactiveFormValidation();
     this.initializedPageStateVariable();
     this.populateDataTable();
+    //Models.BrandModel
   }
 
 

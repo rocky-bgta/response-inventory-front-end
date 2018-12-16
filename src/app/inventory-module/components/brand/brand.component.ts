@@ -10,6 +10,7 @@ import {Util} from "../../../core/Util";
 import {ResponseMessage} from "../../../core/model/response-message";
 import {HttpErrorResponse} from "@angular/common/http";
 
+
 import * as HttpStatus from 'http-status-codes'
 import * as _ from 'lodash';
 declare var jQuery: any;
@@ -23,6 +24,7 @@ declare var jQuery: any;
 export class BrandComponent implements OnInit {
 
   public brandModel: BrandModel = new BrandModel();
+
 
   public entryForm: FormGroup;
   public formSubmitted:boolean=false;
