@@ -15,7 +15,14 @@ import { VendorComponent } from './components/vendor/vendor.component';
 import { StoreComponent } from './components/store/store.component';
 
 @NgModule({
-  declarations: [CategoryComponent, ProductComponent,ConfirmationModalComponent, BrandComponent, VendorComponent, StoreComponent],
+  declarations: [
+    CategoryComponent,
+    ProductComponent,
+    ConfirmationModalComponent,
+    BrandComponent,
+    VendorComponent,
+    StoreComponent
+  ],
   imports: [
     [
       RouterModule.forChild(inventoryRoutes)],

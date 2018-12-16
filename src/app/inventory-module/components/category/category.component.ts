@@ -11,6 +11,7 @@ import {DataTableRequest} from "../../../core/model/data-table-request";
 import {CategoryModel} from "../../model/category-model";
 import * as _ from 'lodash';
 import {NgxSmartModalService} from "ngx-smart-modal";
+import * as HttpStatus from 'http-status-codes'
 
 declare var jQuery: any;
 
@@ -33,6 +34,7 @@ export class CategoryComponent implements OnInit {
 
   public categoryForm: FormGroup;
   public submitted:boolean=false;
+  public pageTitle:string = "Category";
   // convenience getter for easy access to form fields
   get f() {
     return this.categoryForm.controls;
@@ -118,10 +120,23 @@ export class CategoryComponent implements OnInit {
       requestMessage = Util.getRequestMessage(this.categoryModel);
 
       this.categoryService.save(requestMessage).subscribe(
-        (responseMessage: ResponseMessage) => {
-          this.toastr.success( responseMessage.message,'Category');
-          this.categoryModel = <CategoryModel> responseMessage.data;
-          this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+        (responseMessage: ResponseMessage) =>
+        {
+          if(responseMessage.httpStatus==HttpStatus.CONFLICT){
+            this.toastr.info(responseMessage.message, this.pageTitle);
+          }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY){
+            this.toastr.error(responseMessage.message,this.pageTitle);
+          }else if(responseMessage.httpStatus==HttpStatus.CREATED){
+            this.toastr.success( responseMessage.message,this.pageTitle);
+            this.categoryModel = <CategoryModel> responseMessage.data;
+            this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+            return;
+          }else {
+            this.toastr.error(responseMessage.message,this.pageTitle);
+            return;
+          }
+
+
         },
         (httpErrorResponse: HttpErrorResponse) => {
           if (httpErrorResponse.error instanceof Error) {
@@ -170,11 +185,19 @@ export class CategoryComponent implements OnInit {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(this.categoryModel);
     this.categoryService.update(requestMessage).subscribe(
-      (responseMessage: ResponseMessage) => {
-        this.toastr.success('Category', responseMessage.message);
-        this.resetPage();
+      (responseMessage: ResponseMessage) =>
+      {
+        if(responseMessage.httpStatus==HttpStatus.CONFLICT){
+          this.toastr.info(responseMessage.message,this.pageTitle);
+          return;
+        }else if(responseMessage.httpStatus==HttpStatus.OK) {
+          this.toastr.success( responseMessage.message,this.pageTitle);
+          this.resetPage();
+          return;
+        }
       },
-      (httpErrorResponse: HttpErrorResponse) => {
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
         if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occured.");
         } else {

@@ -11,6 +11,8 @@ export class InventoryApiEndPoint{
 
   public static readonly vendor:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"vendor";
 
+  public static readonly store:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"store";
+
 
 
 }

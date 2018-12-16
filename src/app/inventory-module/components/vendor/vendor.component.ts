@@ -62,7 +62,7 @@ export class VendorComponent implements OnInit {
     this.formSubmitted = true;
 
     if(this.isPageInUpdateState && !this.entryForm.invalid){
-      this.updateProduct();
+      this.updateVendor();
       return;
     }
 
@@ -73,7 +73,7 @@ export class VendorComponent implements OnInit {
       }
     }
     //======== now we safely save entry form data
-    this.saveProduct();
+    this.saveVendor();
     return;
   }
 
@@ -223,7 +223,7 @@ export class VendorComponent implements OnInit {
 
   // ========== Data table button event =====================
 
-  private saveProduct():void{
+  private saveVendor():void{
     let requestMessage: RequestMessage;
     //this.replaceCharacterFromModelField();
     requestMessage = Util.getRequestMessage(this.vendorModel);
@@ -231,7 +231,11 @@ export class VendorComponent implements OnInit {
     (
       (responseMessage: ResponseMessage) =>
       {
-        if(responseMessage.httpStatus== HttpStatus.CREATED) {
+        if(responseMessage.httpStatus== HttpStatus.CONFLICT) {
+          this.toastr.info(responseMessage.message, this.pageTitle);
+        }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY) {
+          this.toastr.error(responseMessage.message,this.pageTitle);
+        }else if(responseMessage.httpStatus==HttpStatus.CREATED){
           this.toastr.success( responseMessage.message,this.pageTitle);
           this.vendorModel = <VendorModel> responseMessage.data;
           this.getVendorList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
@@ -256,7 +260,7 @@ export class VendorComponent implements OnInit {
     return;
   }
 
-  private updateProduct():void{
+  private updateVendor():void{
     let requestMessage: RequestMessage;
     //this.replaceCharacterFromModelField();
     requestMessage = Util.getRequestMessage(this.vendorModel);
@@ -266,19 +270,22 @@ export class VendorComponent implements OnInit {
     (
       (responseMessage: ResponseMessage) =>
       {
-        if(responseMessage.httpStatus==HttpStatus.OK) {
-          this.toastr.success(responseMessage.message, 'Vendor');
+        if(responseMessage.httpStatus==HttpStatus.CONFLICT) {
+          this.toastr.info(responseMessage.message,this.pageTitle);
+          return;
+        }else if(responseMessage.httpStatus==HttpStatus.OK){
+          this.toastr.success(responseMessage.message, this.pageTitle);
           this.resetPage();
           return;
         }else {
-          this.toastr.error(responseMessage.message,'Vendor');
+          this.toastr.error(responseMessage.message,this.pageTitle);
           return;
         }
       },
 
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        this.toastr.error('Failed to update brand','Brand');
+        this.toastr.error('Failed to update brand',this.pageTitle);
         if (httpErrorResponse.error instanceof Error) {
           Util.logConsole(null,"Client-side error occurred.");
         } else {
@@ -311,7 +318,7 @@ export class VendorComponent implements OnInit {
     this.entryForm = this.formBuilder.group({
       name:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       phoneNo:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
-      email:    ['', Validators.compose([Validators.email, Validators.maxLength(20)])],
+      email:    ['', Validators.compose([Validators.email, Validators.maxLength(50)])],
       address: ['', Validators.compose([Validators.maxLength(200)])],
       description: ['', Validators.compose([Validators.maxLength(200)])]
 

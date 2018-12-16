@@ -2,6 +2,7 @@ import {RequestMessage} from "./model/request-message";
 import {DataTableRequest} from "./model/data-table-request";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
+declare var jQuery: any;
 
 export class Util{
 
@@ -27,12 +28,23 @@ export class Util{
   }
 
   public static logConsole(data?:any,message?:string) {
-    if (message != null && data!=null)
+    if(jQuery.isEmptyObject(data) && (typeof message === "string")) {
+      console.log(message);
+      return
+    }
+    if (message != null && data!=null) {
       console.log(message + ": " + JSON.stringify(data, null, 2));
-    if(data==null && message!=null)
+      return;
+    }
+    if(data==null && message!=null) {
       console.error(message);
-    if(data!=null)
+      return;
+    }
+    if(data!=null) {
       console.log(data);
+      return;
+    }
+    return;
   }
 
   public static errorHandler(httpErrorResponse: HttpErrorResponse){

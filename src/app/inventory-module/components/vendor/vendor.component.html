@@ -82,7 +82,7 @@
                 [(ngModel)]="vendorModel.email"
                 formControlName="email">
               <span *ngIf="entryForm.controls['email'].hasError('maxlength') " class="custom-invalid-feedback">
-                Maximum character for email is 20
+                Maximum character for email is 50
               </span>
               <span *ngIf="entryForm.controls['email'].hasError('email') " class="custom-invalid-feedback">
                Please provide valid email address
@@ -184,11 +184,11 @@
         <thead>
         <tr>
           <!-- <th>ID</th>-->
-          <th style="width: 10%">Name</th>
-          <th style="width: 80%">Phone</th>
-          <th style="width: 10%">Email</th>
-          <th style="width: 10%">Address</th>
-          <th style="width: 80%">Description</th>
+          <th style="width: 20%">Name</th>
+          <th style="width: 10%">Phone</th>
+          <th style="width: 20%">Email</th>
+          <th style="width: 30%">Address</th>
+          <th style="width: 30%">Description</th>
           <th style="width: 10%">Action</th>
         </tr>
         </thead>

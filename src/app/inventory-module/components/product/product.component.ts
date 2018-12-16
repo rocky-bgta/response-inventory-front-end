@@ -374,7 +374,7 @@ export class ProductComponent implements OnInit {
           this.toastr.info(responseMessage.message,'Product');
           return;
         }
-        this.toastr.success('Product', responseMessage.message);
+        this.toastr.success(responseMessage.message,'Product');
         this.productModel = <ProductModel> responseMessage.data;
         if(this.productModel.image!=null)
           this.setImage(this.productModel.image);

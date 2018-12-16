@@ -1,3 +1,258 @@
-<p>
-  store works!
-</p>
+<button class="btn btn-primary"
+        type="button"
+        [disabled]="isPageInUpdateState"
+        data-toggle="collapse"
+        data-target="#collapseInputForm"
+        aria-expanded="false"
+        aria-controls="collapseInputForm">
+  {{isPageInUpdateState==true?'Update ':'Add '+pageTitle}}
+</button>
+
+<div style="margin-top: 1%">
+  <form class="collapse"
+        id="collapseInputForm"
+        data-toggle="collapse"
+        name="storeForm"
+        [formGroup]="entryForm">
+
+    <div class="col-sm-6" style="padding-left: 0%;">
+      <div class="card">
+        <div class="card-header text-center">
+          <strong>Store</strong>
+        </div>
+        <div class="card-body">
+
+          <div class="form-group required row">
+            <label for="name" class="col-sm-4 control-label">Name:</label>
+            <div class="col-sm-8">
+              <input
+                id="name"
+                class="form-control"
+                name="name"
+                autocomplete="off"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="storeModel.name"
+                formControlName="name"
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name'].hasError('required') }">
+
+              <div *ngIf="formSubmitted && entryForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
+                Store name required
+              </div>
+              <span *ngIf="entryForm.controls['name'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for Name is 20
+              </span>
+            </div>
+          </div>
+
+
+          <div class="form-group required row">
+            <label for="owner" class="col-sm-4 control-label">Owner:</label>
+            <div class="col-sm-8">
+              <input
+                id="owner"
+                class="form-control"
+                name="owner"
+                autocomplete="off"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="storeModel.owner"
+                formControlName="owner"
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['owner'].hasError('required') }">
+
+              <div *ngIf="formSubmitted && entryForm.controls['owner'].hasError('required')" class="custom-invalid-feedback">
+                Store name required
+              </div>
+              <span *ngIf="entryForm.controls['owner'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for Store Owner Name is 20
+              </span>
+            </div>
+          </div>
+
+
+          <div class="form-group required row">
+            <label for="phoneNo" class="col-sm-4 control-label">Phone No:</label>
+            <div class="col-sm-8">
+              <input
+                id="phoneNo"
+                class="form-control"
+                name="phoneNo"
+                autocomplete="off"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="storeModel.phoneNo"
+                formControlName="phoneNo"
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo'].hasError('required') }">
+
+              <div *ngIf="formSubmitted && entryForm.controls['phoneNo'].hasError('required')" class="custom-invalid-feedback">
+                Owner Phone number is required
+              </div>
+              <span *ngIf="entryForm.controls['phoneNo'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for phone no is 20
+              </span>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="email" class="col-sm-4">Email:</label>
+            <div class="col-sm-8">
+              <input
+                id="email"
+                class="form-control"
+                name="email"
+                autocomplete="off"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                type="email"
+                [(ngModel)]="storeModel.email"
+                formControlName="email">
+              <span *ngIf="entryForm.controls['email'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for email is 50
+              </span>
+              <span *ngIf="entryForm.controls['email'].hasError('email') " class="custom-invalid-feedback">
+               Please provide valid email address
+              </span>
+            </div>
+          </div>
+
+
+          <div class="form-group row">
+            <label for="address" class="col-sm-4">Address:</label>
+            <div class="col-sm-8">
+              <textarea
+                name="address"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                [(ngModel)]="storeModel.address"
+                formControlName="address"
+                class="form-control rounded-0"
+                id="address">
+              </textarea>
+              <span *ngIf="entryForm.controls['address'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for Store Address is 200
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="comment" class="col-sm-4">Comment:</label>
+            <div class="col-sm-8">
+              <textarea
+                name="comment"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                [(ngModel)]="storeModel.comment"
+                formControlName="comment"
+                class="form-control rounded-0"
+                id="comment">
+              </textarea>
+              <span *ngIf="entryForm.controls['comment'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for Store Comment is 200
+              </span>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="card-footer">
+          <div class="row">
+            <div class="col-sm-12">
+
+              <button *ngIf="!disablePageElementOnDetailsView"
+                      type="button"
+                      (click)="onClickSubmit()"
+                      class="btn btn-success">
+                {{isPageInUpdateState==true?'Update ':'Save '}}
+              </button>
+
+
+              <button *ngIf="!disablePageElementOnDetailsView"
+                      type="button"
+                      style="margin-left: 1%"
+                      (click)="onClickReset()"
+                      class="btn btn-danger">
+                Reset
+              </button>
+
+
+              <button type="button"
+                      (click)="onClickCancel()"
+                      class="btn btn-danger pull-right">
+                Cancel
+              </button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="">
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>{{pageTitle}} List</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dataTableOptions" class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <!-- <th>ID</th>-->
+          <th style="width: 10%">Name</th>
+          <th style="width: 10%">Owner</th>
+          <th style="width: 20%">Phone</th>
+          <th style="width: 10%">Email</th>
+          <th style="width: 20%">Address</th>
+          <th style="width: 20%">comment</th>
+          <th style="width: 10%">Action</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="storeModelList?.length != 0">
+        <tr *ngFor="let item of storeModelList">
+          <td>{{item.name }}</td>
+          <td>{{item.owner}}</td>
+          <td>{{item.phoneNo}}</td>
+          <td>{{item.email}}</td>
+          <td class="ellipsis">{{item.address}}</td>
+          <td class="ellipsis">{{item.comment}}</td>
+          <td>
+            <button type="button" class="btn btn-secondary" (click)="onClickEdit(item.id)" style="margin-left: 1%">
+              Edit
+            </button>
+
+            <button type="button" class="btn btn-info" (click)="onClickDetails(item.id)" style="margin-left: 1%">
+              Details
+            </button>
+
+            <button type="button" class="btn btn-danger" (click)="onClickDelete(item.id)" style="margin-left: 1%">
+              Delete
+            </button>
+
+          </td>
+
+
+        </tr>
+        </tbody>
+        <tbody *ngIf="storeModelList?.length == 0">
+        <tr>
+          <td colspan="7" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+
+
+    </div>
+    <div class="">
+
+    </div>
+  </div>
+
+</div>
+
+<confirmation-modal [deleteObjectType]="pageTitle"
+                    [deletedObjectName]="storeModel.name"
+                    [id]="storeModel.id"
+                    (deleteProductId)="onDeleteConfirm($event)">
+</confirmation-modal>
