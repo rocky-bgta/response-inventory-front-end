@@ -100,10 +100,7 @@ export class CategoryComponent implements OnInit {
 
   //work as a save and update method
   onSubmit() {
-
     this.submitted=true;
-
-    let requestMessage: RequestMessage;
 
     if (this.isPageUpdateState == true && !this.categoryForm.invalid) {
       this.updateCategory();
@@ -113,40 +110,14 @@ export class CategoryComponent implements OnInit {
     if (this.isPageUpdateState == false) {
       // stop here if form is invalid
       if (this.categoryForm.invalid) {
-        this.toastr.info("Please provide required form data","Category");
+        this.toastr.info("Please provide required form data",this.pageTitle);
         return;
       }
 
-      requestMessage = Util.getRequestMessage(this.categoryModel);
+      //======== now we safely save entry form data
+      this.saveCategory();
+      return;
 
-      this.categoryService.save(requestMessage).subscribe(
-        (responseMessage: ResponseMessage) =>
-        {
-          if(responseMessage.httpStatus==HttpStatus.CONFLICT){
-            this.toastr.info(responseMessage.message, this.pageTitle);
-          }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY){
-            this.toastr.error(responseMessage.message,this.pageTitle);
-          }else if(responseMessage.httpStatus==HttpStatus.CREATED){
-            this.toastr.success( responseMessage.message,this.pageTitle);
-            this.categoryModel = <CategoryModel> responseMessage.data;
-            this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
-            return;
-          }else {
-            this.toastr.error(responseMessage.message,this.pageTitle);
-            return;
-          }
-
-
-        },
-        (httpErrorResponse: HttpErrorResponse) => {
-          if (httpErrorResponse.error instanceof Error) {
-            console.log("Client-side error occured.");
-          } else {
-            console.log("Server-side error occured.");
-          }
-        }
-      );
-      // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.categoryModel))
     }
   }
 
@@ -202,6 +173,39 @@ export class CategoryComponent implements OnInit {
           console.log("Client-side error occured.");
         } else {
           console.log("Server-side error occured.");
+        }
+      }
+    );
+  }
+
+  private saveCategory():void{
+
+    let requestMessage: RequestMessage;
+    requestMessage = Util.getRequestMessage(this.categoryModel);
+    this.categoryService.save(requestMessage).subscribe(
+      (responseMessage: ResponseMessage) =>
+      {
+        if(responseMessage.httpStatus==HttpStatus.CONFLICT){
+          this.toastr.info(responseMessage.message, this.pageTitle);
+        }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY){
+          this.toastr.error(responseMessage.message,this.pageTitle);
+        }else if(responseMessage.httpStatus==HttpStatus.CREATED){
+          this.toastr.success( responseMessage.message,this.pageTitle);
+          this.categoryModel = <CategoryModel> responseMessage.data;
+          this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+          return;
+        }else {
+          this.toastr.error(responseMessage.message,this.pageTitle);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        if (httpErrorResponse.error instanceof Error) {
+          console.log("Client-side error occurred.");
+        } else {
+          console.log("Server-side error occurred.");
         }
       }
     );

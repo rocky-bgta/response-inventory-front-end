@@ -39,6 +39,8 @@ export class BrandComponent implements OnInit {
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction: any;
 
+  public pageTitle:string='Brand';
+
   //====== value pass to delete confirmation modal
   public deleteObjectType:string='Brand';
 
@@ -209,18 +211,24 @@ export class BrandComponent implements OnInit {
     (
 (responseMessage: ResponseMessage) =>
         {
-          if(responseMessage.httpStatus==HttpStatus.CREATED) {
-            this.toastr.success( responseMessage.message,'Brand');
+          if(responseMessage.httpStatus==HttpStatus.CONFLICT){
+            this.toastr.info(responseMessage.message, this.pageTitle);
+          }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY){
+            this.toastr.error(responseMessage.message,this.pageTitle);
+          }else if(responseMessage.httpStatus==HttpStatus.CREATED){
+            this.toastr.success( responseMessage.message,this.pageTitle);
             this.brandModel = <BrandModel> responseMessage.data;
             this.getBrandList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+            return;
           }else {
-            this.toastr.error(responseMessage.message,'Brand');
+            this.toastr.error(responseMessage.message,this.pageTitle);
+            return;
           }
         },
 
 (httpErrorResponse: HttpErrorResponse) =>
         {
-          this.toastr.error('Failed to save brand','Brand');
+          this.toastr.error('Failed to save brand',this.pageTitle);
           if (httpErrorResponse.error instanceof Error) {
             Util.logConsole(null,"Client-side error occurred.");
           } else {
@@ -239,13 +247,19 @@ export class BrandComponent implements OnInit {
     (
 (responseMessage: ResponseMessage) =>
         {
-          this.toastr.success(responseMessage.message,'Brand');
-          this.resetPage();
+          if(responseMessage.httpStatus==HttpStatus.CONFLICT){
+            this.toastr.info(responseMessage.message,this.pageTitle);
+            return;
+          }else if(responseMessage.httpStatus==HttpStatus.OK) {
+            this.toastr.success( responseMessage.message,this.pageTitle);
+            this.resetPage();
+            return;
+          }
         },
 
 (httpErrorResponse: HttpErrorResponse) =>
         {
-          this.toastr.error('Failed to update brand','Brand');
+          this.toastr.error('Failed to update brand',this.pageTitle);
           if (httpErrorResponse.error instanceof Error) {
             Util.logConsole(null,"Client-side error occurred.");
           } else {
