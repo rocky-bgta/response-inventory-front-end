@@ -49,6 +49,7 @@ export class ProductComponent implements OnInit {
 
   public productForm: FormGroup;
   public submitted:boolean=false;
+  public pageTitle: "Product";
 
   constructor(private productService: ProductService,
               private categoryService: CategoryService,
@@ -91,7 +92,7 @@ export class ProductComponent implements OnInit {
     if (this.isPageUpdateState == false) {
       //stop here if form is invalid
       if (this.productForm.invalid) {
-        this.toastr.info("Please provide required form data","Product Entry");
+        this.toastr.info("Please provide required form data",this.pageTitle);
         //console.log(this.productForm.controls);
         //======== R&D================
         //let errors = this.productForm.errors;
@@ -158,9 +159,9 @@ export class ProductComponent implements OnInit {
       },
       (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {
-          console.log("Client-side error occured.");
+          console.log("Client-side error occurred.");
         } else {
-          console.log("Server-side error occured.");
+          console.log("Server-side error occurred.");
         }
       }
     );
@@ -188,9 +189,9 @@ export class ProductComponent implements OnInit {
       },
       (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {
-          console.log("Client-side error occured.");
+          console.log("Client-side error occurred.");
         } else {
-          console.log("Server-side error occured.");
+          console.log("Server-side error occurred.");
         }
       });
   }
@@ -232,7 +233,7 @@ export class ProductComponent implements OnInit {
 
         this.productModelList = <Array<ProductModel>>responseMessage.data;
         if(this.productModelList == null || this.productModelList.length==0){
-          this.toastr.info("No result product found","Product")
+          this.toastr.info("No result product found",this.pageTitle)
         }else {
           //Util.logConsole(this.productModelList);
           this.setCategoryNameForProductList();
@@ -345,16 +346,27 @@ export class ProductComponent implements OnInit {
     //console.log(this.base64imageString);
     requestMessage = Util.getRequestMessage(this.productModel);
     this.productService.update(requestMessage).subscribe(
-      (responseMessage: ResponseMessage) => {
-
-        this.toastr.success('Product', responseMessage.message);
-        this.resetPage();
+      (responseMessage: ResponseMessage) =>
+      {
+        if(responseMessage.httpStatus==HttpStatus.OK){
+          this.toastr.success(responseMessage.message,this.pageTitle);
+          this.resetPage();
+          return;
+        }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY){
+          this.toastr.info(responseMessage.message,this.pageTitle);
+          return;
+        }else {
+          this.toastr.error(responseMessage.message,this.pageTitle);
+          return;
+        }
       },
-      (httpErrorResponse: HttpErrorResponse) => {
+
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
         if (httpErrorResponse.error instanceof Error) {
-          console.log("Client-side error occured.");
+          console.log("Client-side error occurred.");
         } else {
-          console.log("Server-side error occured.");
+          console.log("Server-side error occurred.");
         }
       }
     );
@@ -369,29 +381,39 @@ export class ProductComponent implements OnInit {
     //==========================================================================
 
     this.productService.save(requestMessage).subscribe(
-      (responseMessage: ResponseMessage) => {
-        if(responseMessage.httpStatus==HttpStatus.CONFLICT) {
-          this.toastr.info(responseMessage.message,'Product');
-          return;
-        }
-        this.toastr.success(responseMessage.message,'Product');
-        this.productModel = <ProductModel> responseMessage.data;
-        if(this.productModel.image!=null)
-          this.setImage(this.productModel.image);
-        // update data of data table
-        this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
-      },
-      (httpErrorResponse: HttpErrorResponse) => {
-        if (httpErrorResponse.error instanceof Error) {
-          this.toastr.error('Product', "Client-side error occured");
-          console.log("Client-side error occured.");
-        } else {
-          this.toastr.error('Product', "Server-side error occured.");
-          console.log("Server-side error occured.");
-        }
-      }
-    );
+      (responseMessage: ResponseMessage) =>
+              {
+                if(responseMessage.httpStatus==HttpStatus.CONFLICT) {
+                  this.toastr.info(responseMessage.message,this.pageTitle);
+                  return;
+                }else if(responseMessage.httpStatus==HttpStatus.CREATED){
+                  this.toastr.success(responseMessage.message,this.pageTitle);
+                  this.productModel = <ProductModel> responseMessage.data;
+                  if(this.productModel.image!=null)
+                    this.setImage(this.productModel.image);
+                  // update data of data table
+                  this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+                  return;
+                }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY) {
+                  this.toastr.error(responseMessage.message,this.pageTitle);
+                  return;
+                }else {
+                  this.toastr.error(responseMessage.message,this.pageTitle);
+                  return;
+                }
+              },
 
+      (httpErrorResponse: HttpErrorResponse) =>
+              {
+                if (httpErrorResponse.error instanceof Error) {
+                  this.toastr.error( "Client-side error occurred",this.pageTitle);
+                  console.log("Client-side error occurred.");
+                } else {
+                  this.toastr.error( "Server-side error occurred.",this.pageTitle);
+                  console.log("Server-side error occurred.");
+                }
+              }
+    );
   }
 
   private resetPage() {
@@ -423,13 +445,13 @@ export class ProductComponent implements OnInit {
   private initializeReactiveFormValidation(){
     //========== form validation ==========
     this.productForm = this.formBuilder.group({
-      name: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+      name: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       categories: ['',Validators.required],
       brands: ['', Validators.compose([Validators.required])],
-      modelNo: ['',Validators.compose([Validators.required, Validators.maxLength(20)])],
+      modelNo: ['',Validators.compose([Validators.required, Validators.maxLength(50)])],
       //serialNo: ['',Validators.maxLength(20)],
       price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
-      description: ['',Validators.maxLength(100)],
+      description: ['',Validators.maxLength(200)],
       barcode: ['',Validators.compose([Validators.required,Validators.maxLength(20)])]
     });
   }

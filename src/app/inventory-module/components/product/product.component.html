@@ -43,7 +43,7 @@
                 Product name required
               </div>
               <span *ngIf="productForm.controls['name'].hasError('maxlength') " class="custom-invalid-feedback">
-                Max character for Brand Name is 20
+                Max character for Brand Name is 50
               </span>
             </div>
           </div>
@@ -134,7 +134,7 @@
                 Product model no required
               </div>
               <span *ngIf="productForm.controls['modelNo'].hasError('maxlength') " class="custom-invalid-feedback">
-                Max character for Model No is 20
+                Max character for Model No is 50
               </span>
             </div>
           </div>
@@ -196,7 +196,7 @@
                 [(ngModel)]="productModel.description">
               </textarea>
               <span *ngIf="productForm.controls['description'].hasError('maxlength') " class="custom-invalid-feedback">
-                Maximum character for Description is 100
+                Maximum character for Description is 200
               </span>
             </div>
           </div>
