@@ -13,6 +13,8 @@ import {ConfirmationModalComponent} from "../core/components/confirmation-modal/
 import { BrandComponent } from './components/brand/brand.component';
 import { VendorComponent } from './components/vendor/vendor.component';
 import { StoreComponent } from './components/store/store.component';
+import { StoreInProductsComponent } from './components/store-in-products/store-in-products.component';
+import { StoreSalesProductsComponent } from './components/store-sales-products/store-sales-products.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { StoreComponent } from './components/store/store.component';
     ConfirmationModalComponent,
     BrandComponent,
     VendorComponent,
-    StoreComponent
+    StoreComponent,
+    StoreInProductsComponent,
+    StoreSalesProductsComponent
   ],
   imports: [
     [

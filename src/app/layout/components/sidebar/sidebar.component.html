@@ -31,6 +31,16 @@
       <span>{{ 'Store' | translate }}</span>
     </a>
 
+    <a routerLink="/inventory/store-in-products" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-ticket"></i>&nbsp;
+      <span>{{ 'Store-in-products' | translate }}</span>
+    </a>
+
+    <a routerLink="/inventory/store-sales-products" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-android"></i>
+      <span>{{ 'Store-sales-products' | translate }}</span>
+    </a>
+
     <a [routerLink]="['/charts']" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp;
       <span>{{ 'Charts' | translate }}</span>
