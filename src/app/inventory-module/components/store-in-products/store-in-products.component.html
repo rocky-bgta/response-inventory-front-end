@@ -1,17 +1,47 @@
-<form>
+<form id="collapseInputForm" class="collapse" data-toggle="collapse" [formGroup]="entryForm">
 
   <div class="row">
     <div class="col-sm-3">
       <div class="card">
         <div class="card-body">
+
+
           <div class="form-group">
             <label for="exampleInputPassword1">Password</label>
             <input type="password" class="form-control form-control-sm" id="exampleInputPassword1"
                    placeholder="Password">
           </div>
+
+
+          <div class="form-group required">
+
+            <div class="col-sm-3">
+              <label for="vendor" class="control-label">Vendor:</label>
+              <ng-select [items]="vendorModelList"
+                         id="vendor"
+                         bindLabel="name"
+                         bindValue="id"
+                         required
+                         [attr.disabled]="disableElementOnDetailsView"
+                         name="vendor"
+                         (change)="onChangeVendor($event)"
+                         [ngModel]="storeInProductsModel.vendorId"
+                         [ngClass]="{ 'custom-invalid-ng-select': submitted && entryForm.controls['vendor'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                         formControlName="vendor"
+                         placeholder="Select Vendor">
+              </ng-select>
+              <div *ngIf="submitted && entryForm.controls['vendor'].hasError('required')" class="custom-invalid-feedback">
+                Select a Brand
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
+
+
+
   </div>
 
 
