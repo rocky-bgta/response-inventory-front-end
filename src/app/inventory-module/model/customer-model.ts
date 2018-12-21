@@ -1,6 +1,6 @@
 export class CustomerModel{
    id:string;
-   customerCode:string;
+   //customerCode:string;
    name:string;
    phoneNo1:string;
    phoneNo2:string;
