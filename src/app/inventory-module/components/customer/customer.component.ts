@@ -126,6 +126,7 @@ export class CustomerComponent implements OnInit {
       {
         if(response.httpStatus==HttpStatus.OK) {
           this.customerModelList = <Array<CustomerModel>>response.data;
+          Util.logConsole(this.customerModelList,"get Customer Model: ");
           callback({
             recordsTotal: response.dataTableResponse.recordsTotal,
             recordsFiltered: response.dataTableResponse.recordsTotal,

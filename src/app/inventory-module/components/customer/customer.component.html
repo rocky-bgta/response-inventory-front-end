@@ -204,6 +204,70 @@
   </form>
 </div>
 
+<div class="">
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>{{pageTitle}} List</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dataTableOptions" class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <!-- <th>ID</th>-->
+          <th style="width: 20%">Name</th>
+          <th style="width: 10%">Phone1</th>
+          <th style="width: 10%">Phone2</th>
+          <th style="width: 20%">Email</th>
+          <th style="width: 30%">Address</th>
+          <th style="width: 10%">Activity</th>
+          <th style="width: 10%">Action</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="customerModelList?.length != 0">
+        <tr *ngFor="let item of customerModelList">
+          <!-- <td>{{ category.id }}</td>-->
+          <td>{{item.name }}</td>
+          <td>{{item.phoneNo1}}</td>
+          <td>{{item.phoneNo2}}</td>
+          <td>{{item.email}}</td>
+          <td class="ellipsis">{{item.address}}</td>
+          <td>{{item.activity}}</td>
+          <td>
+            <button type="button" class="btn btn-secondary" (click)="onClickEdit(item.id)" style="margin-left: 1%">
+              Edit
+            </button>
+
+            <button type="button" class="btn btn-info" (click)="onClickDetails(item.id)" style="margin-left: 1%">
+              Details
+            </button>
+
+            <button type="button" class="btn btn-danger" (click)="onClickDelete(item.id)" style="margin-left: 1%">
+              Delete
+            </button>
+
+          </td>
+
+
+        </tr>
+        </tbody>
+        <tbody *ngIf="customerModelList?.length == 0">
+        <tr>
+          <td colspan="6" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+
+
+    </div>
+    <div class="">
+
+    </div>
+  </div>
+
+</div>
+
 
 <confirmation-modal [deleteObjectType]="pageTitle"
                     [deletedObjectName]="customerModel.name"
