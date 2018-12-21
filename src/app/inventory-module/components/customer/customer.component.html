@@ -12,13 +12,13 @@
   <form class="collapse"
         id="collapseInputForm"
         data-toggle="collapse"
-        name="vendorForm"
+        name="customerForm"
         [formGroup]="entryForm">
 
     <div class="col-sm-6" style="padding-left: 0%;">
       <div class="card">
         <div class="card-header text-center">
-          <strong>Vendor</strong>
+          <strong>{{pageTitle}}</strong>
         </div>
         <div class="card-body">
 
@@ -27,43 +27,61 @@
             <div class="col-sm-8">
               <input
                 id="name"
-                class="form-control"
+                class="form-control form-control-sm"
                 name="name"
                 autocomplete="off"
                 [attr.disabled]="disablePageElementOnDetailsView?'':null"
                 type="text"
-                [(ngModel)]="vendorModel.name"
+                [(ngModel)]="customerModel.name"
                 formControlName="name"
                 [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name'].hasError('required') }">
 
               <div *ngIf="formSubmitted && entryForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
-                Vendor name required
+                {{pageTitle}} name required
               </div>
               <span *ngIf="entryForm.controls['name'].hasError('maxlength') " class="custom-invalid-feedback">
-                Maximum character for Name is 20
+                Maximum character for {{pageTitle}} Name is 50
               </span>
             </div>
           </div>
 
           <div class="form-group required row">
-            <label for="phoneNo" class="col-sm-4 control-label">Phone No:</label>
+            <label for="phoneNo1" class="col-sm-4 control-label">Phone No1:</label>
             <div class="col-sm-8">
               <input
-                id="phoneNo"
-                class="form-control"
-                name="phoneNo"
+                id="phoneNo1"
+                class="form-control form-control-sm"
+                name="phoneNo1"
                 autocomplete="off"
                 [attr.disabled]="disablePageElementOnDetailsView?'':null"
                 type="text"
-                [(ngModel)]="vendorModel.phoneNo"
-                formControlName="phoneNo"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo'].hasError('required') }">
+                [(ngModel)]="customerModel.phoneNo1"
+                formControlName="phoneNo1"
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo1'].hasError('required') }">
 
-              <div *ngIf="formSubmitted && entryForm.controls['phoneNo'].hasError('required')" class="custom-invalid-feedback">
-                Vendor name required
+              <div *ngIf="formSubmitted && entryForm.controls['phoneNo1'].hasError('required')" class="custom-invalid-feedback">
+                {{pageTitle}} name required
               </div>
-              <span *ngIf="entryForm.controls['phoneNo'].hasError('maxlength') " class="custom-invalid-feedback">
-                Maximum character for phone no is 20
+              <span *ngIf="entryForm.controls['phoneNo1'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for phone no1 is 20
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="phoneNo2" class="col-sm-4">Phone No2:</label>
+            <div class="col-sm-8">
+              <input
+                id="phoneNo2"
+                class="form-control form-control-sm"
+                name="phoneNo2"
+                autocomplete="off"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="customerModel.phoneNo2"
+                formControlName="phoneNo2">
+              <span *ngIf="entryForm.controls['phoneNo2'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for phone no2 is 20
               </span>
             </div>
           </div>
@@ -74,12 +92,12 @@
             <div class="col-sm-8">
               <input
                 id="email"
-                class="form-control"
+                class="form-control form-control-sm"
                 name="email"
                 autocomplete="off"
                 [attr.disabled]="disablePageElementOnDetailsView?'':null"
                 type="email"
-                [(ngModel)]="vendorModel.email"
+                [(ngModel)]="customerModel.email"
                 formControlName="email">
               <span *ngIf="entryForm.controls['email'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for email is 50
@@ -91,47 +109,61 @@
           </div>
 
 
+
           <div class="form-group row">
             <label for="address" class="col-sm-4">Address:</label>
             <div class="col-sm-8">
               <textarea
                 name="address"
                 [attr.disabled]="disablePageElementOnDetailsView?'':null"
-                [(ngModel)]="vendorModel.address"
+                [(ngModel)]="customerModel.address"
                 formControlName="address"
-                class="form-control rounded-0"
+                class="form-control rounded-0 form-control-sm"
                 id="address"></textarea>
               <span *ngIf="entryForm.controls['address'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for Address is 200
               </span>
-
               <!--
               <span *ngIf="entryForm.controls['address'].hasError('pattern') " class="custom-invalid-feedback">
                 Allowed character a-z A-Z 0-9 . _ - \ /
               </span>
               -->
-
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="description" class="col-sm-4">Description:</label>
+            <label for="activity" class="col-sm-4">Activity:</label>
+            <div class="col-sm-8">
+              <input
+                id="activity"
+                class="form-control form-control-sm"
+                name="activity"
+                autocomplete="off"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                type="number"
+                min="1"
+                onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                [(ngModel)]="customerModel.activity"
+                formControlName="activity">
+              <!--<span *ngIf="entryForm.controls['activity'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for phone no2 is 20
+              </span>-->
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="comment" class="col-sm-4">Comment:</label>
             <div class="col-sm-8">
               <textarea
-                name="description"
+                name="comment"
                 [attr.disabled]="disablePageElementOnDetailsView?'':null"
-                [(ngModel)]="vendorModel.description"
-                formControlName="description"
-                class="form-control rounded-0"
-                id="description"></textarea>
-              <span *ngIf="entryForm.controls['description'].hasError('maxlength') " class="custom-invalid-feedback">
-                Maximum character for Description is 200
+                [(ngModel)]="customerModel.comment"
+                formControlName="comment"
+                class="form-control rounded-0 form-control-sm"
+                id="comment"></textarea>
+              <span *ngIf="entryForm.controls['comment'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for Comment is 200
               </span>
-              <!--
-              <span *ngIf="entryForm.controls['description'].hasError('pattern') " class="custom-invalid-feedback">
-                Allowed character a-z A-Z 0-9 . _ - \ /
-              </span>
-              -->
             </div>
           </div>
 
@@ -172,70 +204,9 @@
   </form>
 </div>
 
-<div class="">
-
-  <div class="card" style="margin-top: 1%">
-    <div class="card-header">
-      <strong>{{pageTitle}} List</strong>
-    </div>
-    <div class="card-body">
-      <table datatable [dtOptions]="dataTableOptions" class="table-hover table table-sm table-striped table-bordered nowrap"
-             style="width: 100%">
-        <thead>
-        <tr>
-          <!-- <th>ID</th>-->
-          <th style="width: 20%">Name</th>
-          <th style="width: 10%">Phone</th>
-          <th style="width: 20%">Email</th>
-          <th style="width: 30%">Address</th>
-          <th style="width: 30%">Description</th>
-          <th style="width: 10%">Action</th>
-        </tr>
-        </thead>
-        <tbody *ngIf="vendorModelList?.length != 0">
-        <tr *ngFor="let item of vendorModelList">
-          <!-- <td>{{ category.id }}</td>-->
-          <td>{{item.name }}</td>
-          <td>{{item.phoneNo}}</td>
-          <td>{{item.email}}</td>
-          <td class="ellipsis">{{item.address}}</td>
-          <td class="ellipsis">{{item.description}}</td>
-          <td>
-            <button type="button" class="btn btn-secondary" (click)="onClickEdit(item.id)" style="margin-left: 1%">
-              Edit
-            </button>
-
-            <button type="button" class="btn btn-info" (click)="onClickDetails(item.id)" style="margin-left: 1%">
-              Details
-            </button>
-
-            <button type="button" class="btn btn-danger" (click)="onClickDelete(item.id)" style="margin-left: 1%">
-              Delete
-            </button>
-
-          </td>
-
-
-        </tr>
-        </tbody>
-        <tbody *ngIf="vendorModelList?.length == 0">
-        <tr>
-          <td colspan="6" class="no-data-available">No data!</td>
-        </tr>
-        <tbody>
-      </table>
-
-
-    </div>
-    <div class="">
-
-    </div>
-  </div>
-
-</div>
 
 <confirmation-modal [deleteObjectType]="pageTitle"
-                    [deletedObjectName]="vendorModel.name"
-                    [id]="vendorModel.id"
+                    [deletedObjectName]="customerModel.name"
+                    [id]="customerModel.id"
                     (deleteProductId)="onDeleteConfirm($event)">
 </confirmation-modal>

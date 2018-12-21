@@ -26,6 +26,11 @@
       <span>{{ 'Vendor' | translate }}</span>
     </a>
 
+    <a routerLink="/inventory/customer" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-address-book"></i>&nbsp;
+      <span>{{ 'Customer' | translate }}</span>
+    </a>
+
     <a routerLink="/inventory/store" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-dashboard"></i>&nbsp;
       <span>{{ 'Store' | translate }}</span>

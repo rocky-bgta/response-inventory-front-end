@@ -1,13 +1,14 @@
 import {ToastrService} from "ngx-toastr";
 import {Injector} from "@angular/core";
-import {ICustomType} from "./interface/ICustomType";
+
 import * as lodash from 'lodash';
+import {CustomObject} from "./interface/CustomObject";
 
 export class BaseComponent {
   public toasterService: ToastrService;
   private injector: Injector;
 
-  public customObject: ICustomType;
+  public customObject: CustomObject;
   public lodash;
 
 

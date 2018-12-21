@@ -3,8 +3,8 @@
  *Created Date: 10/18/2017
  *Modified By:
  *Modified date:
- *(C) CopyRight Nybsys ltd.
+ *(C) CopyRight Response Electronic ltd.
  */
-export interface ICustomType {
+export interface CustomObject {
     [key: string]: any
 }

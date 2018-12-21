@@ -15,6 +15,7 @@ import { VendorComponent } from './components/vendor/vendor.component';
 import { StoreComponent } from './components/store/store.component';
 import { StoreInProductsComponent } from './components/store-in-products/store-in-products.component';
 import { StoreSalesProductsComponent } from './components/store-sales-products/store-sales-products.component';
+import { CustomerComponent } from './components/customer/customer.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { StoreSalesProductsComponent } from './components/store-sales-products/s
     VendorComponent,
     StoreComponent,
     StoreInProductsComponent,
-    StoreSalesProductsComponent
+    StoreSalesProductsComponent,
+    CustomerComponent
   ],
   imports: [
     [
