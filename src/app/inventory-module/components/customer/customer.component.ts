@@ -105,9 +105,9 @@ export class CustomerComponent implements OnInit {
           this.getCustomerList(dataTablesParameters, callback);
         },
         columns: [
-          {data: 'name'},
-          {data: 'phoneNo1'},
-          {data: 'phoneNo2'},
+          {data:'name'},
+          {data:'phoneNo1'},
+          {data:'phoneNo2'},
           {data:'email'},
           {data:'address'},
           {data:'activity'},

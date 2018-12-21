@@ -234,6 +234,8 @@
           <td>{{item.email}}</td>
           <td class="ellipsis">{{item.address}}</td>
           <td>{{item.activity}}</td>
+
+
           <td>
             <button type="button" class="btn btn-secondary" (click)="onClickEdit(item.id)" style="margin-left: 1%">
               Edit
@@ -254,7 +256,7 @@
         </tbody>
         <tbody *ngIf="customerModelList?.length == 0">
         <tr>
-          <td colspan="6" class="no-data-available">No data!</td>
+          <td colspan="7" class="no-data-available">No data!</td>
         </tr>
         <tbody>
       </table>
