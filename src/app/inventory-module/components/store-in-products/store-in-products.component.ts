@@ -96,9 +96,9 @@ export class StoreInProductsComponent implements OnInit {
 
 
   private getStoreList(){
-    let requestMessage: RequestMessage;
-    requestMessage = Util.getRequestMessage(null,null);
-    this.storeService.getList(requestMessage).subscribe
+    //let requestMessage: RequestMessage;
+    //requestMessage = Util.getRequestMessage(null,null);
+    this.storeService.getList().subscribe
     (
       (response:ResponseMessage)=>
       {
