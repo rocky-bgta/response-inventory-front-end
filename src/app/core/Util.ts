@@ -32,7 +32,7 @@ export class Util{
   public static logConsole(data?:any,message?:string) {
     if(!_.isObject(data)){
       console.info(data)
-
+      return;
       //console.log("Normal %cStyled %clorem %cipsum", "color: blue; font-weight: bold", "color: red", "background-image: linear-gradient(red, blue); color: white; padding: 5px;");
     }
     if(jQuery.isEmptyObject(data) && (typeof message === "string")) {

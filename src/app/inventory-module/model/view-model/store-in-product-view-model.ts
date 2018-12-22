@@ -1,0 +1,11 @@
+export class  StoreInProductViewModel{
+  public storeName:string;
+  public storeId:string;
+  public vendorName:string;
+  public vendorId:string;
+  public productName:string;
+  public barcode:string;
+  public price:number;
+  public quantity:number;
+  public totalPrice:number;
+}

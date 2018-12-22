@@ -17,9 +17,9 @@
                          required
                          [attr.disabled]="disableElementOnDetailsView"
                          name="store"
-                         (change)="onChangeVendor($event)"
-                         [ngModel]="storeInProductsModel.storeId"
-                         [ngClass]="{ 'custom-invalid-ng-select': submitted && entryForm.controls['store'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                         (change)="onChangeStore($event)"
+                         [ngModel]="storeInProductViewModel.storeId"
+                         [ngClass]="{ 'custom-invalid-ng-select': formSubmitted && entryForm.controls['store'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="store"
                          placeholder="Select Store">
               </ng-select>
@@ -44,12 +44,12 @@
                          [attr.disabled]="disableElementOnDetailsView"
                          name="store"
                          (change)="onChangeVendor($event)"
-                         [ngModel]="storeInProductsModel.vendorId"
-                         [ngClass]="{ 'custom-invalid-ng-select': submitted && entryForm.controls['vendor'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                         [(ngModel)]="storeInProductViewModel.vendorId"
+                         [ngClass]="{ 'custom-invalid-ng-select': formSubmitted && entryForm.controls['vendor'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="vendor"
                          placeholder="Select Vendor">
               </ng-select>
-              <div *ngIf="submitted && entryForm.controls['vendor'].hasError('required')"
+              <div *ngIf="formSubmitted && entryForm.controls['vendor'].hasError('required')"
                    class="custom-invalid-feedback">
                 Select a Vendor
               </div>
@@ -65,7 +65,9 @@
               <input class="form-control"
                      type="text"
                      id="barcode"
+                     autocomplete="off"
                      name="barcode"
+                     [(ngModel)]="storeInProductViewModel.barcode"
                      formControlName="barcode"
                      placeholder="Barcode">
 
@@ -88,10 +90,14 @@
                      type="text"
                      id="price"
                      name="price"
+                     autocomplete="off"
+                     min="1"
+                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                     [(ngModel)]="storeInProductViewModel.price"
                      formControlName="price"
                      placeholder="Unit Price">
 
-              <div *ngIf="submitted && entryForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="formSubmitted && entryForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
                 Enter Price for this product
               </div>
               <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
@@ -110,12 +116,20 @@
                      type="text"
                      id="quantity"
                      name="quantity"
+                     min="1"
+                     autocomplete="off"
+                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      formControlName="quantity"
+                     [ngClass]="{ 'custom-invalid-ng-select': formSubmitted && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     [(ngModel)]="storeInProductViewModel.quantity"
                      placeholder="Total Quantity">
-
-              <div *ngIf="submitted && entryForm.controls['quantity'].hasError('required')" class="custom-invalid-feedback">
-                Enter Total price
+              <div *ngIf="formSubmitted && entryForm.controls['quantity'].hasError('required')" class="custom-invalid-feedback">
+                Enter product Quantity.
               </div>
+
+              <span *ngIf="entryForm.controls['quantity'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for Name is 10000
+              </span>
             </div>
           </div>
         </div>
@@ -129,34 +143,27 @@
                      type="text"
                      id="total"
                      name="total"
+                     disabled="true"
+                     name="total"
+                     [ngModel]="storeInProductViewModel.totalPrice"
                      formControlName="total"
                      placeholder="Total Price">
-
-              <div *ngIf="submitted && entryForm.controls['total'].hasError('required')" class="custom-invalid-feedback">
-                Enter Total price
-              </div>
             </div>
           </div>
         </div>
 
-
-
-
       </div>
 
+
+
       <div class="row" style="padding: 0%; margin: 0%">
-
-
         <div class="col-sm-11" style="padding: 0%"></div>
-
             <div class="col-sm-1 text-right">
               <button type="button"
                       name="addProduct"
                       id="addProduct"
                       class="btn btn-primary btn-sm">Add</button>
-
             </div>
-
       </div>
 
 

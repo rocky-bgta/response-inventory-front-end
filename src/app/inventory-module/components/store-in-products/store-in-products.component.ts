@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {StoreInProductsModel} from "../../model/store-in-products-model";
 import {DataTableRequest} from "../../../core/model/data-table-request";
 import {ToastrService} from "ngx-toastr";
 import {VendorService} from "../../service/vendor.service";
@@ -17,7 +16,7 @@ import {StoreService} from "../../service/store.service";
 declare var jQuery: any;
 import * as _ from 'lodash';
 import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
-
+import {StoreInProductViewModel} from "../../model/view-model/store-in-product-view-model";
 
 @Component({
   selector: 'app-store-in-products',
@@ -49,13 +48,17 @@ export class StoreInProductsComponent implements OnInit {
 
   //========== Variables for this page business =====================================================
 
-  public storeInProductsModel: StoreInProductsModel = new StoreInProductsModel();
+  //public storeInProductsModel: StoreInProductsModel = new StoreInProductsModel();
 
-  public storeInProductsModelList: Array<StoreInProductsModel> = new Array<StoreInProductsModel>();
+  //public storeInProductsModelList: Array<StoreInProductsModel> = new Array<StoreInProductsModel>();
 
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public vendorModelList: Array<VendorModel> = new Array<VendorModel>();
   public productModelList: Array<ProductModel> = new Array<ProductModel>();
+
+  public storeInProductViewModel:StoreInProductViewModel = new StoreInProductViewModel();
+  public storeInProductViewModelList: Array<StoreInProductViewModel> = new Array<StoreInProductViewModel>();
+
 
 //========== Variables for this page business =====================================================
 
@@ -74,8 +77,14 @@ export class StoreInProductsComponent implements OnInit {
 
   }
 
-  onChangeVendor($event){
+  public onChangeStore(event){
+    Util.logConsole(event.id);
+    Util.logConsole(event.name);
+  }
 
+  public onChangeVendor(event){
+    Util.logConsole(event.id);
+    Util.logConsole(event.name);
   }
 
   private getVendorList(){
@@ -143,18 +152,12 @@ export class StoreInProductsComponent implements OnInit {
     //let notAllowedCharacter = "^[A-Za-z0-9_.]+$";
     //let notAllowedCharacter = "^[A-Za-z0-9-_. \\\\ \\/ - \\n]+$";
     this.entryForm = this.formBuilder.group({
-      //name:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
-      //phoneNo:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
-      //email:    ['', Validators.compose([Validators.email, Validators.maxLength(50)])],
-      //address: ['', Validators.compose([Validators.maxLength(200)])],
-      password: ['', Validators.compose([Validators.required])],
       store: ['', Validators.compose([Validators.required])],
       vendor: ['', Validators.compose([Validators.required])],
       barcode: ['', Validators.compose([Validators.required,Validators.maxLength(20)])],
       price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
-      total: ['', Validators.compose([Validators.max(1000000000),Validators.required])]
-
-      //address: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])],
+      quantity: ['', Validators.compose([Validators.max(10000),Validators.required])],
+      total: ['', Validators.compose([Validators.max(100000000)])],
       //description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])]
 
     });
