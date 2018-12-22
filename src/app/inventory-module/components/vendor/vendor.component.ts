@@ -14,6 +14,7 @@ import * as Models from '../../model';
 
 import * as _ from 'lodash';
 import * as HttpStatus from 'http-status-codes'
+import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 declare var jQuery: any;
 
 @Component({
@@ -121,13 +122,18 @@ export class VendorComponent implements OnInit {
     (
       (response: ResponseMessage) =>
       {
-        if(response.httpStatus==HttpStatus.OK) {
+        if(response.httpStatus==HttpStatusCode.FOUND) {
           this.vendorModelList = <Array<VendorModel>>response.data;
           callback({
             recordsTotal: response.dataTableResponse.recordsTotal,
             recordsFiltered: response.dataTableResponse.recordsTotal,
             data: []
           });
+          return;
+        }else if(response.httpStatus == HttpStatusCode.NOT_FOUND){
+          this.toastr.error(response.message,this.pageTitle);
+          return;
+        }else {
           return;
         }
       },
