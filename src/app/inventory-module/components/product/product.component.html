@@ -167,12 +167,11 @@
               <input
                 id="price"
                 class="form-control"
-                name="price"
                 autocomplete="off"
-                min="1"
+                name="price"
                 onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
-                type="number"
+                type="text"
                 formControlName="price"
                 [ngClass]="{ 'is-invalid': submitted && productForm.controls['price'].hasError('required')}"
                 [(ngModel)]="productModel.price">
