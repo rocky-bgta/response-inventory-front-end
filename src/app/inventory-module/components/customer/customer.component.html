@@ -215,19 +215,17 @@
              style="width: 100%">
         <thead>
         <tr>
-          <!-- <th>ID</th>-->
-          <th style="width: 20%">Name</th>
+          <th style="width: 15%">Name</th>
           <th style="width: 10%">Phone1</th>
           <th style="width: 10%">Phone2</th>
           <th style="width: 20%">Email</th>
-          <th style="width: 30%">Address</th>
-          <th style="width: 10%">Activity</th>
+          <th style="width: 20%">Address</th>
+          <th style="width: 5%">Activity</th>
           <th style="width: 10%">Action</th>
         </tr>
         </thead>
         <tbody *ngIf="customerModelList?.length != 0">
         <tr *ngFor="let item of customerModelList">
-          <!-- <td>{{ category.id }}</td>-->
           <td>{{item.name }}</td>
           <td>{{item.phoneNo1}}</td>
           <td>{{item.phoneNo2}}</td>
