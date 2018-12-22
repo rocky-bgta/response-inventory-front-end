@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {CustomerModel} from "../../model/customer-model";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DataTableRequest} from "../../../core/model/data-table-request";
-
-import * as _ from 'lodash';
-import * as HttpStatus from 'http-status-codes'
 import {NgxSmartModalService} from "ngx-smart-modal";
 import {ToastrService} from "ngx-toastr";
 import {CustomerService} from "../../service/customer.service";
@@ -13,7 +10,10 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Util} from "../../../core/Util";
 import {RequestMessage} from "../../../core/model/request-message";
 import {CustomObject} from "../../../core/interface/CustomObject";
+
 declare var jQuery: any;
+import * as _ from 'lodash';
+import * as HttpStatus from 'http-status-codes'
 
 
 @Component({
@@ -126,7 +126,7 @@ export class CustomerComponent implements OnInit {
       {
         if(response.httpStatus==HttpStatus.OK) {
           this.customerModelList = <Array<CustomerModel>>response.data;
-          Util.logConsole(this.customerModelList,"get Customer Model: ");
+          //Util.logConsole(this.customerModelList,"get Customer Model: ");
           callback({
             recordsTotal: response.dataTableResponse.recordsTotal,
             recordsFiltered: response.dataTableResponse.recordsTotal,

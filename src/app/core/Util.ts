@@ -2,6 +2,8 @@ import {RequestMessage} from "./model/request-message";
 import {DataTableRequest} from "./model/data-table-request";
 import {HttpErrorResponse} from "@angular/common/http";
 import {ToastrService} from "ngx-toastr";
+import * as _ from 'lodash';
+
 declare var jQuery: any;
 
 export class Util{
@@ -10,15 +12,15 @@ export class Util{
   constructor(private toastr: ToastrService,){
     Util.toasterService = toastr;
   }
-  public static getRequestMessage(data?:object, dataTableRequest?: DataTableRequest):RequestMessage{
+  public static getRequestMessage(data?:object, givenDataTableRequest?: DataTableRequest):RequestMessage{
     let requestMessage: RequestMessage = new RequestMessage();
 
     if(data!=null) {
       requestMessage.data = data;
     }
 
-    if(dataTableRequest!=null){
-      requestMessage.dataTableRequest = dataTableRequest;
+    if(givenDataTableRequest!=null){
+      requestMessage.dataTableRequest = givenDataTableRequest;
     }
 
     requestMessage.pageOffset = 0;
@@ -28,6 +30,11 @@ export class Util{
   }
 
   public static logConsole(data?:any,message?:string) {
+    if(!_.isObject(data)){
+      console.info(data)
+
+      //console.log("Normal %cStyled %clorem %cipsum", "color: blue; font-weight: bold", "color: red", "background-image: linear-gradient(red, blue); color: white; padding: 5px;");
+    }
     if(jQuery.isEmptyObject(data) && (typeof message === "string")) {
       console.log(message);
       return
