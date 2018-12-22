@@ -1,15 +1,18 @@
-<form id="collapseInputForm"  [formGroup]="entryForm">
+<form id="collapseInputForm" [formGroup]="entryForm">
 
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="card">
-        <div class="card-body">
+
+  <div class="card" style="padding: 0%">
+    <div class="card-body">
+      <div class="row" style="padding: 0%">
+
+        <div class="col-sm-2" style="padding-left: 0%">
           <div class="form-group required">
             <div class="col-sm-12">
-              <label for="store" class="control-label">Store:</label>
+              <label for="store" class="control-label lb-sm">Store:</label>
               <ng-select [items]="storeModelList"
                          id="store"
                          bindLabel="name"
+                         name="store"
                          bindValue="id"
                          required
                          [attr.disabled]="disableElementOnDetailsView"
@@ -20,19 +23,145 @@
                          formControlName="store"
                          placeholder="Select Store">
               </ng-select>
-              <div *ngIf="submitted && entryForm.controls['store'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="submitted && entryForm.controls['store'].hasError('required')"
+                   class="custom-invalid-feedback">
                 Select a Store
               </div>
             </div>
           </div>
         </div>
+
+        <div class="col-sm-2" style="padding-left: 0%">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="vendor" class="control-label lb-sm">Vendor:</label>
+              <ng-select [items]="vendorModelList"
+                         id="vendor"
+                         name="vendor"
+                         bindLabel="name"
+                         bindValue="id"
+                         required
+                         [attr.disabled]="disableElementOnDetailsView"
+                         name="store"
+                         (change)="onChangeVendor($event)"
+                         [ngModel]="storeInProductsModel.vendorId"
+                         [ngClass]="{ 'custom-invalid-ng-select': submitted && entryForm.controls['vendor'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                         formControlName="vendor"
+                         placeholder="Select Vendor">
+              </ng-select>
+              <div *ngIf="submitted && entryForm.controls['vendor'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Select a Vendor
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0%">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="barcode" class="control-label lb-sm">Product barcode:</label>
+
+              <input class="form-control"
+                     type="text"
+                     id="barcode"
+                     name="barcode"
+                     formControlName="barcode"
+                     placeholder="Barcode">
+
+              <div *ngIf="formSubmitted && entryForm.controls['barcode'].hasError('required')"class="custom-invalid-feedback">
+                Brand name required
+              </div>
+              <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for barcode is 20
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0%">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="price" class="control-label lb-sm">Price</label>
+
+              <input class="form-control"
+                     type="text"
+                     id="price"
+                     name="price"
+                     formControlName="price"
+                     placeholder="Unit Price">
+
+              <div *ngIf="submitted && entryForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
+                Enter Price for this product
+              </div>
+              <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
+                Maximum value can be entered 1000000000
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0%">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="quantity" class="control-label lb-sm">Quantity</label>
+
+              <input class="form-control"
+                     type="text"
+                     id="quantity"
+                     name="quantity"
+                     formControlName="quantity"
+                     placeholder="Total Quantity">
+
+              <div *ngIf="submitted && entryForm.controls['quantity'].hasError('required')" class="custom-invalid-feedback">
+                Enter Total price
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0%">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="total" class="control-label lb-sm">Total</label>
+
+              <input class="form-control"
+                     type="text"
+                     id="total"
+                     name="total"
+                     formControlName="total"
+                     placeholder="Total Price">
+
+              <div *ngIf="submitted && entryForm.controls['total'].hasError('required')" class="custom-invalid-feedback">
+                Enter Total price
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
       </div>
+
+      <div class="row" style="padding: 0%; margin: 0%">
+
+
+        <div class="col-sm-11" style="padding: 0%"></div>
+
+            <div class="col-sm-1 text-right">
+              <button type="button"
+                      name="addProduct"
+                      id="addProduct"
+                      class="btn btn-primary btn-sm">Add</button>
+
+            </div>
+
+      </div>
+
+
     </div>
-
-
-
   </div>
-
 
   <div class="row">
     <div class="col-sm-3">

@@ -70,6 +70,7 @@ export class StoreInProductsComponent implements OnInit {
     this.initializeReactiveFormValidation();
 
     this.getStoreList();
+    this.getVendorList();
 
   }
 
@@ -78,26 +79,37 @@ export class StoreInProductsComponent implements OnInit {
   }
 
   private getVendorList(){
-    let requestMessage: RequestMessage;
-    requestMessage = Util.getRequestMessage();
     this.vendorService.getList().subscribe
     (
       (response:ResponseMessage)=>
       {
-
+        if(response.httpStatus==HttpStatusCode.FOUND){
+          this.vendorModelList = <Array<VendorModel>>response.data;
+          return;
+        }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
+          this.toastr.error('Failed to get Vendor list ',this.pageTitle);
+          return;
+        }else {
+          Util.logConsole(response);
+          return;
+        }
       },
-    (error: HttpErrorResponse)=>
-    {
 
-    }
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        if (httpErrorResponse.error instanceof Error) {
+          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+        } else {
+          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+        }
+        return;
+      }
 
     )
   }
 
 
   private getStoreList(){
-    //let requestMessage: RequestMessage;
-    //requestMessage = Util.getRequestMessage(null,null);
     this.storeService.getList().subscribe
     (
       (response:ResponseMessage)=>
@@ -136,7 +148,11 @@ export class StoreInProductsComponent implements OnInit {
       //email:    ['', Validators.compose([Validators.email, Validators.maxLength(50)])],
       //address: ['', Validators.compose([Validators.maxLength(200)])],
       password: ['', Validators.compose([Validators.required])],
-      store: ['', Validators.compose([Validators.required])]
+      store: ['', Validators.compose([Validators.required])],
+      vendor: ['', Validators.compose([Validators.required])],
+      barcode: ['', Validators.compose([Validators.required,Validators.maxLength(20)])],
+      price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
+      total: ['', Validators.compose([Validators.max(1000000000),Validators.required])]
 
       //address: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])],
       //description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])]
