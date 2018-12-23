@@ -11,6 +11,7 @@
 
 // regular style toast
 @import '~ngx-toastr/toastr.css';
+@import 'ngxdatepicker/bs-datepicker';
 
 @media print {
     .breadcrumb {
@@ -70,7 +71,7 @@ input.ng-invalid.ng-touched {
   color: whitesmoke;
 }
 
-.form-group.required .control-label:after {
+.form-group.required .required-label:after {
   color: #d00;
   content: "*";
   position: absolute;

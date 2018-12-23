@@ -6,7 +6,7 @@ export class StoreInProductsModel{
    vendorId:string;
    price:string;
    productStatus:string;
-   entryDate:string;
-   manufacturingDate:string;
-   expirationDate:string;
+   entryDate:Date;
+   manufacturingDate:Date;
+   expirationDate:Date;
 }

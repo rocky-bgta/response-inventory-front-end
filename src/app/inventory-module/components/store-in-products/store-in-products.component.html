@@ -8,7 +8,7 @@
         <div class="col-sm-2" style="padding-left: 0%">
           <div class="form-group required">
             <div class="col-sm-12">
-              <label for="store" class="control-label lb-sm">Store:</label>
+              <label for="store" class="required-label lb-sm">Store:</label>
               <ng-select [items]="storeModelList"
                          #storeDropDown
                          id="store"
@@ -35,7 +35,7 @@
         <div class="col-sm-2" style="padding-left: 0%">
           <div class="form-group required">
             <div class="col-sm-12">
-              <label for="vendor" class="control-label lb-sm">Vendor:</label>
+              <label for="vendor" class="required-label lb-sm">Vendor:</label>
               <ng-select [items]="vendorModelList"
                          id="vendor"
                          name="vendor"
@@ -61,7 +61,7 @@
         <div class="col-sm-2" style="padding-left: 0%">
           <div class="form-group required">
             <div class="col-sm-12">
-              <label for="barcode" class="control-label lb-sm">Product barcode:</label>
+              <label for="barcode" class="required-label lb-sm">Product barcode:</label>
 
               <input class="form-control"
                      type="text"
@@ -85,7 +85,7 @@
         <div class="col-sm-2" style="padding-left: 0%">
           <div class="form-group required">
             <div class="col-sm-12">
-              <label for="price" class="control-label lb-sm">Price</label>
+              <label for="price" class="required-label lb-sm">Price</label>
 
               <input class="form-control"
                      type="text"
@@ -111,7 +111,7 @@
         <div class="col-sm-2" style="padding-left: 0%">
           <div class="form-group required">
             <div class="col-sm-12">
-              <label for="quantity" class="control-label lb-sm">Quantity</label>
+              <label for="quantity" class="required-label lb-sm">Quantity</label>
 
               <input class="form-control"
                      type="text"
@@ -138,7 +138,7 @@
         <div class="col-sm-2" style="padding-left: 0%">
           <div class="form-group required">
             <div class="col-sm-12">
-              <label for="total" class="control-label lb-sm">Total</label>
+              <label for="total" class="required-label lb-sm">Total</label>
 
               <input class="form-control"
                      type="text"
@@ -156,32 +156,97 @@
       </div>
 
 
-
       <div class="row" style="padding: 0%; margin: 0%">
-        <div class="col-sm-11" style="padding: 0%">
 
-          <div class="form-group">
+        <div class="col-sm-2" style="padding-left: 0%">
+          <div class="form-group required">
+              <label for="mfDate" class="required-label lb-sm">Manufacturing Date</label>
+              <div class="input-group datepicker-input">
+                <input class="form-control"
+                       id="mfDate"
+                       placeholder="yyyy-mm-dd"
+                       name="mfDate"
+                       formControlName="mfDate"
+                       [(ngModel)]="testDate"
+                       ngbDatepicker
+                       #mfDate="ngbDatepicker">
+                <button class="input-group-addon" (click)="mfDate.toggle()" type="button">
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0%">
+          <div class="form-group required">
+            <label for="exDate" class="required-label lb-sm">Expiry Date</label>
             <div class="input-group datepicker-input">
               <input class="form-control"
+                     id="exDate"
                      placeholder="yyyy-mm-dd"
-                     name="mfDate"
-                     formControlName="mfDate"
-                     [(ngModel)]="model"
+                     name="exDate"
+                     formControlName="exDate"
+                     [(ngModel)]="testDate"
                      ngbDatepicker
-                     #d="ngbDatepicker">
-              <button class="input-group-addon" (click)="d.toggle()" type="button">
+                     #exDate="ngbDatepicker">
+              <button class="input-group-addon" (click)="exDate.toggle()" type="button">
                 <span class="fa fa-calendar"></span>
               </button>
             </div>
           </div>
-
         </div>
-            <div class="col-sm-1 text-right">
-              <button type="button"
-                      name="addProduct"
-                      id="addProduct"
-                      class="btn btn-primary btn-sm">Add</button>
+
+        <div class="col-sm-2" style="padding-left: 0%">
+          <div class="form-group required">
+            <label for="entryDate" class="required-label lb-sm">Entry Date</label>
+            <div class="input-group datepicker-input">
+              <input class="form-control"
+                     id="entryDate"
+                     placeholder="yyyy-mm-dd"
+                     name="entryDate"
+                     formControlName="entryDate"
+                     [(ngModel)]="testDate"
+                     ngbDatepicker
+                     #entryDate="ngbDatepicker">
+              <button class="input-group-addon" (click)="entryDate.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
             </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4" style="padding-left: 0%">
+          <div class="form-group required">
+            <label for="ngxDate" class="required-label lb-sm">Ngx Date</label>
+            <div class="col-xs-12 col-12 col-md-4 form-group">
+              <input type="text"
+                     name="ngxDate"
+                     id="ngxDate"
+                     placeholder="Date picker"
+                     formControlName="ngxDate"
+                     [(ngModel)]="dateTime1"
+                     class="form-control"
+                     bsDatepicker>
+            </div>
+            <div class="alert alert-info mb-0">
+              <strong>Model: </strong> {{ dateTime1 | json }}
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+      <div class="row" style="padding: 0%; margin: 0%">
+        <div class="col-sm-10"></div>
+        <div class="col-sm-2 text-right" style="padding: 0%">
+          <button type="button"
+                  name="addProduct"
+                  id="addProduct"
+                  (click)="onClickSave()"
+                  class="btn btn-primary btn-sm">Add Product</button>
+        </div>
+
       </div>
 
 

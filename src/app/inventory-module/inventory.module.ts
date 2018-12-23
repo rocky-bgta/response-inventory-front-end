@@ -10,13 +10,14 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {ProductComponent} from './components/product/product.component';
 import {NgxSmartModalModule} from "ngx-smart-modal";
 import {ConfirmationModalComponent} from "../core/components/confirmation-modal/confirmation-modal.component";
-import { BrandComponent } from './components/brand/brand.component';
-import { VendorComponent } from './components/vendor/vendor.component';
-import { StoreComponent } from './components/store/store.component';
-import { StoreInProductsComponent } from './components/store-in-products/store-in-products.component';
-import { StoreSalesProductsComponent } from './components/store-sales-products/store-sales-products.component';
-import { CustomerComponent } from './components/customer/customer.component';
+import {BrandComponent} from './components/brand/brand.component';
+import {VendorComponent} from './components/vendor/vendor.component';
+import {StoreComponent} from './components/store/store.component';
+import {StoreInProductsComponent} from './components/store-in-products/store-in-products.component';
+import {StoreSalesProductsComponent} from './components/store-sales-products/store-sales-products.component';
+import {CustomerComponent} from './components/customer/customer.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {BsDatepickerModule} from "ngx-bootstrap";
 
 @NgModule({
   declarations: [
@@ -33,16 +34,17 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
   imports: [
     [
       RouterModule.forChild(inventoryRoutes)],
-      CommonModule,
-      ReactiveFormsModule,
-      FormsModule,
-      HttpClientModule,
-      DataTablesModule,
-      NgSelectModule,
-      NgbModule,
-      NgxSmartModalModule.forRoot()
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    DataTablesModule,
+    NgSelectModule,
+    NgxSmartModalModule.forRoot(),
+    NgbModule,
+    BsDatepickerModule.forRoot()
   ],
-  bootstrap: [
-  ]
+  bootstrap: []
 })
-export class InventoryModule { }
+export class InventoryModule {
+}

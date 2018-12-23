@@ -17,6 +17,9 @@ declare var jQuery: any;
 import * as _ from 'lodash';
 import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 import {StoreInProductViewModel} from "../../model/view-model/store-in-product-view-model";
+import {DateModel} from "../../../core/model/dateModel";
+import {StoreInProductsService} from "../../service/store-in-products.service";
+import {StoreInProductsModel} from "../../model/store-in-products-model";
 
 @Component({
   selector: 'app-store-in-products',
@@ -68,15 +71,23 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   //date-picker r&D =======================
   model: any;
+  public testDate: DateModel = new DateModel();
+  public dateTime1:Date = new Date();
 
   constructor(private vendorService: VendorService,
               private storeService: StoreService,
+              private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
               private toastr: ToastrService,
               public  ngxSmartModalService: NgxSmartModalService) { }
 
   ngOnInit() {
 
+    this.testDate.year=2018;
+    this.testDate.month=9;
+    this.testDate.day=14;
+
+    //Util.logConsole(d);
     //we stop browser rendering to browser's debugging mode by following line
     //debugger
     this.initializeReactiveFormValidation();
@@ -90,6 +101,25 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     //Here we can access ng-select property and method dynamically
     Util.logConsole(this.storeDropDownRef);
+  }
+
+  onClickSave(){
+    let storeInPro: StoreInProductsModel = new StoreInProductsModel();
+    var d = new Date(this.testDate.year,this.testDate.month-1,this.testDate.day+1);
+    //storeInPro.manufacturingDate=d;
+    //let month:number = this.dateTime1.getMonth()+1;
+    storeInPro.manufacturingDate=this.dateTime1;
+    let req:RequestMessage;
+    req=Util.getRequestMessage(storeInPro);
+    this.storeInProductService.save(req).subscribe(
+      re=>{
+
+      },error2 => {
+
+      }
+    )
+
+
   }
 
   public onChangeStore(event){
@@ -174,6 +204,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       quantity: ['', Validators.compose([Validators.max(10000),Validators.required])],
       total: ['', Validators.compose([Validators.max(100000000)])],
       mfDate: ['', Validators.compose([Validators.required])],
+      exDate: ['', Validators.compose([Validators.required])],
+      entryDate: ['', Validators.compose([Validators.required])],
+      ngxDate: ['', Validators.compose([Validators.required])],
       //description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])]
 
     });

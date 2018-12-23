@@ -8,4 +8,7 @@ export class  StoreInProductViewModel{
   public price:number;
   public quantity:number;
   public totalPrice:number;
+  public entryDate:Date;
+  public manufacturingDate:Date;
+  public expirationDate:Date;
 }
