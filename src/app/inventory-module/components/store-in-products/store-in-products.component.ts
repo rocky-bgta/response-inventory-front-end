@@ -66,6 +66,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   //get by id as jQuery
   @ViewChild('storeDropDown') storeDropDownRef :ElementRef ;
 
+  //date-picker r&D =======================
+  model: any;
+
   constructor(private vendorService: VendorService,
               private storeService: StoreService,
               private formBuilder: FormBuilder,
@@ -170,6 +173,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
       quantity: ['', Validators.compose([Validators.max(10000),Validators.required])],
       total: ['', Validators.compose([Validators.max(100000000)])],
+      mfDate: ['', Validators.compose([Validators.required])],
       //description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])]
 
     });

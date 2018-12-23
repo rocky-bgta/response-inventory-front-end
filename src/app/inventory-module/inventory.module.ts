@@ -16,6 +16,7 @@ import { StoreComponent } from './components/store/store.component';
 import { StoreInProductsComponent } from './components/store-in-products/store-in-products.component';
 import { StoreSalesProductsComponent } from './components/store-sales-products/store-sales-products.component';
 import { CustomerComponent } from './components/customer/customer.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { CustomerComponent } from './components/customer/customer.component';
       HttpClientModule,
       DataTablesModule,
       NgSelectModule,
+      NgbModule,
       NgxSmartModalModule.forRoot()
   ],
   bootstrap: [

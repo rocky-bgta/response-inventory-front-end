@@ -158,7 +158,24 @@
 
 
       <div class="row" style="padding: 0%; margin: 0%">
-        <div class="col-sm-11" style="padding: 0%"></div>
+        <div class="col-sm-11" style="padding: 0%">
+
+          <div class="form-group">
+            <div class="input-group datepicker-input">
+              <input class="form-control"
+                     placeholder="yyyy-mm-dd"
+                     name="mfDate"
+                     formControlName="mfDate"
+                     [(ngModel)]="model"
+                     ngbDatepicker
+                     #d="ngbDatepicker">
+              <button class="input-group-addon" (click)="d.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </div>
+
+        </div>
             <div class="col-sm-1 text-right">
               <button type="button"
                       name="addProduct"
