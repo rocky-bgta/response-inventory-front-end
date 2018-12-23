@@ -10,6 +10,7 @@
             <div class="col-sm-12">
               <label for="store" class="control-label lb-sm">Store:</label>
               <ng-select [items]="storeModelList"
+                         #storeDropDown
                          id="store"
                          bindLabel="name"
                          name="store"

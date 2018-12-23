@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DataTableRequest} from "../../../core/model/data-table-request";
 import {ToastrService} from "ngx-toastr";
@@ -23,7 +23,8 @@ import {StoreInProductViewModel} from "../../model/view-model/store-in-product-v
   templateUrl: './store-in-products.component.html',
   styleUrls: ['./store-in-products.component.scss']
 })
-export class StoreInProductsComponent implements OnInit {
+export class StoreInProductsComponent implements OnInit, AfterViewInit {
+
 
   public pageTitle:string="Store Product in";
 
@@ -62,6 +63,9 @@ export class StoreInProductsComponent implements OnInit {
 
 //========== Variables for this page business =====================================================
 
+  //get by id as jQuery
+  @ViewChild('storeDropDown') storeDropDownRef :ElementRef ;
+
   constructor(private vendorService: VendorService,
               private storeService: StoreService,
               private formBuilder: FormBuilder,
@@ -70,11 +74,19 @@ export class StoreInProductsComponent implements OnInit {
 
   ngOnInit() {
 
+    //we stop browser rendering to browser's debugging mode by following line
+    //debugger
     this.initializeReactiveFormValidation();
 
     this.getStoreList();
     this.getVendorList();
 
+  }
+
+
+  ngAfterViewInit(): void {
+    //Here we can access ng-select property and method dynamically
+    Util.logConsole(this.storeDropDownRef);
   }
 
   public onChangeStore(event){
