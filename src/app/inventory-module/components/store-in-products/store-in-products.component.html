@@ -14,7 +14,6 @@
                          id="store"
                          bindLabel="name"
                          bindValue="id"
-                         required
                          [attr.disabled]="disableElementOnDetailsView"
                          (change)="onChangeStore($event)"
                          [ngModel]="storeInProductViewModel.storeId"
@@ -38,7 +37,6 @@
                          id="vendor"
                          bindLabel="name"
                          bindValue="id"
-                         required
                          [attr.disabled]="disableElementOnDetailsView"
                          (change)="onChangeVendor($event)"
                          [(ngModel)]="storeInProductViewModel.vendorId"
@@ -70,7 +68,7 @@
                      placeholder="Barcode">
 
               <div *ngIf="productAdded && entryForm.controls['barcode'].hasError('required')" class="custom-invalid-feedback">
-                Brand name required
+                Enter barcode
               </div>
               <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for barcode is 20
@@ -97,7 +95,7 @@
                      placeholder="Unit Price">
 
               <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
-                Enter Price for this product
+                Product Price required
               </div>
               <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
                 Maximum value can be entered 1000000000
@@ -164,7 +162,6 @@
               <input type="text"
                      name="mfDate"
                      id="mfDate"
-                     required
                      #mfDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
@@ -190,7 +187,6 @@
               <input type="text"
                      name="expDate"
                      id="expDate"
-                     required
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['expDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      #expDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
@@ -218,7 +214,6 @@
               <input type="text"
                      name="entryDate"
                      id="entryDate"
-                     required
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['entryDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      #entryDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
