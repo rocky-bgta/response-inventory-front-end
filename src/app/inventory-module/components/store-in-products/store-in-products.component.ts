@@ -232,6 +232,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       mfDate: ['', Validators.compose([Validators.required])],
       expDate: ['', Validators.compose([Validators.required])],
       entryDate: ['', Validators.compose([Validators.required])],
+      serialNo: ['', Validators.compose([Validators.maxLength(50)])]
     });
   }
 
