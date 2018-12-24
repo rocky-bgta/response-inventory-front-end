@@ -66,13 +66,16 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 //========== Variables for this page business =====================================================
 
-  //get by id as jQuery
-  @ViewChild('storeDropDown') storeDropDownRef :ElementRef ;
+
+
 
   //date-picker r&D =======================
+  //get by id as jQuery
+  @ViewChild('storeDropDown') storeDropDownRef :ElementRef ;
   model: any;
   public testDate: DateModel = new DateModel();
   public dateTime1:Date = new Date();
+  //date-picker r&D =======================
 
   constructor(private vendorService: VendorService,
               private storeService: StoreService,
@@ -204,7 +207,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       quantity: ['', Validators.compose([Validators.max(10000),Validators.required])],
       total: ['', Validators.compose([Validators.max(100000000)])],
       mfDate: ['', Validators.compose([Validators.required])],
-      exDate: ['', Validators.compose([Validators.required])],
+      expDate: ['', Validators.compose([Validators.required])],
       entryDate: ['', Validators.compose([Validators.required])],
       ngxDate: ['', Validators.compose([Validators.required])],
       //description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])]

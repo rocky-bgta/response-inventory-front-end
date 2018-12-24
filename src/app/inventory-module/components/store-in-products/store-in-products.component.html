@@ -160,32 +160,41 @@
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
-              <label for="mfDate" class="required-label lb-sm">Manufacturing Date</label>
-              <div class="input-group datepicker-input">
-                <input class="form-control"
-                       id="mfDate"
-                       placeholder="yyyy-mm-dd"
-                       name="mfDate"
-                       formControlName="mfDate"
-                       [(ngModel)]="testDate"
-                       ngbDatepicker
-                       #mfDate="ngbDatepicker">
-                <button class="input-group-addon" (click)="mfDate.toggle()" type="button">
-                  <span class="fa fa-calendar"></span>
-                </button>
-              </div>
+            <label for="mfDate" class="required-label lb-sm">Manufacturing Date</label>
+            <div class="input-group datepicker-input">
+              <input type="text"
+                     name="mfDate"
+                     id="mfDate"
+                     #mfDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Date picker"
+                     formControlName="mfDate"
+                     [(ngModel)]="storeInProductViewModel.manufacturingDate"
+                     class="form-control"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="mfDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+            <!--
+            <div class="alert alert-info mb-0">
+              <strong>Model: </strong> {{ storeInProductViewModel.manufacturingDate | json }}
+            </div>
+            -->
           </div>
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
+
+
             <label for="exDate" class="required-label lb-sm">Expiry Date</label>
             <div class="input-group datepicker-input">
               <input class="form-control"
                      id="exDate"
                      placeholder="yyyy-mm-dd"
                      name="exDate"
-                     formControlName="exDate"
+                     formControlName="expDate"
                      [(ngModel)]="testDate"
                      ngbDatepicker
                      #exDate="ngbDatepicker">
@@ -194,6 +203,8 @@
               </button>
             </div>
           </div>
+
+
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
@@ -217,25 +228,7 @@
 
         <div class="col-sm-6" style="padding-left: 0">
           <div class="form-group required">
-            <label for="ngxDate" class="required-label lb-sm">Ngx Date</label>
-            <div class="input-group datepicker-input">
-              <input type="text"
-                     name="ngxDate"
-                     id="ngxDate"
-                     #dpYMD="bsDatepicker"
-                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placeholder="Date picker"
-                     formControlName="ngxDate"
-                     [(ngModel)]="dateTime1"
-                     class="form-control"
-                     bsDatepicker>
-              <button class="input-group-addon" (click)="dpYMD.toggle()" type="button">
-                <span class="fa fa-calendar"></span>
-              </button>
-            </div>
-            <div class="alert alert-info mb-0">
-              <strong>Model: </strong> {{ dateTime1 | json }}
-            </div>
+
           </div>
         </div>
 
