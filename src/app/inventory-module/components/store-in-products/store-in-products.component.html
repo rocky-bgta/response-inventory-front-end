@@ -1,11 +1,11 @@
 <form id="collapseInputForm" [formGroup]="entryForm">
 
 
-  <div class="card" style="padding: 0%">
+  <div class="card" style="padding: 0">
     <div class="card-body">
-      <div class="row" style="padding: 0%">
+      <div class="row" style="padding: 0">
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="store" class="required-label lb-sm">Store:</label>
@@ -13,11 +13,11 @@
                          #storeDropDown
                          id="store"
                          bindLabel="name"
-                         name="store"
+
                          bindValue="id"
                          required
                          [attr.disabled]="disableElementOnDetailsView"
-                         name="store"
+
                          (change)="onChangeStore($event)"
                          [ngModel]="storeInProductViewModel.storeId"
                          [ngClass]="{ 'custom-invalid-ng-select': formSubmitted && entryForm.controls['store'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
@@ -32,18 +32,18 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="vendor" class="required-label lb-sm">Vendor:</label>
               <ng-select [items]="vendorModelList"
                          id="vendor"
-                         name="vendor"
+
                          bindLabel="name"
                          bindValue="id"
                          required
                          [attr.disabled]="disableElementOnDetailsView"
-                         name="store"
+
                          (change)="onChangeVendor($event)"
                          [(ngModel)]="storeInProductViewModel.vendorId"
                          [ngClass]="{ 'custom-invalid-ng-select': formSubmitted && entryForm.controls['vendor'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="barcode" class="required-label lb-sm">Product barcode:</label>
@@ -72,7 +72,7 @@
                      formControlName="barcode"
                      placeholder="Barcode">
 
-              <div *ngIf="formSubmitted && entryForm.controls['barcode'].hasError('required')"class="custom-invalid-feedback">
+              <div *ngIf="formSubmitted && entryForm.controls['barcode'].hasError('required')" class="custom-invalid-feedback">
                 Brand name required
               </div>
               <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
@@ -82,7 +82,7 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="price" class="required-label lb-sm">Price</label>
@@ -108,7 +108,7 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="quantity" class="required-label lb-sm">Quantity</label>
@@ -135,7 +135,7 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="total" class="required-label lb-sm">Total</label>
@@ -144,8 +144,7 @@
                      type="text"
                      id="total"
                      name="total"
-                     disabled="true"
-                     name="total"
+                     [disabled]="true"
                      [ngModel]="storeInProductViewModel.totalPrice"
                      formControlName="total"
                      placeholder="Total Price">
@@ -156,9 +155,9 @@
       </div>
 
 
-      <div class="row" style="padding: 0%; margin: 0%">
+      <div class="row" style="padding: 0; margin: 0">
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
               <label for="mfDate" class="required-label lb-sm">Manufacturing Date</label>
               <div class="input-group datepicker-input">
@@ -177,7 +176,7 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <label for="exDate" class="required-label lb-sm">Expiry Date</label>
             <div class="input-group datepicker-input">
@@ -196,7 +195,7 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0%">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <label for="entryDate" class="required-label lb-sm">Entry Date</label>
             <div class="input-group datepicker-input">
@@ -215,7 +214,7 @@
           </div>
         </div>
 
-        <div class="col-sm-6" style="padding-left: 0%">
+        <div class="col-sm-6" style="padding-left: 0">
           <div class="form-group required">
             <label for="ngxDate" class="required-label lb-sm">Ngx Date</label>
             <div class="input-group datepicker-input">
@@ -223,6 +222,7 @@
                      name="ngxDate"
                      id="ngxDate"
                      #dpYMD="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Date picker"
                      formControlName="ngxDate"
                      [(ngModel)]="dateTime1"
@@ -241,9 +241,9 @@
 
       </div>
 
-      <div class="row" style="padding: 0%; margin: 0%">
+      <div class="row" style="padding: 0; margin: 0">
         <div class="col-sm-10"></div>
-        <div class="col-sm-2 text-right" style="padding: 0%">
+        <div class="col-sm-2 text-right" style="padding: 0">
           <button type="button"
                   name="addProduct"
                   id="addProduct"
