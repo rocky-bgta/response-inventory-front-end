@@ -124,7 +124,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onClickAddProduct(){
     let storeInProductViewModel:StoreInProductViewModel;
-
+    storeInProductViewModel = new StoreInProductViewModel();
+    this.storeInProductViewModelList.push(storeInProductViewModel);
+    return;
 
     this.productAdded=true;
     if(!this.entryForm.invalid){

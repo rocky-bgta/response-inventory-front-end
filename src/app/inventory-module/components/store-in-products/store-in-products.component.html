@@ -65,9 +65,10 @@
                      [(ngModel)]="storeInProductViewModel.barcode"
                      formControlName="barcode"
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['barcode'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-                     >
+              >
 
-              <div *ngIf="productAdded && entryForm.controls['barcode'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['barcode'].hasError('required')"
+                   class="custom-invalid-feedback">
                 Enter barcode
               </div>
               <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
@@ -94,7 +95,8 @@
                      formControlName="price"
                      placeholder="">
 
-              <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')"
+                   class="custom-invalid-feedback">
                 Product Price required
               </div>
               <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
@@ -121,7 +123,8 @@
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      [(ngModel)]="storeInProductViewModel.quantity"
                      placeholder="">
-              <div *ngIf="productAdded && entryForm.controls['quantity'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['quantity'].hasError('required')"
+                   class="custom-invalid-feedback">
                 Enter product Quantity.
               </div>
 
@@ -152,7 +155,6 @@
       </div>
 
 
-
       <div class="row" style="padding: 0; margin: 0">
 
         <div class="col-sm-2" style="padding-left: 0">
@@ -174,8 +176,9 @@
                 <span class="fa fa-calendar"></span>
               </button>
             </div>
-            <div *ngIf="productAdded && entryForm.controls['mfDate'].hasError('required')" class="custom-invalid-feedback">
-             Select Manufacturing Date
+            <div *ngIf="productAdded && entryForm.controls['mfDate'].hasError('required')"
+                 class="custom-invalid-feedback">
+              Select Manufacturing Date
             </div>
           </div>
         </div>
@@ -198,7 +201,8 @@
               <button class="input-group-addon" (click)="expDMY.toggle()" type="button">
                 <span class="fa fa-calendar"></span>
               </button>
-              <div *ngIf="productAdded && entryForm.controls['expDate'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['expDate'].hasError('required')"
+                   class="custom-invalid-feedback">
                 Select Expiry Date
               </div>
             </div>
@@ -225,12 +229,12 @@
               <button class="input-group-addon" (click)="entryDMY.toggle()" type="button">
                 <span class="fa fa-calendar"></span>
               </button>
-              <div *ngIf="productAdded && entryForm.controls['entryDate'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['entryDate'].hasError('required')"
+                   class="custom-invalid-feedback">
                 Select Entry Date
               </div>
             </div>
           </div>
-
 
 
         </div>
@@ -251,7 +255,8 @@
                   name="addProduct"
                   id="addProduct"
                   (click)="onClickAddProduct()"
-                  class="btn btn-primary btn-sm">Add Product</button>
+                  class="btn btn-primary btn-sm">Add Product
+          </button>
         </div>
 
       </div>
@@ -260,153 +265,146 @@
     </div>
   </div>
 
-<div class="card" style="margin-top: 1%">
-  <div class="card-header">
-    <strong> Added products</strong>
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong> Added products</strong>
+    </div>
+    <div class="card-body">
+
+
+      <table class="table table-hover table-bordered table-sm table-striped">
+        <thead>
+        <tr>
+          <!--<th style="width: 10%">Store</th>
+          <th style="width: 10%">Vendor</th>-->
+          <th style="width: 10%">Product</th>
+          <th style="width: 10%">SerialNo</th>
+          <th style="width: 8%">price</th>
+          <th style="width: 2%">Quantity</th>
+          <th style="width: 10%">Total</th>
+          <th style="width: 12%">MF Date</th>
+          <th style="width: 12%">Exp Date</th>
+          <th style="width: 12%">Entry Date</th>
+          <th style="width: 8%">Action</th>
+          <!-- <th style="width: 2%">Delete</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let storeInProductViewModel of storeInProductViewModelList; let i=index">
+          <!-- <td>{{storeInProductViewModel.storeName}}</td>
+           <td>{{storeInProductViewModel.vendorName}}</td>-->
+          <td>{{storeInProductViewModel.productName}}</td>
+          <td>
+            <input name="serialNo{{i}}"
+                   type="text"
+                   class="form-control form-control-sm"
+                   autocomplete="off"
+                   [(ngModel)]="storeInProductViewModel.serialNo"
+                   formControlName="serialNo"
+                   placeholder="">
+          </td>
+          <td>
+            <input name="price{{i}}"
+                   type="text"
+                   class="form-control form-control-sm"
+                   name="price{{i}}"
+                   autocomplete="off"
+                   [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                   min="1"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   [(ngModel)]="storeInProductViewModel.price"
+                   formControlName="price"
+                   placeholder="">
+          </td>
+          <td>
+            <input name="quantity{{i}}"
+                   type="text"
+                   class="form-control form-control-sm"
+                   (focusout)="onFocusOutQuantityEvent()"
+                   autocomplete="off"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   formControlName="quantity"
+                   [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                   [(ngModel)]="storeInProductViewModel.quantity"
+                   placeholder="">
+          </td>
+          <td>{{storeInProductViewModel.totalPrice}}</td>
+          <td>
+            <div class="input-group datepicker-input">
+              <input name="mfDate{{i}}"
+                     type="text"
+                     #mfDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     formControlName="mfDate"
+                     [(ngModel)]="storeInProductViewModel.manufacturingDate"
+                     class="form-control form-control-sm"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="mfDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </td>
+          <td>
+            <div class="input-group datepicker-input">
+              <input name="expDate{{i}}"
+                     type="text"
+                     #expDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     formControlName="expDate"
+                     [(ngModel)]="storeInProductViewModel.expirationDate"
+                     class="form-control form-control-sm"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="expDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </td>
+          <td>
+            <div class="input-group datepicker-input">
+              <input name="expDate{{i}}"
+                     type="text"
+                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['expDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     #expDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     formControlName="expDate"
+                     [(ngModel)]="storeInProductViewModel.expirationDate"
+                     class="form-control form-control-sm"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="expDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+          </td>
+          <td class="align-baseline">
+            <div class="row" style="margin-right: 0px;">
+              <div class="col-sm-4">
+                <button
+                  placement="top"
+                  ngbTooltip="Item Transfer Details"
+                  class="btn btn-sm btn-pill btn-outline-info"
+                  type="button">
+                  <i class="fa fa-fw fas fa-info-circle"></i>
+                </button>
+              </div>
+              <div class="col-sm-6">
+                <button
+                  placement="top"
+                  ngbTooltip="Item Transfer Details"
+                  class="btn btn-sm btn-pill btn-outline-info"
+                  type="button">
+                  <i class="fa fa-fw fas fa-edit"></i>
+                </button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-  <div class="card-body">
-
-
-
-  <table class="table table-hover table-bordered table-sm table-striped">
-    <thead>
-    <tr>
-      <!--<th style="width: 10%">Store</th>
-      <th style="width: 10%">Vendor</th>-->
-      <th style="width: 10%">Product</th>
-      <th style="width: 10%">SerialNo</th>
-      <th style="width: 8%">price</th>
-      <th style="width: 3%">Quantity</th>
-      <th style="width: 10%">Total</th>
-      <th style="width: 12%">MF Date</th>
-      <th style="width: 12%">Exp Date</th>
-      <th style="width: 12%">Entry Date</th>
-      <th style="width: 4%">Action</th>
-     <!-- <th style="width: 2%">Delete</th>-->
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let storeInProductViewModel of storeInProductViewModelList; let i=index">
-     <!-- <td>{{storeInProductViewModel.storeName}}</td>
-      <td>{{storeInProductViewModel.vendorName}}</td>-->
-      <td>{{storeInProductViewModel.productName}}</td>
-      <td>
-        <input name="serialNo{{i}}"
-               type="text"
-               class="form-control form-control-sm"
-               autocomplete="off"
-               [(ngModel)]="storeInProductViewModel.serialNo"
-               formControlName="serialNo"
-               placeholder="">
-      </td>
-      <td>
-        <input name="price{{i}}"
-               type="text"
-               class="form-control form-control-sm"
-               name="price{{i}}"
-               autocomplete="off"
-               [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-               min="1"
-               onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-               [(ngModel)]="storeInProductViewModel.price"
-               formControlName="price"
-               placeholder="">
-      </td>
-      <td>
-        <input name="quantity{{i}}"
-               type="text"
-               class="form-control form-control-sm"
-               (focusout)="onFocusOutQuantityEvent()"
-               autocomplete="off"
-               onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-               formControlName="quantity"
-               [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-               [(ngModel)]="storeInProductViewModel.quantity"
-               placeholder="">
-      </td>
-      <td>{{storeInProductViewModel.totalPrice}}</td>
-      <td>
-        <div class="input-group datepicker-input">
-          <input name="mfDate{{i}}"
-                 type="text"
-                 #mfDMY="bsDatepicker"
-                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                 placeholder="Select a date"
-                 formControlName="mfDate"
-                 [(ngModel)]="storeInProductViewModel.manufacturingDate"
-                 class="form-control form-control-sm"
-                 bsDatepicker>
-          <button class="input-group-addon" (click)="mfDMY.toggle()" type="button">
-            <span class="fa fa-calendar"></span>
-          </button>
-        </div>
-      </td>
-      <td>
-        <div class="input-group datepicker-input">
-          <input name="expDate{{i}}"
-                 type="text"
-                 #expDMY="bsDatepicker"
-                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                 placeholder="Select a date"
-                 formControlName="expDate"
-                 [(ngModel)]="storeInProductViewModel.expirationDate"
-                 class="form-control form-control-sm"
-                 bsDatepicker>
-          <button class="input-group-addon" (click)="expDMY.toggle()" type="button">
-            <span class="fa fa-calendar"></span>
-          </button>
-        </div>
-      </td>
-      <td>
-        <div class="input-group datepicker-input">
-          <input name="expDate{{i}}"
-                 type="text"
-                 [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['expDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-                 #expDMY="bsDatepicker"
-                 [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                 placeholder="Select a date"
-                 formControlName="expDate"
-                 [(ngModel)]="storeInProductViewModel.expirationDate"
-                 class="form-control form-control-sm"
-                 bsDatepicker>
-          <button class="input-group-addon" (click)="expDMY.toggle()" type="button">
-            <span class="fa fa-calendar"></span>
-          </button>
-        </div>
-      </td>
-      <td colspan="2">
-        <div class="row">
-        <button
-          style="margin-right: 1%"
-          placement="top"
-          ngbTooltip="Item Transfer Details"
-          class="btn btn-sm btn-pill btn-outline-info"
-          type="button">
-          <i class="fa fa-fw fas fa-info-circle"></i>
-        </button>
-
-        <button
-          style="margin-right: 1%"
-          placement="top"
-          ngbTooltip="Item Transfer Details"
-          class="btn btn-sm btn-pill btn-outline-info"
-          type="button">
-          <i class="fa fa-fw fas fa-edit"></i>
-        </button>
-        </div>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-
-  </div>
-</div>
-
-
-
-
-
 
 
   <div class="row">
