@@ -156,7 +156,7 @@
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
-            <label for="mfDate" class="required-label lb-sm">Manufacturing Date</label>
+            <label for="mfDate" class="lb-sm">Manufacturing Date</label>
             <div class="input-group datepicker-input">
               <input type="text"
                      name="mfDate"
@@ -182,7 +182,7 @@
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
-            <label for="expDate" class="required-label lb-sm">Expiry Date</label>
+            <label for="expDate" class="lb-sm">Expiry Date</label>
             <div class="input-group datepicker-input">
               <input type="text"
                      name="expDate"
@@ -263,7 +263,7 @@
   </div>
 </form>
 
-<form [formGroup]="dynamicForm" [hidden]="hideProductAddedTable">
+<form [formGroup]="dynamicForm" [hidden]="storeInProductViewModelList.length==0">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
