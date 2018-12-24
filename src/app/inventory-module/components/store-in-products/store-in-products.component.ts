@@ -33,13 +33,13 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 
   public entryForm: FormGroup;
-  public tableForm: FormGroup;
+  public dynamicForm: FormGroup;
 
 
 
   //======== page state variables star ===========
-  public formSubmitted:boolean=false;
-  public productAdded:boolean=false;
+  public formSubmitted:boolean;
+  public productAdded:boolean;
   public isPageInUpdateState: boolean;
   public hideInputForm: boolean;
   public disablePageElementOnDetailsView: boolean;
@@ -101,6 +101,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //we stop browser rendering to browser's debugging mode by following line
     this.initializedPageStateVariable();
     this.initializeReactiveFormValidation();
+    this.initializeReactiveDynamicFormValidation();
 
     this.getStoreList();
     this.getVendorList();
@@ -108,39 +109,79 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
   public onFocusOutQuantityEvent(){
+    this.setTotalPrice();
+  }
+
+  public onFocusOutQuantityRowEvent(index:number){
+    this.setTotalPrice(index);
+  }
+
+  public onFocusOutPriceRowEvent(index:number){
+    this.setTotalPrice(index);
+  }
+
+
+  private setTotalPrice(index?:number){
     let price:number;
     let quantity:number;
     let total:number;
-    price = this.storeInProductViewModel.price;
-    quantity=this.storeInProductViewModel.quantity;
+
+    if(index!=null && !_.isNaN(index)){
+      price = this.storeInProductViewModelList[index].price;
+      quantity = this.storeInProductViewModelList[index].quantity;
+    }else {
+      price = this.storeInProductViewModel.price;
+      quantity = this.storeInProductViewModel.quantity;
+    }
     if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
       total= price*quantity;
       this.storeInProductViewModel.totalPrice=total;
     }
-
+    if(index!=null && !_.isNaN(index)){
+      this.storeInProductViewModelList[index].totalPrice=total;
+    }else {
+      this.storeInProductViewModel.totalPrice=total;
+    }
   }
-
 
 
 
   public onClickAddProduct(){
-    let storeInProductViewModel:StoreInProductViewModel;
 
-    this.productAdded=true;
-    if(!this.entryForm.invalid){
-      storeInProductViewModel = _.clone(this.storeInProductViewModel);
-      storeInProductViewModel.storeName=this._storeName;
-      storeInProductViewModel.vendorName=this._vendorName;
-      this.storeInProductViewModelList.push(storeInProductViewModel);
-      //Util.logConsole(this.storeInProductViewModelList,"Model Date");
+    //First check if any invalid entry exist
+    if(this.productAdded && this.dynamicForm.invalid){
+      this.toastr.error("Please correct added product data first", this.pageTitle);
       return;
+    }else {
+
+      let storeInProductViewModel: StoreInProductViewModel;
+
+      this.productAdded = true;
+      if (!this.entryForm.invalid) {
+        storeInProductViewModel = _.clone(this.storeInProductViewModel);
+        storeInProductViewModel.storeName = this._storeName;
+        storeInProductViewModel.vendorName = this._vendorName;
+        this.storeInProductViewModelList.push(storeInProductViewModel);
+        return;
+      }
     }
   }
 
-  onClickSave(dynamicForm:NgForm){
-    if(dynamicForm.invalid){
-      Util.logConsole("Please Submit valid form");
+  public onClickSave(){
+    this.formSubmitted=true;
+    if(this.dynamicForm.invalid){
+      this.toastr.error("Please fill up the form correctly",this.pageTitle);
+      //Util.logConsole("Please Submit valid form");
     }
+  }
+
+  public onClickRemoveRow(index){
+    Util.logConsole("Remove index: "+index);
+    this.storeInProductViewModelList.splice(index,1);
+    if(this.storeInProductViewModelList.length==0){
+      this.productAdded=false;
+    }
+    //Util.logConsole(this.storeInProductViewModelList);
   }
 
   public onChangeStore(event){
@@ -225,29 +266,33 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.dataTablesCallBackParameters = new DataTableRequest();
     this.dataTablesCallBackParameters.start = 0;
     this.dataTablesCallBackParameters.length = 10;
+    this.productAdded=false;
+    this.formSubmitted=false;
   }
 
   private initializeReactiveFormValidation():void{
     this.entryForm = this.formBuilder.group({
-      store: ['', Validators.compose([Validators.required])],
-      vendor: ['', Validators.compose([Validators.required])],
-      barcode: ['', Validators.compose([Validators.required,Validators.maxLength(20)])],
-      price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
-      quantity: ['', Validators.compose([Validators.max(10000),Validators.required])],
-      total: ['', Validators.compose([Validators.max(100000000)])],
+      store: ['',     Validators.compose([Validators.required])],
+      vendor: ['',    Validators.compose([Validators.required])],
+      barcode: ['',   Validators.compose([Validators.required,Validators.maxLength(20)])],
+      price: ['',     Validators.compose([Validators.max(10000000),Validators.required])],
+      quantity: ['',  Validators.compose([Validators.max(100),Validators.required])],
+      total: ['',     Validators.compose([Validators.max(1000000000000)])],
       mfDate: ['', ],
       expDate: ['', ],
       entryDate: ['', Validators.compose([Validators.required])],
-      serialNo: ['', Validators.compose([Validators.maxLength(50)])]
+      serialNo: ['',  Validators.compose([Validators.maxLength(50)])]
     });
   }
 
-  private initializeReactiveTableFormValidation(){
-    this.tableForm=this.formBuilder.group({
-      fname:new FormControl('',[Validators.required]),
-      lname:new FormControl(),
-      Emailid:new FormControl(),
-      userpassword:new FormControl()
+  private initializeReactiveDynamicFormValidation(){
+    this.dynamicForm=this.formBuilder.group({
+      dynamicSerialNo:  new FormControl(''),
+      dynamicPrice:     new FormControl('',[Validators.required]),
+      dynamicQuantity:  new FormControl('',[Validators.required]),
+      dynamicMfDate:    new FormControl(''),
+      dynamicExpDate:   new FormControl(''),
+      dynamicEntryDate: new FormControl('',[Validators.required])
     });
   }
 

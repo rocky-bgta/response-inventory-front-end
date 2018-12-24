@@ -60,12 +60,11 @@
               <input class="form-control"
                      type="text"
                      id="barcode"
-                     autocomplete="off"
-                     name="barcode"
-                     [(ngModel)]="storeInProductViewModel.barcode"
                      formControlName="barcode"
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['barcode'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-              >
+                     autocomplete="off"
+                     name="barcode"
+                     [(ngModel)]="storeInProductViewModel.barcode">
 
               <div *ngIf="productAdded && entryForm.controls['barcode'].hasError('required')"
                    class="custom-invalid-feedback">
@@ -89,7 +88,6 @@
                      name="price"
                      autocomplete="off"
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-                     min="1"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      [(ngModel)]="storeInProductViewModel.price"
                      formControlName="price"
@@ -116,7 +114,6 @@
                      id="quantity"
                      name="quantity"
                      (focusout)="onFocusOutQuantityEvent()"
-                     min="1"
                      autocomplete="off"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      formControlName="quantity"
@@ -128,8 +125,8 @@
                 Enter product Quantity.
               </div>
 
-              <span *ngIf="entryForm.controls['quantity'].hasError('maxlength') " class="custom-invalid-feedback">
-                Maximum character for Name is 10000
+              <span *ngIf="entryForm.controls['quantity'].hasError('max') " class="custom-invalid-feedback">
+                Maximum Quantity enterated at a time is 100
               </span>
             </div>
           </div>
@@ -266,7 +263,7 @@
   </div>
 </form>
 
-<form  #dynamicForm="ngForm" novalidate>
+<form [formGroup]="dynamicForm">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
@@ -288,7 +285,7 @@
           <th style="width: 12%">MF Date</th>
           <th style="width: 12%">Exp Date</th>
           <th style="width: 12%">Entry Date</th>
-          <th style="width: 8%">Action</th>
+          <th style="width: 4%">Action</th>
           <!-- <th style="width: 2%">Delete</th>-->
         </tr>
         </thead>
@@ -300,7 +297,8 @@
           <td>
             <input name="serialNo{{i}}"
                    type="text"
-                   #serialNo="ngModel"
+                   formControlName="dynamicSerialNo"
+                   [ngClass]="{ 'is-invalid': formSubmitted && dynamicForm.controls['dynamicSerialNo'].hasError('required') }"
                    class="form-control form-control-sm"
                    autocomplete="off"
                    [(ngModel)]="storeInProductViewModel.serialNo"
@@ -309,12 +307,11 @@
           <td>
             <input name="price{{i}}"
                    type="text"
-                   #price="ngModel"
-                   required
+                   formControlName="dynamicPrice"
                    class="form-control form-control-sm"
-                   name="price{{i}}"
                    autocomplete="off"
-                   [ngClass]="{ 'is-invalid': price.invalid}"
+                   (focusout)="onFocusOutPriceRowEvent(i)"
+                   [ngClass]="{ 'is-invalid': formSubmitted && dynamicForm.controls['dynamicPrice'].hasError('required') }"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    [(ngModel)]="storeInProductViewModel.price"
                    placeholder="">
@@ -322,11 +319,10 @@
           <td>
             <input name="quantity{{i}}"
                    type="text"
-                   #quantity="ngModel"
-                   required
-                   [ngClass]="{ 'is-invalid': quantity.invalid}"
+                   formControlName="dynamicQuantity"
+                   [ngClass]="{ 'is-invalid': formSubmitted && dynamicForm.controls['dynamicQuantity'].hasError('required') }"
                    class="form-control form-control-sm"
-                   (focusout)="onFocusOutQuantityEvent()"
+                   (focusout)="onFocusOutQuantityRowEvent(i)"
                    autocomplete="off"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    [(ngModel)]="storeInProductViewModel.quantity"
@@ -337,6 +333,7 @@
             <div class="input-group datepicker-input">
               <input name="mfDate{{i}}"
                      type="text"
+                     formControlName="dynamicMfDate"
                      #mfDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
@@ -352,6 +349,7 @@
             <div class="input-group datepicker-input">
               <input name="expDate{{i}}"
                      type="text"
+                     formControlName="dynamicExpDate"
                      #expDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
@@ -367,6 +365,8 @@
             <div class="input-group datepicker-input">
               <input name="entryDate{{i}}"
                      type="text"
+                     formControlName="dynamicEntryDate"
+                     [ngClass]="{ 'is-invalid': formSubmitted && dynamicForm.controls['dynamicEntryDate'].hasError('required') }"
                      #entryDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
@@ -378,27 +378,26 @@
               </button>
             </div>
           </td>
-          <td class="align-baseline">
-            <div class="row" style="margin-right: 0px;">
-              <div class="col-sm-4">
+          <td>
+
+              <!--<div class="col-sm-4">
                 <button
                   placement="top"
-                  ngbTooltip="Item Transfer Details"
                   class="btn btn-sm btn-pill btn-outline-info"
                   type="button">
-                  <i class="fa fa-fw fas fa-info-circle"></i>
+                  <i class="fa fa-pencil-square"></i>
                 </button>
-              </div>
-              <div class="col-sm-6">
+              </div>-->
+
                 <button
                   placement="top"
-                  ngbTooltip="Item Transfer Details"
+                  (click)="onClickRemoveRow(i)"
                   class="btn btn-sm btn-pill btn-outline-info"
                   type="button">
-                  <i class="fa fa-fw fas fa-edit"></i>
+                  <i class="fa fa-minus-square"></i>
                 </button>
-              </div>
-            </div>
+
+
           </td>
         </tr>
         </tbody>
@@ -416,5 +415,5 @@
     </div>
   </div>
 
-  <button type="submit" (click)="onClickSave(dynamicForm)" class="btn btn-primary">Submit</button>
+  <button type="submit" (click)="onClickSave()" class="btn btn-primary">Submit</button>
 </form>
