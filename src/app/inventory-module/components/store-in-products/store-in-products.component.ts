@@ -64,6 +64,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public storeInProductViewModelList: Array<StoreInProductViewModel> = new Array<StoreInProductViewModel>();
 
 
+  //helper variable==========
+  private _storeName:string;
+  private _vendorName:string;
+  private _productName:string;
+
+
 //========== Variables for this page business =====================================================
 
 
@@ -97,6 +103,20 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
     this.getStoreList();
     this.getVendorList();
+
+  }
+
+  public onFocusOutQuantityEvent(){
+    let price:number;
+    let quantity:number;
+    let total:number;
+
+    price = this.storeInProductViewModel.price;
+    quantity=this.storeInProductViewModel.quantity;
+    if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
+      total= price*quantity;
+      this.storeInProductViewModel.totalPrice=total;
+    }
 
   }
 

@@ -117,6 +117,7 @@
                      type="text"
                      id="quantity"
                      name="quantity"
+                     (focusout)="onFocusOutQuantityEvent()"
                      min="1"
                      autocomplete="off"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
