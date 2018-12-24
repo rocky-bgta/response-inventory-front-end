@@ -38,6 +38,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   //======== page state variables star ===========
   public formSubmitted:boolean=false;
+  public productAdded:boolean=false;
   public isPageInUpdateState: boolean;
   public hideInputForm: boolean;
   public disablePageElementOnDetailsView: boolean;
@@ -92,13 +93,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    this.testDate.year=2018;
-    this.testDate.month=9;
-    this.testDate.day=14;
+
 
     //Util.logConsole(d);
-    //we stop browser rendering to browser's debugging mode by following line
     //debugger
+    //we stop browser rendering to browser's debugging mode by following line
+    this.initializedPageStateVariable();
     this.initializeReactiveFormValidation();
 
     this.getStoreList();
@@ -110,7 +110,6 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     let price:number;
     let quantity:number;
     let total:number;
-
     price = this.storeInProductViewModel.price;
     quantity=this.storeInProductViewModel.quantity;
     if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
@@ -121,14 +120,15 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
 
-  ngAfterViewInit(): void {
-    //Here we can access ng-select property and method dynamically
-    Util.logConsole(this.storeDropDownRef);
-  }
+
 
   public onClickAddProduct(){
-    Util.logConsole(this.storeInProductViewModel,"Model Date");
-    return;
+
+    this.productAdded=true;
+    if(!this.entryForm.invalid){
+      Util.logConsole(this.storeInProductViewModel,"Model Date");
+      return;
+    }
   }
 
   public onChangeStore(event){
@@ -171,7 +171,6 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     )
   }
 
-
   private getStoreList(){
     this.storeService.getList().subscribe
     (
@@ -202,9 +201,17 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     )
   }
 
+
+  private initializedPageStateVariable():void{
+    this.isPageInUpdateState = false;
+    this.hideInputForm = false;
+    this.disablePageElementOnDetailsView = false;
+    this.dataTablesCallBackParameters = new DataTableRequest();
+    this.dataTablesCallBackParameters.start = 0;
+    this.dataTablesCallBackParameters.length = 10;
+  }
+
   private initializeReactiveFormValidation():void{
-    //let notAllowedCharacter = "^[A-Za-z0-9_.]+$";
-    //let notAllowedCharacter = "^[A-Za-z0-9-_. \\\\ \\/ - \\n]+$";
     this.entryForm = this.formBuilder.group({
       store: ['', Validators.compose([Validators.required])],
       vendor: ['', Validators.compose([Validators.required])],
@@ -215,10 +222,13 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       mfDate: ['', Validators.compose([Validators.required])],
       expDate: ['', Validators.compose([Validators.required])],
       entryDate: ['', Validators.compose([Validators.required])],
-      ngxDate: ['', Validators.compose([Validators.required])],
-      //description: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])]
-
     });
+  }
+
+
+  ngAfterViewInit(): void {
+    //Here we can access ng-select property and method dynamically
+    Util.logConsole(this.storeDropDownRef);
   }
 
 }

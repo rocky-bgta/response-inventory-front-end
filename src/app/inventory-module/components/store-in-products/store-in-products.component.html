@@ -13,18 +13,16 @@
                          #storeDropDown
                          id="store"
                          bindLabel="name"
-
                          bindValue="id"
                          required
                          [attr.disabled]="disableElementOnDetailsView"
-
                          (change)="onChangeStore($event)"
                          [ngModel]="storeInProductViewModel.storeId"
-                         [ngClass]="{ 'custom-invalid-ng-select': formSubmitted && entryForm.controls['store'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                         [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['store'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="store"
                          placeholder="Select Store">
               </ng-select>
-              <div *ngIf="submitted && entryForm.controls['store'].hasError('required')"
+              <div *ngIf="productAdded && entryForm.controls['store'].hasError('required')"
                    class="custom-invalid-feedback">
                 Select a Store
               </div>
@@ -38,19 +36,17 @@
               <label for="vendor" class="required-label lb-sm">Vendor:</label>
               <ng-select [items]="vendorModelList"
                          id="vendor"
-
                          bindLabel="name"
                          bindValue="id"
                          required
                          [attr.disabled]="disableElementOnDetailsView"
-
                          (change)="onChangeVendor($event)"
                          [(ngModel)]="storeInProductViewModel.vendorId"
-                         [ngClass]="{ 'custom-invalid-ng-select': formSubmitted && entryForm.controls['vendor'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                         [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['vendor'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="vendor"
                          placeholder="Select Vendor">
               </ng-select>
-              <div *ngIf="formSubmitted && entryForm.controls['vendor'].hasError('required')"
+              <div *ngIf="productAdded && entryForm.controls['vendor'].hasError('required')"
                    class="custom-invalid-feedback">
                 Select a Vendor
               </div>
@@ -70,9 +66,10 @@
                      name="barcode"
                      [(ngModel)]="storeInProductViewModel.barcode"
                      formControlName="barcode"
+                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['barcode'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      placeholder="Barcode">
 
-              <div *ngIf="formSubmitted && entryForm.controls['barcode'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['barcode'].hasError('required')" class="custom-invalid-feedback">
                 Brand name required
               </div>
               <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
@@ -92,13 +89,14 @@
                      id="price"
                      name="price"
                      autocomplete="off"
+                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      min="1"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      [(ngModel)]="storeInProductViewModel.price"
                      formControlName="price"
                      placeholder="Unit Price">
 
-              <div *ngIf="formSubmitted && entryForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
                 Enter Price for this product
               </div>
               <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
@@ -122,10 +120,10 @@
                      autocomplete="off"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      formControlName="quantity"
-                     [ngClass]="{ 'custom-invalid-ng-select': formSubmitted && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      [(ngModel)]="storeInProductViewModel.quantity"
                      placeholder="Total Quantity">
-              <div *ngIf="formSubmitted && entryForm.controls['quantity'].hasError('required')" class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['quantity'].hasError('required')" class="custom-invalid-feedback">
                 Enter product Quantity.
               </div>
 
@@ -145,7 +143,7 @@
                      type="text"
                      id="total"
                      name="total"
-                     [disabled]="true"
+                     disabled
                      [ngModel]="storeInProductViewModel.totalPrice"
                      formControlName="total"
                      placeholder="Total Price">
@@ -166,9 +164,11 @@
               <input type="text"
                      name="mfDate"
                      id="mfDate"
+                     required
                      #mfDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
+                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['mfDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      formControlName="mfDate"
                      [(ngModel)]="storeInProductViewModel.manufacturingDate"
                      class="form-control"
@@ -177,40 +177,21 @@
                 <span class="fa fa-calendar"></span>
               </button>
             </div>
-            <!--
-            <div class="alert alert-info mb-0">
-              <strong>Model: </strong> {{ storeInProductViewModel.manufacturingDate | json }}
+            <div *ngIf="productAdded && entryForm.controls['mfDate'].hasError('required')" class="custom-invalid-feedback">
+             Select Manufacturing Date
             </div>
-            -->
           </div>
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
-         <!-- <div class="form-group required">
-
-
-            <label for="exDate" class="required-label lb-sm">Expiry Date</label>
-            <div class="input-group datepicker-input">
-              <input class="form-control"
-                     id="exDate"
-                     placeholder="yyyy-mm-dd"
-                     name="exDate"
-                     formControlName="expDate"
-                     [(ngModel)]="testDate"
-                     ngbDatepicker
-                     #exDate="ngbDatepicker">
-              <button class="input-group-addon" (click)="exDate.toggle()" type="button">
-                <span class="fa fa-calendar"></span>
-              </button>
-            </div>
-          </div>-->
-
           <div class="form-group required">
             <label for="expDate" class="required-label lb-sm">Expiry Date</label>
             <div class="input-group datepicker-input">
               <input type="text"
                      name="expDate"
                      id="expDate"
+                     required
+                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['expDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      #expDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
@@ -221,44 +202,24 @@
               <button class="input-group-addon" (click)="expDMY.toggle()" type="button">
                 <span class="fa fa-calendar"></span>
               </button>
+              <div *ngIf="productAdded && entryForm.controls['expDate'].hasError('required')" class="custom-invalid-feedback">
+                Select Expiry Date
+              </div>
             </div>
-            <!--
-            <div class="alert alert-info mb-0">
-              <strong>Model: </strong> {{ storeInProductViewModel.expirationDate | json }}
-            </div>
-            -->
           </div>
 
 
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
-
-         <!--
-          <div class="form-group required">
-            <label for="entryDate" class="required-label lb-sm">Entry Date</label>
-            <div class="input-group datepicker-input">
-              <input class="form-control"
-                     id="entryDate"
-                     placeholder="yyyy-mm-dd"
-                     name="entryDate"
-                     formControlName="entryDate"
-                     [(ngModel)]="testDate"
-                     ngbDatepicker
-                     #entryDate="ngbDatepicker">
-              <button class="input-group-addon" (click)="entryDate.toggle()" type="button">
-                <span class="fa fa-calendar"></span>
-              </button>
-            </div>
-          </div>
-          -->
-
           <div class="form-group required">
             <label for="entryDate" class="required-label lb-sm">Entry Date</label>
             <div class="input-group datepicker-input">
               <input type="text"
                      name="entryDate"
                      id="entryDate"
+                     required
+                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['entryDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      #entryDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
@@ -269,12 +230,10 @@
               <button class="input-group-addon" (click)="entryDMY.toggle()" type="button">
                 <span class="fa fa-calendar"></span>
               </button>
+              <div *ngIf="productAdded && entryForm.controls['entryDate'].hasError('required')" class="custom-invalid-feedback">
+                Select Entry Date
+              </div>
             </div>
-            <!--
-            <div class="alert alert-info mb-0">
-              <strong>Model: </strong> {{ storeInProductViewModel.expirationDate | json }}
-            </div>
-            -->
           </div>
 
 
