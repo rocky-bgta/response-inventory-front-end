@@ -41,7 +41,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public formSubmitted:boolean;
   public productAdded:boolean;
   public isPageInUpdateState: boolean;
-  public hideInputForm: boolean;
+  //public hideInputForm: boolean;
+  public hideProductAddedTable:boolean;
   public disablePageElementOnDetailsView: boolean;
   //======== page state variables end  ===========
 
@@ -156,12 +157,16 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
       let storeInProductViewModel: StoreInProductViewModel;
 
-      this.productAdded = true;
+
+      this.hideProductAddedTable=false;
+
       if (!this.entryForm.invalid) {
         storeInProductViewModel = _.clone(this.storeInProductViewModel);
         storeInProductViewModel.storeName = this._storeName;
         storeInProductViewModel.vendorName = this._vendorName;
         this.storeInProductViewModelList.push(storeInProductViewModel);
+        this.productAdded = true;
+
         return;
       }
     }
@@ -176,10 +181,11 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
   public onClickRemoveRow(index){
-    Util.logConsole("Remove index: "+index);
+    //Util.logConsole("Remove index: "+index);
     this.storeInProductViewModelList.splice(index,1);
     if(this.storeInProductViewModelList.length==0){
       this.productAdded=false;
+      this.hideProductAddedTable=true;
     }
     //Util.logConsole(this.storeInProductViewModelList);
   }
@@ -261,7 +267,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   private initializedPageStateVariable():void{
     this.isPageInUpdateState = false;
-    this.hideInputForm = false;
+    this.hideProductAddedTable = true;
     this.disablePageElementOnDetailsView = false;
     this.dataTablesCallBackParameters = new DataTableRequest();
     this.dataTablesCallBackParameters.start = 0;
