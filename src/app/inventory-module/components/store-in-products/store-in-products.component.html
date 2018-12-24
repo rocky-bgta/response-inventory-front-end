@@ -167,7 +167,7 @@
                      id="mfDate"
                      #mfDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placeholder="Date picker"
+                     placeholder="Select a date"
                      formControlName="mfDate"
                      [(ngModel)]="storeInProductViewModel.manufacturingDate"
                      class="form-control"
@@ -212,7 +212,7 @@
                      id="expDate"
                      #expDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placeholder="Date picker"
+                     placeholder="Select a date"
                      formControlName="expDate"
                      [(ngModel)]="storeInProductViewModel.expirationDate"
                      class="form-control"
@@ -232,6 +232,8 @@
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
+
+         <!--
           <div class="form-group required">
             <label for="entryDate" class="required-label lb-sm">Entry Date</label>
             <div class="input-group datepicker-input">
@@ -248,6 +250,34 @@
               </button>
             </div>
           </div>
+          -->
+
+          <div class="form-group required">
+            <label for="entryDate" class="required-label lb-sm">Entry Date</label>
+            <div class="input-group datepicker-input">
+              <input type="text"
+                     name="entryDate"
+                     id="entryDate"
+                     #entryDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     formControlName="entryDate"
+                     [(ngModel)]="storeInProductViewModel.entryDate"
+                     class="form-control"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="entryDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+            <!--
+            <div class="alert alert-info mb-0">
+              <strong>Model: </strong> {{ storeInProductViewModel.expirationDate | json }}
+            </div>
+            -->
+          </div>
+
+
+
         </div>
 
         <div class="col-sm-6" style="padding-left: 0">
