@@ -215,18 +215,22 @@
           </div>
         </div>
 
-        <div class="col-sm-4" style="padding-left: 0%">
+        <div class="col-sm-6" style="padding-left: 0%">
           <div class="form-group required">
             <label for="ngxDate" class="required-label lb-sm">Ngx Date</label>
-            <div class="col-xs-12 col-12 col-md-4 form-group">
+            <div class="input-group datepicker-input">
               <input type="text"
                      name="ngxDate"
                      id="ngxDate"
+                     #dpYMD="bsDatepicker"
                      placeholder="Date picker"
                      formControlName="ngxDate"
                      [(ngModel)]="dateTime1"
                      class="form-control"
                      bsDatepicker>
+              <button class="input-group-addon" (click)="dpYMD.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
             </div>
             <div class="alert alert-info mb-0">
               <strong>Model: </strong> {{ dateTime1 | json }}
