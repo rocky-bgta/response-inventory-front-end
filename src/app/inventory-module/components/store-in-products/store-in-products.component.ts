@@ -106,23 +106,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     Util.logConsole(this.storeDropDownRef);
   }
 
-  onClickSave(){
-    let storeInPro: StoreInProductsModel = new StoreInProductsModel();
-    var d = new Date(this.testDate.year,this.testDate.month-1,this.testDate.day+1);
-    //storeInPro.manufacturingDate=d;
-    //let month:number = this.dateTime1.getMonth()+1;
-    storeInPro.manufacturingDate=this.dateTime1;
-    let req:RequestMessage;
-    req=Util.getRequestMessage(storeInPro);
-    this.storeInProductService.save(req).subscribe(
-      re=>{
-
-      },error2 => {
-
-      }
-    )
-
-
+  public onClickAddProduct(){
+    Util.logConsole(this.storeInProductViewModel,"Model Date");
+    return;
   }
 
   public onChangeStore(event){
