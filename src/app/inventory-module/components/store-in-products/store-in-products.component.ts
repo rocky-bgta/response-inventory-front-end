@@ -123,22 +123,32 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 
   public onClickAddProduct(){
+    let storeInProductViewModel:StoreInProductViewModel;
+
 
     this.productAdded=true;
     if(!this.entryForm.invalid){
-      Util.logConsole(this.storeInProductViewModel,"Model Date");
+      storeInProductViewModel = _.clone(this.storeInProductViewModel);
+      storeInProductViewModel.storeName=this._storeName;
+      storeInProductViewModel.vendorName=this._vendorName;
+      this.storeInProductViewModelList.push(storeInProductViewModel);
+      //Util.logConsole(this.storeInProductViewModelList,"Model Date");
       return;
     }
   }
 
   public onChangeStore(event){
-    Util.logConsole(event.id);
-    Util.logConsole(event.name);
+    this._storeName=event.name;
+
+    //Util.logConsole(event.id);
+    //Util.logConsole(event.name);
   }
 
   public onChangeVendor(event){
-    Util.logConsole(event.id);
-    Util.logConsole(event.name);
+    this._vendorName=event.name;
+
+    //Util.logConsole(event.id);
+    //Util.logConsole(event.name);
   }
 
   private getVendorList(){

@@ -65,7 +65,7 @@
                      [(ngModel)]="storeInProductViewModel.barcode"
                      formControlName="barcode"
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['barcode'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-                     placeholder="Barcode">
+                     >
 
               <div *ngIf="productAdded && entryForm.controls['barcode'].hasError('required')" class="custom-invalid-feedback">
                 Enter barcode
@@ -92,7 +92,7 @@
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      [(ngModel)]="storeInProductViewModel.price"
                      formControlName="price"
-                     placeholder="Unit Price">
+                     placeholder="">
 
               <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
                 Product Price required
@@ -120,7 +120,7 @@
                      formControlName="quantity"
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      [(ngModel)]="storeInProductViewModel.quantity"
-                     placeholder="Total Quantity">
+                     placeholder="">
               <div *ngIf="productAdded && entryForm.controls['quantity'].hasError('required')" class="custom-invalid-feedback">
                 Enter product Quantity.
               </div>
@@ -271,30 +271,26 @@
   <table class="table table-sm table-striped">
     <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Store Name</th>
+      <th scope="col">Vendor Name</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">price</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Total</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
+    <tr *ngFor="let storeInProductViewModel of storeInProductViewModelList; let i=index">
+      <td>{{storeInProductViewModel.storeName}}</td>
+      <td>{{storeInProductViewModel.vendorName}}</td>
+      <td>{{storeInProductViewModel.productName}}</td>
+      <td>{{storeInProductViewModel.price}}</td>
+      <td>{{storeInProductViewModel.quantity}}</td>
+      <td>{{storeInProductViewModel.totalPrice}}</td>
+      <td><button type="button">Edit</button></td>
+      <td><button type="button">Delete</button></td>
     </tr>
     </tbody>
   </table>
