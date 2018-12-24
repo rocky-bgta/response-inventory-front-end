@@ -5,6 +5,7 @@ export class  StoreInProductViewModel{
   public vendorId:string;
   public productName:string;
   public barcode:string;
+  public serialNo:string;
   public price:number;
   public quantity:number;
   public totalPrice:number;

@@ -274,6 +274,7 @@
       <th scope="col">Store Name</th>
       <th scope="col">Vendor Name</th>
       <th scope="col">Product Name</th>
+      <th scope="col">Serial No</th>
       <th scope="col">price</th>
       <th scope="col">Quantity</th>
       <th scope="col">Total</th>
@@ -286,6 +287,19 @@
       <td>{{storeInProductViewModel.storeName}}</td>
       <td>{{storeInProductViewModel.vendorName}}</td>
       <td>{{storeInProductViewModel.productName}}</td>
+      <td></td>
+      <td>
+        <input class="form-control"
+               type="text"
+               name="price"
+               autocomplete="off"
+               [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+               min="1"
+               onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+               [(ngModel)]="storeInProductViewModel.price"
+               formControlName="price"
+               placeholder="">
+      </td>
       <td>{{storeInProductViewModel.price}}</td>
       <td>{{storeInProductViewModel.quantity}}</td>
       <td>{{storeInProductViewModel.totalPrice}}</td>
