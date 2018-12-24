@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {DataTableRequest} from "../../../core/model/data-table-request";
 import {ToastrService} from "ngx-toastr";
 import {VendorService} from "../../service/vendor.service";
@@ -29,10 +29,11 @@ import {StoreInProductsModel} from "../../model/store-in-products-model";
 export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 
-  public pageTitle:string="Store Product in";
+  public pageTitle:string="Store Product In";
 
 
   public entryForm: FormGroup;
+  public tableForm: FormGroup;
 
 
 
@@ -124,9 +125,6 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onClickAddProduct(){
     let storeInProductViewModel:StoreInProductViewModel;
-    storeInProductViewModel = new StoreInProductViewModel();
-    this.storeInProductViewModelList.push(storeInProductViewModel);
-    return;
 
     this.productAdded=true;
     if(!this.entryForm.invalid){
@@ -136,6 +134,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       this.storeInProductViewModelList.push(storeInProductViewModel);
       //Util.logConsole(this.storeInProductViewModelList,"Model Date");
       return;
+    }
+  }
+
+  onClickSave(dynamicForm:NgForm){
+    if(dynamicForm.invalid){
+      Util.logConsole("Please Submit valid form");
     }
   }
 
@@ -231,10 +235,19 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
       quantity: ['', Validators.compose([Validators.max(10000),Validators.required])],
       total: ['', Validators.compose([Validators.max(100000000)])],
-      mfDate: ['', Validators.compose([Validators.required])],
-      expDate: ['', Validators.compose([Validators.required])],
+      mfDate: ['', ],
+      expDate: ['', ],
       entryDate: ['', Validators.compose([Validators.required])],
       serialNo: ['', Validators.compose([Validators.maxLength(50)])]
+    });
+  }
+
+  private initializeReactiveTableFormValidation(){
+    this.tableForm=this.formBuilder.group({
+      fname:new FormControl('',[Validators.required]),
+      lname:new FormControl(),
+      Emailid:new FormControl(),
+      userpassword:new FormControl()
     });
   }
 
