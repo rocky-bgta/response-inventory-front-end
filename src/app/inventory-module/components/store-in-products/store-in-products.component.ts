@@ -109,15 +109,15 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //we stop browser rendering to browser's debugging mode by following line
     this.initializedPageStateVariable();
     this.initializeReactiveFormValidation();
-    this.initializeReactiveDynamicFormValidation();
+    //this.initializeReactiveDynamicFormValidation();
 
     this.getStoreList();
     this.getVendorList();
 
     //for the time being ============
     this.storeInProductViewModel.entryDate = new Date();
-    this.storeInProductViewModel.price=0;
-    this.storeInProductViewModel.quantity=0;
+    this.storeInProductViewModel.price=1;
+    this.storeInProductViewModel.quantity=1;
 
   }
 
@@ -148,7 +148,6 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     }
     if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
       total= price*quantity;
-      this.storeInProductViewModel.totalPrice=total;
     }
     if(index!=null && !_.isNaN(index)){
       this.storeInProductViewModelList[index].totalPrice=total;
@@ -164,24 +163,32 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.barcodeRef.nativeElement.disabled=false;
     this.barcodeRef.nativeElement.focus();
 
-   /* //First check if any invalid entry exist
+    //First check if any invalid entry exist
     if(this.productAdded && this.dynamicForm.invalid){
       this.toastr.error("Please correct added product data first", this.pageTitle);
       return;
     }else {
-      if (!this.entryForm.invalid) {
-        this.addProductToList();
+      //if (!this.entryForm.invalid) {
+        Util.logConsole(this.storeInProductViewModelList,"List");
+        //this.addProductToList();
         return;
-      }
+     // }
     }
-    */
+
 
 
   }
 
-  private addProductToList():void{
+  private addProductToList(productModel: ProductModel):void{
     let storeInProductViewModel: StoreInProductViewModel;
-    storeInProductViewModel = _.clone(this.storeInProductViewModel);
+    storeInProductViewModel = new StoreInProductViewModel();
+
+    //storeInProductViewModel = _.clone(this.storeInProductViewModel);
+    storeInProductViewModel.entryDate= new Date();
+    storeInProductViewModel.productName= productModel.name;
+    storeInProductViewModel.price= productModel.price;
+    storeInProductViewModel.quantity= _.clone(this.storeInProductViewModel.quantity);
+    storeInProductViewModel.totalPrice=_.clone(this.storeInProductViewModel.totalPrice);
     storeInProductViewModel.storeName = this._storeName;
     storeInProductViewModel.vendorName = this._vendorName;
     this.storeInProductViewModelList.push(storeInProductViewModel);
@@ -191,12 +198,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onClickSave(){
     this.formSubmitted=true;
-    if(this.dynamicForm.invalid){
-      this.toastr.error("Please fill up the form correctly",this.pageTitle);
-      //Util.logConsole("Please Submit valid form");
-    }else {
-      Util.logConsole(this.storeInProductViewModelList);
-    }
+    Util.logConsole(this.storeInProductViewModelList);
   }
 
   public onClickRemoveRow(index){
@@ -227,10 +229,10 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //Util.logConsole(event.name);
   }
 
-  public async onChangeBarcode(barcode:string, event){
+  public onChangeBarcode(barcode:string, event){
     //let productModel: ProductModel;
     //Util.logConsole("Barcode: "+ barcode);
-    await this.getProductByBarcode(barcode);
+    this.getProductByBarcode(barcode);
     event.target.select();
     event.target.value="";
     Util.logConsole(event);
@@ -307,7 +309,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     )
   }
 
-   private async getProductByBarcode(barcode:string):Promise<ProductModel>{
+   private getProductByBarcode(barcode:string):ProductModel{
     let productModel: ProductModel = null;
     this.productService.getByBarcode(barcode.trim()).subscribe
     (
@@ -318,10 +320,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
           //============== code need re-factor need to do promise base code ======================
           this.storeInProductViewModel.productName = productModel.name;
           this.storeInProductViewModel.productId = productModel.id;
-          this.addProductToList();
+          this.storeInProductViewModel.price = productModel.price;
+          this.setTotalPrice();
+          this.addProductToList(productModel);
           //======================================================================================
 
-          Util.logConsole(productModel,"Product Model from subscribe");
+          //Util.logConsole(productModel,"Product Model from subscribe");
           return productModel;
         }else if(responseMessage.httpStatus==HttpStatusCode.NOT_FOUND) {
           this.toastr.error(responseMessage.message,this.pageTitle);
@@ -347,7 +351,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
   private setFocusOnBarcodeInputTextBox(){
-    Util.logConsole(this.barcodeRef.nativeElement);
+    //Util.logConsole(this.barcodeRef.nativeElement);
     if(this.storeSelected && this.vendorSelected){
       //this.barcodeRef.nativeElement.dis
       this.barcodeRef.nativeElement.disabled=false;
@@ -395,7 +399,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {
-    Util.logConsole(this.barcodeRef.nativeElement);
+    //Util.logConsole(this.barcodeRef.nativeElement);
     //Here we can access ng-select property and method dynamically
     //Util.logConsole(this.storeDropDownRef);
   }

@@ -267,7 +267,7 @@
   </div>
 </form>
 
-<form [formGroup]="dynamicForm" [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
+<form [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
@@ -299,85 +299,70 @@
            <td>{{storeInProductViewModel.vendorName}}</td>-->
           <td>{{storeInProductViewModel.productName}}</td>
           <td>
-            <input name="serialNo{{i}}"
+            <input class="form-control"
                    type="text"
-                   formControlName="dynamicSerialNo"
-                   [ngClass]="{ 'is-invalid': formSubmitted && dynamicForm.controls['dynamicSerialNo'].hasError('required') }"
-                   class="form-control form-control-sm"
-                   autocomplete="off"
-                   [(ngModel)]="storeInProductViewModel.serialNo"
-                   placeholder="">
+                   id="dynamicSerialNo{{i}}"
+                   name="dynamicSerialNo{{i}}"
+                   [(ngModel)]="storeInProductViewModel.serialNo">
           </td>
           <td>
-            <input name="price{{i}}"
-                   type="number"
-                   formControlName="dynamicPrice"
-                   class="form-control form-control-sm"
-                   autocomplete="off"
-                   (focusout)="onFocusOutPriceRowEvent(i)"
-                   [ngClass]="{ 'is-invalid': formSubmitted && dynamicForm.controls['dynamicPrice'].hasError('required') }"
-                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-                   [(ngModel)]="storeInProductViewModel.price"
-                   placeholder="">
+            <input class="form-control"
+                   type="text"
+                   id="dynamicPrice{{i}}"
+                   name="dynamicPrice{{i}}"
+                   [(ngModel)]="storeInProductViewModel.price">
+
           </td>
           <td>
-            <input name="quantity{{i}}"
+            <input class="form-control"
                    type="text"
-                   formControlName="dynamicQuantity"
-                   [ngClass]="{ 'is-invalid': formSubmitted && dynamicForm.controls['dynamicQuantity'].hasError('required') }"
-                   class="form-control form-control-sm"
                    (focusout)="onFocusOutQuantityRowEvent(i)"
-                   autocomplete="off"
-                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-                   [(ngModel)]="storeInProductViewModel.quantity"
-                   placeholder="">
+                   id="dynamicQuantity{{i}}"
+                   name="dynamicQuantity{{i}}"
+                   [(ngModel)]="storeInProductViewModel.quantity">
           </td>
           <td>{{storeInProductViewModel.totalPrice}}</td>
           <td>
             <div class="input-group datepicker-input">
-              <input name="mfDate{{i}}"
+              <input name="dynamicMfDate{{i}}"
                      type="text"
-                     formControlName="dynamicMfDate"
-                     #mfDMY="bsDatepicker"
+                     #dynamicMfDate="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
                      [(ngModel)]="storeInProductViewModel.manufacturingDate"
                      class="form-control form-control-sm"
                      bsDatepicker>
-              <button class="input-group-addon" (click)="mfDMY.toggle()" type="button">
+              <button class="input-group-addon" (click)="dynamicMfDate.toggle()" type="button">
                 <span class="fa fa-calendar"></span>
               </button>
             </div>
           </td>
           <td>
             <div class="input-group datepicker-input">
-              <input name="expDate{{i}}"
+              <input name="dynamicExpDate{{i}}"
                      type="text"
-                     formControlName="dynamicExpDate"
-                     #expDMY="bsDatepicker"
+                     #dynamicExpDate="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
                      [(ngModel)]="storeInProductViewModel.expirationDate"
                      class="form-control form-control-sm"
                      bsDatepicker>
-              <button class="input-group-addon" (click)="expDMY.toggle()" type="button">
+              <button class="input-group-addon" (click)="dynamicExpDate.toggle()" type="button">
                 <span class="fa fa-calendar"></span>
               </button>
             </div>
           </td>
           <td>
             <div class="input-group datepicker-input">
-              <input name="entryDate{{i}}"
+              <input name="dynamicEntryDate{{i}}"
                      type="text"
-                     formControlName="dynamicEntryDate"
-                     [ngClass]="{ 'is-invalid': formSubmitted && dynamicForm.controls['dynamicEntryDate'].hasError('required') }"
-                     #entryDMY="bsDatepicker"
+                     #dynamicEntryDate="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
                      [(ngModel)]="storeInProductViewModel.entryDate"
                      class="form-control form-control-sm"
                      bsDatepicker>
-              <button class="input-group-addon" (click)="entryDMY.toggle()" type="button">
+              <button class="input-group-addon" (click)="dynamicEntryDate.toggle()" type="button">
                 <span class="fa fa-calendar"></span>
               </button>
             </div>
@@ -420,5 +405,5 @@
     </div>
   </div>
 
-  <button type="submit" (click)="onClickSave()" class="btn btn-primary">Submit</button>
+  <button type="button" (click)="onClickSave()" class="btn btn-primary">Submit</button>
 </form>
