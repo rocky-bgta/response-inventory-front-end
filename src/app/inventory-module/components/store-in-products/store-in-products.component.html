@@ -82,32 +82,32 @@
           </div>
         </div>
 
-          <div class="col-sm-2" style="padding-left: 0">
-            <div class="form-group required">
-              <div class="col-sm-12">
-                <label for="price" class="required-label lb-sm">Price</label>
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="price" class="required-label lb-sm">Price</label>
 
-                <input class="form-control"
-                       type="text"
-                       id="price"
-                       name="price"
-                       autocomplete="off"
-                       [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-                       onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-                       [(ngModel)]="storeInProductViewModel.price"
-                       formControlName="price"
-                       placeholder="">
+              <input class="form-control"
+                     type="text"
+                     id="price"
+                     name="price"
+                     autocomplete="off"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                     [(ngModel)]="storeInProductViewModel.price"
+                     formControlName="price"
+                     placeholder="">
 
-                <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')"
-                     class="custom-invalid-feedback">
-                  Product Price required
-                </div>
-                <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
+              <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Product Price required
+              </div>
+              <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
                 Maximum value can be entered 1000000000
               </span>
-              </div>
             </div>
           </div>
+        </div>
 
 
         <div class="col-sm-2" style="padding-left: 0">
@@ -242,11 +242,11 @@
 
         </div>
 
-      <!--  <div class="col-sm-6" style="padding-left: 0">
-          <div class="form-group required">
+        <!--  <div class="col-sm-6" style="padding-left: 0">
+            <div class="form-group required">
 
-          </div>
-        </div>-->
+            </div>
+          </div>-->
 
 
       </div>
@@ -255,34 +255,30 @@
         <div class="col-sm-10"></div>
 
 
-        <div class="col-sm-2 text-right" style="padding: 0; margin: 0">
-          <div class="row"  style="padding: 0; margin: 0">
-
-            <button type="button"
-                    name="addProduct"
-                    style="margin-right: 5px;"
-                    id="clear"
-                    (click)="onClickClear()"
-                    class="btn btn-primary btn-sm">Clear
-            </button>
-
-            <button type="button"
-                    name="addProduct"
-                    id="addProduct"
-                    (click)="onClickAddProduct()"
-                    class="btn btn-primary btn-sm">Add Product
-            </button>
-          </div>
+        <div class="col-sm-1 text-right" style="padding: 0; margin: 0">
+          <button type="button"
+                  name="addProduct"
+                  id="clear"
+                  (click)="onClickClear()"
+                  class="btn btn-outline-danger btn-sm">Clear
+          </button>
+        </div>
+        <div class="col-sm-1 text-right" style="">
+          <button type="button"
+                  name="addProduct"
+                  id="addProduct"
+                  (click)="onClickAddProduct()"
+                  class="btn btn-outline-success btn-sm">Add Product
+          </button>
         </div>
 
       </div>
-
 
     </div>
   </div>
 </form>
 
-<form  #dynamicForm="ngForm" novalidate [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
+<form #dynamicForm="ngForm" novalidate [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
