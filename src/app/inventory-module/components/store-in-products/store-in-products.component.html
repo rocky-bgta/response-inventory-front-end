@@ -17,7 +17,7 @@
                          [attr.disabled]="disableElementOnDetailsView"
                          (change)="onChangeStore($event)"
                          (clear)="onClearStore()"
-                         [ngModel]="storeInProductViewModel.storeId"
+                         [(ngModel)]="storeInProductViewModel.storeId"
                          [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['store'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="store"
                          placeholder="Select Store">
@@ -242,24 +242,37 @@
 
         </div>
 
-        <div class="col-sm-6" style="padding-left: 0">
+      <!--  <div class="col-sm-6" style="padding-left: 0">
           <div class="form-group required">
 
           </div>
-        </div>
+        </div>-->
 
 
       </div>
 
       <div class="row" style="padding: 0; margin: 0">
         <div class="col-sm-10"></div>
-        <div class="col-sm-2 text-right" style="padding: 0">
-          <button type="button"
-                  name="addProduct"
-                  id="addProduct"
-                  (click)="onClickAddProduct()"
-                  class="btn btn-primary btn-sm">Add Product
-          </button>
+
+
+        <div class="col-sm-2 text-right" style="padding: 0; margin: 0">
+          <div class="row"  style="padding: 0; margin: 0">
+
+            <button type="button"
+                    name="addProduct"
+                    style="margin-right: 5px;"
+                    id="clear"
+                    (click)="onClickClear()"
+                    class="btn btn-primary btn-sm">Clear
+            </button>
+
+            <button type="button"
+                    name="addProduct"
+                    id="addProduct"
+                    (click)="onClickAddProduct()"
+                    class="btn btn-primary btn-sm">Add Product
+            </button>
+          </div>
         </div>
 
       </div>

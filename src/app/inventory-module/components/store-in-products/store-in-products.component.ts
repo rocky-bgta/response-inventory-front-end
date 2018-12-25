@@ -207,6 +207,13 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       Util.logConsole(this.storeInProductViewModelList);
   }
 
+  public onClickClear(){
+    this.storeInProductViewModel = new StoreInProductViewModel();
+    this.storeSelected=false;
+    this.vendorSelected=false;
+    this.productAdded=false;
+  }
+
   public onClearStore(){
     this.storeSelected=false;
   }
