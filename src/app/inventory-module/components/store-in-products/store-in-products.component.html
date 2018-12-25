@@ -277,10 +277,10 @@
 </form>
 
 
+<div class="card" style="margin-top: 1%" [hidden]="storeInProductViewModelList.length==0">
+<form #dynamicForm="ngForm" novalidate autocomplete="off">
 
-<form #dynamicForm="ngForm" novalidate [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
 
-  <div class="card" style="margin-top: 1%">
     <div class="card-header">
       <strong> Added products</strong>
     </div>
@@ -310,7 +310,7 @@
         <tr *ngFor="let storeInProductViewModel of storeInProductViewModelList; let i=index">
           <!-- <td>{{storeInProductViewModel.storeName}}</td>
            <td>{{storeInProductViewModel.vendorName}}</td>-->
-          <td>{{storeInProductViewModel.productName}}</td>
+          <td><strong>{{storeInProductViewModel.productName}}</strong></td>
           <td>
             <input #dynamicSerialNo="ngModel"
                    class="form-control form-control-sm"
@@ -424,18 +424,54 @@
       </table>
     </div>
     </div>
-  </div>
 
+
+
+
+  <!--
 
   <div class="row">
-    <div class="col-sm-3">
+    &lt;!&ndash;<div class="col-sm-3">
       <div class="form-group form-check">
         <input type="checkbox" class="form-check-input" id="exampleCheck1">
         <label class="form-check-label" for="exampleCheck1">Check me out</label>
       </div>
-    </div>
-  </div>
+    </div>&ndash;&gt;
 
-  <button type="submit" (click)="onClickSave(dynamicForm)" class="btn btn-primary">Submit</button>
+
+    <div class="col-sm-2">
+      <button type="submit" (click)="onClickSave(dynamicForm)" class="btn btn-primary pull-left">Submit</button>
+    </div>
+    <div class="col-sm-2">
+      <button type="submit" (click)="onClickSave(dynamicForm)" class="btn btn-primary pull-left">Submit</button>
+    </div>
+
+  </div>
+  -->
+
 </form>
 
+    <div class="card-footer">
+
+        <button type="button"
+
+              name="savebtn"
+              id="savebtn"
+              (click)="onClickSave(dynamicForm)"
+              class="btn btn-outline-success btn-sm pull-right">Save
+        </button>
+
+        <button type="button"
+                style="margin-right: 1%"
+                name="clearAll"
+                id="clearAll"
+                (click)="onClickClearAllAddedProduct()"
+                class="btn btn-outline-danger btn-sm pull-right">Clear All
+        </button>
+
+
+    </div>
+
+
+
+</div>
