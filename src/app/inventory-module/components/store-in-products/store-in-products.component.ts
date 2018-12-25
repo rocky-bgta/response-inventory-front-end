@@ -120,6 +120,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.storeInProductViewModel.quantity=1;
     this.storeInProductViewModel.totalPrice=1;
 
+    Util.logConsole(this.storeInProductViewModel);
+
   }
 
   public onFocusOutQuantityEvent(){
@@ -209,6 +211,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onClickClear(){
     this.storeInProductViewModel = new StoreInProductViewModel();
+    this.storeInProductViewModel.entryDate = new Date();
     this.storeSelected=false;
     this.vendorSelected=false;
     this.productAdded=false;
@@ -401,8 +404,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       store: ['',     Validators.compose([Validators.required])],
       vendor: ['',    Validators.compose([Validators.required])],
       barcode: ['',   Validators.compose([Validators.required,Validators.maxLength(20)])],
-      price: ['',     Validators.compose([Validators.max(10000000),Validators.required])],
-      quantity: ['',  Validators.compose([Validators.max(100),Validators.required])],
+      price: ['',     Validators.compose([Validators.max(1000000)])],
+      quantity: ['',  Validators.compose([Validators.max(100)])],
       total: ['',     Validators.compose([Validators.max(1000000000000)])],
       mfDate: ['', ],
       expDate: ['', ],

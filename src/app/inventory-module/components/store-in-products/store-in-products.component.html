@@ -2,6 +2,23 @@
 
 
   <div class="card" style="padding: 0">
+    <div class="card-header">
+
+      <!--<div *ngIf="storeInProductViewModel.productName || storeInProductViewModel.productName==''">
+        Select Product
+      </div>-->
+      <div *ngIf="storeInProductViewModel.productId=='undefined'">
+        Select Product
+      </div>
+
+      <div *ngIf="storeInProductViewModel.productId!=='undefined'">
+        Selected Product:  <strong>{{storeInProductViewModel.productName}}</strong>
+      </div>
+
+
+      <!--{{storeInProductViewModel.productName==""?'Select Product ':'Selected Product'}} + <strong>storeInProductViewModel.productName</strong>}}-->
+      <!--Selected Product <strong>{{storeInProductViewModel.productName}}</strong>-->
+    </div>
     <div class="card-body">
       <div class="row" style="padding: 0">
 
@@ -83,25 +100,19 @@
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
-          <div class="form-group required">
+          <div class="form-group">
             <div class="col-sm-12">
-              <label for="price" class="required-label lb-sm">Price</label>
+              <label for="price" class="lb-sm">Price</label>
 
               <input class="form-control"
                      type="text"
                      id="price"
                      name="price"
                      autocomplete="off"
-                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      [(ngModel)]="storeInProductViewModel.price"
                      formControlName="price"
                      placeholder="">
-
-              <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')"
-                   class="custom-invalid-feedback">
-                Product Price required
-              </div>
               <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
                 Maximum value can be entered 1000000000
               </span>
@@ -111,9 +122,9 @@
 
 
         <div class="col-sm-2" style="padding-left: 0">
-          <div class="form-group required">
+          <div class="form-group">
             <div class="col-sm-12">
-              <label for="quantity" class="required-label lb-sm">Quantity</label>
+              <label for="quantity" class="lb-sm">Quantity</label>
 
               <input class="form-control"
                      type="text"
@@ -123,14 +134,8 @@
                      autocomplete="off"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      formControlName="quantity"
-                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      [(ngModel)]="storeInProductViewModel.quantity"
                      placeholder="">
-              <div *ngIf="productAdded && entryForm.controls['quantity'].hasError('required')"
-                   class="custom-invalid-feedback">
-                Enter product Quantity.
-              </div>
-
               <span *ngIf="entryForm.controls['quantity'].hasError('max') " class="custom-invalid-feedback">
                 Maximum Quantity enterated at a time is 100
               </span>
@@ -139,9 +144,9 @@
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
-          <div class="form-group required">
+          <div class="form-group">
             <div class="col-sm-12">
-              <label for="total" class="required-label lb-sm">Total</label>
+              <label for="total" class="lb-sm">Total</label>
 
               <input class="form-control"
                      type="text"
@@ -326,6 +331,7 @@
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    #dynamicPrice="ngModel"
                    required
+                   autocomplete="off"
                    [ngClass]="{ 'is-invalid': dynamicPrice.invalid }"
                    id="dynamicPrice{{i}}"
                    name="dynamicPrice{{i}}"
@@ -337,6 +343,7 @@
                    #dynamicQuantity="ngModel"
                    type="text"
                    maxlength="3"
+                   autocomplete="off"
                    required
                    [ngClass]="{ 'is-invalid': dynamicQuantity.invalid }"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
