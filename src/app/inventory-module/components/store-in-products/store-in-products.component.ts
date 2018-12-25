@@ -174,7 +174,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     }else {
       if (!this.entryForm.invalid) {
         Util.logConsole(this.storeInProductViewModelList,"List");
-        //this.addProductToList();
+        this.addProductToList();
         return;
       }
     }
@@ -183,14 +183,14 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   }
 
-  private addProductToList(productModel: ProductModel):void{
+  private addProductToList():void{
     let storeInProductViewModel: StoreInProductViewModel;
     storeInProductViewModel = new StoreInProductViewModel();
-
     //storeInProductViewModel = _.clone(this.storeInProductViewModel);
-    storeInProductViewModel.entryDate= new Date();
-    storeInProductViewModel.productName= productModel.name;
-    storeInProductViewModel.price= productModel.price;
+    storeInProductViewModel.entryDate= _.clone(this.storeInProductViewModel.entryDate);
+    storeInProductViewModel.productId = _.clone(this.storeInProductViewModel.productId);
+    storeInProductViewModel.productName= _.clone(this.storeInProductViewModel.productName);
+    storeInProductViewModel.price= _.clone(this.storeInProductViewModel.price);
     storeInProductViewModel.quantity= _.clone(this.storeInProductViewModel.quantity);
     storeInProductViewModel.totalPrice=_.clone(this.storeInProductViewModel.totalPrice);
     storeInProductViewModel.storeName = this._storeName;
@@ -339,7 +339,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
           this.storeInProductViewModel.productId = productModel.id;
           this.storeInProductViewModel.price = productModel.price;
           this.setTotalPrice();
-          this.addProductToList(productModel);
+          this.addProductToList();
           //======================================================================================
 
           //Util.logConsole(productModel,"Product Model from subscribe");
