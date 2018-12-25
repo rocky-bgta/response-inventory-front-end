@@ -20,6 +20,7 @@ import {StoreInProductViewModel} from "../../model/view-model/store-in-product-v
 import {DateModel} from "../../../core/model/dateModel";
 import {StoreInProductsService} from "../../service/store-in-products.service";
 import {StoreInProductsModel} from "../../model/store-in-products-model";
+import {ProductService} from "../../service/product.service";
 
 @Component({
   selector: 'app-store-in-products',
@@ -61,10 +62,14 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public vendorModelList: Array<VendorModel> = new Array<VendorModel>();
-  public productModelList: Array<ProductModel> = new Array<ProductModel>();
+  //public productModelList: Array<ProductModel> = new Array<ProductModel>();
+  private _productModel:ProductModel;
 
   public storeInProductViewModel:StoreInProductViewModel = new StoreInProductViewModel();
   public storeInProductViewModelList: Array<StoreInProductViewModel> = new Array<StoreInProductViewModel>();
+
+  public storeSelected:boolean=false;
+  public vendorSelected:boolean=false;
 
 
   //helper variable==========
@@ -88,6 +93,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   constructor(private vendorService: VendorService,
               private storeService: StoreService,
+              private productService: ProductService,
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
               private toastr: ToastrService,
@@ -106,6 +112,11 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
     this.getStoreList();
     this.getVendorList();
+
+    //for the time being ============
+    this.storeInProductViewModel.entryDate = new Date();
+    this.storeInProductViewModel.price=0;
+    this.storeInProductViewModel.quantity=0;
 
   }
 
@@ -155,21 +166,31 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       return;
     }else {
 
-      let storeInProductViewModel: StoreInProductViewModel;
+      //let storeInProductViewModel: StoreInProductViewModel;
 
 
       //this.hideProductAddedTable=false;
 
       if (!this.entryForm.invalid) {
-        storeInProductViewModel = _.clone(this.storeInProductViewModel);
-        storeInProductViewModel.storeName = this._storeName;
-        storeInProductViewModel.vendorName = this._vendorName;
-        this.storeInProductViewModelList.push(storeInProductViewModel);
-        this.productAdded = true;
+        //storeInProductViewModel = _.clone(this.storeInProductViewModel);
+        //storeInProductViewModel.storeName = this._storeName;
+        //storeInProductViewModel.vendorName = this._vendorName;
+        //this.storeInProductViewModelList.push(storeInProductViewModel);
+        //this.productAdded = true;
+        this.addProductToList();
 
         return;
       }
     }
+  }
+
+  private addProductToList():void{
+    let storeInProductViewModel: StoreInProductViewModel;
+    storeInProductViewModel = _.clone(this.storeInProductViewModel);
+    storeInProductViewModel.storeName = this._storeName;
+    storeInProductViewModel.vendorName = this._vendorName;
+    this.storeInProductViewModelList.push(storeInProductViewModel);
+    this.productAdded=true;
   }
 
   public onClickSave(){
@@ -192,6 +213,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onChangeStore(event){
     this._storeName=event.name;
+    this.storeSelected=true;
 
     //Util.logConsole(event.id);
     //Util.logConsole(event.name);
@@ -199,9 +221,29 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onChangeVendor(event){
     this._vendorName=event.name;
+    this.vendorSelected=true;
+
 
     //Util.logConsole(event.id);
     //Util.logConsole(event.name);
+  }
+
+  public async onChangeBarcode(barcode:string){
+    //let productModel: ProductModel;
+    //Util.logConsole("Barcode: "+ barcode);
+    await this.getProductByBarcode(barcode);
+
+    //Util.logConsole(productModel);
+    //Util.logConsole(productModel,barcode);
+    //this.storeInProductViewModel.barcode="";
+
+  }
+
+  public isDisableBarcodeInput():boolean{
+    if(this.vendorSelected && this.storeSelected)
+      return false;
+    else
+      return true;
   }
 
   private getVendorList(){
@@ -264,6 +306,44 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     )
   }
 
+   private async getProductByBarcode(barcode:string):Promise<ProductModel>{
+    let productModel: ProductModel = null;
+    this.productService.getByBarcode(barcode.trim()).subscribe
+    (
+      (responseMessage:ResponseMessage)=>
+      {
+        if(responseMessage.httpStatus==HttpStatusCode.FOUND){
+          productModel = <ProductModel>responseMessage.data;
+          //============== code need re-factor need to do promise base code ======================
+          this.storeInProductViewModel.productName = productModel.name;
+          this.storeInProductViewModel.productId = productModel.id;
+          this.addProductToList();
+          //======================================================================================
+
+          Util.logConsole(productModel,"Product Model from subscribe");
+          return productModel;
+        }else if(responseMessage.httpStatus==HttpStatusCode.NOT_FOUND) {
+          this.toastr.error(responseMessage.message,this.pageTitle);
+          return;
+        }else {
+          Util.logConsole(responseMessage);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        if (httpErrorResponse.error instanceof Error) {
+          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+        } else {
+          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+        }
+        return;
+      }
+
+    );
+    return productModel;
+  }
 
   private initializedPageStateVariable():void{
     this.isPageInUpdateState = false;

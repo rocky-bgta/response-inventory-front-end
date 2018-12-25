@@ -29,6 +29,10 @@ export class ProductService {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.product, id);
   }
 
+  getByBarcode(barcode:string): Observable<any> {
+    return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.product +'/barcode', barcode);
+  }
+
   update(data) {
     return this.httpRequestHelperService.updateRequest(InventoryApiEndPoint.product, data);
   }

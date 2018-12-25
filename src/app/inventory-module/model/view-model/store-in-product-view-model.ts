@@ -4,6 +4,7 @@ export class  StoreInProductViewModel{
   public vendorName:string;
   public vendorId:string;
   public productName:string;
+  public productId:string;
   public barcode:string;
   public serialNo:string;
   public price:number;
