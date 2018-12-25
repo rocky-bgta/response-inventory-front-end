@@ -191,6 +191,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     storeInProductViewModel.vendorName = this._vendorName;
     this.storeInProductViewModelList.push(storeInProductViewModel);
     this.productAdded=true;
+    //this.storeInProductViewModel.barcode="";
   }
 
   public onClickSave(){
@@ -198,6 +199,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     if(this.dynamicForm.invalid){
       this.toastr.error("Please fill up the form correctly",this.pageTitle);
       //Util.logConsole("Please Submit valid form");
+    }else {
+      Util.logConsole(this.storeInProductViewModelList);
     }
   }
 
@@ -228,11 +231,13 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //Util.logConsole(event.name);
   }
 
-  public async onChangeBarcode(barcode:string){
+  public async onChangeBarcode(barcode:string, event){
     //let productModel: ProductModel;
     //Util.logConsole("Barcode: "+ barcode);
     await this.getProductByBarcode(barcode);
-
+    event.target.select();
+    event.target.value="";
+    Util.logConsole(event);
     //Util.logConsole(productModel);
     //Util.logConsole(productModel,barcode);
     //this.storeInProductViewModel.barcode="";

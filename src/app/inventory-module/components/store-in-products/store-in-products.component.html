@@ -61,7 +61,7 @@
                      type="text"
                      id="barcode"
                      [attr.disabled]="isDisableBarcodeInput()?'':null"
-                     (change)="onChangeBarcode(storeInProductViewModel.barcode)"
+                     (change)="onChangeBarcode(storeInProductViewModel.barcode,$event)"
                      formControlName="barcode"
                      [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['barcode'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      autocomplete="off"
@@ -77,9 +77,7 @@
               </span>
             </div>
           </div>
-        </div>
 
-        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="price" class="required-label lb-sm">Price</label>
@@ -265,7 +263,7 @@
   </div>
 </form>
 
-<form [formGroup]="dynamicForm" [hidden]="storeInProductViewModelList.length==0">
+<form [formGroup]="dynamicForm" [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
@@ -308,7 +306,7 @@
           </td>
           <td>
             <input name="price{{i}}"
-                   type="text"
+                   type="number"
                    formControlName="dynamicPrice"
                    class="form-control form-control-sm"
                    autocomplete="off"
