@@ -120,7 +120,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.storeInProductViewModel.quantity=1;
     this.storeInProductViewModel.totalPrice=1;
 
-    Util.logConsole(this.storeInProductViewModel);
+    //Util.logConsole(this.storeInProductViewModel);
 
   }
 
@@ -168,13 +168,14 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       this.barcodeRef.nativeElement.focus();
     }
 
-    this.productAdded=true;
+
     //First check if any invalid entry exist
     if(this.entryForm.invalid){
       this.toastr.error("Please correct added product data first", this.pageTitle);
       return;
     }else {
       if (!this.entryForm.invalid) {
+        this.productAdded=true;
         Util.logConsole(this.storeInProductViewModelList,"List");
         this.addProductToList();
         return;

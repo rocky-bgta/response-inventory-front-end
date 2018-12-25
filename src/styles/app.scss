@@ -90,3 +90,10 @@ img {
   font-size: 14px;
   font-weight: bold;
 }
+
+.custom-scroll{
+  height:500px;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}

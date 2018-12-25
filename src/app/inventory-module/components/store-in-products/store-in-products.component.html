@@ -3,11 +3,11 @@
 
   <div class="card" style="padding: 0">
     <div class="card-header">
-      <div *ngIf="storeInProductViewModel.productId=='undefined'">
+      <div *ngIf="!productAdded">
         Select Product
       </div>
 
-      <div *ngIf="storeInProductViewModel.productId!=='undefined'">
+      <div *ngIf="productAdded">
         Selected Product:  <strong>{{storeInProductViewModel.productName}}</strong>
       </div>
 
@@ -276,13 +276,17 @@
   </div>
 </form>
 
+
+
 <form #dynamicForm="ngForm" novalidate [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
       <strong> Added products</strong>
     </div>
-    <div class="card-body">
+
+    <div class="custom-scroll">
+      <div class="card-body">
 
 
       <table class="table table-hover table-bordered table-sm table-striped">
@@ -419,6 +423,7 @@
         </tbody>
       </table>
     </div>
+    </div>
   </div>
 
 
@@ -433,3 +438,4 @@
 
   <button type="submit" (click)="onClickSave(dynamicForm)" class="btn btn-primary">Submit</button>
 </form>
+
