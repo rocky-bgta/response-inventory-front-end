@@ -86,9 +86,10 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   //date-picker r&D =======================
   //get by id as jQuery
   @ViewChild('storeDropDown') storeDropDownRef :ElementRef ;
-  model: any;
-  public testDate: DateModel = new DateModel();
-  public dateTime1:Date = new Date();
+  @ViewChild('barcode') barcodeRef :ElementRef ;
+  //model: any;
+  //public testDate: DateModel = new DateModel();
+  //public dateTime1:Date = new Date();
   //date-picker r&D =======================
 
   constructor(private vendorService: VendorService,
@@ -160,28 +161,22 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onClickAddProduct(){
 
-    //First check if any invalid entry exist
+    this.barcodeRef.nativeElement.disabled=false;
+    this.barcodeRef.nativeElement.focus();
+
+   /* //First check if any invalid entry exist
     if(this.productAdded && this.dynamicForm.invalid){
       this.toastr.error("Please correct added product data first", this.pageTitle);
       return;
     }else {
-
-      //let storeInProductViewModel: StoreInProductViewModel;
-
-
-      //this.hideProductAddedTable=false;
-
       if (!this.entryForm.invalid) {
-        //storeInProductViewModel = _.clone(this.storeInProductViewModel);
-        //storeInProductViewModel.storeName = this._storeName;
-        //storeInProductViewModel.vendorName = this._vendorName;
-        //this.storeInProductViewModelList.push(storeInProductViewModel);
-        //this.productAdded = true;
         this.addProductToList();
-
         return;
       }
     }
+    */
+
+
   }
 
   private addProductToList():void{
@@ -217,6 +212,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public onChangeStore(event){
     this._storeName=event.name;
     this.storeSelected=true;
+    this.setFocusOnBarcodeInputTextBox();
 
     //Util.logConsole(event.id);
     //Util.logConsole(event.name);
@@ -225,7 +221,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public onChangeVendor(event){
     this._vendorName=event.name;
     this.vendorSelected=true;
-
+    this.setFocusOnBarcodeInputTextBox();
 
     //Util.logConsole(event.id);
     //Util.logConsole(event.name);
@@ -350,6 +346,16 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     return productModel;
   }
 
+  private setFocusOnBarcodeInputTextBox(){
+    Util.logConsole(this.barcodeRef.nativeElement);
+    if(this.storeSelected && this.vendorSelected){
+      //this.barcodeRef.nativeElement.dis
+      this.barcodeRef.nativeElement.disabled=false;
+      this.barcodeRef.nativeElement.focus();
+      //this.barcodeRef.nativeElement.focus();
+    }
+  }
+
   private initializedPageStateVariable():void{
     this.isPageInUpdateState = false;
     //this.hideProductAddedTable = true;
@@ -389,8 +395,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit(): void {
+    Util.logConsole(this.barcodeRef.nativeElement);
     //Here we can access ng-select property and method dynamically
-    Util.logConsole(this.storeDropDownRef);
+    //Util.logConsole(this.storeDropDownRef);
   }
 
 }

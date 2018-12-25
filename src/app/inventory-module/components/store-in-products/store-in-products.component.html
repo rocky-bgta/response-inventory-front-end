@@ -58,6 +58,7 @@
               <label for="barcode" class="required-label lb-sm">Product barcode:</label>
 
               <input class="form-control"
+                     #barcode
                      type="text"
                      id="barcode"
                      [attr.disabled]="isDisableBarcodeInput()?'':null"
@@ -77,32 +78,35 @@
               </span>
             </div>
           </div>
+        </div>
 
-          <div class="form-group required">
-            <div class="col-sm-12">
-              <label for="price" class="required-label lb-sm">Price</label>
+          <div class="col-sm-2" style="padding-left: 0">
+            <div class="form-group required">
+              <div class="col-sm-12">
+                <label for="price" class="required-label lb-sm">Price</label>
 
-              <input class="form-control"
-                     type="text"
-                     id="price"
-                     name="price"
-                     autocomplete="off"
-                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
-                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-                     [(ngModel)]="storeInProductViewModel.price"
-                     formControlName="price"
-                     placeholder="">
+                <input class="form-control"
+                       type="text"
+                       id="price"
+                       name="price"
+                       autocomplete="off"
+                       [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                       onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                       [(ngModel)]="storeInProductViewModel.price"
+                       formControlName="price"
+                       placeholder="">
 
-              <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')"
-                   class="custom-invalid-feedback">
-                Product Price required
-              </div>
-              <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
+                <div *ngIf="productAdded && entryForm.controls['price'].hasError('required')"
+                     class="custom-invalid-feedback">
+                  Product Price required
+                </div>
+                <span *ngIf="entryForm.controls['price'].hasError('max') " class="custom-invalid-feedback">
                 Maximum value can be entered 1000000000
               </span>
+              </div>
             </div>
           </div>
-        </div>
+
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
