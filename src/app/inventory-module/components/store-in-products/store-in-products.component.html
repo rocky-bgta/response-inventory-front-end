@@ -3,10 +3,6 @@
 
   <div class="card" style="padding: 0">
     <div class="card-header">
-
-      <!--<div *ngIf="storeInProductViewModel.productName || storeInProductViewModel.productName==''">
-        Select Product
-      </div>-->
       <div *ngIf="storeInProductViewModel.productId=='undefined'">
         Select Product
       </div>
@@ -15,9 +11,6 @@
         Selected Product:  <strong>{{storeInProductViewModel.productName}}</strong>
       </div>
 
-
-      <!--{{storeInProductViewModel.productName==""?'Select Product ':'Selected Product'}} + <strong>storeInProductViewModel.productName</strong>}}-->
-      <!--Selected Product <strong>{{storeInProductViewModel.productName}}</strong>-->
     </div>
     <div class="card-body">
       <div class="row" style="padding: 0">
