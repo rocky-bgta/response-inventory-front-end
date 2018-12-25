@@ -311,9 +311,8 @@
           </td>
           <td>
             <input class="form-control form-control-sm"
-                   type="number"
-                   min="1"
-                   max="1000000"
+                   type="text"
+                   maxlength="6"
                    (focusout)="onFocusOutPriceRowEvent(i)"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    #dynamicPrice="ngModel"
@@ -327,9 +326,8 @@
           <td>
             <input class="form-control form-control-sm"
                    #dynamicQuantity="ngModel"
-                   type="number"
-                   min="1"
-                   max="1000"
+                   type="text"
+                   maxlength="3"
                    required
                    [ngClass]="{ 'is-invalid': dynamicQuantity.invalid }"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"

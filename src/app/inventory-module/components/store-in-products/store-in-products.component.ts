@@ -202,6 +202,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onClickSave(dynamicForm:NgForm){
     //this.formSubmitted=true;
+    Util.logConsole(dynamicForm);
     if(!dynamicForm.invalid)
       Util.logConsole(this.storeInProductViewModelList);
   }
