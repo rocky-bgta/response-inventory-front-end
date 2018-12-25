@@ -48,9 +48,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   //======== page state variables end  ===========
 
   //======== Data Table variable  start ===========================
-  public dataTableOptions: DataTables.Settings = {};
-  private dataTablesCallBackParameters: DataTableRequest;
-  private dataTableCallbackFunction: any;
+  //public dataTableOptions: DataTables.Settings = {};
+  //private dataTablesCallBackParameters: DataTableRequest;
+  //private dataTableCallbackFunction: any;
   //======== Data Table variable enc  =============================
 
 
@@ -75,7 +75,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   //helper variable==========
   private _storeName:string;
   private _vendorName:string;
-  private _productName:string;
+  //private _productName:string;
 
 
 //========== Variables for this page business =====================================================
@@ -118,6 +118,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.storeInProductViewModel.entryDate = new Date();
     this.storeInProductViewModel.price=1;
     this.storeInProductViewModel.quantity=1;
+    this.storeInProductViewModel.totalPrice=1;
 
   }
 
@@ -160,19 +161,22 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onClickAddProduct(){
 
-    this.barcodeRef.nativeElement.disabled=false;
-    this.barcodeRef.nativeElement.focus();
+    if(this.storeSelected && this.vendorSelected) {
+      this.barcodeRef.nativeElement.disabled = false;
+      this.barcodeRef.nativeElement.focus();
+    }
 
+    this.productAdded=true;
     //First check if any invalid entry exist
-    if(this.productAdded && this.dynamicForm.invalid){
+    if(this.entryForm.invalid){
       this.toastr.error("Please correct added product data first", this.pageTitle);
       return;
     }else {
-      //if (!this.entryForm.invalid) {
+      if (!this.entryForm.invalid) {
         Util.logConsole(this.storeInProductViewModelList,"List");
         //this.addProductToList();
         return;
-     // }
+      }
     }
 
 
@@ -196,9 +200,18 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //this.storeInProductViewModel.barcode="";
   }
 
-  public onClickSave(){
-    this.formSubmitted=true;
-    Util.logConsole(this.storeInProductViewModelList);
+  public onClickSave(dynamicForm:NgForm){
+    //this.formSubmitted=true;
+    if(!dynamicForm.invalid)
+      Util.logConsole(this.storeInProductViewModelList);
+  }
+
+  public onClearStore(){
+    this.storeSelected=false;
+  }
+
+  public onClearVendor(){
+    this.vendorSelected=false;
   }
 
   public onClickRemoveRow(index){
@@ -212,18 +225,22 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
   public onChangeStore(event){
-    this._storeName=event.name;
-    this.storeSelected=true;
-    this.setFocusOnBarcodeInputTextBox();
+    if(event!=null && !_.isEmpty(event)) {
+      this._storeName = event.name;
+      this.storeSelected = true;
+      this.setFocusOnBarcodeInputTextBox();
+    }
 
     //Util.logConsole(event.id);
     //Util.logConsole(event.name);
   }
 
   public onChangeVendor(event){
-    this._vendorName=event.name;
-    this.vendorSelected=true;
-    this.setFocusOnBarcodeInputTextBox();
+    if(event!=null && !_.isEmpty(event)) {
+      this._vendorName = event.name;
+      this.vendorSelected = true;
+      this.setFocusOnBarcodeInputTextBox();
+    }
 
     //Util.logConsole(event.id);
     //Util.logConsole(event.name);
@@ -364,9 +381,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.isPageInUpdateState = false;
     //this.hideProductAddedTable = true;
     this.disablePageElementOnDetailsView = false;
-    this.dataTablesCallBackParameters = new DataTableRequest();
-    this.dataTablesCallBackParameters.start = 0;
-    this.dataTablesCallBackParameters.length = 10;
+    //this.dataTablesCallBackParameters = new DataTableRequest();
+    //this.dataTablesCallBackParameters.start = 0;
+    //this.dataTablesCallBackParameters.length = 10;
     this.productAdded=false;
     this.formSubmitted=false;
   }

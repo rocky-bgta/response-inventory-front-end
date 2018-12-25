@@ -16,6 +16,7 @@
                          bindValue="id"
                          [attr.disabled]="disableElementOnDetailsView"
                          (change)="onChangeStore($event)"
+                         (clear)="onClearStore()"
                          [ngModel]="storeInProductViewModel.storeId"
                          [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['store'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="store"
@@ -38,6 +39,7 @@
                          bindLabel="name"
                          bindValue="id"
                          [attr.disabled]="disableElementOnDetailsView"
+                         (clear)="onClearVendor()"
                          (change)="onChangeVendor($event)"
                          [(ngModel)]="storeInProductViewModel.vendorId"
                          [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['vendor'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
@@ -64,7 +66,7 @@
                      [attr.disabled]="isDisableBarcodeInput()?'':null"
                      (change)="onChangeBarcode(storeInProductViewModel.barcode,$event)"
                      formControlName="barcode"
-                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['barcode'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['barcode'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      autocomplete="off"
                      name="barcode"
                      [(ngModel)]="storeInProductViewModel.barcode">
@@ -90,7 +92,7 @@
                        id="price"
                        name="price"
                        autocomplete="off"
-                       [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                       [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['price'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                        onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                        [(ngModel)]="storeInProductViewModel.price"
                        formControlName="price"
@@ -121,7 +123,7 @@
                      autocomplete="off"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      formControlName="quantity"
-                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['quantity'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      [(ngModel)]="storeInProductViewModel.quantity"
                      placeholder="">
               <div *ngIf="productAdded && entryForm.controls['quantity'].hasError('required')"
@@ -168,7 +170,7 @@
                      #mfDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
-                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['mfDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['mfDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      formControlName="mfDate"
                      [(ngModel)]="storeInProductViewModel.manufacturingDate"
                      class="form-control"
@@ -191,7 +193,7 @@
               <input type="text"
                      name="expDate"
                      id="expDate"
-                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['expDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['expDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      #expDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
@@ -219,7 +221,7 @@
               <input type="text"
                      name="entryDate"
                      id="entryDate"
-                     [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['entryDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['entryDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                      #entryDMY="bsDatepicker"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
@@ -267,7 +269,7 @@
   </div>
 </form>
 
-<form [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
+<form  #dynamicForm="ngForm" novalidate [hidden]="storeInProductViewModelList.length==0" autocomplete="off">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
@@ -299,7 +301,9 @@
            <td>{{storeInProductViewModel.vendorName}}</td>-->
           <td>{{storeInProductViewModel.productName}}</td>
           <td>
-            <input class="form-control form-control-sm"
+            <input #dynamicSerialNo="ngModel"
+                   class="form-control form-control-sm"
+                   maxlength="50"
                    type="text"
                    id="dynamicSerialNo{{i}}"
                    name="dynamicSerialNo{{i}}"
@@ -307,7 +311,14 @@
           </td>
           <td>
             <input class="form-control form-control-sm"
-                   type="text"
+                   type="number"
+                   min="1"
+                   max="1000000"
+                   (focusout)="onFocusOutPriceRowEvent(i)"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   #dynamicPrice="ngModel"
+                   required
+                   [ngClass]="{ 'is-invalid': dynamicPrice.invalid }"
                    id="dynamicPrice{{i}}"
                    name="dynamicPrice{{i}}"
                    [(ngModel)]="storeInProductViewModel.price">
@@ -315,7 +326,13 @@
           </td>
           <td>
             <input class="form-control form-control-sm"
-                   type="text"
+                   #dynamicQuantity="ngModel"
+                   type="number"
+                   min="1"
+                   max="1000"
+                   required
+                   [ngClass]="{ 'is-invalid': dynamicQuantity.invalid }"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    (focusout)="onFocusOutQuantityRowEvent(i)"
                    id="dynamicQuantity{{i}}"
                    name="dynamicQuantity{{i}}"
@@ -356,7 +373,9 @@
             <div class="input-group datepicker-input">
               <input name="dynamicEntryDate{{i}}"
                      type="text"
+                     required
                      #dynamicEntryDate="bsDatepicker"
+                     [ngClass]="{ 'is-invalid': dynamicEntryDate.invalid }"
                      [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                      placeholder="Select a date"
                      [(ngModel)]="storeInProductViewModel.entryDate"
@@ -405,5 +424,5 @@
     </div>
   </div>
 
-  <button type="button" (click)="onClickSave()" class="btn btn-primary">Submit</button>
+  <button type="submit" (click)="onClickSave(dynamicForm)" class="btn btn-primary">Submit</button>
 </form>
