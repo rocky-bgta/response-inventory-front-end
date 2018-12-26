@@ -47,11 +47,10 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public disablePageElementOnDetailsView: boolean;
   //======== page state variables end  ===========
 
-  //======== Data Table variable  start ===========================
-  //public dataTableOptions: DataTables.Settings = {};
-  //private dataTablesCallBackParameters: DataTableRequest;
-  //private dataTableCallbackFunction: any;
-  //======== Data Table variable enc  =============================
+  //======== Regular Expression ===========================
+  public quantityValidation:string = '^((?!(0))[0-9])*$';
+
+  //======== Regular Expression end  =============================
 
 
   //========== Variables for this page business =====================================================
@@ -343,7 +342,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     )
   }
 
-   private getProductByBarcode(barcode:string):ProductModel{
+  private getProductByBarcode(barcode:string):ProductModel{
     let productModel: ProductModel = null;
     this.productService.getByBarcode(barcode.trim()).subscribe
     (
@@ -410,7 +409,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       store: ['',     Validators.compose([Validators.required])],
       vendor: ['',    Validators.compose([Validators.required])],
       barcode: ['',   Validators.compose([Validators.required,Validators.maxLength(20)])],
-      price: ['',     Validators.compose([Validators.max(1000000)])],
+      price: ['',     Validators.compose([Validators.maxLength(8)])],
       quantity: ['',  Validators.compose([Validators.max(100)])],
       total: ['',     Validators.compose([Validators.max(1000000000000)])],
       mfDate: ['', ],
