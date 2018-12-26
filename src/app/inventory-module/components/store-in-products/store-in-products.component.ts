@@ -161,6 +161,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 
   public onClickAddProduct(){
+    //set this value for validation purpose only
+    this.productAdded=true;
+    //==========================================
 
     if(this.storeSelected && this.vendorSelected) {
       this.barcodeRef.nativeElement.disabled = false;
@@ -174,7 +177,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       return;
     }else {
       if (!this.entryForm.invalid) {
-        this.productAdded=true;
+        this.productAdded=false;
         Util.logConsole(this.storeInProductViewModelList,"List");
         this.addProductToList();
         return;
