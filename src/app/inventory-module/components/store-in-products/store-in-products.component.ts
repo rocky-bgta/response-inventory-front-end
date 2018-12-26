@@ -405,11 +405,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
   private initializeReactiveFormValidation():void{
+    let allowedCharacter = "^((?!(0))[0-9]{1,10})$";
     this.entryForm = this.formBuilder.group({
       store: ['',     Validators.compose([Validators.required])],
       vendor: ['',    Validators.compose([Validators.required])],
       barcode: ['',   Validators.compose([Validators.required,Validators.maxLength(20)])],
-      price: ['',     Validators.compose([Validators.maxLength(8)])],
+      price: ['',     Validators.compose([Validators.maxLength(10),Validators.pattern(allowedCharacter)])],
       quantity: ['',  Validators.compose([Validators.max(100)])],
       total: ['',     Validators.compose([Validators.max(1000000000000)])],
       mfDate: ['', ],
