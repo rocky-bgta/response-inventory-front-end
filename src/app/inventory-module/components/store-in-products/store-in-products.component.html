@@ -155,8 +155,6 @@
         </div>
 
       </div>
-
-
       <div class="row" style="padding: 0; margin: 0">
 
         <div class="col-sm-2" style="padding-left: 0">
@@ -249,31 +247,26 @@
 
 
       </div>
-
-      <div class="row" style="padding: 0; margin: 0">
-        <div class="col-sm-10"></div>
-
-
-        <div class="col-sm-1 text-right" style="padding: 0; margin: 0">
-          <button type="button"
-                  name="addProduct"
-                  id="clear"
-                  (click)="onClickClear()"
-                  class="btn btn-outline-danger btn-sm">Clear
-          </button>
-        </div>
-        <div class="col-sm-1 text-right" style="">
-          <button type="button"
-                  name="addProduct"
-                  id="addProduct"
-                  (click)="onClickAddProduct()"
-                  class="btn btn-outline-success btn-sm">Add Product
-          </button>
-        </div>
-
-      </div>
-
     </div>
+
+    <div class="card-footer">
+      <button type="button"
+
+              name="clearAll"
+              id="btnAddProduct"
+              (click)="onClickAddProduct()"
+              class="btn btn-outline-success btn-sm pull-right">Add Product
+      </button>
+
+      <button type="button"
+              name="btnClear"
+              style="margin-right: 1%"
+              id="btnClear"
+              (click)="onClickClear()"
+              class="btn btn-outline-danger btn-sm pull-right">Clear
+      </button>
+    </div>
+
   </div>
 </form>
 
@@ -458,8 +451,8 @@
 
         <button type="button"
 
-              name="savebtn"
-              id="savebtn"
+              name="saveBtn"
+              id="saveBtn"
               (click)="onClickSave(dynamicForm)"
               class="btn btn-outline-success btn-sm pull-right">Save
         </button>
