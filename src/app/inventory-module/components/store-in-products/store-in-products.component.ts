@@ -283,11 +283,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        this.toastr.error('Failed to save vendor',this.pageTitle);
+        this.toastr.error('Failed to save Store in Product',this.pageTitle);
         if (httpErrorResponse.error instanceof ErrorEvent) {
           Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
         } else {
           this.toastr.error('There is a problem with the service. We are notified and working on it',this.pageTitle);
+          this.toastr.info("Please reload this page");
           Util.logConsole(httpErrorResponse,"Server Side error occurred" );
         }
         return;

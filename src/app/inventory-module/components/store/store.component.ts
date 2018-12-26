@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import * as HttpStatus from 'http-status-codes'
 import {StoreService} from "../../service/store.service";
 import {StoreModel} from "../../model/store-model";
+import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 
 declare var jQuery: any;
 
@@ -128,11 +129,11 @@ export class StoreComponent implements OnInit, AfterViewInit {
     this.dataTablesCallBackParameters = dataTablesParameters;
     this.dataTableCallbackFunction = callback;
 
-    this.storeService.getList(dataTablesParameters).subscribe
+    const request= this.storeService.getList(dataTablesParameters).subscribe
     (
       (response: ResponseMessage) =>
       {
-        if(response.httpStatus==HttpStatus.OK) {
+        if(response.httpStatus==HttpStatusCode.FOUND) {
           this.storeModelList = <Array<StoreModel>>response.data;
           callback({
             recordsTotal: response.dataTableResponse.recordsTotal,
@@ -152,6 +153,7 @@ export class StoreComponent implements OnInit, AfterViewInit {
           this.toastr.error('Please try again later',this.pageTitle);
           Util.logConsole(httpErrorResponse,"Client-side error occurred.");
         }
+        request.unsubscribe();
         return;
       }
     );

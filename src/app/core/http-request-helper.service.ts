@@ -1,9 +1,11 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs/index";
 import {RequestMessage} from "./model/request-message";
 import {Util} from "./Util";
-
+import {catchError, delay, retry} from "rxjs/internal/operators";
+import {ToastrService} from "ngx-toastr";
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,8 @@ import {Util} from "./Util";
 export class HttpRequestHelperService {
 
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private toastr: ToastrService,) {
   }
 
   private httpHeaderOptions: object = {
@@ -19,6 +22,8 @@ export class HttpRequestHelperService {
       "Content-Type": "application/json",
     })
   };
+
+  private delayTimeForResponse:number=50;
 
   /*
 
@@ -33,7 +38,8 @@ export class HttpRequestHelperService {
 
 
   public getRequestWithQueryParameter(requestUrl: string, params: any): Observable<any> {
-    let response = this.httpClient.get<any>(requestUrl, {params: params});
+    let response = this.httpClient.get<any>(requestUrl, {params: params})
+      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
     return response;
   }
 
@@ -41,12 +47,14 @@ export class HttpRequestHelperService {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(null,dataTableParameter);
 
-    let response = this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions);
+    let response = this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions)
+      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
     return response;
   }
 
   public getRequestById(requestUrl: string, id: string): Observable<any> {
-    let response = this.httpClient.get<any>(requestUrl + "/"+ id, this.httpHeaderOptions);
+    let response = this.httpClient.get<any>(requestUrl + "/"+ id, this.httpHeaderOptions)
+      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));;
     return response;
   }
 
@@ -56,7 +64,7 @@ export class HttpRequestHelperService {
       requestUrl,
       requestPayload,
       this.httpHeaderOptions
-    );
+    ).pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
     return response;
   }
 
@@ -69,7 +77,7 @@ export class HttpRequestHelperService {
       putUrl,
       requestPayload,
       this.httpHeaderOptions
-    );
+    ).pipe(retry(3),delay(this.delayTimeForResponse),catchError(this.handleError));
     return response;
   }
 
@@ -80,8 +88,19 @@ export class HttpRequestHelperService {
     let response = this.httpClient.delete<any>
     (
       deleteUrl
-    );
+    ).pipe(retry(3), delay(this.delayTimeForResponse),catchError(this.handleError));
     return response;
+  }
+
+  private handleError(httpErrorResponse: HttpErrorResponse){
+    if (httpErrorResponse.error instanceof ErrorEvent) {
+      Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
+    } else {
+      this.toastr.error('There is a problem with the service. We are notified and working on it');
+      this.toastr.info("Please reload this page");
+      Util.logConsole(httpErrorResponse,"Server Side error occurred" );
+    }
+    return throwError('There is a problem with the service. We are notified and working on it')
   }
 
 }
