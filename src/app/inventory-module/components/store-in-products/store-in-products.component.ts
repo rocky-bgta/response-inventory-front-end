@@ -48,7 +48,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   //======== page state variables end  ===========
 
   //======== Regular Expression ===========================
-  public quantityValidation:string = '^((?!(0))[0-9])*$';
+  //public quantityValidation:string = '^((?!(0))[0-9])*$';
 
   //======== Regular Expression end  =============================
 
@@ -123,42 +123,6 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   }
 
-  public onFocusOutQuantityEvent(){
-    this.setTotalPrice();
-  }
-
-  public onFocusOutQuantityRowEvent(index:number){
-    this.setTotalPrice(index);
-  }
-
-  public onFocusOutPriceRowEvent(index:number){
-    this.setTotalPrice(index);
-  }
-
-
-  private setTotalPrice(index?:number){
-    let price:number;
-    let quantity:number;
-    let total:number;
-
-    if(index!=null && !_.isNaN(index)){
-      price = this.storeInProductViewModelList[index].price;
-      quantity = this.storeInProductViewModelList[index].quantity;
-    }else {
-      price = this.storeInProductViewModel.price;
-      quantity = this.storeInProductViewModel.quantity;
-    }
-    if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
-      total= price*quantity;
-    }
-    if(index!=null && !_.isNaN(index)){
-      this.storeInProductViewModelList[index].totalPrice=total;
-    }else {
-      this.storeInProductViewModel.totalPrice=total;
-    }
-  }
-
-
 
   public onClickAddProduct(){
     //set this value for validation purpose only
@@ -188,31 +152,15 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   }
 
-  private addProductToList():void{
-    let storeInProductViewModel: StoreInProductViewModel;
-    storeInProductViewModel = new StoreInProductViewModel();
-    //storeInProductViewModel = _.clone(this.storeInProductViewModel);
-    storeInProductViewModel.entryDate= _.clone(this.storeInProductViewModel.entryDate);
-    storeInProductViewModel.productId = _.clone(this.storeInProductViewModel.productId);
-    storeInProductViewModel.productName= _.clone(this.storeInProductViewModel.productName);
-    storeInProductViewModel.price= _.clone(this.storeInProductViewModel.price);
-    storeInProductViewModel.quantity= _.clone(this.storeInProductViewModel.quantity);
-    storeInProductViewModel.totalPrice=_.clone(this.storeInProductViewModel.totalPrice);
-    storeInProductViewModel.storeName = this._storeName;
-    storeInProductViewModel.vendorName = this._vendorName;
-    this.storeInProductViewModelList.push(storeInProductViewModel);
-    this.productAdded=true;
-    //this.storeInProductViewModel.barcode="";
-  }
-
   public onClickSave(dynamicForm:NgForm){
-    //this.formSubmitted=true;
-    //Util.logConsole(dynamicForm);
+
     if(!dynamicForm.invalid) {
-      Util.logConsole(this.storeInProductViewModelList);
+      //Util.logConsole(this.storeInProductViewModelList);
+      this.saveStoreInProduct();
     }else {
       this.toastr.info("Please correct entered product list value");
     }
+    return;
   }
 
   public onClickClear(){
@@ -226,7 +174,6 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public onClickClearAllAddedProduct(){
     this.storeInProductViewModelList = new Array<StoreInProductViewModel>();
   }
-
 
   public onClearStore(){
     this.storeSelected=false;
@@ -279,6 +226,96 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //Util.logConsole(productModel,barcode);
     //this.storeInProductViewModel.barcode="";
 
+  }
+
+  public onFocusOutQuantityEvent(){
+    this.setTotalPrice();
+  }
+
+  public onFocusOutQuantityRowEvent(index:number){
+    this.setTotalPrice(index);
+  }
+
+  public onFocusOutPriceRowEvent(index:number){
+    this.setTotalPrice(index);
+  }
+
+  private addProductToList():void{
+    let storeInProductViewModel: StoreInProductViewModel;
+    storeInProductViewModel = new StoreInProductViewModel();
+    //storeInProductViewModel = _.clone(this.storeInProductViewModel);
+    storeInProductViewModel.entryDate= _.clone(this.storeInProductViewModel.entryDate);
+    storeInProductViewModel.productId = _.clone(this.storeInProductViewModel.productId);
+    storeInProductViewModel.productName= _.clone(this.storeInProductViewModel.productName);
+    storeInProductViewModel.price= _.clone(this.storeInProductViewModel.price);
+    storeInProductViewModel.quantity= _.clone(this.storeInProductViewModel.quantity);
+    storeInProductViewModel.totalPrice=_.clone(this.storeInProductViewModel.totalPrice);
+    storeInProductViewModel.storeName = this._storeName;
+    storeInProductViewModel.storeId = _.clone(this.storeInProductViewModel.storeId);
+    storeInProductViewModel.vendorName = this._vendorName;
+    storeInProductViewModel.vendorId = _.clone(this.storeInProductViewModel.vendorId);
+    this.storeInProductViewModelList.push(storeInProductViewModel);
+    this.productAdded=true;
+    //this.storeInProductViewModel.barcode="";
+  }
+
+  private saveStoreInProduct(){
+    let requestMessage: RequestMessage;
+    requestMessage = Util.getRequestMessage(this.storeInProductViewModelList);
+    this.storeInProductService.save(requestMessage).subscribe
+    (
+      (responseMessage: ResponseMessage) =>
+      {
+        if(responseMessage.httpStatus== HttpStatusCode.CONFLICT) {
+          this.toastr.info(responseMessage.message, this.pageTitle);
+        }else if(responseMessage.httpStatus==HttpStatusCode.FAILED_DEPENDENCY) {
+          this.toastr.error(responseMessage.message,this.pageTitle);
+        }else if(responseMessage.httpStatus==HttpStatusCode.CREATED){
+          this.toastr.success( responseMessage.message,this.pageTitle);
+          //this.vendorModel = <VendorModel> responseMessage.data;
+          //this.getVendorList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+          return;
+        }else {
+          this.toastr.error(responseMessage.message,this.pageTitle);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        this.toastr.error('Failed to save vendor',this.pageTitle);
+        if (httpErrorResponse.error instanceof ErrorEvent) {
+          Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
+        } else {
+          this.toastr.error('There is a problem with the service. We are notified and working on it',this.pageTitle);
+          Util.logConsole(httpErrorResponse,"Server Side error occurred" );
+        }
+        return;
+      }
+    );
+    return;
+  }
+
+  private setTotalPrice(index?:number){
+    let price:number;
+    let quantity:number;
+    let total:number;
+
+    if(index!=null && !_.isNaN(index)){
+      price = this.storeInProductViewModelList[index].price;
+      quantity = this.storeInProductViewModelList[index].quantity;
+    }else {
+      price = this.storeInProductViewModel.price;
+      quantity = this.storeInProductViewModel.quantity;
+    }
+    if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
+      total= price*quantity;
+    }
+    if(index!=null && !_.isNaN(index)){
+      this.storeInProductViewModelList[index].totalPrice=total;
+    }else {
+      this.storeInProductViewModel.totalPrice=total;
+    }
   }
 
   public isDisableBarcodeInput():boolean{
@@ -436,7 +473,6 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       dynamicEntryDate: new FormControl('',[Validators.required])
     });
   }
-
 
   ngAfterViewInit(): void {
     //Util.logConsole(this.barcodeRef.nativeElement);
