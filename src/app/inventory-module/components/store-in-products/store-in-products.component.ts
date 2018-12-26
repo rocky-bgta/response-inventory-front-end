@@ -204,9 +204,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onClickSave(dynamicForm:NgForm){
     //this.formSubmitted=true;
-    Util.logConsole(dynamicForm);
-    if(!dynamicForm.invalid)
+    //Util.logConsole(dynamicForm);
+    if(!dynamicForm.invalid) {
       Util.logConsole(this.storeInProductViewModelList);
+    }else {
+      this.toastr.info("Please correct entered product list value");
+    }
   }
 
   public onClickClear(){
@@ -268,7 +271,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.getProductByBarcode(barcode);
     event.target.select();
     event.target.value="";
-    Util.logConsole(event);
+    //Util.logConsole(event);
     //Util.logConsole(productModel);
     //Util.logConsole(productModel,barcode);
     //this.storeInProductViewModel.barcode="";
@@ -437,5 +440,4 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //Here we can access ng-select property and method dynamically
     //Util.logConsole(this.storeDropDownRef);
   }
-
 }
