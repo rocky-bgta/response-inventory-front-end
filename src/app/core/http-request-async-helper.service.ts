@@ -6,11 +6,12 @@ import {Util} from "./Util";
 import {catchError, delay, retry} from "rxjs/internal/operators";
 import {ToastrService} from "ngx-toastr";
 import { throwError } from 'rxjs';
+import {ResponseMessage} from "./model/response-message";
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpRequestHelperService {
+export class HttpRequestAsyncHelperService {
 
 
   constructor(private httpClient: HttpClient,
@@ -43,18 +44,18 @@ export class HttpRequestHelperService {
     return response;
   }
 
-  public getRequest(requestUrl: string,dataTableParameter?:any): Observable<any> {
+  public async getRequest(requestUrl: string,dataTableParameter?:any): Promise<any> {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(null,dataTableParameter);
 
-    let response = this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions)
-      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
+    let response = await this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions)
+      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError)).toPromise();
     return response;
   }
 
-  public getRequestById(requestUrl: string, id: string): Observable<any> {
-    let response = this.httpClient.get<any>(requestUrl + "/"+ id, this.httpHeaderOptions)
-      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
+  public async getRequestById(requestUrl: string, id: string): Promise<ResponseMessage> {
+    let response =  this.httpClient.get<any>(requestUrl + "/"+ id, this.httpHeaderOptions)
+      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError)).toPromise();
     return response;
   }
 

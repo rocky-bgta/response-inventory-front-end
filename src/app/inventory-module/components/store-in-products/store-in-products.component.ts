@@ -62,7 +62,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public vendorModelList: Array<VendorModel> = new Array<VendorModel>();
   //public productModelList: Array<ProductModel> = new Array<ProductModel>();
-  private _productModel:ProductModel;
+  //private _productModel:ProductModel;
 
   public storeInProductViewModel:StoreInProductViewModel = new StoreInProductViewModel();
   public storeInProductViewModelList: Array<StoreInProductViewModel> = new Array<StoreInProductViewModel>();
@@ -215,10 +215,15 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //Util.logConsole(event.name);
   }
 
-  public onChangeBarcode(barcode:string, event){
-    //let productModel: ProductModel;
+  public async onChangeBarcode(barcode:string, event){
+    let productModel: ProductModel;
     //Util.logConsole("Barcode: "+ barcode);
-    this.getProductByBarcode(barcode);
+    productModel = await this.getProductByBarcode(barcode);
+    this.storeInProductViewModel.productName = productModel.name;
+    this.storeInProductViewModel.productId = productModel.id;
+    this.storeInProductViewModel.price = productModel.price;
+    this.setTotalPrice();
+    this.addProductToList();
     event.target.select();
     event.target.value="";
     //Util.logConsole(event);
@@ -386,20 +391,20 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     )
   }
 
-  private getProductByBarcode(barcode:string):ProductModel{
+  private async getProductByBarcode(barcode:string):Promise<ProductModel>{
     let productModel: ProductModel = null;
-    this.productService.getByBarcode(barcode.trim()).subscribe
+    await this.productService.getByBarcodeAsync(barcode.trim()).then
     (
       (responseMessage:ResponseMessage)=>
       {
         if(responseMessage.httpStatus==HttpStatusCode.FOUND){
           productModel = <ProductModel>responseMessage.data;
           //============== code need re-factor need to do promise base code ======================
-          this.storeInProductViewModel.productName = productModel.name;
-          this.storeInProductViewModel.productId = productModel.id;
-          this.storeInProductViewModel.price = productModel.price;
-          this.setTotalPrice();
-          this.addProductToList();
+          // this.storeInProductViewModel.productName = productModel.name;
+          // this.storeInProductViewModel.productId = productModel.id;
+          // this.storeInProductViewModel.price = productModel.price;
+          // this.setTotalPrice();
+          // this.addProductToList();
           //======================================================================================
 
           //Util.logConsole(productModel,"Product Model from subscribe");
@@ -411,8 +416,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
           Util.logConsole(responseMessage);
           return;
         }
-      },
-
+      }
+    ).catch(
       (httpErrorResponse: HttpErrorResponse) =>
       {
         if (httpErrorResponse.error instanceof Error) {
@@ -420,9 +425,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
         } else {
           Util.logConsole(httpErrorResponse,"Client-side error occurred.");
         }
+        //request.unsubscribe();
         return;
       }
-
     );
     return productModel;
   }

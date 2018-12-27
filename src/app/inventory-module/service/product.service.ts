@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpRequestHelperService} from "../../core/http-request-helper.service";
 import {Observable} from "rxjs/index";
 import {InventoryApiEndPoint} from "../inventory-api-end-point";
+import {HttpRequestAsyncHelperService} from "../../core/http-request-async-helper.service";
+import {ResponseMessage} from "../../core/model/response-message";
 
 
 @Injectable({
@@ -9,7 +11,8 @@ import {InventoryApiEndPoint} from "../inventory-api-end-point";
 })
 export class ProductService {
 
-  constructor(private httpRequestHelperService: HttpRequestHelperService) {
+  constructor(private httpRequestHelperService: HttpRequestHelperService,
+              private httpRequestAsyncHelperService: HttpRequestAsyncHelperService) {
   }
 
   save(data): Observable<any> {
@@ -31,6 +34,10 @@ export class ProductService {
 
   getByBarcode(barcode:string): Observable<any> {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.product +'/barcode', barcode);
+  }
+
+  async getByBarcodeAsync(barcode:string): Promise<ResponseMessage> {
+    return await this.httpRequestAsyncHelperService.getRequestById(InventoryApiEndPoint.product +'/barcode', barcode);
   }
 
   update(data) {
