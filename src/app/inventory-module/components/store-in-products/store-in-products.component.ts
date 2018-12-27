@@ -420,10 +420,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     ).catch(
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        if (httpErrorResponse.error instanceof Error) {
+        if (httpErrorResponse.error instanceof ErrorEvent) {
           Util.logConsole(httpErrorResponse,"Client-side error occurred.");
         } else {
-          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+          this.toastr.error('There is a problem with the service. We are notified and working on it');
+          this.toastr.info("Please reload this page");
+          Util.logConsole(httpErrorResponse,"Server Side error occurred" );
         }
         //request.unsubscribe();
         return;
