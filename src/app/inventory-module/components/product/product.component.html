@@ -214,11 +214,7 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="barcode"
-                [ngClass]="{ 'is-invalid': submitted && productForm.controls['barcode'].hasError('required')}"
                 [(ngModel)]="productModel.barcode">
-              <div *ngIf="submitted && productForm.controls['barcode'].hasError('required')" class="custom-invalid-feedback">
-                Enter Barcode for this product
-              </div>
               <span *ngIf="productForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for Barcode is 20
               </span>
