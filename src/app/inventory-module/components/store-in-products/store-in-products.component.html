@@ -122,8 +122,9 @@
               <input class="form-control"
                      type="text"
                      id="quantity"
+                     maxlength="3"
                      name="quantity"
-                     pattern="^((?!(0))[0-9])*$"
+                     pattern="^[1-9]\d*$"
                      (focusout)="onFocusOutQuantityEvent()"
                      autocomplete="off"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
@@ -333,10 +334,11 @@
           <td>
             <input class="form-control form-control-sm"
                    #dynamicQuantity="ngModel"
+                   name="quantity"
                    type="text"
                    maxlength="3"
+                   pattern="^[1-9]\d*$"
                    autocomplete="off"
-                   pattern="^((?!(0))[0-9])*$"
                    required
                    [ngClass]="{ 'is-invalid': dynamicQuantity.errors?.pattern}"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"

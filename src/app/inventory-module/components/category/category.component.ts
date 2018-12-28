@@ -258,6 +258,7 @@ export class CategoryComponent implements OnInit {
   private resetPage() {
     this.categoryModel = new CategoryModel();
     this.isPageUpdateState = false;
+    this.submitted=false;
     this.getCategoryList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }
 

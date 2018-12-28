@@ -90,6 +90,7 @@ export class BrandComponent implements OnInit {
       this.brandModel = new BrandModel();
       this.isPageInUpdateState=false;
       this.disablePageElementOnDetailsView=false;
+      this.formSubmitted=false;
       this.hideEntryForm();
   }
 
