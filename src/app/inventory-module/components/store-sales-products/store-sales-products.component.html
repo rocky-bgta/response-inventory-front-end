@@ -1,3 +1,288 @@
-<p>
-  store-sales-products works!
-</p>
+<form id="collapseInputForm" [formGroup]="entryForm">
+
+  <div class="card" style="padding: 0">
+
+    <div class="card-header">
+      <div *ngIf="!productAdded">
+        Select Product
+      </div>
+
+      <div *ngIf="productAdded">
+        Selected Product:  <strong>{{storeInProductViewModel.productName}}</strong>
+      </div>
+
+    </div>
+    <div class="card-body">
+      <div class="row" style="padding: 0">
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="store" class="required-label lb-sm">Store:</label>
+              <ng-select [items]="storeModelList"
+                         #storeDropDown
+                         id="store"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeStore($event)"
+                         (clear)="onClearStore()"
+                         [(ngModel)]="storeInProductViewModel.storeId"
+                         [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['store'].hasError('required') }"
+                         formControlName="store"
+                         placeholder="Select Store">
+              </ng-select>
+              <div *ngIf="productAdded && entryForm.controls['store'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Select Store
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="store" class="required-label lb-sm">Customer:</label>
+              <ng-select [items]="customerModelList"
+                         #customerDropDown
+                         id="customer"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeCustomer($event)"
+                         (clear)="onClearCustomer()"
+                         [(ngModel)]="storeInProductViewModel.storeId"
+                         [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['customer'].hasError('required')}"
+                         formControlName="customer"
+                         placeholder="Select Customer">
+              </ng-select>
+              <div *ngIf="productAdded && entryForm.controls['customer'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Select Customer
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="store" class="required-label lb-sm">Product:</label>
+              <ng-select [items]="productModelList"
+                         #productDropDown
+                         id="product"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeProduct($event)"
+                         (clear)="onClearProduct()"
+                         [(ngModel)]="storeInProductViewModel.storeId"
+                         [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['product'].hasError('required')}"
+                         formControlName="product"
+                         placeholder="Select Product">
+              </ng-select>
+              <div *ngIf="productAdded && entryForm.controls['product'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Select Product
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="barcode" class="lb-sm">Barcode:</label>
+
+              <input class="form-control"
+                     #barcode
+                     type="text"
+                     id="barcode"
+                     [attr.disabled]="isDisableBarcodeInput()?'':null"
+                     (change)="onChangeBarcode(storeInProductViewModel.barcode,$event)"
+                     formControlName="barcode"
+                     autocomplete="off"
+                     name="barcode"
+                     [(ngModel)]="storeInProductViewModel.barcode">
+              <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for barcode is 20
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="serialNo" class="lb-sm">Serial No:</label>
+
+              <input class="form-control"
+                     #serialNo
+                     type="text"
+                     id="serialNo"
+                     [attr.disabled]="isDisableBarcodeInput()?'':null"
+                     (change)="onChangeSerialNo(storeInProductViewModel.barcode,$event)"
+                     formControlName="serialNo"
+                     autocomplete="off"
+                     name="barcode"
+                     [(ngModel)]="storeInProductViewModel.barcode">
+              <span *ngIf="entryForm.controls['serialNo'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for serial is 20
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <div class="col-sm-12">
+              <label for="store" class="required-label lb-sm">Sale On:</label>
+              <ng-select [items]="customerModelList"
+                         #saleOn
+                         id="saleOn"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeSaleMethod($event)"
+                         (clear)="onClearSaleMethod()"
+                         [(ngModel)]="storeInProductViewModel.storeId"
+                         [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['saleOn'].hasError('required')}"
+                         formControlName="saleOn"
+                         placeholder="Select Sales Method">
+              </ng-select>
+              <div *ngIf="productAdded && entryForm.controls['saleOn'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Select Sales Method
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="quantity" class="lb-sm">Quantity</label>
+
+              <input class="form-control"
+                     type="text"
+                     id="quantity"
+                     name="quantity"
+                     disabled
+                     autocomplete="off"
+                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                     [(ngModel)]="storeInProductViewModel.price"
+                     formControlName="quantity"
+                     placeholder="">
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row" style="padding: 0; margin: 0">
+
+        <!--<div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <label for="mfDate" class="lb-sm">Manufacturing Date</label>
+            <div class="input-group datepicker-input">
+              <input type="text"
+                     name="mfDate"
+                     id="mfDate"
+                     #mfDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['mfDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     formControlName="mfDate"
+                     [(ngModel)]="storeInProductViewModel.manufacturingDate"
+                     class="form-control"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="mfDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+            </div>
+            <div *ngIf="productAdded && entryForm.controls['mfDate'].hasError('required')"
+                 class="custom-invalid-feedback">
+              Select Manufacturing Date
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <label for="expDate" class="lb-sm">Expiry Date</label>
+            <div class="input-group datepicker-input">
+              <input type="text"
+                     name="expDate"
+                     id="expDate"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['expDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     #expDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     formControlName="expDate"
+                     [(ngModel)]="storeInProductViewModel.expirationDate"
+                     class="form-control"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="expDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+              <div *ngIf="productAdded && entryForm.controls['expDate'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Select Expiry Date
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <label for="entryDate" class="required-label lb-sm">Entry Date</label>
+            <div class="input-group datepicker-input">
+              <input type="text"
+                     name="entryDate"
+                     id="entryDate"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['entryDate'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                     #entryDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     formControlName="entryDate"
+                     [(ngModel)]="storeInProductViewModel.entryDate"
+                     class="form-control"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="entryDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+              <div *ngIf="productAdded && entryForm.controls['entryDate'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Select Entry Date
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        -->
+
+
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button type="button"
+
+              name="clearAll"
+              id="btnAddProduct"
+              (click)="onClickAddProduct()"
+              class="btn btn-outline-success btn-sm pull-right">Add Product
+      </button>
+
+      <button type="button"
+              name="btnClear"
+              style="margin-right: 1%"
+              id="btnClear"
+              (click)="onClickClear()"
+              class="btn btn-outline-danger btn-sm pull-right">Clear
+      </button>
+    </div>
+
+  </div>
+
+</form>
