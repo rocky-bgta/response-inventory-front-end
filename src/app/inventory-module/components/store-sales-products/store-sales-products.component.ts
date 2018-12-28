@@ -431,7 +431,7 @@ export class StoreSalesProductsComponent implements OnInit {
     return productModel;
   }
 
-  private async getProductBySerialNo(barcode:string):Promise<ProductModel>{
+  private async getProductListByBarcode(barcode:string):Promise<ProductModel>{
     let productModel: ProductModel = null;
     await this.productService.getByBarcodeAsync(barcode.trim()).then
     (
@@ -474,6 +474,73 @@ export class StoreSalesProductsComponent implements OnInit {
     return productModel;
   }
 
+  private async getProductBySerialNo(serialNo:string):Promise<ProductModel>{
+    let productModel: ProductModel = null;
+    await this.productService.getByBarcodeAsync(serialNo.trim()).then
+    (
+      (responseMessage:ResponseMessage)=>
+      {
+        if(responseMessage.httpStatus==HttpStatusCode.FOUND){
+          productModel = <ProductModel>responseMessage.data;
+          return productModel;
+        }else if(responseMessage.httpStatus==HttpStatusCode.NOT_FOUND) {
+          this.toastr.error(responseMessage.message,this.pageTitle);
+          return;
+        }else {
+          Util.logConsole(responseMessage);
+          return;
+        }
+      }
+    ).catch(
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        if (httpErrorResponse.error instanceof ErrorEvent) {
+          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+        } else {
+          this.toastr.error('There is a problem with the service. We are notified and working on it');
+          this.toastr.info("Please reload this page");
+          Util.logConsole(httpErrorResponse,"Server Side error occurred" );
+        }
+        //request.unsubscribe();
+        return;
+      }
+    );
+    return productModel;
+  }
+
+  private async getProductListByStoreId(storeId:string):Promise<ProductModel>{
+    let productModel: ProductModel = null;
+    await this.productService.getByBarcodeAsync(storeId.trim()).then
+    (
+      (responseMessage:ResponseMessage)=>
+      {
+        if(responseMessage.httpStatus==HttpStatusCode.FOUND){
+          productModel = <ProductModel>responseMessage.data;
+          return productModel;
+        }else if(responseMessage.httpStatus==HttpStatusCode.NOT_FOUND) {
+          this.toastr.error(responseMessage.message,this.pageTitle);
+          return;
+        }else {
+          Util.logConsole(responseMessage);
+          return;
+        }
+      }
+    ).catch(
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        if (httpErrorResponse.error instanceof ErrorEvent) {
+          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+        } else {
+          this.toastr.error('There is a problem with the service. We are notified and working on it');
+          this.toastr.info("Please reload this page");
+          Util.logConsole(httpErrorResponse,"Server Side error occurred" );
+        }
+        //request.unsubscribe();
+        return;
+      }
+    );
+    return productModel;
+  }
 
   private setFocusOnBarcodeInputTextBox(){
     //Util.logConsole(this.barcodeRef.nativeElement);

@@ -118,7 +118,6 @@
                      #serialNo
                      type="text"
                      id="serialNo"
-                     [attr.disabled]="isDisableBarcodeInput()?'':null"
                      (change)="onChangeSerialNo(storeInProductViewModel.barcode,$event)"
                      formControlName="serialNo"
                      autocomplete="off"
