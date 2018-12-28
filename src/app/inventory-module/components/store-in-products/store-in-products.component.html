@@ -1,7 +1,7 @@
 <form id="collapseInputForm" [formGroup]="entryForm">
 
-
   <div class="card" style="padding: 0">
+
     <div class="card-header">
       <div *ngIf="!productAdded">
         Select Product
@@ -269,161 +269,162 @@
     </div>
 
   </div>
+
 </form>
 
 
 <div class="card" style="margin-top: 1%" [hidden]="storeInProductViewModelList.length==0">
-<form #dynamicForm="ngForm" novalidate autocomplete="off">
+
+    <form #dynamicForm="ngForm" novalidate autocomplete="off">
+
+        <div class="card-header">
+          <strong> Added products</strong>
+        </div>
+
+        <div class="custom-scroll">
+          <div class="card-body">
 
 
-    <div class="card-header">
-      <strong> Added products</strong>
-    </div>
+          <table class="table table-hover table-bordered table-sm table-striped">
+            <thead>
+            <tr>
+              <!--<th style="width: 10%">Store</th>
+              <th style="width: 10%">Vendor</th>-->
+              <th style="width: 10%">Product</th>
+              <th style="width: 10%">SerialNo</th>
+              <th style="width: 8%">price</th>
+              <th style="width: 2%">Quantity</th>
+              <th style="width: 10%">Total</th>
+              <th style="width: 12%">MF Date</th>
+              <th style="width: 12%">Exp Date</th>
+              <th style="width: 12%">Entry Date</th>
+              <th style="width: 4%">Action</th>
+              <!-- <th style="width: 2%">Delete</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let storeInProductViewModel of storeInProductViewModelList; let i=index">
+              <!-- <td>{{storeInProductViewModel.storeName}}</td>
+               <td>{{storeInProductViewModel.vendorName}}</td>-->
+              <td><strong>{{storeInProductViewModel.productName}}</strong></td>
+              <td>
+                <input #dynamicSerialNo="ngModel"
+                       class="form-control form-control-sm"
+                       maxlength="50"
+                       type="text"
+                       id="dynamicSerialNo{{i}}"
+                       name="dynamicSerialNo{{i}}"
+                       [(ngModel)]="storeInProductViewModel.serialNo">
+              </td>
+              <td>
+                <input class="form-control form-control-sm"
+                       type="text"
+                       maxlength="8"
+                       pattern="^((?!(0))[0-9]{1,10})$"
+                       (focusout)="onFocusOutPriceRowEvent(i)"
+                       onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                       #dynamicPrice="ngModel"
+                       required
+                       autocomplete="off"
+                       [ngClass]="{ 'is-invalid': dynamicPrice.errors?.pattern}"
+                       id="dynamicPrice{{i}}"
+                       name="dynamicPrice{{i}}"
+                       [(ngModel)]="storeInProductViewModel.price">
 
-    <div class="custom-scroll">
-      <div class="card-body">
+              </td>
+              <td>
+                <input class="form-control form-control-sm"
+                       #dynamicQuantity="ngModel"
+                       name="quantity"
+                       type="text"
+                       maxlength="3"
+                       pattern="^[1-9]\d*$"
+                       autocomplete="off"
+                       required
+                       [ngClass]="{ 'is-invalid': dynamicQuantity.errors?.pattern}"
+                       onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                       (focusout)="onFocusOutQuantityRowEvent(i)"
+                       id="dynamicQuantity{{i}}"
+                       name="dynamicQuantity{{i}}"
+                       [(ngModel)]="storeInProductViewModel.quantity">
+              </td>
+              <td>{{storeInProductViewModel.totalPrice}}</td>
+              <td>
+                <div class="input-group datepicker-input">
+                  <input name="dynamicMfDate{{i}}"
+                         type="text"
+                         #dynamicMfDate="bsDatepicker"
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                         placeholder="Select a date"
+                         [(ngModel)]="storeInProductViewModel.manufacturingDate"
+                         class="form-control form-control-sm"
+                         bsDatepicker>
+                  <button class="input-group-addon" (click)="dynamicMfDate.toggle()" type="button">
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                </div>
+              </td>
+              <td>
+                <div class="input-group datepicker-input">
+                  <input name="dynamicExpDate{{i}}"
+                         type="text"
+                         #dynamicExpDate="bsDatepicker"
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                         placeholder="Select a date"
+                         [(ngModel)]="storeInProductViewModel.expirationDate"
+                         class="form-control form-control-sm"
+                         bsDatepicker>
+                  <button class="input-group-addon" (click)="dynamicExpDate.toggle()" type="button">
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                </div>
+              </td>
+              <td>
+                <div class="input-group datepicker-input">
+                  <input name="dynamicEntryDate{{i}}"
+                         type="text"
+                         required
+                         #dynamicEntryDate="bsDatepicker"
+                         [ngClass]="{ 'is-invalid': dynamicEntryDate.invalid }"
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                         placeholder="Select a date"
+                         [(ngModel)]="storeInProductViewModel.entryDate"
+                         class="form-control form-control-sm"
+                         bsDatepicker>
+                  <button class="input-group-addon" (click)="dynamicEntryDate.toggle()" type="button">
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                </div>
+              </td>
+              <td class="align-baseline">
 
+                <div class="row" style="margin-right: 0px;">
+                  <div class="col-sm-4">
+                    <button
+                      placement="top"
+                      class="btn btn-sm btn-pill btn-outline-info"
+                      type="button">
+                      <i class="fa fa-pencil-square"></i>
+                    </button>
+                  </div>
+                  <div class="col-sm-6">
+                    <button
+                      placement="top"
+                      (click)="onClickRemoveRow(i)"
+                      class="btn btn-sm btn-pill btn-outline-info"
+                      type="button">
+                      <i class="fa fa-minus-square"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
 
-      <table class="table table-hover table-bordered table-sm table-striped">
-        <thead>
-        <tr>
-          <!--<th style="width: 10%">Store</th>
-          <th style="width: 10%">Vendor</th>-->
-          <th style="width: 10%">Product</th>
-          <th style="width: 10%">SerialNo</th>
-          <th style="width: 8%">price</th>
-          <th style="width: 2%">Quantity</th>
-          <th style="width: 10%">Total</th>
-          <th style="width: 12%">MF Date</th>
-          <th style="width: 12%">Exp Date</th>
-          <th style="width: 12%">Entry Date</th>
-          <th style="width: 4%">Action</th>
-          <!-- <th style="width: 2%">Delete</th>-->
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let storeInProductViewModel of storeInProductViewModelList; let i=index">
-          <!-- <td>{{storeInProductViewModel.storeName}}</td>
-           <td>{{storeInProductViewModel.vendorName}}</td>-->
-          <td><strong>{{storeInProductViewModel.productName}}</strong></td>
-          <td>
-            <input #dynamicSerialNo="ngModel"
-                   class="form-control form-control-sm"
-                   maxlength="50"
-                   type="text"
-                   id="dynamicSerialNo{{i}}"
-                   name="dynamicSerialNo{{i}}"
-                   [(ngModel)]="storeInProductViewModel.serialNo">
-          </td>
-          <td>
-            <input class="form-control form-control-sm"
-                   type="text"
-                   maxlength="8"
-                   pattern="^((?!(0))[0-9]{1,10})$"
-                   (focusout)="onFocusOutPriceRowEvent(i)"
-                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-                   #dynamicPrice="ngModel"
-                   required
-                   autocomplete="off"
-                   [ngClass]="{ 'is-invalid': dynamicPrice.errors?.pattern}"
-                   id="dynamicPrice{{i}}"
-                   name="dynamicPrice{{i}}"
-                   [(ngModel)]="storeInProductViewModel.price">
-
-          </td>
-          <td>
-            <input class="form-control form-control-sm"
-                   #dynamicQuantity="ngModel"
-                   name="quantity"
-                   type="text"
-                   maxlength="3"
-                   pattern="^[1-9]\d*$"
-                   autocomplete="off"
-                   required
-                   [ngClass]="{ 'is-invalid': dynamicQuantity.errors?.pattern}"
-                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-                   (focusout)="onFocusOutQuantityRowEvent(i)"
-                   id="dynamicQuantity{{i}}"
-                   name="dynamicQuantity{{i}}"
-                   [(ngModel)]="storeInProductViewModel.quantity">
-          </td>
-          <td>{{storeInProductViewModel.totalPrice}}</td>
-          <td>
-            <div class="input-group datepicker-input">
-              <input name="dynamicMfDate{{i}}"
-                     type="text"
-                     #dynamicMfDate="bsDatepicker"
-                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placeholder="Select a date"
-                     [(ngModel)]="storeInProductViewModel.manufacturingDate"
-                     class="form-control form-control-sm"
-                     bsDatepicker>
-              <button class="input-group-addon" (click)="dynamicMfDate.toggle()" type="button">
-                <span class="fa fa-calendar"></span>
-              </button>
-            </div>
-          </td>
-          <td>
-            <div class="input-group datepicker-input">
-              <input name="dynamicExpDate{{i}}"
-                     type="text"
-                     #dynamicExpDate="bsDatepicker"
-                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placeholder="Select a date"
-                     [(ngModel)]="storeInProductViewModel.expirationDate"
-                     class="form-control form-control-sm"
-                     bsDatepicker>
-              <button class="input-group-addon" (click)="dynamicExpDate.toggle()" type="button">
-                <span class="fa fa-calendar"></span>
-              </button>
-            </div>
-          </td>
-          <td>
-            <div class="input-group datepicker-input">
-              <input name="dynamicEntryDate{{i}}"
-                     type="text"
-                     required
-                     #dynamicEntryDate="bsDatepicker"
-                     [ngClass]="{ 'is-invalid': dynamicEntryDate.invalid }"
-                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placeholder="Select a date"
-                     [(ngModel)]="storeInProductViewModel.entryDate"
-                     class="form-control form-control-sm"
-                     bsDatepicker>
-              <button class="input-group-addon" (click)="dynamicEntryDate.toggle()" type="button">
-                <span class="fa fa-calendar"></span>
-              </button>
-            </div>
-          </td>
-          <td class="align-baseline">
-
-            <div class="row" style="margin-right: 0px;">
-              <div class="col-sm-4">
-                <button
-                  placement="top"
-                  class="btn btn-sm btn-pill btn-outline-info"
-                  type="button">
-                  <i class="fa fa-pencil-square"></i>
-                </button>
-              </div>
-              <div class="col-sm-6">
-                <button
-                  placement="top"
-                  (click)="onClickRemoveRow(i)"
-                  class="btn btn-sm btn-pill btn-outline-info"
-                  type="button">
-                  <i class="fa fa-minus-square"></i>
-                </button>
-              </div>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    </div>
-
-</form>
+    </form>
 
     <div class="card-footer">
 
@@ -443,9 +444,6 @@
               class="btn btn-outline-danger btn-sm pull-right">Clear All
       </button>
 
-
     </div>
-
-
 
 </div>
