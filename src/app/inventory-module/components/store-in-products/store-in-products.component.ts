@@ -1,6 +1,5 @@
-import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
-import {DataTableRequest} from "../../../core/model/data-table-request";
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {VendorService} from "../../service/vendor.service";
 import {NgxSmartModalService} from "ngx-smart-modal";
@@ -12,15 +11,13 @@ import {VendorModel} from "../../model/vendor-model";
 import {StoreModel} from "../../model/store-model";
 import {ProductModel} from "../../model/product-model";
 import {StoreService} from "../../service/store.service";
-
-declare var jQuery: any;
 import * as _ from 'lodash';
 import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 import {StoreInProductViewModel} from "../../model/view-model/store-in-product-view-model";
-import {DateModel} from "../../../core/model/dateModel";
 import {StoreInProductsService} from "../../service/store-in-products.service";
-import {StoreInProductsModel} from "../../model/store-in-products-model";
 import {ProductService} from "../../service/product.service";
+
+declare var jQuery: any;
 
 @Component({
   selector: 'app-store-in-products',
@@ -75,21 +72,17 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   private _storeName:string;
   private _vendorName:string;
   //private _productName:string;
-
-
 //========== Variables for this page business =====================================================
 
 
 
 
-  //date-picker r&D =======================
-  //get by id as jQuery
+
+  //get by id as jQuery and access native property of element
   @ViewChild('storeDropDown') storeDropDownRef :ElementRef ;
   @ViewChild('barcode') barcodeRef :ElementRef ;
-  //model: any;
-  //public testDate: DateModel = new DateModel();
-  //public dateTime1:Date = new Date();
-  //date-picker r&D =======================
+  //get by id as jQuery and access native property of element
+
 
   constructor(private vendorService: VendorService,
               private storeService: StoreService,
