@@ -14,6 +14,7 @@ import {CustomObject} from "../../../core/interface/CustomObject";
 declare var jQuery: any;
 import * as _ from 'lodash';
 import * as HttpStatus from 'http-status-codes'
+import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 
 
 @Component({
@@ -124,7 +125,7 @@ export class CustomerComponent implements OnInit {
     (
       (response: ResponseMessage) =>
       {
-        if(response.httpStatus==HttpStatus.OK) {
+        if(response.httpStatus==HttpStatusCode.FOUND) {
           this.customerModelList = <Array<CustomerModel>>response.data;
           //Util.logConsole(this.customerModelList,"get Customer Model: ");
           callback({
@@ -133,6 +134,11 @@ export class CustomerComponent implements OnInit {
             data: []
           });
           return;
+        }else if(response.httpStatus == HttpStatusCode.NOT_FOUND){
+          this.toastr.info(response.message,this.pageTitle);
+          return;
+        }else {
+          this.toastr.error(response.message,this.pageTitle);
         }
       },
 
