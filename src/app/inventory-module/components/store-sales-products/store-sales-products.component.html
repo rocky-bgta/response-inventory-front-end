@@ -42,7 +42,7 @@
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
-              <label for="store" class="required-label lb-sm">Customer:</label>
+              <label for="customer" class="required-label lb-sm">Customer:</label>
               <ng-select [items]="customerModelList"
                          #customerDropDown
                          id="customer"
@@ -65,9 +65,34 @@
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
-            <div class="col-sm-12">
-              <label for="store" class="required-label lb-sm">Product:</label>
-              <ng-select [items]="productModelList"
+            <!--<div class="col-sm-12">-->
+
+              <label class="required-label lb-sm">Product:</label>
+
+            <div class="input-group mb-3">
+              <input type="text" class="form-control">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button">...</button>
+              </div>
+
+            </div>
+
+            <!--
+
+              <input class="form-control"
+                     #productDropDown
+                     type="text"
+                     id="productDropDown"
+                     [attr.disabled]="isDisableBarcodeInput()?'':null"
+                     (change)="onChangeBarcode(storeInProductViewModel.barcode,$event)"
+                     formControlName="barcode"
+                     autocomplete="off"
+                     name="barcode"
+                     [(ngModel)]="storeInProductViewModel.barcode">
+              <button type="button" class="btn btn-secondary btn-sm">Small button</button>
+            -->
+
+             <!-- <ng-select [items]="productModelList"
                          #productDropDown
                          id="product"
                          bindLabel="name"
@@ -78,12 +103,12 @@
                          [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['product'].hasError('required')}"
                          formControlName="product"
                          placeholder="Select Product">
-              </ng-select>
+              </ng-select>-->
               <div *ngIf="productAdded && entryForm.controls['product'].hasError('required')"
                    class="custom-invalid-feedback">
                 Select Product
               </div>
-            </div>
+           <!-- </div>-->
           </div>
         </div>
 
