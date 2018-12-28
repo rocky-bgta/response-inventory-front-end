@@ -34,7 +34,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 
   public entryForm: FormGroup;
-  public dynamicForm: FormGroup;
+  //public dynamicForm: FormGroup;
 
 
 
@@ -44,7 +44,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public isPageInUpdateState: boolean;
   //public hideInputForm: boolean;
   //public hideProductAddedTable:boolean;
-  public disablePageElementOnDetailsView: boolean;
+  //public disablePageElementOnDetailsView: boolean;
   //======== page state variables end  ===========
 
   //======== Regular Expression ===========================
@@ -447,7 +447,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   private initializedPageStateVariable():void{
     this.isPageInUpdateState = false;
     //this.hideProductAddedTable = true;
-    this.disablePageElementOnDetailsView = false;
+    //this.disablePageElementOnDetailsView = false;
     //this.dataTablesCallBackParameters = new DataTableRequest();
     //this.dataTablesCallBackParameters.start = 0;
     //this.dataTablesCallBackParameters.length = 10;
@@ -471,6 +471,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /*
+
   private initializeReactiveDynamicFormValidation(index?:number){
     this.dynamicForm=this.formBuilder.group({
       dynamicSerialNo:  new FormControl(''),
@@ -481,6 +483,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       dynamicEntryDate: new FormControl('',[Validators.required])
     });
   }
+
+  */
+
 
   ngAfterViewInit(): void {
     //Util.logConsole(this.barcodeRef.nativeElement);
