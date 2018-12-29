@@ -104,7 +104,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
     this.initializedPageStateVariable();
     this.initializeReactiveFormValidation();
-    this.storeId = "a25e90aa-0901-4f71-a52d-b180d8306bc2";
+    //this.storeId = "a25e90aa-0901-4f71-a52d-b180d8306bc2";
     this.populateDataTable();
 
     this.getStoreList();
