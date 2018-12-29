@@ -43,6 +43,12 @@ export class HttpRequestHelperService {
     return response;
   }
 
+  public getRequestWithUrl(requestUrl:string): Observable<any>{
+    let response = this.httpClient.get<any>(requestUrl, this.httpHeaderOptions)
+      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
+    return response;
+  }
+
   public getRequest(requestUrl: string,dataTableParameter?:any): Observable<any> {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(null,dataTableParameter);

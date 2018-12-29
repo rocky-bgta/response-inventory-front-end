@@ -26,7 +26,7 @@
                          bindValue="id"
                          (change)="onChangeStore($event)"
                          (clear)="onClearStore()"
-                         [(ngModel)]="storeInProductViewModel.storeId"
+                         [(ngModel)]="storeSalesProductViewModel.storeId"
                          [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['store'].hasError('required') }"
                          formControlName="store"
                          placeholder="Select Store">
@@ -50,7 +50,7 @@
                          bindValue="id"
                          (change)="onChangeCustomer($event)"
                          (clear)="onClearCustomer()"
-                         [(ngModel)]="storeInProductViewModel.storeId"
+                         [(ngModel)]="storeSalesProductViewModel.customerId"
                          [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['customer'].hasError('required')}"
                          formControlName="customer"
                          placeholder="Select Customer">
@@ -126,7 +126,7 @@
                      formControlName="barcode"
                      autocomplete="off"
                      name="barcode"
-                     [(ngModel)]="storeInProductViewModel.barcode">
+                     [(ngModel)]="storeSalesProductViewModel.barcode">
               <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for barcode is 20
               </span>
@@ -147,7 +147,7 @@
                      formControlName="serialNo"
                      autocomplete="off"
                      name="barcode"
-                     [(ngModel)]="storeInProductViewModel.barcode">
+                     [(ngModel)]="storeSalesProductViewModel.serialNo">
               <span *ngIf="entryForm.controls['serialNo'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for serial is 20
               </span>
@@ -159,14 +159,14 @@
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="store" class="required-label lb-sm">Sale On:</label>
-              <ng-select [items]="customerModelList"
+              <ng-select [items]="paymentMethodsList"
                          #saleOn
                          id="saleOn"
-                         bindLabel="name"
-                         bindValue="id"
+                         bindLabel="key"
+                         bindValue="value"
                          (change)="onChangeSaleMethod($event)"
                          (clear)="onClearSaleMethod()"
-                         [(ngModel)]="storeInProductViewModel.storeId"
+                         [(ngModel)]="storeSalesProductViewModel.salesMethod"
                          [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['saleOn'].hasError('required')}"
                          formControlName="saleOn"
                          placeholder="Select Sales Method">

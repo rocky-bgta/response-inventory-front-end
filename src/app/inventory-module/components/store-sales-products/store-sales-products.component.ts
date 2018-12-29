@@ -18,6 +18,11 @@ import {StoreInProductsService} from "../../service/store-in-products.service";
 import {ProductService} from "../../service/product.service";
 import {CustomerModel} from "../../model/customer-model";
 import {CustomerService} from "../../service/customer.service";
+import {DataTableRequest} from "../../../core/model/data-table-request";
+import {ProductViewModel} from "../../model/view-model/product-view-model";
+import {StoreSalesProductViewModel} from "../../model/view-model/store-sales-product-view-model";
+import {EnumService} from "../../service/enum.service";
+import {KeyValueModel} from "../../../core/model/KeyValueModel";
 
 
 @Component({
@@ -38,11 +43,21 @@ export class StoreSalesProductsComponent implements OnInit {
   public isPageInUpdateState: boolean;
   //======== page state variables end  ===========
 
+  //======= data table variable ========================
+  private dataTablesCallBackParameters: DataTableRequest;
+  private dataTableCallbackFunction: any;
+  public  dataTableOptions: DataTables.Settings = {};
+  //====================================================
+
 
   //========== Variables for this page business =====================================================
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public customerModelList: Array<CustomerModel> = new Array<CustomerModel>();
-  public productModelList: Array<ProductModel> = new Array<ProductModel>();
+  public paymentMethodsList: Array<KeyValueModel>  = new Array<KeyValueModel>();
+
+  public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
+
+  //public productViewModelList: Array<ProductViewModel> = new Array<ProductViewModel>();
 
 
   public storeInProductViewModel:StoreInProductViewModel = new StoreInProductViewModel();
@@ -70,6 +85,7 @@ export class StoreSalesProductsComponent implements OnInit {
   constructor(private storeService: StoreService,
               private productService: ProductService,
               private customerService: CustomerService,
+              private enumService: EnumService,
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
               private toastr: ToastrService,
@@ -82,6 +98,7 @@ export class StoreSalesProductsComponent implements OnInit {
 
     this.getStoreList();
     this.getCustomerList();
+    this.getPaymentMethod();
 
     this.storeInProductViewModel.entryDate = new Date();
     this.storeInProductViewModel.price=1;
@@ -194,7 +211,6 @@ export class StoreSalesProductsComponent implements OnInit {
 
   }
 
-
   public async onChangeBarcode(barcode:string, event){
     let productModel: ProductModel;
     //Util.logConsole("Barcode: "+ barcode);
@@ -241,6 +257,37 @@ export class StoreSalesProductsComponent implements OnInit {
 
   public onFocusOutPriceRowEvent(index:number){
     this.setTotalPrice(index);
+  }
+
+  private getPaymentMethod(){
+    this.enumService.getPaymentMethods().subscribe
+    (
+      (response:ResponseMessage)=>
+      {
+        if(response.httpStatus==HttpStatusCode.FOUND){
+          this.paymentMethodsList = <Array<KeyValueModel>>response.data;
+          //Util.logConsole(this.paymentMethodsList);
+          return;
+        }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
+          this.toastr.error(response.message,this.pageTitle);
+          return;
+        }else {
+          Util.logConsole(response);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        if (httpErrorResponse.error instanceof Error) {
+          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+        } else {
+          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
+        }
+        return;
+      }
+
+    )
   }
 
   private addProductToList():void{
@@ -508,15 +555,15 @@ export class StoreSalesProductsComponent implements OnInit {
     return productModel;
   }
 
-  private async getProductListByStoreId(storeId:string):Promise<ProductModel>{
-    let productModel: ProductModel = null;
-    await this.productService.getByBarcodeAsync(storeId.trim()).then
+  private getAvailableStoreInProductListByStoreId(dataTablesParameters: DataTableRequest, callback: any, storeId:string):Array<ProductViewModel>{
+    let productViewModelList: Array<ProductViewModel> = null;
+    this.storeInProductService.getStoreInAvailableProductListByStoreId(storeId.trim()).subscribe
     (
       (responseMessage:ResponseMessage)=>
       {
         if(responseMessage.httpStatus==HttpStatusCode.FOUND){
-          productModel = <ProductModel>responseMessage.data;
-          return productModel;
+          productViewModelList = <Array<ProductViewModel>>responseMessage.data;
+          return productViewModelList;
         }else if(responseMessage.httpStatus==HttpStatusCode.NOT_FOUND) {
           this.toastr.error(responseMessage.message,this.pageTitle);
           return;
@@ -525,7 +572,7 @@ export class StoreSalesProductsComponent implements OnInit {
           return;
         }
       }
-    ).catch(
+      ,
       (httpErrorResponse: HttpErrorResponse) =>
       {
         if (httpErrorResponse.error instanceof ErrorEvent) {
@@ -535,11 +582,31 @@ export class StoreSalesProductsComponent implements OnInit {
           this.toastr.info("Please reload this page");
           Util.logConsole(httpErrorResponse,"Server Side error occurred" );
         }
-        //request.unsubscribe();
         return;
-      }
-    );
-    return productModel;
+      });
+    return productViewModelList;
+  }
+
+  private populateDataTable(storeId?:string):void{
+
+    this.dataTableOptions =
+      {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: false,
+        searching: true,
+        ajax: (dataTablesParameters: DataTableRequest, callback) => {
+          this.getAvailableStoreInProductListByStoreId(dataTablesParameters, callback,storeId);
+        },
+        columns: [
+          {data: 'productName'},
+          {data:'categoryName'},
+          {data:'brandName'},
+          {data:'modelNo'},
+          {data: 'description'}
+          ]
+      };
   }
 
   private setFocusOnBarcodeInputTextBox(){
