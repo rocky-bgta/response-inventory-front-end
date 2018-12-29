@@ -52,7 +52,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   @ViewChild(DataTableDirective)
   public dtElement: DataTableDirective;
-  public dtTrigger: Subject = new Subject();
+  public dtTrigger: Subject<any> = new Subject<any>();
 
   private storeId:string;
   //====================================================
