@@ -247,6 +247,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     storeInProductViewModel.productName= _.clone(this.storeInProductViewModel.productName);
     storeInProductViewModel.price= _.clone(this.storeInProductViewModel.price);
     storeInProductViewModel.quantity= _.clone(this.storeInProductViewModel.quantity);
+    storeInProductViewModel.serialNo= _.clone(this.storeInProductViewModel.serialNo);
     storeInProductViewModel.totalPrice=_.clone(this.storeInProductViewModel.totalPrice);
     storeInProductViewModel.storeName = this._storeName;
     storeInProductViewModel.storeId = _.clone(this.storeInProductViewModel.storeId);
