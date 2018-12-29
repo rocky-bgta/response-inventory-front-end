@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {VendorService} from "../../service/vendor.service";
@@ -23,6 +23,8 @@ import {ProductViewModel} from "../../model/view-model/product-view-model";
 import {StoreSalesProductViewModel} from "../../model/view-model/store-sales-product-view-model";
 import {EnumService} from "../../service/enum.service";
 import {KeyValueModel} from "../../../core/model/KeyValueModel";
+import {Subject} from "rxjs/index";
+import {DataTableDirective} from "angular-datatables";
 
 
 @Component({
@@ -30,7 +32,7 @@ import {KeyValueModel} from "../../../core/model/KeyValueModel";
   templateUrl: './store-sales-products.component.html',
   styleUrls: ['./store-sales-products.component.scss']
 })
-export class StoreSalesProductsComponent implements OnInit {
+export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDestroy {
 
 
   public pageTitle:string="Store Sales";
@@ -44,9 +46,15 @@ export class StoreSalesProductsComponent implements OnInit {
   //======== page state variables end  ===========
 
   //======= data table variable ========================
-  private dataTablesCallBackParameters: DataTableRequest;
+  private dataTablesCallBackParameters: DataTableRequest = new DataTableRequest();
   private dataTableCallbackFunction: any;
   public  dataTableOptions: DataTables.Settings = {};
+
+  @ViewChild(DataTableDirective)
+  public dtElement: DataTableDirective;
+  public dtTrigger: Subject = new Subject();
+
+  private storeId:string;
   //====================================================
 
 
@@ -54,6 +62,7 @@ export class StoreSalesProductsComponent implements OnInit {
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public customerModelList: Array<CustomerModel> = new Array<CustomerModel>();
   public paymentMethodsList: Array<KeyValueModel>  = new Array<KeyValueModel>();
+  public availableProductViewModelList: Array<ProductViewModel> = new Array<ProductViewModel>();
 
   public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
 
@@ -95,6 +104,8 @@ export class StoreSalesProductsComponent implements OnInit {
 
     this.initializedPageStateVariable();
     this.initializeReactiveFormValidation();
+    this.storeId = "a25e90aa-0901-4f71-a52d-b180d8306bc2";
+    this.populateDataTable();
 
     this.getStoreList();
     this.getCustomerList();
@@ -105,6 +116,24 @@ export class StoreSalesProductsComponent implements OnInit {
     this.storeInProductViewModel.quantity=1;
     this.storeInProductViewModel.totalPrice=1;
 
+  }
+
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
   }
 
   public onClickAddProduct(){
@@ -177,11 +206,18 @@ export class StoreSalesProductsComponent implements OnInit {
   }
 
   public onChangeStore(event){
+
+    //Util.logConsole(event);
     if(event!=null && !_.isEmpty(event)) {
+      this.storeId= event.id;
       this._storeName = event.name;
       this.storeSelected = true;
       this.setFocusOnBarcodeInputTextBox();
     }
+    //this.getAvailableStoreInProductListByStoreId(this.dataTablesCallBackParameters,this.dataTableCallbackFunction,storeId)
+
+    //this.populateDataTable();
+    this.rerender();
 
     //Util.logConsole(event.id);
     //Util.logConsole(event.name);
@@ -555,39 +591,46 @@ export class StoreSalesProductsComponent implements OnInit {
     return productModel;
   }
 
-  private getAvailableStoreInProductListByStoreId(dataTablesParameters: DataTableRequest, callback: any, storeId:string):Array<ProductViewModel>{
-    let productViewModelList: Array<ProductViewModel> = null;
-    this.storeInProductService.getStoreInAvailableProductListByStoreId(storeId.trim()).subscribe
-    (
-      (responseMessage:ResponseMessage)=>
-      {
-        if(responseMessage.httpStatus==HttpStatusCode.FOUND){
-          productViewModelList = <Array<ProductViewModel>>responseMessage.data;
-          return productViewModelList;
-        }else if(responseMessage.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error(responseMessage.message,this.pageTitle);
-          return;
-        }else {
-          Util.logConsole(responseMessage);
-          return;
+  private getAvailableStoreInProductListByStoreId(dataTablesParameters?: DataTableRequest, callback?: any, storeId?: string){
+    //let productViewModelList: Array<ProductViewModel> = null;
+    if(storeId!=null) {
+      this.storeInProductService.getStoreInAvailableProductListByStoreId(storeId.trim()).subscribe
+      (
+        (responseMessage: ResponseMessage) => {
+          if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
+            this.availableProductViewModelList = <Array<ProductViewModel>>responseMessage.data;
+            Util.logConsole(this.availableProductViewModelList);
+            //return productViewModelList;
+          } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
+            this.toastr.error(responseMessage.message, this.pageTitle);
+            return;
+          } else {
+            Util.logConsole(responseMessage);
+            return;
+          }
+
+          callback({
+            recordsTotal: responseMessage.dataTableResponse.recordsTotal,
+            recordsFiltered: responseMessage.dataTableResponse.recordsFiltered,
+            data: []
+          });
         }
-      }
-      ,
-      (httpErrorResponse: HttpErrorResponse) =>
-      {
-        if (httpErrorResponse.error instanceof ErrorEvent) {
-          Util.logConsole(httpErrorResponse,"Client-side error occurred.");
-        } else {
-          this.toastr.error('There is a problem with the service. We are notified and working on it');
-          this.toastr.info("Please reload this page");
-          Util.logConsole(httpErrorResponse,"Server Side error occurred" );
-        }
-        return;
-      });
-    return productViewModelList;
+        ,
+        (httpErrorResponse: HttpErrorResponse) => {
+          if (httpErrorResponse.error instanceof ErrorEvent) {
+            Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+          } else {
+            this.toastr.error('There is a problem with the service. We are notified and working on it');
+            this.toastr.info("Please reload this page");
+            Util.logConsole(httpErrorResponse, "Server Side error occurred");
+          }
+          return;
+        });
+    }
   }
 
-  private populateDataTable(storeId?:string):void{
+  private populateDataTable():void{
+    Util.logConsole("Populate table");
 
     this.dataTableOptions =
       {
@@ -597,14 +640,15 @@ export class StoreSalesProductsComponent implements OnInit {
         processing: false,
         searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
-          this.getAvailableStoreInProductListByStoreId(dataTablesParameters, callback,storeId);
+          this.getAvailableStoreInProductListByStoreId(dataTablesParameters, callback,this.storeId);
         },
         columns: [
-          {data: 'productName'},
-          {data:'categoryName'},
-          {data:'brandName'},
-          {data:'modelNo'},
-          {data: 'description'}
+          {title:'Name', data: 'productName'},
+          {title:'Category', data:'categoryName'},
+          {title:'Brand', data:'brandName'},
+          {title:'Model No', data:'modelNo'},
+          {title:'Stock Qty', data: 'available'},
+          {title:'Buy Price', data: 'buyPrice'}
           ]
       };
   }

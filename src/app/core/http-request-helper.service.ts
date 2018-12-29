@@ -54,7 +54,7 @@ export class HttpRequestHelperService {
     requestMessage = Util.getRequestMessage(null,dataTableParameter);
 
     let response = this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions)
-      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
+      .pipe(retry(1),delay(this.delayTimeForResponse), catchError(this.handleError));
     return response;
   }
 
