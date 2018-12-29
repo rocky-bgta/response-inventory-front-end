@@ -38,13 +38,13 @@ export class HttpRequestAsyncHelperService {
   */
 
 
-  public getRequestWithQueryParameter(requestUrl: string, params: any): Observable<any> {
+  public async getRequestWithQueryParameter(requestUrl: string, params: any): Promise<ResponseMessage> {
     let response = this.httpClient.get<any>(requestUrl, {params: params})
-      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
+      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError)).toPromise();
     return response;
   }
 
-  public async getRequest(requestUrl: string,dataTableParameter?:any): Promise<any> {
+  public async getRequest(requestUrl: string,dataTableParameter?:any): Promise<ResponseMessage> {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(null,dataTableParameter);
 
@@ -59,17 +59,18 @@ export class HttpRequestAsyncHelperService {
     return response;
   }
 
-  public postRequest(requestUrl: string, requestPayload: any): Observable<any> {
+  public async postRequest(requestUrl: string, requestPayload: any): Promise<ResponseMessage> {
     let response = this.httpClient.post<any>
     (
       requestUrl,
       requestPayload,
       this.httpHeaderOptions
-    ).pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
+    ).pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError)).toPromise();
+
     return response;
   }
 
-  public updateRequest(requestUrl: string, requestPayload: any): Observable<any> {
+  public async updateRequest(requestUrl: string, requestPayload: any): Promise<ResponseMessage> {
     let putUrl: string;
     putUrl = requestUrl;
 
@@ -78,18 +79,18 @@ export class HttpRequestAsyncHelperService {
       putUrl,
       requestPayload,
       this.httpHeaderOptions
-    ).pipe(retry(3),delay(this.delayTimeForResponse),catchError(this.handleError));
+    ).pipe(retry(3),delay(this.delayTimeForResponse),catchError(this.handleError)).toPromise();
     return response;
   }
 
 
-  public deleteRequest(requestUrl: string, id: string): Observable<any> {
+  public async deleteRequest(requestUrl: string, id: string): Promise<ResponseMessage> {
     let deleteUrl: string;
     deleteUrl = requestUrl + "/" + id;
     let response = this.httpClient.delete<any>
     (
       deleteUrl
-    ).pipe(retry(3), delay(this.delayTimeForResponse),catchError(this.handleError));
+    ).pipe(retry(3), delay(this.delayTimeForResponse),catchError(this.handleError)).toPromise();
     return response;
   }
 
