@@ -342,10 +342,7 @@
           <td>{{product.available}}</td>
           <td>{{product.buyPrice }}</td>
           <td>
-
-          </td>
-        <!--  <td>-->
-            <!--<input class="form-control form-control-sm"
+            <input class="form-control form-control-sm"
                    type="text"
                    maxlength="8"
                    pattern="^((?!(0))[0-9]{1,10})$"
@@ -356,13 +353,10 @@
                    [ngClass]="{ 'is-invalid': dynamicPrice.errors?.pattern}"
                    id="dynamicPrice{{i}}"
                    name="dynamicPrice{{i}}"
-                   [(ngModel)]="storeSalesProductViewModel.salePrice">-->
+                   [(ngModel)]="product.salesPrice">
+          </td>
 
-         <!-- </td>-->
 
-          <!--<td>
-            <button>button</button>
-          </td>-->
         </tr>
         </tbody>
         <tbody *ngIf="availableProductViewModelList?.length == 0">

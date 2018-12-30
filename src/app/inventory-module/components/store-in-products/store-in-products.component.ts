@@ -242,7 +242,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.setTotalPrice(index);
   }
 
-  private async addProductToList():void{
+  private addProductToList():void{
     let storeInProductViewModel: StoreInProductViewModel;
     storeInProductViewModel = new StoreInProductViewModel();
     //storeInProductViewModel = _.clone(this.storeInProductViewModel);
