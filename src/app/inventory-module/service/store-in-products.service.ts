@@ -24,8 +24,13 @@ export class StoreInProductsService {
   }
 
 
-  public getStoreInAvailableProductListByStoreId(storeId:string, dataTableParameter?:any) {
-    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.storeInProducts+"/store-id/"+storeId,dataTableParameter);
+  public getStoreInAvailableProductListByIdentificationIds(storeId?:string,barcode?:string, serialNo?:string, dataTableParameter?:any) {
+    //build url
+   /* let buildUrl:string;
+    if(storeId!=null){
+      buildUrl = InventoryApiEndPoint.storeInProducts+"/identification-ids/"+storeId;
+    }*/
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.storeInProducts+"/identification-ids/"+storeId+"/"+barcode+"/"+serialNo,dataTableParameter);
   }
 
   getById(id): Observable<any> {

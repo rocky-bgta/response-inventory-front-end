@@ -91,9 +91,16 @@ img {
   font-weight: bold;
 }
 
-.custom-scroll{
+.custom-scroll-y{
   height:500px;
   width: 100%;
   overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.custom-scroll-x-y{
+  height:500px;
+  width: 100%;
+  overflow-x: scroll;
   overflow-y: scroll;
 }

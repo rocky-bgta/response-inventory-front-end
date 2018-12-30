@@ -55,6 +55,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   public dtTrigger: Subject<any> = new Subject<any>();
 
   private storeId:string;
+  private barcode:string;
+  private serialNo:string;
   //====================================================
 
 
@@ -73,11 +75,11 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   public storeInProductViewModelList: Array<StoreInProductViewModel> = new Array<StoreInProductViewModel>();
 
   public storeSelected:boolean=false;
-  public vendorSelected:boolean=false;
+  public customerSelected:boolean=false;
 
 
   //helper variable==========
-  private _storeName:string;
+  //private _storeName:string;
 //========== Variables for this page business =====================================================
 
 
@@ -141,7 +143,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     this.productAdded=true;
     //==========================================
 
-    if(this.storeSelected && this.vendorSelected) {
+    if(this.storeSelected && this.customerSelected) {
       this.barcodeRef.nativeElement.disabled = false;
       this.barcodeRef.nativeElement.focus();
     }
@@ -179,7 +181,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     this.storeInProductViewModel = new StoreInProductViewModel();
     this.storeInProductViewModel.entryDate = new Date();
     this.storeSelected=false;
-    this.vendorSelected=false;
+    this.customerSelected=false;
     this.productAdded=false;
   }
 
@@ -189,10 +191,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   public onClearStore(){
     this.storeSelected=false;
-  }
-
-  public onClearVendor(){
-    this.vendorSelected=false;
   }
 
   public onClickRemoveRow(index){
@@ -205,30 +203,56 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     //Util.logConsole(this.storeInProductViewModelList);
   }
 
-  public onChangeStore(event){
+  public onChangeStore(event,storeId:string){
 
-    //Util.logConsole(event);
+    this.storeSalesProductViewModel.storeId=null;
+    this.storeSalesProductViewModel.storeId = storeId;
+    this.storeId = storeId;
     if(event!=null && !_.isEmpty(event)) {
-      this.storeId= event.id;
-      this._storeName = event.name;
       this.storeSelected = true;
       this.setFocusOnBarcodeInputTextBox();
     }
-    //this.getAvailableStoreInProductListByStoreId(this.dataTablesCallBackParameters,this.dataTableCallbackFunction,storeId)
-
-    //this.populateDataTable();
     this.rerender();
-
-    //Util.logConsole(event.id);
-    //Util.logConsole(event.name);
   }
 
-  public onChangeCustomer(event){
+  public onChangeBarcode(barcode:string, event){
+    //let productModel: ProductModel;
+    //Util.logConsole("Barcode: "+ barcode);
+    // productModel = await this.getProductByBarcode(barcode);
+    // this.storeInProductViewModel.productName = productModel.name;
+    // this.storeInProductViewModel.productId = productModel.id;
+    // this.storeInProductViewModel.price = productModel.price;
+    // this.setTotalPrice();
+    // this.addProductToList();
+    this.storeSalesProductViewModel.barcode=null;
+    this.storeSalesProductViewModel.barcode = barcode;
+    this.barcode = barcode;
+    this.rerender();
+    event.target.select();
+    event.target.value="";
 
+  }
+
+  public onChangeSerialNo(serialNo:string, event){
+    this.storeSalesProductViewModel.serialNo=null;
+    this.storeSalesProductViewModel.serialNo = serialNo;
+    this.serialNo = serialNo;
+    this.rerender();
+
+  }
+
+
+  public onChangeCustomer(event, customerId:string){
+    this.storeSalesProductViewModel.customerId=null;
+    this.storeSalesProductViewModel.customerId = customerId;
+    if(event!=null && !_.isEmpty(event)) {
+      this.customerSelected = true;
+      this.setFocusOnBarcodeInputTextBox();
+    }
   }
 
   public onClearCustomer(){
-
+    this.customerSelected=false;
   }
 
   public onChangeProduct(event){
@@ -247,41 +271,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   }
 
-  public async onChangeBarcode(barcode:string, event){
-    let productModel: ProductModel;
-    //Util.logConsole("Barcode: "+ barcode);
-    productModel = await this.getProductByBarcode(barcode);
-    this.storeInProductViewModel.productName = productModel.name;
-    this.storeInProductViewModel.productId = productModel.id;
-    this.storeInProductViewModel.price = productModel.price;
-    this.setTotalPrice();
-    this.addProductToList();
-    event.target.select();
-    event.target.value="";
-    //Util.logConsole(event);
-    //Util.logConsole(productModel);
-    //Util.logConsole(productModel,barcode);
-    //this.storeInProductViewModel.barcode="";
-
-  }
-
-  public async onChangeSerialNo(barcode:string, event){
-    let productModel: ProductModel;
-    //Util.logConsole("Barcode: "+ barcode);
-    productModel = await this.getProductByBarcode(barcode);
-    this.storeInProductViewModel.productName = productModel.name;
-    this.storeInProductViewModel.productId = productModel.id;
-    this.storeInProductViewModel.price = productModel.price;
-    this.setTotalPrice();
-    this.addProductToList();
-    event.target.select();
-    event.target.value="";
-    //Util.logConsole(event);
-    //Util.logConsole(productModel);
-    //Util.logConsole(productModel,barcode);
-    //this.storeInProductViewModel.barcode="";
-
-  }
 
   public onFocusOutQuantityEvent(){
     this.setTotalPrice();
@@ -295,6 +284,16 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     this.setTotalPrice(index);
   }
 
+  /*public onClickRemoveRow(index){
+    this.availableProductViewModelList.splice(index,1);
+
+   /!* if(this.availableProductViewModelList.length==0){
+      this.productAdded=false;
+      //this.hideProductAddedTable=true;
+    }*!/
+   //this.rerender();
+  }*/
+
   private getPaymentMethod(){
     this.enumService.getPaymentMethods().subscribe
     (
@@ -302,7 +301,9 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       {
         if(response.httpStatus==HttpStatusCode.FOUND){
           this.paymentMethodsList = <Array<KeyValueModel>>response.data;
-          //Util.logConsole(this.paymentMethodsList);
+          //Default select first payment method.
+          this.storeSalesProductViewModel.salesMethod = this.paymentMethodsList[0].value;
+          //==================================
           return;
         }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
           this.toastr.error(response.message,this.pageTitle);
@@ -336,7 +337,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     storeInProductViewModel.price= _.clone(this.storeInProductViewModel.price);
     storeInProductViewModel.quantity= _.clone(this.storeInProductViewModel.quantity);
     storeInProductViewModel.totalPrice=_.clone(this.storeInProductViewModel.totalPrice);
-    storeInProductViewModel.storeName = this._storeName;
+    //storeInProductViewModel.storeName = this._storeName;
     storeInProductViewModel.storeId = _.clone(this.storeInProductViewModel.storeId);
     storeInProductViewModel.vendorId = _.clone(this.storeInProductViewModel.vendorId);
     this.storeInProductViewModelList.push(storeInProductViewModel);
@@ -405,7 +406,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
   public isDisableBarcodeInput():boolean{
-    if(this.vendorSelected && this.storeSelected)
+    if(this.customerSelected && this.storeSelected)
       return false;
     else
       return true;
@@ -591,10 +592,10 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     return productModel;
   }
 
-  private getAvailableStoreInProductListByStoreId(dataTablesParameters?: DataTableRequest, callback?: any, storeId?: string){
+  private getAvailableStoreInProductListByStoreIdOrBarcodeOrSerialNo(dataTablesParameters?: DataTableRequest, callback?: any, storeId?: string, barcode?:string, serialNo?:string){
     //let productViewModelList: Array<ProductViewModel> = null;
     if(storeId!=null) {
-      this.storeInProductService.getStoreInAvailableProductListByStoreId(storeId.trim()).subscribe
+      this.storeInProductService.getStoreInAvailableProductListByIdentificationIds(storeId,barcode,serialNo).subscribe
       (
         (responseMessage: ResponseMessage) => {
           if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
@@ -640,7 +641,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
         processing: false,
         searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
-          this.getAvailableStoreInProductListByStoreId(dataTablesParameters, callback,this.storeId);
+          this.getAvailableStoreInProductListByStoreIdOrBarcodeOrSerialNo(dataTablesParameters, callback,this.storeId, this.barcode);
         },
         columns: [
           {title:'Name', data: 'productName'},
@@ -651,14 +652,15 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           {title:'Buy Price', data: 'buyPrice'},
           {title:'Sales Price', data: 'salesPrice'},
           {title:'Sales Qty', data: 'salesQty'},
-          {title:'Sales Price', data: 'totalPrice'}
+          {title:'Sales Price', data: 'totalPrice'},
+          {title:'Action', data: 'totalPrice'}
           ]
       };
   }
 
   private setFocusOnBarcodeInputTextBox(){
     //Util.logConsole(this.barcodeRef.nativeElement);
-    if(this.storeSelected && this.vendorSelected){
+    if(this.storeSelected && this.customerSelected){
       //this.barcodeRef.nativeElement.dis
       this.barcodeRef.nativeElement.disabled=false;
       this.barcodeRef.nativeElement.focus();

@@ -8,7 +8,7 @@
       </div>
 
       <div *ngIf="productAdded">
-        Selected Product:  <strong>{{storeInProductViewModel.productName}}</strong>
+        Selected Product: <strong>{{storeInProductViewModel.productName}}</strong>
       </div>
 
     </div>
@@ -24,7 +24,7 @@
                          id="store"
                          bindLabel="name"
                          bindValue="id"
-                         (change)="onChangeStore($event)"
+                         (change)="onChangeStore($event, storeSalesProductViewModel.storeId)"
                          (clear)="onClearStore()"
                          [(ngModel)]="storeSalesProductViewModel.storeId"
                          [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['store'].hasError('required') }"
@@ -48,7 +48,7 @@
                          id="customer"
                          bindLabel="name"
                          bindValue="id"
-                         (change)="onChangeCustomer($event)"
+                         (change)="onChangeCustomer($event,storeSalesProductViewModel.customerId)"
                          (clear)="onClearCustomer()"
                          [(ngModel)]="storeSalesProductViewModel.customerId"
                          [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['customer'].hasError('required')}"
@@ -63,54 +63,28 @@
           </div>
         </div>
 
+        <!--
+
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
-            <!--<div class="col-sm-12">-->
-
-              <label class="required-label lb-sm">Product:</label>
+            <label class="required-label lb-sm">Product:</label>
 
             <div class="input-group mb-3">
+
               <input type="text" class="form-control">
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="button">...</button>
               </div>
 
             </div>
-
-            <!--
-
-              <input class="form-control"
-                     #productDropDown
-                     type="text"
-                     id="productDropDown"
-                     [attr.disabled]="isDisableBarcodeInput()?'':null"
-                     (change)="onChangeBarcode(storeInProductViewModel.barcode,$event)"
-                     formControlName="barcode"
-                     autocomplete="off"
-                     name="barcode"
-                     [(ngModel)]="storeInProductViewModel.barcode">
-              <button type="button" class="btn btn-secondary btn-sm">Small button</button>
-            -->
-
-             <!-- <ng-select [items]="productModelList"
-                         #productDropDown
-                         id="product"
-                         bindLabel="name"
-                         bindValue="id"
-                         (change)="onChangeProduct($event)"
-                         (clear)="onClearProduct()"
-                         [(ngModel)]="storeInProductViewModel.storeId"
-                         [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['product'].hasError('required')}"
-                         formControlName="product"
-                         placeholder="Select Product">
-              </ng-select>-->
-              <div *ngIf="productAdded && entryForm.controls['product'].hasError('required')"
-                   class="custom-invalid-feedback">
-                Select Product
-              </div>
-           <!-- </div>-->
+            <div *ngIf="productAdded && entryForm.controls['product'].hasError('required')"
+                 class="custom-invalid-feedback">
+              Select Product
+            </div>
           </div>
         </div>
+
+        -->
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group">
@@ -122,7 +96,7 @@
                      type="text"
                      id="barcode"
                      [attr.disabled]="isDisableBarcodeInput()?'':null"
-                     (change)="onChangeBarcode(storeInProductViewModel.barcode,$event)"
+                     (change)="onChangeBarcode(storeSalesProductViewModel.barcode,$event)"
                      formControlName="barcode"
                      autocomplete="off"
                      name="barcode"
@@ -142,8 +116,9 @@
               <input class="form-control"
                      #serialNo
                      type="text"
+                     [attr.disabled]="isDisableBarcodeInput()?'':null"
                      id="serialNo"
-                     (change)="onChangeSerialNo(storeInProductViewModel.barcode,$event)"
+                     (change)="onChangeSerialNo(storeSalesProductViewModel.barcode,$event)"
                      formControlName="serialNo"
                      autocomplete="off"
                      name="barcode"
@@ -180,6 +155,8 @@
         </div>
 
 
+        <!--
+
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group">
             <div class="col-sm-12">
@@ -198,6 +175,8 @@
             </div>
           </div>
         </div>
+
+        -->
 
       </div>
       <div class="row" style="padding: 0; margin: 0">
@@ -317,8 +296,8 @@
     <div class="card-header">
       <strong>Product List</strong>
     </div>
-    <div class="card-body">
-      <table datatable [dtOptions]="dataTableOptions"  [dtTrigger]="dtTrigger"
+    <div class="card-body custom-scroll-x-y">
+      <table datatable [dtOptions]="dataTableOptions" [dtTrigger]="dtTrigger"
              class="table-hover table table-sm table-striped table-bordered nowrap"
              style="width: 100%">
         <thead>
@@ -332,7 +311,8 @@
           <th style="width: 5%">Sales Price</th>
           <th style="width: 5%">Sales Qty</th>
           <th style="width: 5%">Total</th>
-         <!-- <th style="width: 10%">Action</th>-->
+          <th style="width: 5%">Action</th>
+          <!-- <th style="width: 10%">Action</th>-->
         </tr>
         </thead>
         <tbody *ngIf="availableProductViewModelList?.length != 0">
@@ -388,12 +368,35 @@
                    [(ngModel)]="product.totalPrice">
           </td>
 
+          <td class="align-baseline">
+
+            <div class="row" style="margin-right: 0px;">
+              <div class="col-sm-4">
+                <button
+                  placement="top"
+                  class="btn btn-sm btn-pill btn-outline-info"
+                  type="button">
+                  <i class="fa fa-pencil-square"></i>
+                </button>
+              </div>
+              <div class="col-sm-6">
+                <button
+                  placement="top"
+                  (click)="onClickRemoveRow(i)"
+                  class="btn btn-sm btn-pill btn-outline-info"
+                  type="button">
+                  <i class="fa fa-minus-square"></i>
+                </button>
+              </div>
+            </div>
+          </td>
+
 
         </tr>
         </tbody>
         <tbody *ngIf="availableProductViewModelList?.length == 0">
         <tr>
-          <td colspan="8" class="no-data-available">No data!</td>
+          <td colspan="10" class="no-data-available">No data!</td>
         </tr>
         <tbody>
       </table>
