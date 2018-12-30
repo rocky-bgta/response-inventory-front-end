@@ -9,4 +9,5 @@ export class ProductViewModel{
    description:string;
    barcode:string;
    image:string;
+   salesPrice:number;
 }

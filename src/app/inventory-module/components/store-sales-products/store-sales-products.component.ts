@@ -599,7 +599,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
         (responseMessage: ResponseMessage) => {
           if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
             this.availableProductViewModelList = <Array<ProductViewModel>>responseMessage.data;
-            Util.logConsole(this.availableProductViewModelList);
+            //Util.logConsole(this.availableProductViewModelList);
             //return productViewModelList;
           } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
             this.toastr.error(responseMessage.message, this.pageTitle);

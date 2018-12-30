@@ -186,7 +186,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //Util.logConsole(this.storeInProductViewModelList);
   }
 
-  public onChangeStore(event){
+  public onChangeStore(event,storeId:string){
+    this.storeInProductViewModel.storeId=null;
+    this.storeInProductViewModel.storeId = storeId;
     if(event!=null && !_.isEmpty(event)) {
       this._storeName = event.name;
       this.storeSelected = true;
@@ -197,7 +199,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //Util.logConsole(event.name);
   }
 
-  public onChangeVendor(event){
+  public onChangeVendor(event, vendorId:string){
+    this.storeInProductViewModel.vendorId=null;
+    this.storeInProductViewModel.vendorId = vendorId;
     if(event!=null && !_.isEmpty(event)) {
       this._vendorName = event.name;
       this.vendorSelected = true;
@@ -238,7 +242,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.setTotalPrice(index);
   }
 
-  private addProductToList():void{
+  private async addProductToList():void{
     let storeInProductViewModel: StoreInProductViewModel;
     storeInProductViewModel = new StoreInProductViewModel();
     //storeInProductViewModel = _.clone(this.storeInProductViewModel);
@@ -250,7 +254,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     storeInProductViewModel.serialNo= _.clone(this.storeInProductViewModel.serialNo);
     storeInProductViewModel.totalPrice=_.clone(this.storeInProductViewModel.totalPrice);
     storeInProductViewModel.storeName = this._storeName;
-    storeInProductViewModel.storeId = _.clone(this.storeInProductViewModel.storeId);
+    storeInProductViewModel.storeId = this.storeInProductViewModel.storeId;
     storeInProductViewModel.vendorName = this._vendorName;
     storeInProductViewModel.vendorId = _.clone(this.storeInProductViewModel.vendorId);
     this.storeInProductViewModelList.push(storeInProductViewModel);
