@@ -290,7 +290,7 @@
 
 </form>
 
-<div class="card" style="margin-top: 1%">
+<div class="card" style="margin-top: 1%" [hidden]="isDisableBarcodeInput()">
   <form #dynamicForm="ngForm" novalidate autocomplete="off">
 
     <div class="card-header">
@@ -373,12 +373,9 @@
           <td>
             <input class="form-control form-control-sm"
                    type="text"
-                   maxlength="2"
-                   pattern="^((?!(0))[0-9]{1,10})$"
-                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   maxlength="20"
                    #dynamicSerialNo="ngModel"
                    autocomplete="off"
-                   [ngClass]="{ 'is-invalid': dynamicSerialNo.errors?.pattern}"
                    id="dynamicSerialNo{{i}}"
                    name="dynamicSerialNo{{i}}"
                    [(ngModel)]="product.serialNo">

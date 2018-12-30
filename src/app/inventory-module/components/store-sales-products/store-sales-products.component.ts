@@ -188,22 +188,16 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     this.productAdded=false;
   }
 
-  public onClickClearAllAddedProduct(){
+ /* public onClickClearAllAddedProduct(){
     this.storeInProductViewModelList = new Array<StoreInProductViewModel>();
-  }
+  }*/
 
   public onClearStore(){
     this.storeSelected=false;
   }
 
   public onClickRemoveRow(index){
-    //Util.logConsole("Remove index: "+index);
-    this.storeInProductViewModelList.splice(index,1);
-    if(this.storeInProductViewModelList.length==0){
-      this.productAdded=false;
-      //this.hideProductAddedTable=true;
-    }
-    //Util.logConsole(this.storeInProductViewModelList);
+    this.availableSalesProductViewModelList.splice(index,1);
   }
 
   public onChangeStore(event,storeId:string){
@@ -215,7 +209,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       this.storeSelected = true;
       this.setFocusOnBarcodeInputTextBox();
     }
-    this.rerender();
+    //this.rerender();
   }
 
   public onChangeBarcode(barcode:string, event){
@@ -292,6 +286,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
   public onClickConfirmSales(){
+    this.storeSalesProductViewModel.storeProductViewModelList = this.availableSalesProductViewModelList;
+    Util.logConsole(this.storeSalesProductViewModel);
 
   }
 
@@ -426,8 +422,9 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   public isDisableBarcodeInput():boolean{
     if(this.customerSelected && this.storeSelected)
       return false;
-    else
+    else {
       return true;
+    }
   }
 
   private getStoreList(){
@@ -687,6 +684,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       this.barcodeRef.nativeElement.disabled=false;
       this.barcodeRef.nativeElement.focus();
       //this.barcodeRef.nativeElement.focus();
+      this.rerender();
     }
   }
 

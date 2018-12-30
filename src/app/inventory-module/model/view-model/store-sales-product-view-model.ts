@@ -1,11 +1,10 @@
+import {SalesProductViewModel} from "./sales-product-view-model";
+
 export class StoreSalesProductViewModel{
   storeId:string;
   customerId:string;
-
-  //productList: Array<ProductModel> = new Array<ProductModel>()
-
+  storeProductViewModelList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>()
   barcode: string;
   serialNo: string;
   salesMethod: number;
-
 }
