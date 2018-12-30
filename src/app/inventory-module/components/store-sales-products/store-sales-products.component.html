@@ -327,9 +327,11 @@
           <th style="width: 10%">Category</th>
           <th style="width: 10%">Brand</th>
           <th style="width: 15%">Model No</th>
-          <th style="width: 10%">Stock Qty</th>
-          <th style="width: 7%">Buy Price</th>
-          <th style="width: 7%">Sale Price</th>
+          <th style="width: 5%">Stock Qty</th>
+          <th style="width: 5%">Buy Price</th>
+          <th style="width: 5%">Sales Price</th>
+          <th style="width: 5%">Sales Qty</th>
+          <th style="width: 5%">Total</th>
          <!-- <th style="width: 10%">Action</th>-->
         </tr>
         </thead>
@@ -347,13 +349,43 @@
                    maxlength="8"
                    pattern="^((?!(0))[0-9]{1,10})$"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
-                   #dynamicPrice="ngModel"
+                   #dynamicSalesPrice="ngModel"
                    required
                    autocomplete="off"
-                   [ngClass]="{ 'is-invalid': dynamicPrice.errors?.pattern}"
-                   id="dynamicPrice{{i}}"
-                   name="dynamicPrice{{i}}"
+                   [ngClass]="{ 'is-invalid': dynamicSalesPrice.errors?.pattern}"
+                   id="dynamicSalesPrice{{i}}"
+                   name="salesPrice{{i}}"
                    [(ngModel)]="product.salesPrice">
+          </td>
+
+          <td>
+            <input class="form-control form-control-sm"
+                   type="text"
+                   maxlength="8"
+                   pattern="^((?!(0))[0-9]{1,10})$"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   #dynamicSalesQty="ngModel"
+                   required
+                   autocomplete="off"
+                   [ngClass]="{ 'is-invalid': dynamicSalesQty.errors?.pattern}"
+                   id="dynamicSalesQty{{i}}"
+                   name="dynamicSalesQty{{i}}"
+                   [(ngModel)]="product.salesQty">
+          </td>
+
+          <td>
+            <input class="form-control form-control-sm"
+                   type="text"
+                   maxlength="8"
+                   pattern="^((?!(0))[0-9]{1,10})$"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   #dynamicTotalPrice="ngModel"
+                   required
+                   autocomplete="off"
+                   [ngClass]="{ 'is-invalid': dynamicTotalPrice.errors?.pattern}"
+                   id="dynamicTotalPrice{{i}}"
+                   name="dynamicTotalPrice{{i}}"
+                   [(ngModel)]="product.totalPrice">
           </td>
 
 

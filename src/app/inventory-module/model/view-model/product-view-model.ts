@@ -10,4 +10,6 @@ export class ProductViewModel{
    barcode:string;
    image:string;
    salesPrice:number;
+   salesQty:number;
+   totalPrice:number;
 }

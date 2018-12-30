@@ -649,7 +649,9 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           {title:'Model No', data:'modelNo'},
           {title:'Stock Qty', data: 'available'},
           {title:'Buy Price', data: 'buyPrice'},
-          {title:'Sales Price', data: 'salesPrice'}
+          {title:'Sales Price', data: 'salesPrice'},
+          {title:'Sales Qty', data: 'salesQty'},
+          {title:'Sales Price', data: 'totalPrice'}
           ]
       };
   }
