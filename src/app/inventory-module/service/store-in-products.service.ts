@@ -24,12 +24,7 @@ export class StoreInProductsService {
   }
 
 
-  public getStoreInAvailableProductListByIdentificationIds(storeId?:string,barcode?:string, serialNo?:string, dataTableParameter?:any) {
-    //build url
-   /* let buildUrl:string;
-    if(storeId!=null){
-      buildUrl = InventoryApiEndPoint.storeInProducts+"/identification-ids/"+storeId;
-    }*/
+  public getStoreInAvailableProductListByIdentificationIds(dataTableParameter:any,storeId?:string,barcode?:string, serialNo?:string) {
     return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.storeInProducts+"/identification-ids/"+storeId+"/"+barcode+"/"+serialNo,dataTableParameter);
   }
 

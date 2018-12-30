@@ -290,6 +290,14 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     }
   }
 
+  public onClickConfirmSales(){
+
+  }
+
+  public onClickReset(){
+
+  }
+
 
   private setRowWiseTotalPrice(index:number){
     let salesPrice: number;
@@ -317,7 +325,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     return isSalesPriceAllowed;
   }
 
-  public setGrandTotalSalesPrice(){
+  private setGrandTotalSalesPrice(){
     let grandTotal:number=0;
     for(let product of this.availableProductViewModelList){
       grandTotal+= product.totalPrice;
@@ -601,10 +609,12 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     return productModel;
   }
 
-  private getAvailableStoreInProductListByStoreIdOrBarcodeOrSerialNo(dataTablesParameters?: DataTableRequest, callback?: any, storeId?: string, barcode?:string, serialNo?:string){
+  private getAvailableStoreInProductListByStoreIdOrBarcodeOrSerialNo(dataTablesParameters: DataTableRequest, callback: any, storeId?: string, barcode?:string, serialNo?:string){
     //let productViewModelList: Array<ProductViewModel> = null;
+    //this.dataTablesCallBackParameters = dataTablesParameters;
+    //this.dataTableCallbackFunction = callback;
     if(storeId!=null) {
-      this.storeInProductService.getStoreInAvailableProductListByIdentificationIds(storeId,barcode,serialNo).subscribe
+      this.storeInProductService.getStoreInAvailableProductListByIdentificationIds(dataTablesParameters,storeId,barcode,serialNo).subscribe
       (
         (responseMessage: ResponseMessage) => {
           if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
@@ -648,7 +658,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
         pageLength: 10,
         serverSide: true,
         processing: false,
-        searching: true,
+        searching: false,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
           this.getAvailableStoreInProductListByStoreIdOrBarcodeOrSerialNo(dataTablesParameters, callback,this.storeId, this.barcode);
         },

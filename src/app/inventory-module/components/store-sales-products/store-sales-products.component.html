@@ -438,5 +438,34 @@
         <tbody>
       </table>
     </div>
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <button
+                  type="button"
+                  (click)="onClickConfirmSales()"
+                  class="btn btn-sm btn-success pull-right">
+            Confirm Sales
+          </button>
+
+          <button
+                  type="button"
+                  style="margin-right: 1%"
+                  (click)="onClickReset()"
+                  class="btn btn-sm btn-danger pull-right">
+            Reset
+          </button>
+
+<!--
+          <button type="button"
+                  (click)="onClickCancel()"
+                  class="btn btn-danger pull-right">
+            Cancel
+          </button>-->
+        </div>
+
+      </div>
+    </div>
   </form>
 </div>

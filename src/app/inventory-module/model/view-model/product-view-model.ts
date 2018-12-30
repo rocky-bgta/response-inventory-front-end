@@ -1,5 +1,7 @@
 export class ProductViewModel{
    productId:string;
+   stockId:string;
+   stockInProductId:string;
    available:number;
    productName:string;
    categoryName:string;
@@ -14,4 +16,6 @@ export class ProductViewModel{
    serialNo:number;
    supportPeriodInMonth:number;
    totalPrice:number;
+
+
 }
