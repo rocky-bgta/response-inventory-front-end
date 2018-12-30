@@ -335,7 +335,7 @@
                    #dynamicSalesPrice="ngModel"
                    required
                    autocomplete="off"
-                   [ngClass]="{ 'is-invalid': dynamicSalesPrice.errors?.pattern}"
+                   [ngClass]="{ 'is-invalid': dynamicSalesPrice.errors?.required || dynamicSalesPrice.errors?.pattern}"
                    id="dynamicSalesPrice{{i}}"
                    name="salesPrice{{i}}"
                    [(ngModel)]="product.salesPrice">
@@ -351,7 +351,7 @@
                    #dynamicSalesQty="ngModel"
                    required
                    autocomplete="off"
-                   [ngClass]="{ 'is-invalid': dynamicSalesQty.errors?.pattern}"
+                   [ngClass]="{ 'is-invalid': dynamicSalesPrice.errors?.required || dynamicSalesQty.errors?.pattern}"
                    id="dynamicSalesQty{{i}}"
                    name="dynamicSalesQty{{i}}"
                    [(ngModel)]="product.salesQty">
@@ -423,7 +423,7 @@
         </tbody>
         <tbody *ngIf="grandTotalSalesPrice!=0">
         <tr>
-          <td colspan="10"></td>
+          <td colspan="8"></td>
           <td colspan="2">{{grandTotalSalesPrice}}</td>
         </tr>
         </tbody>
@@ -441,7 +441,7 @@
 
           <button
                   type="button"
-                  (click)="onClickConfirmSales()"
+                  (click)="onClickConfirmSales(dynamicForm)"
                   class="btn btn-sm btn-success pull-right">
             Confirm Sales
           </button>

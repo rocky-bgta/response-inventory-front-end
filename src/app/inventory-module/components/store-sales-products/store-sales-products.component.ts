@@ -26,6 +26,7 @@ import {KeyValueModel} from "../../../core/model/KeyValueModel";
 import {Subject} from "rxjs/index";
 import {DataTableDirective} from "angular-datatables";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
+import {StoreSalesProductsService} from "../../service/store-sales-products.service";
 
 
 @Component({
@@ -73,7 +74,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
 
   public storeInProductViewModel:StoreInProductViewModel = new StoreInProductViewModel();
-  public storeInProductViewModelList: Array<StoreInProductViewModel> = new Array<StoreInProductViewModel>();
+  //public storeInProductViewModelList: Array<StoreInProductViewModel> = new Array<StoreInProductViewModel>();
 
   public storeSelected:boolean=false;
   public customerSelected:boolean=false;
@@ -99,6 +100,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   constructor(private storeService: StoreService,
               private productService: ProductService,
               private customerService: CustomerService,
+              private storeSalesProductsService: StoreSalesProductsService,
               private enumService: EnumService,
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
@@ -140,6 +142,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       this.dtTrigger.next();
     });
   }
+/*
 
   public onClickAddProduct(){
     //set this value for validation purpose only
@@ -164,21 +167,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
         return;
       }
     }
-
-
-
   }
-
-  public onClickSave(dynamicForm:NgForm){
-
-    if(!dynamicForm.invalid) {
-      //Util.logConsole(this.storeInProductViewModelList);
-      this.saveStoreInProduct();
-    }else {
-      this.toastr.info("Please correct entered product list value");
-    }
-    return;
-  }
+*/
 
   public onClickClear(){
     this.storeInProductViewModel = new StoreInProductViewModel();
@@ -279,15 +269,20 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     availableQty = this.availableSalesProductViewModelList[index].available;
     if(salesQty>availableQty){
       this.availableSalesProductViewModelList[index].salesQty = availableQty;
-    }else {
-      this.setRowWiseTotalPrice(index);
-      this.setGrandTotalSalesPrice();
     }
+    this.setGrandTotalSalesPrice();
+    this.setRowWiseTotalPrice(index);
   }
 
-  public onClickConfirmSales(){
-    this.storeSalesProductViewModel.storeProductViewModelList = this.availableSalesProductViewModelList;
-    Util.logConsole(this.storeSalesProductViewModel);
+  public onClickConfirmSales(dynamicForm:NgForm){
+    if(!dynamicForm.invalid) {
+      this.storeSalesProductViewModel.storeProductViewModelList = this.availableSalesProductViewModelList;
+      Util.logConsole(this.storeSalesProductViewModel);
+      this.saveStoreSalesProduct();
+    }else {
+      this.toastr.info("Please correct entered sales products value");
+    }
+    return;
 
   }
 
@@ -363,7 +358,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     )
   }
 
-  private addProductToList():void{
+  /*private addProductToList():void{
     let storeInProductViewModel: StoreInProductViewModel;
     storeInProductViewModel = new StoreInProductViewModel();
     //storeInProductViewModel = _.clone(this.storeInProductViewModel);
@@ -379,12 +374,14 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     this.storeInProductViewModelList.push(storeInProductViewModel);
     this.productAdded=true;
     //this.storeInProductViewModel.barcode="";
-  }
+  }*/
 
-  private saveStoreInProduct(){
+  private saveStoreSalesProduct(){
+    this.storeSalesProductViewModel.storeProductViewModelList = this.availableSalesProductViewModelList;
+
     let requestMessage: RequestMessage;
-    requestMessage = Util.getRequestMessage(this.storeInProductViewModelList);
-    this.storeInProductService.save(requestMessage).subscribe
+    requestMessage = Util.getRequestMessage(this.storeSalesProductViewModel);
+    this.storeSalesProductsService.save(requestMessage).subscribe
     (
       (responseMessage: ResponseMessage) =>
       {
