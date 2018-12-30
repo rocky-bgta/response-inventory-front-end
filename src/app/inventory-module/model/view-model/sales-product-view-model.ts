@@ -1,7 +1,6 @@
-export class ProductViewModel{
+export class SalesProductViewModel{
    productId:string;
-   stockId:string;
-   stockInProductId:string;
+
    available:number;
    productName:string;
    categoryName:string;
@@ -17,5 +16,7 @@ export class ProductViewModel{
    supportPeriodInMonth:number;
    totalPrice:number;
 
+  stockId:string;
+  stockInProductId:string;
 
 }

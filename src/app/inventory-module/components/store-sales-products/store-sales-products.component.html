@@ -317,8 +317,8 @@
           <!-- <th style="width: 10%">Action</th>-->
         </tr>
         </thead>
-        <tbody *ngIf="availableProductViewModelList?.length != 0">
-        <tr *ngFor="let product of availableProductViewModelList; let i=index">
+        <tbody *ngIf="availableSalesProductViewModelList?.length != 0">
+        <tr *ngFor="let product of availableSalesProductViewModelList; let i=index">
           <td>{{product.productName }}</td>
           <td>{{product.categoryName}}</td>
           <td>{{product.brandName }}</td>
@@ -431,7 +431,7 @@
         </tr>
         </tbody>
 
-        <tbody *ngIf="availableProductViewModelList?.length == 0">
+        <tbody *ngIf="availableSalesProductViewModelList?.length == 0">
         <tr>
           <td colspan="11" class="no-data-available">No data!</td>
         </tr>

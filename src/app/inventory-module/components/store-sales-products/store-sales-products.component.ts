@@ -19,12 +19,13 @@ import {ProductService} from "../../service/product.service";
 import {CustomerModel} from "../../model/customer-model";
 import {CustomerService} from "../../service/customer.service";
 import {DataTableRequest} from "../../../core/model/data-table-request";
-import {ProductViewModel} from "../../model/view-model/product-view-model";
+
 import {StoreSalesProductViewModel} from "../../model/view-model/store-sales-product-view-model";
 import {EnumService} from "../../service/enum.service";
 import {KeyValueModel} from "../../../core/model/KeyValueModel";
 import {Subject} from "rxjs/index";
 import {DataTableDirective} from "angular-datatables";
+import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 
 
 @Component({
@@ -64,7 +65,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public customerModelList: Array<CustomerModel> = new Array<CustomerModel>();
   public paymentMethodsList: Array<KeyValueModel>  = new Array<KeyValueModel>();
-  public availableProductViewModelList: Array<ProductViewModel> = new Array<ProductViewModel>();
+  public availableSalesProductViewModelList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
 
   public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
 
@@ -274,16 +275,16 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       this.setGrandTotalSalesPrice();
     }
     else {
-     this.availableProductViewModelList[index].salesPrice=0;
-     this.availableProductViewModelList[index].totalPrice=0;
+     this.availableSalesProductViewModelList[index].salesPrice=0;
+     this.availableSalesProductViewModelList[index].totalPrice=0;
     }
   }
 
   public onFocusOutSalesQtyRowEvent(index:number, salesQty:number){
     let availableQty:number;
-    availableQty = this.availableProductViewModelList[index].available;
+    availableQty = this.availableSalesProductViewModelList[index].available;
     if(salesQty>availableQty){
-      this.availableProductViewModelList[index].salesQty = availableQty;
+      this.availableSalesProductViewModelList[index].salesQty = availableQty;
     }else {
       this.setRowWiseTotalPrice(index);
       this.setGrandTotalSalesPrice();
@@ -303,11 +304,11 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     let salesPrice: number;
     let salesQty:number;
     let totalPrice:number;
-    salesPrice = this.availableProductViewModelList[index].salesPrice;
-    salesQty = this.availableProductViewModelList[index].salesQty;
+    salesPrice = this.availableSalesProductViewModelList[index].salesPrice;
+    salesQty = this.availableSalesProductViewModelList[index].salesQty;
     if(index!=null && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))){
       totalPrice = salesPrice * salesQty;
-      this.availableProductViewModelList[index].totalPrice = totalPrice;
+      this.availableSalesProductViewModelList[index].totalPrice = totalPrice;
     }
   }
 
@@ -315,7 +316,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     let buyPrice:number;
     let isSalesPriceAllowed:boolean=false;
     if(index!=null && !_.isNaN(index)){
-      buyPrice = this.availableProductViewModelList[index].buyPrice;
+      buyPrice = this.availableSalesProductViewModelList[index].buyPrice;
       if(salesPrice<buyPrice){
         isSalesPriceAllowed = false;
       }else {
@@ -327,7 +328,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   private setGrandTotalSalesPrice(){
     let grandTotal:number=0;
-    for(let product of this.availableProductViewModelList){
+    for(let product of this.availableSalesProductViewModelList){
       grandTotal+= product.totalPrice;
     }
     this.grandTotalSalesPrice = grandTotal;
@@ -618,7 +619,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       (
         (responseMessage: ResponseMessage) => {
           if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
-            this.availableProductViewModelList = <Array<ProductViewModel>>responseMessage.data;
+            this.availableSalesProductViewModelList = <Array<SalesProductViewModel>>responseMessage.data;
             //Util.logConsole(this.availableProductViewModelList);
             //return productViewModelList;
           } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
