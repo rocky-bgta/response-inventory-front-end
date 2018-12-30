@@ -358,29 +358,13 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     )
   }
 
-  /*private addProductToList():void{
-    let storeInProductViewModel: StoreInProductViewModel;
-    storeInProductViewModel = new StoreInProductViewModel();
-    //storeInProductViewModel = _.clone(this.storeInProductViewModel);
-    storeInProductViewModel.entryDate= _.clone(this.storeInProductViewModel.entryDate);
-    storeInProductViewModel.productId = _.clone(this.storeInProductViewModel.productId);
-    storeInProductViewModel.productName= _.clone(this.storeInProductViewModel.productName);
-    storeInProductViewModel.price= _.clone(this.storeInProductViewModel.price);
-    storeInProductViewModel.quantity= _.clone(this.storeInProductViewModel.quantity);
-    storeInProductViewModel.totalPrice=_.clone(this.storeInProductViewModel.totalPrice);
-    //storeInProductViewModel.storeName = this._storeName;
-    storeInProductViewModel.storeId = _.clone(this.storeInProductViewModel.storeId);
-    storeInProductViewModel.vendorId = _.clone(this.storeInProductViewModel.vendorId);
-    this.storeInProductViewModelList.push(storeInProductViewModel);
-    this.productAdded=true;
-    //this.storeInProductViewModel.barcode="";
-  }*/
 
   private saveStoreSalesProduct(){
     this.storeSalesProductViewModel.storeProductViewModelList = this.availableSalesProductViewModelList;
 
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(this.storeSalesProductViewModel);
+    requestMessage.list = this.availableSalesProductViewModelList;
     this.storeSalesProductsService.save(requestMessage).subscribe
     (
       (responseMessage: ResponseMessage) =>

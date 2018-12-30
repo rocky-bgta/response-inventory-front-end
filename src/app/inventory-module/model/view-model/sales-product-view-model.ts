@@ -10,13 +10,14 @@ export class SalesProductViewModel{
    description:string;
    barcode:string;
    image:string;
+
+  //=========================
    salesPrice:number;
    salesQty:number;
    serialNo:number;
    supportPeriodInMonth:number;
    totalPrice:number;
-
-  stockId:string;
-  stockInProductId:string;
+   stockId:string;
+   stockInProductId:string;
 
 }
