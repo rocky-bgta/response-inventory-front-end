@@ -78,6 +78,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   public customerSelected:boolean=false;
 
 
+  public grandTotalSalesPrice:number = 0;
+
   //helper variable==========
   //private _storeName:string;
 //========== Variables for this page business =====================================================
@@ -276,10 +278,12 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     let isAllowedSalePrice:boolean;
     isAllowedSalePrice = this.verifySalesPrice(index,salesPrice);
     if(isAllowedSalePrice) {
-      this.setTotalPrice(index);
+      this.setRowWiseTotalPrice(index);
+      this.setGrandTotalSalesPrice();
     }
     else {
      this.availableProductViewModelList[index].salesPrice=0;
+     this.availableProductViewModelList[index].totalPrice=0;
     }
   }
 
@@ -289,34 +293,13 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     if(salesQty>availableQty){
       this.availableProductViewModelList[index].salesQty = availableQty;
     }else {
-      this.setTotalPrice(index);
+      this.setRowWiseTotalPrice(index);
+      this.setGrandTotalSalesPrice();
     }
   }
 
 
- /*
-
-  public onFocusOutQuantityRowEvent(index:number){
-    this.setTotalPrice(index);
-  }
-
-  public onFocusOutPriceRowEvent(index:number){
-    this.setTotalPrice(index);
-  }
-  */
-
-
-  /*public onClickRemoveRow(index){
-    this.availableProductViewModelList.splice(index,1);
-
-   /!* if(this.availableProductViewModelList.length==0){
-      this.productAdded=false;
-      //this.hideProductAddedTable=true;
-    }*!/
-   //this.rerender();
-  }*/
-
-  private setTotalPrice(index:number){
+  private setRowWiseTotalPrice(index:number){
     let salesPrice: number;
     let salesQty:number;
     let totalPrice:number;
@@ -340,6 +323,14 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       }
     }
     return isSalesPriceAllowed;
+  }
+
+  public setGrandTotalSalesPrice(){
+    let grandTotal:number=0;
+    for(let product of this.availableProductViewModelList){
+      grandTotal+= product.totalPrice;
+    }
+    this.grandTotalSalesPrice = grandTotal;
   }
 
   private getPaymentMethod(){

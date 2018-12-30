@@ -396,6 +396,13 @@
 
         </tr>
         </tbody>
+        <tbody *ngIf="grandTotalSalesPrice!=0">
+        <tr>
+          <td colspan="8"></td>
+          <td colspan="2">{{grandTotalSalesPrice}}</td>
+        </tr>
+        </tbody>
+
         <tbody *ngIf="availableProductViewModelList?.length == 0">
         <tr>
           <td colspan="10" class="no-data-available">No data!</td>
