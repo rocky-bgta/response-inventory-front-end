@@ -316,7 +316,7 @@
         </tr>
         </thead>
         <tbody *ngIf="availableProductViewModelList?.length != 0">
-        <tr *ngFor="let product of availableProductViewModelList">
+        <tr *ngFor="let product of availableProductViewModelList; let i=index">
           <td>{{product.productName }}</td>
           <td>{{product.categoryName}}</td>
           <td>{{product.brandName }}</td>
@@ -328,6 +328,7 @@
                    type="text"
                    maxlength="8"
                    pattern="^((?!(0))[0-9]{1,10})$"
+                   (focusout)="onFocusOutSalesPriceRowEvent(i)"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    #dynamicSalesPrice="ngModel"
                    required
@@ -343,6 +344,7 @@
                    type="text"
                    maxlength="8"
                    pattern="^((?!(0))[0-9]{1,10})$"
+                   (focusout)="onFocusOutSalesQtyRowEvent(i,product.salesQty)"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    #dynamicSalesQty="ngModel"
                    required

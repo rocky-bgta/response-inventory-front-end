@@ -272,8 +272,22 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
 
+  public onFocusOutSalesPriceRowEvent(index:number){
+    this.setTotalPrice(index);
+  }
+
+  public onFocusOutSalesQtyRowEvent(index:number, salesQty:number){
+    let availableQty:number;
+    availableQty = this.availableProductViewModelList[index].available;
+    if(salesQty>availableQty){
+      this.availableProductViewModelList[index].salesQty = availableQty;
+    }else {
+      this.setTotalPrice(index);
+    }
+  }
+
   public onFocusOutQuantityEvent(){
-    this.setTotalPrice();
+    //this.setTotalPrice();
   }
 
   public onFocusOutQuantityRowEvent(index:number){
@@ -293,6 +307,38 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     }*!/
    //this.rerender();
   }*/
+
+  private setTotalPrice(index:number){
+    let salesPrice: number;
+    let salesQty:number;
+    let totalPrice:number;
+    Util.logConsole(this.availableProductViewModelList);
+
+    /*if(index!=null && !_.isNaN(index)){
+      price = this.storeInProductViewModelList[index].price;
+      quantity = this.storeInProductViewModelList[index].quantity;
+    }else {
+      price = this.storeInProductViewModel.price;
+      quantity = this.storeInProductViewModel.quantity;
+    }
+    if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
+      total= price*quantity;
+    }
+    if(index!=null && !_.isNaN(index)){
+      this.storeInProductViewModelList[index].totalPrice=total;
+    }else {
+      this.storeInProductViewModel.totalPrice=total;
+    }*/
+
+    salesPrice = this.availableProductViewModelList[index].salesPrice;
+    salesQty = this.availableProductViewModelList[index].salesQty;
+    if(index!=null && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))){
+      totalPrice = salesPrice * salesQty;
+      this.availableProductViewModelList[index].totalPrice = totalPrice;
+    }
+
+
+  }
 
   private getPaymentMethod(){
     this.enumService.getPaymentMethods().subscribe
@@ -381,28 +427,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       }
     );
     return;
-  }
-
-  private setTotalPrice(index?:number){
-    let price:number;
-    let quantity:number;
-    let total:number;
-
-    if(index!=null && !_.isNaN(index)){
-      price = this.storeInProductViewModelList[index].price;
-      quantity = this.storeInProductViewModelList[index].quantity;
-    }else {
-      price = this.storeInProductViewModel.price;
-      quantity = this.storeInProductViewModel.quantity;
-    }
-    if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
-      total= price*quantity;
-    }
-    if(index!=null && !_.isNaN(index)){
-      this.storeInProductViewModelList[index].totalPrice=total;
-    }else {
-      this.storeInProductViewModel.totalPrice=total;
-    }
   }
 
   public isDisableBarcodeInput():boolean{
@@ -644,16 +668,16 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           this.getAvailableStoreInProductListByStoreIdOrBarcodeOrSerialNo(dataTablesParameters, callback,this.storeId, this.barcode);
         },
         columns: [
-          {title:'Name', data: 'productName'},
-          {title:'Category', data:'categoryName'},
-          {title:'Brand', data:'brandName'},
-          {title:'Model No', data:'modelNo'},
-          {title:'Stock Qty', data: 'available'},
-          {title:'Buy Price', data: 'buyPrice'},
+          {title:'Name',        data: 'productName'},
+          {title:'Category',    data: 'categoryName'},
+          {title:'Brand',       data: 'brandName'},
+          {title:'Model No',    data: 'modelNo'},
+          {title:'Stock Qty',   data: 'available'},
+          {title:'Buy Price',   data: 'buyPrice'},
           {title:'Sales Price', data: 'salesPrice'},
-          {title:'Sales Qty', data: 'salesQty'},
-          {title:'Sales Price', data: 'totalPrice'},
-          {title:'Action', data: 'totalPrice'}
+          {title:'Sales Qty',   data: 'salesQty'},
+          {title:'Total Price', data: 'totalPrice'},
+          {title:'Action',      data: 'totalPrice'}
           ]
       };
   }
