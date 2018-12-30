@@ -305,12 +305,14 @@
           <th style="width: 10%">Name</th>
           <th style="width: 10%">Category</th>
           <th style="width: 10%">Brand</th>
-          <th style="width: 15%">Model No</th>
+          <th style="width: 10%">Model No</th>
           <th style="width: 5%">Stock Qty</th>
           <th style="width: 5%">Buy Price</th>
           <th style="width: 5%">Sales Price</th>
           <th style="width: 5%">Sales Qty</th>
           <th style="width: 5%">Total</th>
+          <th style="width: 5%">Serial No</th>
+          <th style="width: 5%">Support Period</th>
           <th style="width: 5%">Action</th>
           <!-- <th style="width: 10%">Action</th>-->
         </tr>
@@ -359,15 +361,41 @@
             <input class="form-control form-control-sm"
                    type="text"
                    maxlength="8"
-                   pattern="^((?!(0))[0-9]{1,10})$"
-                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   disabled
                    #dynamicTotalPrice="ngModel"
-                   required
                    autocomplete="off"
                    [ngClass]="{ 'is-invalid': dynamicTotalPrice.errors?.pattern}"
                    id="dynamicTotalPrice{{i}}"
                    name="dynamicTotalPrice{{i}}"
                    [(ngModel)]="product.totalPrice">
+          </td>
+
+          <td>
+            <input class="form-control form-control-sm"
+                   type="text"
+                   maxlength="2"
+                   pattern="^((?!(0))[0-9]{1,10})$"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   #dynamicSerialNo="ngModel"
+                   autocomplete="off"
+                   [ngClass]="{ 'is-invalid': dynamicSerialNo.errors?.pattern}"
+                   id="dynamicSerialNo{{i}}"
+                   name="dynamicSerialNo{{i}}"
+                   [(ngModel)]="product.serialNo">
+          </td>
+
+          <td>
+            <input class="form-control form-control-sm"
+                   type="text"
+                   maxlength="2"
+                   pattern="^((?!(0))[0-9]{1,10})$"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   #dynamicSupportPeriod="ngModel"
+                   autocomplete="off"
+                   [ngClass]="{ 'is-invalid': dynamicSupportPeriod.errors?.pattern}"
+                   id="dynamicSupportPeriod{{i}}"
+                   name="dynamicSupportPeriod{{i}}"
+                   [(ngModel)]="product.supportPeriodInMonth">
           </td>
 
           <td class="align-baseline">
@@ -398,14 +426,14 @@
         </tbody>
         <tbody *ngIf="grandTotalSalesPrice!=0">
         <tr>
-          <td colspan="8"></td>
+          <td colspan="10"></td>
           <td colspan="2">{{grandTotalSalesPrice}}</td>
         </tr>
         </tbody>
 
         <tbody *ngIf="availableProductViewModelList?.length == 0">
         <tr>
-          <td colspan="10" class="no-data-available">No data!</td>
+          <td colspan="11" class="no-data-available">No data!</td>
         </tr>
         <tbody>
       </table>

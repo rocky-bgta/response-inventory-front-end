@@ -218,14 +218,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
   public onChangeBarcode(barcode:string, event){
-    //let productModel: ProductModel;
-    //Util.logConsole("Barcode: "+ barcode);
-    // productModel = await this.getProductByBarcode(barcode);
-    // this.storeInProductViewModel.productName = productModel.name;
-    // this.storeInProductViewModel.productId = productModel.id;
-    // this.storeInProductViewModel.price = productModel.price;
-    // this.setTotalPrice();
-    // this.addProductToList();
     this.storeSalesProductViewModel.barcode=null;
     this.storeSalesProductViewModel.barcode = barcode;
     this.barcode = barcode;
@@ -670,6 +662,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           {title:'Sales Price', data: 'salesPrice'},
           {title:'Sales Qty',   data: 'salesQty'},
           {title:'Total Price', data: 'totalPrice'},
+          {title:'Serial No',   data: 'serialNo'},
+          {title:'Support Period', data: 'supportPeriodInMonth'},
           {title:'Action',      data: 'totalPrice'}
           ]
       };

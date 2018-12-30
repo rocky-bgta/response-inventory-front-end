@@ -11,5 +11,7 @@ export class ProductViewModel{
    image:string;
    salesPrice:number;
    salesQty:number;
+   serialNo:number;
+   supportPeriodInMonth:number;
    totalPrice:number;
 }
