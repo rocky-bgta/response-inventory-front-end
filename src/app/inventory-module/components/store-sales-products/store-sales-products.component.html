@@ -328,7 +328,7 @@
                    type="text"
                    maxlength="8"
                    pattern="^((?!(0))[0-9]{1,10})$"
-                   (focusout)="onFocusOutSalesPriceRowEvent(i)"
+                   (focusout)="onFocusOutSalesPriceRowEvent(i,product.salesPrice)"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    #dynamicSalesPrice="ngModel"
                    required

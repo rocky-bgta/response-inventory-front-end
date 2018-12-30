@@ -272,8 +272,15 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
 
-  public onFocusOutSalesPriceRowEvent(index:number){
-    this.setTotalPrice(index);
+  public onFocusOutSalesPriceRowEvent(index:number, salesPrice:number){
+    let isAllowedSalePrice:boolean;
+    isAllowedSalePrice = this.verifySalesPrice(index,salesPrice);
+    if(isAllowedSalePrice) {
+      this.setTotalPrice(index);
+    }
+    else {
+     this.availableProductViewModelList[index].salesPrice=0;
+    }
   }
 
   public onFocusOutSalesQtyRowEvent(index:number, salesQty:number){
@@ -286,9 +293,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     }
   }
 
-  public onFocusOutQuantityEvent(){
-    //this.setTotalPrice();
-  }
+
+ /*
 
   public onFocusOutQuantityRowEvent(index:number){
     this.setTotalPrice(index);
@@ -297,6 +303,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   public onFocusOutPriceRowEvent(index:number){
     this.setTotalPrice(index);
   }
+  */
+
 
   /*public onClickRemoveRow(index){
     this.availableProductViewModelList.splice(index,1);
@@ -312,32 +320,26 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     let salesPrice: number;
     let salesQty:number;
     let totalPrice:number;
-    Util.logConsole(this.availableProductViewModelList);
-
-    /*if(index!=null && !_.isNaN(index)){
-      price = this.storeInProductViewModelList[index].price;
-      quantity = this.storeInProductViewModelList[index].quantity;
-    }else {
-      price = this.storeInProductViewModel.price;
-      quantity = this.storeInProductViewModel.quantity;
-    }
-    if(!_.isNaN(price) && price>0 && !_.isNaN(quantity) && quantity>0){
-      total= price*quantity;
-    }
-    if(index!=null && !_.isNaN(index)){
-      this.storeInProductViewModelList[index].totalPrice=total;
-    }else {
-      this.storeInProductViewModel.totalPrice=total;
-    }*/
-
     salesPrice = this.availableProductViewModelList[index].salesPrice;
     salesQty = this.availableProductViewModelList[index].salesQty;
     if(index!=null && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))){
       totalPrice = salesPrice * salesQty;
       this.availableProductViewModelList[index].totalPrice = totalPrice;
     }
+  }
 
-
+  private verifySalesPrice(index:number, salesPrice):boolean{
+    let buyPrice:number;
+    let isSalesPriceAllowed:boolean=false;
+    if(index!=null && !_.isNaN(index)){
+      buyPrice = this.availableProductViewModelList[index].buyPrice;
+      if(salesPrice<buyPrice){
+        isSalesPriceAllowed = false;
+      }else {
+        isSalesPriceAllowed = true;
+      }
+    }
+    return isSalesPriceAllowed;
   }
 
   private getPaymentMethod(){
