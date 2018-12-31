@@ -7,4 +7,8 @@ export class StoreSalesProductViewModel{
   barcode: string;
   serialNo: string;
   salesMethod: number;
+  paidAmount:number;
+  dueAmount:number;
+  grandTotal:number;
+
 }
