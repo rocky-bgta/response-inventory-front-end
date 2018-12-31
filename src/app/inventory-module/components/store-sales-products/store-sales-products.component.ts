@@ -276,7 +276,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   public onClickConfirmSales(dynamicForm:NgForm){
     if(!dynamicForm.invalid) {
-      this.storeSalesProductViewModel.storeProductViewModelList = this.availableSalesProductViewModelList;
+      this.storeSalesProductViewModel.salesProductViewModelList = this.availableSalesProductViewModelList;
       Util.logConsole(this.storeSalesProductViewModel);
       this.saveStoreSalesProduct();
     }else {
@@ -360,11 +360,11 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
 
   private saveStoreSalesProduct(){
-    this.storeSalesProductViewModel.storeProductViewModelList = this.availableSalesProductViewModelList;
+    this.storeSalesProductViewModel.salesProductViewModelList = this.availableSalesProductViewModelList;
 
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(this.storeSalesProductViewModel);
-    requestMessage.list = this.availableSalesProductViewModelList;
+    //requestMessage.list = this.availableSalesProductViewModelList;
     this.storeSalesProductsService.save(requestMessage).subscribe
     (
       (responseMessage: ResponseMessage) =>
