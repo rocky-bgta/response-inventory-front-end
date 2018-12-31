@@ -433,36 +433,51 @@
           <td colspan="11" class="no-data-available">No data!</td>
         </tr>
         <tbody>
+
+        <tbody>
+        <tr>
+          <td colspan="8"></td>
+          <td colspan="2">
+            <div class="form-group">
+
+                <label for="paidAmount" class="lb-sm">Paid Amount:</label>
+
+                <input class="form-control"
+                       #paidAmount
+                       type="text"
+                       id="paidAmount"
+                       [attr.disabled]="isDisableBarcodeInput()?'':null"
+                       (change)="onChangeBarcode(storeSalesProductViewModel.barcode,$event)"
+                       autocomplete="off"
+                       name="paidAmount"
+                       [(ngModel)]="storeSalesProductViewModel.barcode">
+            </div>
+          </td>
+          <td colspan="2">
+            <div class="form-group">
+
+                <label for="dueAmount" class="lb-sm">Due Amount:</label>
+                <input class="form-control"
+                       #dueAmount
+                       type="text"
+                       disabled
+                       id="dueAmount"
+                       (change)="onChangeSerialNo(storeSalesProductViewModel.barcode,$event)"
+                       name="dueAmount"
+                       [(ngModel)]="storeSalesProductViewModel.serialNo">
+
+            </div>
+
+          </td>
+        </tr>
+        </tbody>
+
+
       </table>
-    </div>
-    <div class="card-footer">
-      <div class="row">
-        <div class="col-sm-12">
 
-          <button
-                  type="button"
-                  (click)="onClickConfirmSales(dynamicForm)"
-                  class="btn btn-sm btn-success pull-right">
-            Confirm Sales
-          </button>
-
-          <button
-                  type="button"
-                  style="margin-right: 1%"
-                  (click)="onClickReset()"
-                  class="btn btn-sm btn-danger pull-right">
-            Reset
-          </button>
-
-<!--
-          <button type="button"
-                  (click)="onClickCancel()"
-                  class="btn btn-danger pull-right">
-            Cancel
-          </button>-->
-        </div>
-
-      </div>
     </div>
   </form>
 </div>
+
+
+
