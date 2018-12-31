@@ -441,16 +441,20 @@
             <div class="form-group">
 
                 <label for="paidAmount" class="lb-sm">Paid Amount:</label>
-
                 <input class="form-control"
                        #paidAmount
+                       maxlength="8"
+                       pattern="^((?!(0))[0-9]{1,10})$"
+                       (focusout)="onFocusOutPaidAmount(storeSalesProductViewModel.paidAmount)"
+                       onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                        type="text"
+                       [ngClass]="{ 'is-invalid': paidAmount.errors?.required || paidAmount.errors?.pattern}"
+                       required
                        id="paidAmount"
-                       [attr.disabled]="isDisableBarcodeInput()?'':null"
-                       (change)="onChangeBarcode(storeSalesProductViewModel.barcode,$event)"
+                       [attr.disabled]="grandTotalSalesPrice==0?'':null"
                        autocomplete="off"
                        name="paidAmount"
-                       [(ngModel)]="storeSalesProductViewModel.barcode">
+                       [(ngModel)]="storeSalesProductViewModel.paidAmount">
             </div>
           </td>
           <td colspan="2">
@@ -462,9 +466,8 @@
                        type="text"
                        disabled
                        id="dueAmount"
-                       (change)="onChangeSerialNo(storeSalesProductViewModel.barcode,$event)"
                        name="dueAmount"
-                       [(ngModel)]="storeSalesProductViewModel.serialNo">
+                       [(ngModel)]="storeSalesProductViewModel.dueAmount">
 
             </div>
 
@@ -476,6 +479,30 @@
       </table>
 
     </div>
+
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-sm-12">
+
+          <button
+            type="button"
+            (click)="onClickConfirmSales(dynamicForm)"
+            class="btn btn-sm btn-success pull-right">
+            Confirm Sales
+          </button>
+
+          <button
+            type="button"
+            style="margin-right: 1%"
+            (click)="onClickReset()"
+            class="btn btn-sm btn-danger pull-right">
+            Reset
+          </button>
+        </div>
+
+      </div>
+    </div>
+
   </form>
 </div>
 

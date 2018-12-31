@@ -290,6 +290,10 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   }
 
+  public onFocusOutPaidAmount(paidAmount:number){
+    this.setDueAmount(paidAmount);
+  }
+
 
   private setRowWiseTotalPrice(index:number){
     let salesPrice: number;
@@ -324,6 +328,17 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       grandTotal+= product.totalPrice;
     }
     this.grandTotalSalesPrice = grandTotal;
+    this.storeSalesProductViewModel.paidAmount = grandTotal;
+  }
+
+  private setDueAmount(paidAmount:number){
+    let dueAmount:number;
+    if(this.grandTotalSalesPrice == paidAmount){
+      dueAmount =0;
+    }else if(paidAmount<this.grandTotalSalesPrice){
+      dueAmount = this.grandTotalSalesPrice - paidAmount;
+    }
+    this.storeSalesProductViewModel.dueAmount = dueAmount;
   }
 
   private getPaymentMethod(){
@@ -630,7 +645,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
   private populateDataTable():void{
-    Util.logConsole("Populate table");
+   // Util.logConsole("Populate table");
 
     this.dataTableOptions =
       {
