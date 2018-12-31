@@ -277,8 +277,9 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   public onClickConfirmSales(dynamicForm:NgForm){
     if(!dynamicForm.invalid) {
       this.storeSalesProductViewModel.salesProductViewModelList = this.availableSalesProductViewModelList;
-      Util.logConsole(this.storeSalesProductViewModel);
+      //Util.logConsole(this.storeSalesProductViewModel);
       this.saveStoreSalesProduct();
+      return
     }else {
       this.toastr.info("Please correct entered sales products value");
     }
