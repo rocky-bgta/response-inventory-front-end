@@ -256,7 +256,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     isAllowedSalePrice = this.verifySalesPrice(index,salesPrice);
     if(isAllowedSalePrice) {
       this.setRowWiseTotalPrice(index);
-      this.setGrandTotalSalesPrice();
+      //this.setGrandTotalSalesPrice();
     }
     else {
      this.availableSalesProductViewModelList[index].salesPrice=0;
@@ -270,7 +270,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     if(salesQty>availableQty){
       this.availableSalesProductViewModelList[index].salesQty = availableQty;
     }
-    this.setGrandTotalSalesPrice();
+    //this.setGrandTotalSalesPrice();
     this.setRowWiseTotalPrice(index);
   }
 
@@ -300,6 +300,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     if(index!=null && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))){
       totalPrice = salesPrice * salesQty;
       this.availableSalesProductViewModelList[index].totalPrice = totalPrice;
+      this.setGrandTotalSalesPrice();
     }
   }
 
