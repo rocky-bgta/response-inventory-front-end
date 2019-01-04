@@ -28,6 +28,10 @@ export class StoreInProductsService {
     return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.storeInProducts+"/identification-ids/"+storeId+"/"+barcode+"/"+serialNo,dataTableParameter);
   }
 
+  public getProductListByStoreId(storeId:string) {
+    return this.httpRequestHelperService.getRequestWithUrl(InventoryApiEndPoint.storeInProducts+"/store-id/"+storeId);
+  }
+
   getById(id): Observable<any> {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.storeInProducts, id);
   }

@@ -1,0 +1,69 @@
+<form id="collapseInputForm">
+
+  <div class="card" style="padding: 0">
+
+    <div class="card-header">
+
+      Available Stock
+     <!-- <div *ngIf="!productAdded">
+        Select Product
+      </div>
+
+      <div *ngIf="productAdded">
+        Selected Product:  <strong>{{storeInProductViewModel.productName}}</strong>
+      </div>-->
+
+    </div>
+    <div class="card-body">
+      <div class="row" style="padding: 0">
+
+        <div class="col-sm-4" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="store" class="lb-sm">Store:</label>
+              <ng-select [items]="storeModelList"
+                         #store
+                         id="store"
+                         name="store"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeStore(stockViewModel.storeId)"
+                         (clear)="onClearStore()"
+                         [(ngModel)]="stockViewModel.storeId"
+                         placeholder="Select Store">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-sm-4" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="store" class="lb-sm">Product:</label>
+              <ng-select [items]="productModelList"
+                         #product
+                         id="product"
+                         name="product"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeProduct(stockViewModel.productId)"
+                         (clear)="onClearProduct()"
+                         [(ngModel)]="stockViewModel.productId"
+                         placeholder="Select Product">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <div class="card-footer">
+    </div>
+
+  </div>
+
+</form>

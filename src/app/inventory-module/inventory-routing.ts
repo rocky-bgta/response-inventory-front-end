@@ -7,12 +7,14 @@ import {StoreComponent} from "./components/store/store.component";
 import {StoreInProductsComponent} from "./components/store-in-products/store-in-products.component";
 import {StoreSalesProductsComponent} from "./components/store-sales-products/store-sales-products.component";
 import {CustomerComponent} from "./components/customer/customer.component";
+import {StockComponent} from "./components/stock/stock.component";
 
 
 export const inventoryRoutes: Routes = [
   {
     path: '',
     children: [
+      {path: 'stock', component: StockComponent, pathMatch: 'full'},
       {path: 'category', component: CategoryComponent, pathMatch: 'full'},
       {path: 'product', component: ProductComponent, pathMatch: 'full'},
       {path: 'brand', component: BrandComponent, pathMatch: 'full'},

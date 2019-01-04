@@ -18,6 +18,7 @@ import {StoreSalesProductsComponent} from './components/store-sales-products/sto
 import {CustomerComponent} from './components/customer/customer.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {BsDatepickerModule} from "ngx-bootstrap";
+import { StockComponent } from './components/stock/stock.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {BsDatepickerModule} from "ngx-bootstrap";
     StoreComponent,
     StoreInProductsComponent,
     StoreSalesProductsComponent,
-    CustomerComponent
+    CustomerComponent,
+    StockComponent
   ],
   imports: [
     [
