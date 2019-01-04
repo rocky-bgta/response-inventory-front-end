@@ -19,9 +19,13 @@ export class HttpRequestHelperService {
 
   private httpHeaderOptions: object = {
     headers: new HttpHeaders({
-      "Content-Type": "application/json",
+      "Content-Type": "application/json"
     })
   };
+
+  //private httpHeaderOptions:HttpHeaders = new HttpHeaders().append(' Content-Type','application/json');
+
+
 
   private delayTimeForResponse:number=50;
 
@@ -49,11 +53,11 @@ export class HttpRequestHelperService {
     return response;
   }
 
-  public getRequest(requestUrl: string,dataTableParameter?:any): Observable<any> {
+  public getRequest(requestUrl: string,dataTableParameter?:any,queryParams?:any): Observable<any> {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(null,dataTableParameter);
 
-    let response = this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions)
+    let response = this.httpClient.post<any>(requestUrl, requestMessage,{params:queryParams})
       .pipe(retry(1),delay(this.delayTimeForResponse), catchError(this.handleError));
     return response;
   }

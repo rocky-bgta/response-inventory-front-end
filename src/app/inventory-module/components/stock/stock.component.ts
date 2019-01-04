@@ -4,7 +4,7 @@ import {ToastrService} from "ngx-toastr";
 import {StoreService} from "../../service/store.service";
 import {StockViewModel} from "../../model/view-model/stock-view-model";
 import {ResponseMessage} from "../../../core/model/response-message";
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 import {StoreModel} from "../../model/store-model";
 import {ProductModel} from "../../model/product-model";
@@ -15,6 +15,7 @@ import {StoreInProductsService} from "../../service/store-in-products.service";
 import {AvailableStockModel} from "../../model/available-stock-model";
 import {StockService} from "../../service/stock.service";
 import {DataTableRequest} from "../../../core/model/data-table-request";
+import {CustomObject} from "../../../core/interface/CustomObject";
 
 @Component({
   selector: 'app-stock',
@@ -48,6 +49,8 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public dtTrigger: Subject<any> = new Subject<any>();
   public dataTableOptions: DataTables.Settings = {};
 
+  private searchParameter:CustomObject = {};
+
 
   constructor(private formBuilder: FormBuilder,
               private storeInProductService: StoreInProductsService,
@@ -80,17 +83,21 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   public onChangeStore(storeId:string){
-    if(storeId!=null)
+    if(storeId!=null) {
       this.getProductListByStoreId(storeId);
+      this.searchParameter.storeId = storeId;
+      this.rerender();
+    }
   }
 
   public onClearStore(){
-      this.stockViewModel.productId=null;
-      this.productModelList=null;
+    this.stockViewModel.productId=null;
+    this.productModelList=null;
   }
 
   public onChangeProduct(productId:string){
-
+    this.searchParameter.productId=productId;
+    this.rerender();
   }
 
   public onClearProduct(){
@@ -159,9 +166,9 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  private getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any){
+  private getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any, searchParameter:any){
 
-      this.stockService.getList(dataTablesParameters).subscribe
+      this.stockService.getList(dataTablesParameters,searchParameter).subscribe
       (
         (responseMessage: ResponseMessage) => {
           if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
@@ -188,7 +195,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
             Util.logConsole(httpErrorResponse, "Client-side error occurred.");
           } else {
             this.toastr.error('There is a problem with the service. We are notified and working on it');
-            this.toastr.info("Please reload this page");
+            //this.toastr.info("Please reload this page");
             Util.logConsole(httpErrorResponse, "Server Side error occurred");
           }
           return;
@@ -206,7 +213,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         processing: false,
         searching: false,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
-          this.getAvailableStockProducts(dataTablesParameters, callback);
+          this.getAvailableStockProducts(dataTablesParameters, callback,this.searchParameter);
         },
         columns: [
           {title:'Product Name',  data: 'productName'},
