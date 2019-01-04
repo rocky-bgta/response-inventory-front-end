@@ -68,7 +68,20 @@
 
 </form>
 
-<div class="">
+<div class="card" style="margin-top: 1%">
+  <div *ngIf="availableStockModelList?.length == 0">
+
+    <div class="card-body">
+      <div class="header">
+        <strong>No Product available in stock!!!</strong>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div [hidden]="availableStockModelList?.length == 0">
+
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
@@ -87,8 +100,8 @@
           <th style="width: 10%">Action</th>
         </tr>
         </thead>
-        <tbody *ngIf="availableStockModel?.length != 0">
-        <tr *ngFor="let item of availableStockModel">
+        <tbody *ngIf="availableStockModelList?.length != 0">
+        <tr *ngFor="let item of availableStockModelList">
           <!-- <td>{{ category.id }}</td>-->
           <td>{{item.productName}}</td>
           <td>{{item.storeName }}</td>
@@ -115,7 +128,7 @@
 
         </tr>
         </tbody>
-        <tbody *ngIf="availableStockModel?.length == 0">
+        <tbody *ngIf="availableStockModelList?.length == 0">
         <tr>
           <td colspan="6" class="no-data-available">No data!</td>
         </tr>

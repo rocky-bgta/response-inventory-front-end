@@ -40,7 +40,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public stockViewModel :StockViewModel = new StockViewModel();
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public productModelList: Array<ProductModel> = new Array<ProductModel>();
-  public availableStockModel:Array<AvailableStockModel> = new Array<AvailableStockModel>();
+  public availableStockModelList:Array<AvailableStockModel> = new Array<AvailableStockModel>();
 
 
   //======== Variables related to data-table =======================
@@ -174,7 +174,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
       (
         (responseMessage: ResponseMessage) => {
           if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
-            this.availableStockModel = <Array<AvailableStockModel>>responseMessage.data;
+            this.availableStockModelList = <Array<AvailableStockModel>>responseMessage.data;
             //Util.logConsole(this.availableProductViewModelList);
             //return productViewModelList;
           } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {

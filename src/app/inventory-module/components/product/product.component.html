@@ -290,8 +290,19 @@
 </div>
 
 
-<!--<div [hidden]="productModelList.length==0" class="">-->
-<div class="">
+<div class="card" style="margin-top: 1%">
+  <div *ngIf="availableStockModelList?.length == 0">
+
+    <div class="card-body">
+      <div class="header">
+        <strong>No Product available!!!</strong>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div [hidden]="productModelList?.length==0">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
@@ -339,7 +350,7 @@
         </tbody>
         <tbody *ngIf="productModelList?.length == 0">
         <tr>
-          <td colspan="7" class="no-data-available">No data!</td>
+          <td colspan="8" class="no-data-available">No data!</td>
         </tr>
         <tbody>
       </table>
