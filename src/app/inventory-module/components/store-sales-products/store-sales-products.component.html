@@ -333,7 +333,7 @@
                    (focusout)="onFocusOutSalesPriceRowEvent(i,product.salesPrice)"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    #dynamicSalesPrice="ngModel"
-                   required
+                   [required]="product.required"
                    autocomplete="off"
                    [ngClass]="{ 'is-invalid': dynamicSalesPrice.errors?.required || dynamicSalesPrice.errors?.pattern}"
                    id="dynamicSalesPrice{{i}}"
@@ -349,7 +349,7 @@
                    (focusout)="onFocusOutSalesQtyRowEvent(i,product.salesQty)"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                    #dynamicSalesQty="ngModel"
-                   required
+                   [required]="product.required"
                    autocomplete="off"
                    [ngClass]="{ 'is-invalid': dynamicSalesPrice.errors?.required || dynamicSalesQty.errors?.pattern}"
                    id="dynamicSalesQty{{i}}"

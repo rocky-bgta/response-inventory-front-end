@@ -12,6 +12,9 @@ export class SalesProductViewModel{
    image:string;
 
   //=========================
+   required:boolean;
+
+
    salesPrice:number;
    salesQty:number;
    serialNo:number;

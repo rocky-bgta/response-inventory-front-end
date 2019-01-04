@@ -150,6 +150,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
   public onClickRemoveRow(index){
+    this.availableSalesProductViewModelList[index].required=false;
     this.availableSalesProductViewModelList.splice(index,1);
   }
 
@@ -452,6 +453,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
         (responseMessage: ResponseMessage) => {
           if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
             this.availableSalesProductViewModelList = <Array<SalesProductViewModel>>responseMessage.data;
+            this.setRequiredProperty();
             //Util.logConsole(this.availableProductViewModelList);
             //return productViewModelList;
           } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
@@ -510,6 +512,13 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           {title:'Action',      data: 'totalPrice'}
           ]
       };
+  }
+
+  private setRequiredProperty(){
+    for (let index in this.availableSalesProductViewModelList) {
+      this.availableSalesProductViewModelList[index].required=true;
+      //string1 += object1[property1];
+    }
   }
 
   private setFocusOnBarcodeInputTextBox(){
