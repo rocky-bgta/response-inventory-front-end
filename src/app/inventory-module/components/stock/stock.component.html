@@ -67,3 +67,66 @@
   </div>
 
 </form>
+
+<div class="">
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>{{pageTitle}} List</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dataTableOptions" [dtTrigger]="dtTrigger"
+             class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <th style="width: 10%">Product Name</th>
+          <th style="width: 20%">Store Name</th>
+          <th style="width: 30%">Available Qty</th>
+          <th style="width: 20%">Total Price</th>
+          <th style="width: 10%">Action</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="availableStockModel?.length != 0">
+        <tr *ngFor="let item of availableStockModel">
+          <!-- <td>{{ category.id }}</td>-->
+          <td>{{item.productName}}</td>
+          <td>{{item.storeName }}</td>
+          <td>{{item.availableQty}}</td>
+          <td>{{item.totalPrice}}</td>
+          <td>
+            <!--(click)="onClickEdit(item.id)"-->
+            <button type="button" class="btn btn-secondary"  style="margin-left: 1%">
+              Edit
+            </button>
+
+            <!--(click)="onClickDetails(item.id)"-->
+            <button type="button" class="btn btn-info"  style="margin-left: 1%">
+              Details
+            </button>
+
+            <!--(click)="onClickDelete(item.id)"-->
+            <button type="button" class="btn btn-danger"  style="margin-left: 1%">
+              Delete
+            </button>
+
+          </td>
+
+
+        </tr>
+        </tbody>
+        <tbody *ngIf="availableStockModel?.length == 0">
+        <tr>
+          <td colspan="6" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+
+
+    </div>
+    <div class="">
+
+    </div>
+  </div>
+
+</div>

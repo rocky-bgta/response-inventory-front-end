@@ -12,6 +12,9 @@ import {Util} from "../../../core/Util";
 import {Subject} from "rxjs/index";
 import {DataTableDirective} from "angular-datatables";
 import {StoreInProductsService} from "../../service/store-in-products.service";
+import {AvailableStockModel} from "../../model/available-stock-model";
+import {StockService} from "../../service/stock.service";
+import {DataTableRequest} from "../../../core/model/data-table-request";
 
 @Component({
   selector: 'app-stock',
@@ -36,21 +39,25 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public stockViewModel :StockViewModel = new StockViewModel();
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public productModelList: Array<ProductModel> = new Array<ProductModel>();
+  public availableStockModel:Array<AvailableStockModel> = new Array<AvailableStockModel>();
 
 
   //======== Variables related to data-table =======================
   @ViewChild(DataTableDirective)
   public dtElement: DataTableDirective;
   public dtTrigger: Subject<any> = new Subject<any>();
+  public dataTableOptions: DataTables.Settings = {};
 
 
   constructor(private formBuilder: FormBuilder,
               private storeInProductService: StoreInProductsService,
+              private stockService: StockService,
               private storeService: StoreService,
-              private toastr: ToastrService,) { }
+              private toastr: ToastrService) { }
 
   ngOnInit() {
     this.getStoreList();
+    this.populateDataTable();
   }
 
   ngAfterViewInit(): void {
@@ -149,6 +156,66 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
     )
+  }
+
+
+  private getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any){
+
+      this.stockService.getList(dataTablesParameters).subscribe
+      (
+        (responseMessage: ResponseMessage) => {
+          if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
+            this.availableStockModel = <Array<AvailableStockModel>>responseMessage.data;
+            //Util.logConsole(this.availableProductViewModelList);
+            //return productViewModelList;
+          } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
+            this.toastr.error(responseMessage.message, this.pageTitle);
+            return;
+          } else {
+            Util.logConsole(responseMessage);
+            return;
+          }
+
+          callback({
+            recordsTotal: responseMessage.dataTableResponse.recordsTotal,
+            recordsFiltered: responseMessage.dataTableResponse.recordsFiltered,
+            data: []
+          });
+        }
+        ,
+        (httpErrorResponse: HttpErrorResponse) => {
+          if (httpErrorResponse.error instanceof ErrorEvent) {
+            Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+          } else {
+            this.toastr.error('There is a problem with the service. We are notified and working on it');
+            this.toastr.info("Please reload this page");
+            Util.logConsole(httpErrorResponse, "Server Side error occurred");
+          }
+          return;
+        });
+  }
+
+  private populateDataTable():void{
+    // Util.logConsole("Populate table");
+
+    this.dataTableOptions =
+      {
+        pagingType: 'full_numbers',
+        pageLength: 10,
+        serverSide: true,
+        processing: false,
+        searching: false,
+        ajax: (dataTablesParameters: DataTableRequest, callback) => {
+          this.getAvailableStockProducts(dataTablesParameters, callback);
+        },
+        columns: [
+          {title:'Product Name',  data: 'productName'},
+          {title:'Store Name',    data: 'storeName'},
+          {title:'Available Qty', data: 'availableQty'},
+          {title:'Total Price',   data: 'totalPrice'},
+          {title:'Action',        data: ''},
+        ]
+      };
   }
 
   private initializeReactiveFormValidation(index?:number){
