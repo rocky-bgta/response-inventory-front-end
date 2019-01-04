@@ -290,7 +290,17 @@
 
 </form>
 
-<div class="card" style="margin-top: 1%" [hidden]="isDisableBarcodeInput()">
+<div class="card" style="margin-top: 1%"
+     *ngIf="(availableSalesProductViewModelList?.length==0) && (this.storeSelected && this.customerSelected)">
+    <div class="card-body">
+      <div class="header">
+        <strong>No Product available for Sales for this store !!!</strong>
+      </div>
+    </div>
+</div>
+
+
+<div class="card" style="margin-top: 1%" [hidden]="availableSalesProductViewModelList?.length==0">
   <form #dynamicForm="ngForm" novalidate autocomplete="off">
 
     <div class="card-header">
