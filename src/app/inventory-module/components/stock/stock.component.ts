@@ -93,6 +93,8 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public onClearStore(){
     this.stockViewModel.productId=null;
     this.productModelList=null;
+    this.searchParameter={};
+    this.rerender();
   }
 
   public onChangeProduct(productId:string){
