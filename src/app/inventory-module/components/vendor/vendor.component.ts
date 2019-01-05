@@ -45,7 +45,7 @@ export class VendorComponent implements OnInit {
 
   constructor(private vendorService: VendorService,
               private formBuilder: FormBuilder,
-              private toastr: ToastrService,
+              private toaster: ToastrService,
               public  ngxSmartModalService: NgxSmartModalService) {
   }
 
@@ -69,7 +69,7 @@ export class VendorComponent implements OnInit {
 
     if(!this.isPageInUpdateState){
       if(this.entryForm.invalid){
-        this.toastr.info("Please provide required form data",this.pageTitle);
+        this.toaster.info("Please provide required form data",this.pageTitle);
         return;
       }
     }
@@ -131,7 +131,7 @@ export class VendorComponent implements OnInit {
           });
           return;
         }else if(response.httpStatus == HttpStatusCode.NOT_FOUND){
-          this.toastr.error(response.message,this.pageTitle);
+          this.toaster.error(response.message,this.pageTitle);
           return;
         }else {
           return;
@@ -141,10 +141,10 @@ export class VendorComponent implements OnInit {
       (httpErrorResponse: HttpErrorResponse) =>
       {
         if (httpErrorResponse.error instanceof Error) {
-          this.toastr.error('Datatable population ',this.pageTitle);
+          this.toaster.error('Datatable population ',this.pageTitle);
           Util.logConsole(httpErrorResponse,"Client-side error occurred.");
         } else {
-          this.toastr.error('Please try again later',this.pageTitle);
+          this.toaster.error('Please try again later',this.pageTitle);
           Util.logConsole(httpErrorResponse,"Client-side error occurred.");
         }
         return;
@@ -170,13 +170,13 @@ export class VendorComponent implements OnInit {
           this.vendorModel = <VendorModel> responseMessage.data;
           return;
         }else {
-          this.toastr.error('Failed to get requested '+ this.pageTitle, this.pageTitle);
+          this.toaster.error('Failed to get requested '+ this.pageTitle, this.pageTitle);
           return;
         }
       },
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        this.toastr.error('Failed to get requested brand','Brand')
+        this.toaster.error('Failed to get requested brand','Brand')
         if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occurred.");
         } else {
@@ -204,18 +204,18 @@ export class VendorComponent implements OnInit {
       (responseMessage: ResponseMessage) =>
       {
         if(responseMessage.httpStatus==HttpStatus.OK) {
-          this.toastr.success(responseMessage.message, this.pageTitle);
+          this.toaster.success(responseMessage.message, this.pageTitle);
           this.resetPage();
           this.hideEntryForm();
           return;
         }else {
-          this.toastr.error(responseMessage.message, this.pageTitle);
+          this.toaster.error(responseMessage.message, this.pageTitle);
           return
         }
       },
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        this.toastr.error('Failed to delete '+this.pageTitle, this.pageTitle);
+        this.toaster.error('Failed to delete '+this.pageTitle, this.pageTitle);
         if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occurred.");
         } else {
@@ -238,23 +238,23 @@ export class VendorComponent implements OnInit {
       (responseMessage: ResponseMessage) =>
       {
         if(responseMessage.httpStatus== HttpStatus.CONFLICT) {
-          this.toastr.info(responseMessage.message, this.pageTitle);
+          this.toaster.info(responseMessage.message, this.pageTitle);
         }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY) {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
         }else if(responseMessage.httpStatus==HttpStatus.CREATED){
-          this.toastr.success( responseMessage.message,this.pageTitle);
+          this.toaster.success( responseMessage.message,this.pageTitle);
           this.vendorModel = <VendorModel> responseMessage.data;
           this.getVendorList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
           return;
         }else {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
           return;
         }
       },
 
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        this.toastr.error('Failed to save vendor',this.pageTitle);
+        this.toaster.error('Failed to save vendor',this.pageTitle);
         if (httpErrorResponse.error instanceof Error) {
           Util.logConsole(null,"Client-side error occurred.");
         } else {
@@ -277,21 +277,21 @@ export class VendorComponent implements OnInit {
       (responseMessage: ResponseMessage) =>
       {
         if(responseMessage.httpStatus==HttpStatus.CONFLICT) {
-          this.toastr.info(responseMessage.message,this.pageTitle);
+          this.toaster.info(responseMessage.message,this.pageTitle);
           return;
         }else if(responseMessage.httpStatus==HttpStatus.OK){
-          this.toastr.success(responseMessage.message, this.pageTitle);
+          this.toaster.success(responseMessage.message, this.pageTitle);
           this.resetPage();
           return;
         }else {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
           return;
         }
       },
 
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        this.toastr.error('Failed to update brand',this.pageTitle);
+        this.toaster.error('Failed to update brand',this.pageTitle);
         if (httpErrorResponse.error instanceof Error) {
           Util.logConsole(null,"Client-side error occurred.");
         } else {
