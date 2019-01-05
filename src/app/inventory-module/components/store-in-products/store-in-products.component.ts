@@ -89,7 +89,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
               private productService: ProductService,
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
-              private toastr: ToastrService,
+              private toaster: ToastrService,
               public  ngxSmartModalService: NgxSmartModalService) { }
 
   ngOnInit() {
@@ -130,7 +130,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
     //First check if any invalid entry exist
     if(this.entryForm.invalid){
-      this.toastr.error("Please correct added product data first", this.pageTitle);
+      this.toaster.error("Please correct added product data first", this.pageTitle);
       return;
     }else {
       if (!this.entryForm.invalid) {
@@ -146,12 +146,10 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
   public onClickSave(dynamicForm:NgForm){
-
     if(!dynamicForm.invalid) {
-      //Util.logConsole(this.storeInProductViewModelList);
       this.saveStoreInProduct();
     }else {
-      this.toastr.info("Please correct entered product list value");
+      this.toaster.info("Please correct entered product list value");
     }
     return;
   }
@@ -270,28 +268,27 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       (responseMessage: ResponseMessage) =>
       {
         if(responseMessage.httpStatus== HttpStatusCode.CONFLICT) {
-          this.toastr.info(responseMessage.message, this.pageTitle);
+          this.toaster.info(responseMessage.message, this.pageTitle);
         }else if(responseMessage.httpStatus==HttpStatusCode.FAILED_DEPENDENCY) {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
         }else if(responseMessage.httpStatus==HttpStatusCode.CREATED){
-          this.toastr.success( responseMessage.message,this.pageTitle);
-          //this.vendorModel = <VendorModel> responseMessage.data;
-          //this.getVendorList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+          this.toaster.success(responseMessage.message,this.pageTitle);
+          this.resetPage();
           return;
         }else {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
           return;
         }
       },
 
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        this.toastr.error('Failed to save Store in Product',this.pageTitle);
+        this.toaster.error('Failed to save Store in Product',this.pageTitle);
         if (httpErrorResponse.error instanceof ErrorEvent) {
           Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
         } else {
-          this.toastr.error('There is a problem with the service. We are notified and working on it',this.pageTitle);
-          this.toastr.info("Please reload this page");
+          this.toaster.error('There is a problem with the service. We are notified and working on it',this.pageTitle);
+          this.toaster.info("Please reload this page");
           Util.logConsole(httpErrorResponse,"Server Side error occurred" );
         }
         return;
@@ -338,7 +335,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
           this.vendorModelList = <Array<VendorModel>>response.data;
           return;
         }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error('Failed to get Vendor list ',this.pageTitle);
+          this.toaster.error('Failed to get Vendor list ',this.pageTitle);
           return;
         }else {
           Util.logConsole(response);
@@ -368,7 +365,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
           this.storeModelList = <Array<StoreModel>>response.data;
           return;
         }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error('Failed to get Store list ',this.pageTitle);
+          this.toaster.error('Failed to get Store list ',this.pageTitle);
           return;
         }else {
           Util.logConsole(response);
@@ -408,7 +405,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
           //Util.logConsole(productModel,"Product Model from subscribe");
           return productModel;
         }else if(responseMessage.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
           return;
         }else {
           Util.logConsole(responseMessage);
@@ -421,8 +418,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
         if (httpErrorResponse.error instanceof ErrorEvent) {
           Util.logConsole(httpErrorResponse,"Client-side error occurred.");
         } else {
-          this.toastr.error('There is a problem with the service. We are notified and working on it');
-          this.toastr.info("Please reload this page");
+          this.toaster.error('There is a problem with the service. We are notified and working on it');
+          this.toaster.info("Please reload this page");
           Util.logConsole(httpErrorResponse,"Server Side error occurred" );
         }
         //request.unsubscribe();
@@ -451,6 +448,19 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     //this.dataTablesCallBackParameters.length = 10;
     this.productAdded=false;
     this.formSubmitted=false;
+  }
+
+  private resetPage(){
+    let length:number=this.storeInProductViewModelList.length;
+    this.storeInProductViewModelList.splice(0,length);
+    this.storeInProductViewModel.storeId=null;
+    this.storeInProductViewModel.vendorId=null;
+    this.storeInProductViewModel.price=null;
+    this.storeInProductViewModel.quantity=1;
+    this.storeInProductViewModel.entryDate = new Date();
+    this.storeInProductViewModel.productName=null;
+    this.storeInProductViewModel.totalPrice=null;
+    this.productAdded=false;
   }
 
   private initializeReactiveFormValidation():void{

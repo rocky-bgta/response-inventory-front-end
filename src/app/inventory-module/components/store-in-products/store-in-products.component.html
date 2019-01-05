@@ -286,8 +286,6 @@
           <table class="table table-hover table-bordered table-sm table-striped">
             <thead>
             <tr>
-              <!--<th style="width: 10%">Store</th>
-              <th style="width: 10%">Vendor</th>-->
               <th style="width: 10%">Product</th>
               <th style="width: 10%">SerialNo</th>
               <th style="width: 8%">price</th>
@@ -297,13 +295,10 @@
               <th style="width: 12%">Exp Date</th>
               <th style="width: 12%">Entry Date</th>
               <th style="width: 4%">Action</th>
-              <!-- <th style="width: 2%">Delete</th>-->
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let storeInProductViewModel of storeInProductViewModelList; let i=index">
-              <!-- <td>{{storeInProductViewModel.storeName}}</td>
-               <td>{{storeInProductViewModel.vendorName}}</td>-->
               <td><strong>{{storeInProductViewModel.productName}}</strong></td>
               <td>
                 <input #dynamicSerialNo="ngModel"
