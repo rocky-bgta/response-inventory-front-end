@@ -134,4 +134,12 @@ export class Util{
     //his.base64textString.push('data:image/png;base64,' + btoa(e.target.result));
     //return base64Image.trim();
   }
+
+  public static getInvoiceNo():string{
+    let invoiceNo:string;
+    let date = new Date();
+    let timestamp = date.getTime();
+    invoiceNo = "INV-"+timestamp;
+    return invoiceNo;
+  }
 }

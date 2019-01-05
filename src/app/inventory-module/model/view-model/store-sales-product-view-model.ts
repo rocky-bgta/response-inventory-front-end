@@ -10,5 +10,6 @@ export class StoreSalesProductViewModel{
   paidAmount:number;
   dueAmount:number;
   grandTotal:number;
+  invoiceNo:string;
 
 }

@@ -37,7 +37,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   public pageTitle:string="Store Sales";
   public entryForm: FormGroup;
 
-
   //======== page state variables star ===========
   public formSubmitted:boolean;
   public productAdded:boolean;
@@ -45,8 +44,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   //======== page state variables end  ===========
 
   //======= data table variable ========================
-  private dataTablesCallBackParameters: DataTableRequest = new DataTableRequest();
-  private dataTableCallbackFunction: any;
   public  dataTableOptions: DataTables.Settings = {};
 
   @ViewChild(DataTableDirective)
@@ -67,11 +64,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
 
-  //public productViewModelList: Array<ProductViewModel> = new Array<ProductViewModel>();
-
-
-  public storeInProductViewModel:StoreInProductViewModel = new StoreInProductViewModel();
-  //public storeInProductViewModelList: Array<StoreInProductViewModel> = new Array<StoreInProductViewModel>();
 
   public storeSelected:boolean=false;
   public customerSelected:boolean=false;
@@ -79,8 +71,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   public grandTotalSalesPrice:number = 0;
 
-  //helper variable==========
-  //private _storeName:string;
 //========== Variables for this page business =====================================================
 
 
@@ -95,31 +85,23 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
 
   constructor(private storeService: StoreService,
-              private productService: ProductService,
               private customerService: CustomerService,
               private storeSalesProductsService: StoreSalesProductsService,
               private enumService: EnumService,
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
-              private toastr: ToastrService,
+              private toaster: ToastrService,
               public  ngxSmartModalService: NgxSmartModalService) { }
 
   ngOnInit() {
 
     this.initializedPageStateVariable();
     this.initializeReactiveFormValidation();
-    //this.storeId = "a25e90aa-0901-4f71-a52d-b180d8306bc2";
     this.populateDataTable();
 
     this.getStoreList();
     this.getCustomerList();
     this.getPaymentMethod();
-
-    this.storeInProductViewModel.entryDate = new Date();
-    this.storeInProductViewModel.price=1;
-    this.storeInProductViewModel.quantity=1;
-    this.storeInProductViewModel.totalPrice=1;
-
   }
 
   ngAfterViewInit(): void {
@@ -233,7 +215,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       this.saveStoreSalesProduct();
       return
     }else {
-      this.toastr.info("Please correct entered sales products value");
+      this.toaster.info("Please correct entered sales products value");
     }
     return;
   }
@@ -247,10 +229,11 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
   private resetPage(){
+    let length:number=this.availableSalesProductViewModelList.length;
     this.storeSalesProductViewModel = new StoreSalesProductViewModel();
     this.storeSelected=false;
     this.customerSelected=false;
-    this.availableSalesProductViewModelList=null;
+    this.availableSalesProductViewModelList.splice(0,length);
     this.storeSalesProductViewModel.storeId=null;
     this.storeSalesProductViewModel.customerId=null;
     this.storeSalesProductViewModel.salesMethod=null;
@@ -314,7 +297,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           //==================================
           return;
         }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error(response.message,this.pageTitle);
+          this.toaster.error(response.message,this.pageTitle);
           return;
         }else {
           Util.logConsole(response);
@@ -346,27 +329,27 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       (responseMessage: ResponseMessage) =>
       {
         if(responseMessage.httpStatus== HttpStatusCode.CONFLICT) {
-          this.toastr.info(responseMessage.message, this.pageTitle);
+          this.toaster.info(responseMessage.message, this.pageTitle);
         }else if(responseMessage.httpStatus==HttpStatusCode.FAILED_DEPENDENCY) {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
         }else if(responseMessage.httpStatus==HttpStatusCode.CREATED){
-          this.toastr.success( responseMessage.message,this.pageTitle);
+          this.toaster.success( responseMessage.message,this.pageTitle);
           this.resetPage();
           return;
         }else {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
           return;
         }
       },
 
       (httpErrorResponse: HttpErrorResponse) =>
       {
-        this.toastr.error('Failed to save Store in Product',this.pageTitle);
+        this.toaster.error('Failed to save Store in Product',this.pageTitle);
         if (httpErrorResponse.error instanceof ErrorEvent) {
           Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
         } else {
-          this.toastr.error('There is a problem with the service. We are notified and working on it',this.pageTitle);
-          this.toastr.info("Please reload this page");
+          this.toaster.error('There is a problem with the service. We are notified and working on it',this.pageTitle);
+          this.toaster.info("Please reload this page");
           Util.logConsole(httpErrorResponse,"Server Side error occurred" );
         }
         return;
@@ -392,7 +375,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           this.storeModelList = <Array<StoreModel>>response.data;
           return;
         }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error('Failed to get Store list ',this.pageTitle);
+          this.toaster.error('Failed to get Store list ',this.pageTitle);
           return;
         }else {
           Util.logConsole(response);
@@ -422,7 +405,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           this.customerModelList = <Array<CustomerModel>>response.data;
           return;
         }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error(response.message,this.pageTitle);
+          this.toaster.error(response.message,this.pageTitle);
           return;
         }else {
           Util.logConsole(response);
@@ -444,9 +427,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
   private getAvailableStoreInProductListByStoreIdOrBarcodeOrSerialNo(dataTablesParameters: DataTableRequest, callback: any, storeId?: string, barcode?:string, serialNo?:string){
-    //let productViewModelList: Array<ProductViewModel> = null;
-    //this.dataTablesCallBackParameters = dataTablesParameters;
-    //this.dataTableCallbackFunction = callback;
     if(storeId!=null) {
       this.storeInProductService.getStoreInAvailableProductListByIdentificationIds(dataTablesParameters,storeId,barcode,serialNo).subscribe
       (
@@ -454,10 +434,11 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
             this.availableSalesProductViewModelList = <Array<SalesProductViewModel>>responseMessage.data;
             this.setRequiredProperty();
+            this.setInvoiceNo();
             //Util.logConsole(this.availableProductViewModelList);
             //return productViewModelList;
           } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
-            this.toastr.error(responseMessage.message, this.pageTitle);
+            this.toaster.error(responseMessage.message, this.pageTitle);
             return;
           } else {
             Util.logConsole(responseMessage);
@@ -475,8 +456,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
           if (httpErrorResponse.error instanceof ErrorEvent) {
             Util.logConsole(httpErrorResponse, "Client-side error occurred.");
           } else {
-            this.toastr.error('There is a problem with the service. We are notified and working on it');
-            this.toastr.info("Please reload this page");
+            this.toaster.error('There is a problem with the service. We are notified and working on it');
+            this.toaster.info("Please reload this page");
             Util.logConsole(httpErrorResponse, "Server Side error occurred");
           }
           return;
@@ -518,6 +499,14 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     for (let index in this.availableSalesProductViewModelList) {
       this.availableSalesProductViewModelList[index].required=true;
       //string1 += object1[property1];
+    }
+  }
+
+  private setInvoiceNo(){
+    let invoiceNo:string;
+    if(this.availableSalesProductViewModelList!=null && this.availableSalesProductViewModelList.length>0){
+      invoiceNo = Util.getInvoiceNo();
+      this.storeSalesProductViewModel.invoiceNo =invoiceNo;
     }
   }
 

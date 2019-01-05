@@ -3,19 +3,12 @@
   <div class="card" style="padding: 0">
 
     <div class="card-header">
-      <div *ngIf="!productAdded">
-        Select Product
-      </div>
-
-      <div *ngIf="productAdded">
-        Selected Product: <strong>{{storeInProductViewModel.productName}}</strong>
-      </div>
-
+      <strong>Select Products for Sales</strong>
     </div>
     <div class="card-body">
       <div class="row" style="padding: 0">
 
-        <div class="col-sm-2" style="padding-left: 0">
+        <div class="col-sm-3" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="store" class="required-label lb-sm">Store:</label>
@@ -39,7 +32,7 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0">
+        <div class="col-sm-3" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="customer" class="required-label lb-sm">Customer:</label>
@@ -304,7 +297,8 @@
   <form #dynamicForm="ngForm" novalidate autocomplete="off">
 
     <div class="card-header">
-      <strong>Product List</strong>
+
+      <strong>Invoice No:&nbsp; {{storeSalesProductViewModel.invoiceNo}}</strong>
     </div>
     <div class="card-body custom-scroll-x-y">
       <table datatable [dtOptions]="dataTableOptions" [dtTrigger]="dtTrigger"
