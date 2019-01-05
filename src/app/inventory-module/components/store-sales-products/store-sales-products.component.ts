@@ -73,6 +73,10 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
 //========== Variables for this page business =====================================================
 
+  //======= save modal text ======================================
+  public modalHeader: string;
+  public modalBodyText:string = "You are about to confirm sales, of those selected products";
+  //======= save modal text ======================================
 
 
   //get by id as jQuery and access native property of element
@@ -212,12 +216,20 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       this.storeSalesProductViewModel.salesProductViewModelList = this.availableSalesProductViewModelList;
       this.storeSalesProductViewModel.grandTotal = this.grandTotalSalesPrice;
       //Util.logConsole(this.storeSalesProductViewModel);
-      this.saveStoreSalesProduct();
+      this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+
+      //this.saveStoreSalesProduct();
       return
     }else {
       this.toaster.info("Please correct entered sales products value");
     }
     return;
+  }
+
+  public onClickSaveConfirmationOfModal(isConfirm:boolean){
+    if(isConfirm){
+      this.saveStoreSalesProduct();
+    }
   }
 
   public onClickReset(){
@@ -507,6 +519,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     if(this.availableSalesProductViewModelList!=null && this.availableSalesProductViewModelList.length>0){
       invoiceNo = Util.getInvoiceNo();
       this.storeSalesProductViewModel.invoiceNo =invoiceNo;
+      this.modalHeader = invoiceNo;
     }
   }
 

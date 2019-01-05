@@ -19,12 +19,14 @@ import {CustomerComponent} from './components/customer/customer.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {BsDatepickerModule} from "ngx-bootstrap";
 import { StockComponent } from './components/stock/stock.component';
+import {SaveConfirmationModalComponent} from "../core/components/save-confirmation-modal/save-confirmation-modal.component";
 
 @NgModule({
   declarations: [
     CategoryComponent,
     ProductComponent,
     ConfirmationModalComponent,
+    SaveConfirmationModalComponent,
     BrandComponent,
     VendorComponent,
     StoreComponent,
