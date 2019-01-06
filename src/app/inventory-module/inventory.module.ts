@@ -18,8 +18,9 @@ import {StoreSalesProductsComponent} from './components/store-sales-products/sto
 import {CustomerComponent} from './components/customer/customer.component';
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {BsDatepickerModule} from "ngx-bootstrap";
-import { StockComponent } from './components/stock/stock.component';
+import {StockComponent} from './components/stock/stock.component';
 import {SaveConfirmationModalComponent} from "../core/components/save-confirmation-modal/save-confirmation-modal.component";
+import {ProductSalesReportComponent} from "./components/product-sales-report/product-sales-report.component";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {SaveConfirmationModalComponent} from "../core/components/save-confirmati
     StoreInProductsComponent,
     StoreSalesProductsComponent,
     CustomerComponent,
-    StockComponent
+    StockComponent,
+    ProductSalesReportComponent
   ],
   imports: [
     [
