@@ -1,3 +1,123 @@
-<p>
-  product-sales-report works!
-</p>
+<form id="collapseInputForm">
+
+  <div class="card" style="padding: 0">
+
+      <div class="card-header">
+
+        Product Sales Report
+
+      </div>
+
+      <div class="card-body">
+        <div class="row" style="padding: 0">
+          <div class="col-sm-4" style="padding-left: 0">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="fromDate" class="lb-sm">From Date:</label>
+                <div class="input-group datepicker-input">
+                  <input type="text"
+                         name="fromDate"
+                         id="fromDate"
+                         #fromDate="bsDatepicker"
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                         placeholder="Select a date"
+                         [(ngModel)]="productSalesReportViewModel.fromDate"
+                         class="form-control"
+                         bsDatepicker>
+                  <button class="input-group-addon" (click)="fromDate.toggle()" type="button">
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-4" style="padding-left: 0">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="toDate" class="lb-sm">To Date:</label>
+                <div class="input-group datepicker-input">
+                  <input type="text"
+                         name="toDate"
+                         id="toDate"
+                         #toDate="bsDatepicker"
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                         placeholder="Select to date"
+                         [(ngModel)]="productSalesReportViewModel.toDate"
+                         class="form-control"
+                         bsDatepicker>
+                  <button class="input-group-addon" (click)="toDate.toggle()" type="button">
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                  <button type="button"
+                          style="margin-left: 1%"
+                          name="btnSearch"
+                          id="btnSearch"
+                          (click)="onClickSearch()"
+                          class="btn btn-outline-success btn-sm pull-right">Search
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+  </div>
+</form>
+
+<div [hidden]="productSalesReportModelList?.length == 0">
+
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>{{pageTitle}} List</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dataTableOptions" [dtTrigger]="dtTrigger"
+             class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <th style="width: 10%">Invoice No</th>
+          <th style="width: 20%">Product Name</th>
+          <th style="width: 30%">Customer</th>
+          <th style="width: 20%">Buy Price</th>
+          <th style="width: 20%">Sales Price</th>
+          <th style="width: 20%">Profit</th>
+          <th style="width: 10%">Date</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="productSalesReportModelList?.length != 0">
+        <tr *ngFor="let item of productSalesReportModelList">
+          <!-- <td>{{ category.id }}</td>-->
+          <td>{{item.invoiceNo}}</td>
+          <td>{{item.productName }}</td>
+          <td>{{item.customerName}}</td>
+          <td>{{item.buyPrice}}</td>
+          <td>{{item.salesPrice}}</td>
+          <td>{{item.profit}}</td>
+          <td>{{item.date|date: 'dd/MM/yyyy'}}</td>
+
+
+        </tr>
+        </tbody>
+        <tbody *ngIf="productSalesReportModelList?.length == 0">
+        <tr>
+          <td colspan="7" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+
+
+    </div>
+    <div class="">
+
+    </div>
+  </div>
+
+</div>

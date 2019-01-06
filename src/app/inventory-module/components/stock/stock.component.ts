@@ -56,7 +56,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
               private storeInProductService: StoreInProductsService,
               private stockService: StockService,
               private storeService: StoreService,
-              private toastr: ToastrService) { }
+              private toaster: ToastrService) { }
 
   ngOnInit() {
     this.getStoreList();
@@ -116,7 +116,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
           this.storeModelList = <Array<StoreModel>>response.data;
           return;
         }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error(response.message,this.pageTitle);
+          this.toaster.error(response.message,this.pageTitle);
           return;
         }else {
           Util.logConsole(response);
@@ -146,7 +146,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
           this.productModelList = <Array<ProductModel>>response.data;
           return;
         }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toastr.error(response.message,this.pageTitle);
+          this.toaster.error(response.message,this.pageTitle);
           return;
         }else {
           Util.logConsole(response);
@@ -178,7 +178,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
             //Util.logConsole(this.availableProductViewModelList);
             //return productViewModelList;
           } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
-            this.toastr.error(responseMessage.message, this.pageTitle);
+            this.toaster.error(responseMessage.message, this.pageTitle);
             return;
           } else {
             Util.logConsole(responseMessage);
@@ -196,7 +196,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
           if (httpErrorResponse.error instanceof ErrorEvent) {
             Util.logConsole(httpErrorResponse, "Client-side error occurred.");
           } else {
-            this.toastr.error('There is a problem with the service. We are notified and working on it');
+            this.toaster.error('There is a problem with the service. We are notified and working on it');
             //this.toastr.info("Please reload this page");
             Util.logConsole(httpErrorResponse, "Server Side error occurred");
           }

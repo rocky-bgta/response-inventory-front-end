@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpRequestHelperService} from "../../core/http-request-helper.service";
 import {Observable} from "rxjs/index";
 import {InventoryApiEndPoint} from "../inventory-api-end-point";
+import {RequestMessage} from "../../core/model/request-message";
 
 
 @Injectable({
@@ -16,8 +17,8 @@ export class ProductSalesReportService {
     return this.httpRequestHelperService.postRequest(InventoryApiEndPoint.productSales, data);
   }
 
-  getList(dataTableParameter?:any): Observable<any> {
-    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.productSales+"/list",dataTableParameter);
+  getListByRequestMessage(requestMessage:RequestMessage): Observable<any> {
+    return this.httpRequestHelperService.getRequestWithRequestMessage(InventoryApiEndPoint.productSales+"/report",requestMessage);
   }
 
 

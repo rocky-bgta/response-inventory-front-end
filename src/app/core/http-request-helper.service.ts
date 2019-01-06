@@ -62,6 +62,12 @@ export class HttpRequestHelperService {
     return response;
   }
 
+  public getRequestWithRequestMessage(requestUrl: string, requestMessage:RequestMessage): Observable<any> {
+    let response = this.httpClient.post<any>(requestUrl, requestMessage, this.httpHeaderOptions)
+      .pipe(retry(1),delay(this.delayTimeForResponse), catchError(this.handleError));
+    return response;
+  }
+
   public getRequestById(requestUrl: string, id: string): Observable<any> {
     let response = this.httpClient.get<any>(requestUrl + "/"+ id, this.httpHeaderOptions)
       .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError));
