@@ -323,7 +323,8 @@ export class VendorComponent implements OnInit {
     //let notAllowedCharacter = "^[A-Za-z0-9-_. \\\\ \\/ - \\n]+$";
     this.entryForm = this.formBuilder.group({
       name:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
-      phoneNo:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+      phoneNo1:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+      phoneNo2:  ['', Validators.compose([Validators.maxLength(20)])],
       email:    ['', Validators.compose([Validators.email, Validators.maxLength(50)])],
       address: ['', Validators.compose([Validators.maxLength(200)])],
       description: ['', Validators.compose([Validators.maxLength(200)])]

@@ -447,7 +447,7 @@ export class ProductComponent implements OnInit {
     this.productForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       categories: ['',Validators.required],
-      brands: ['', Validators.compose([Validators.required])],
+      brands: ['',],
       modelNo: ['',Validators.compose([Validators.required, Validators.maxLength(50)])],
       //serialNo: ['',Validators.maxLength(20)],
       price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],

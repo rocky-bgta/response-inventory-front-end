@@ -27,7 +27,7 @@
         <div class="card-body">
 
           <div class="form-group required row">
-            <label for="name" class="col-sm-4 control-label">Name:</label>
+            <label for="name" class="col-sm-4 required-label">Name:</label>
             <div class="col-sm-6">
               <input
                 id="name"
@@ -49,7 +49,7 @@
           </div>
 
           <div class="form-group required row">
-            <label for="categories" class="col-sm-4 control-label">Category:</label>
+            <label for="categories" class="col-sm-4 required-label">Category:</label>
             <div class="col-sm-6">
               <ng-select [items]="categoryModelList"
                          id="categories"
@@ -70,8 +70,8 @@
             </div>
           </div>
 
-          <div class="form-group required row">
-            <label for="brands" class="col-sm-4 control-label">Brand:</label>
+          <div class="form-group row">
+            <label for="brands" class="col-sm-4">Brand:</label>
             <div class="col-sm-6">
               <ng-select [items]="brandModelList"
                          id="brands"
@@ -82,13 +82,9 @@
                          (change)="onChangeBrand($event)"
                          [ngModel]="productModel.brandId"
                          bindValue="id"
-                         [ngClass]="{ 'custom-invalid-ng-select': submitted && productForm.controls['brands'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="brands"
                          placeholder="Select Brand">
               </ng-select>
-              <div *ngIf="submitted && productForm.controls['brands'].hasError('required')" class="custom-invalid-feedback">
-                Select a Brand
-              </div>
             </div>
           </div>
 
@@ -118,7 +114,7 @@
 
 
           <div class="form-group required row">
-            <label for="modelNo" class="col-sm-4 control-label">Model No:</label>
+            <label for="modelNo" class="col-sm-4 required-label">Model No:</label>
             <div class="col-sm-6">
               <input
                 id="modelNo"
@@ -162,7 +158,7 @@
 
 
           <div class="form-group required row">
-            <label for="price" class="col-sm-4 control-label">Price:</label>
+            <label for="price" class="col-sm-4 required-label">Price:</label>
             <div class="col-sm-6">
               <input
                 id="price"
