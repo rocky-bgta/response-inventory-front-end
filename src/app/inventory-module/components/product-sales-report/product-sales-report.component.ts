@@ -35,6 +35,10 @@ export class ProductSalesReportComponent implements OnInit, AfterViewInit, OnDes
 
   public productSalesReportModelList: Array<ProductSalesReportModel> = new Array<ProductSalesReportModel>();
 
+  public totalSalesPrice:number;
+  public totalBuyPrice:number;
+  public totalProfit:number;
+
   constructor(private toaster: ToastrService,
               private productSalesReportService:ProductSalesReportService) { }
 
@@ -67,6 +71,8 @@ export class ProductSalesReportComponent implements OnInit, AfterViewInit, OnDes
 
   public onClickSearch(){
     this.rerender();
+    //this.calculateTotal();
+
   }
 
   private getProductSalesReportByDate(dataTablesParameters: DataTableRequest, callback: any){
@@ -77,6 +83,7 @@ export class ProductSalesReportComponent implements OnInit, AfterViewInit, OnDes
       (responseMessage: ResponseMessage) => {
         if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
           this.productSalesReportModelList = <Array<ProductSalesReportModel>>responseMessage.data;
+          this.calculateTotal();
         } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
           this.toaster.error(responseMessage.message, this.pageTitle);
           return;
@@ -103,6 +110,22 @@ export class ProductSalesReportComponent implements OnInit, AfterViewInit, OnDes
       });
   }
 
+
+  private calculateTotal(){
+    let totalBuyPrice:number=0;
+    let totalSalesPrice:number=0;
+    let totalProfit:number=0;
+    for(let item of this.productSalesReportModelList){
+      totalBuyPrice+= item.buyPrice;
+      totalSalesPrice+= item.salesPrice;
+      totalProfit+= item.profit;
+    }
+
+    this.totalBuyPrice = totalBuyPrice;
+    this.totalSalesPrice = totalSalesPrice;
+    this.totalProfit = totalProfit;
+
+  }
 
   private populateDataTable():void{
     // Util.logConsole("Populate table");

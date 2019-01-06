@@ -75,7 +75,7 @@
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
-      <strong>{{pageTitle}} List</strong>
+      <strong>Product Sales Summary</strong>
     </div>
     <div class="card-body">
       <table datatable [dtOptions]="dataTableOptions" [dtTrigger]="dtTrigger"
@@ -102,10 +102,18 @@
           <td>{{item.salesPrice}}</td>
           <td>{{item.profit}}</td>
           <td>{{item.date|date: 'dd/MM/yyyy'}}</td>
-
-
         </tr>
+
         </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="3"></td>
+          <td>{{totalBuyPrice}}</td>
+          <td>{{totalSalesPrice}}</td>
+          <td>{{totalProfit}}</td>
+          <td></td>
+        </tr>
+        </tfoot>
         <tbody *ngIf="productSalesReportModelList?.length == 0">
         <tr>
           <td colspan="7" class="no-data-available">No data!</td>
