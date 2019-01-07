@@ -1,0 +1,48 @@
+<div [hidden]="productViewModelList?.length==0">
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>Product List</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dtOptions"
+             class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <th style="width: 10%">Name</th>
+          <th style="width: 10%">Category</th>
+          <th style="width: 10%">Brand</th>
+          <th style="width: 15%">Model No</th>
+          <th style="width: 10%">Price</th>
+          <!--<th style="width: 7%">Image</th>-->
+          <th style="width: 5%">Action</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="productViewModelList?.length != 0">
+        <tr *ngFor="let product of productViewModelList">
+          <td>{{product.name }}</td>
+          <td>{{product.category}}</td>
+          <td>{{product.brand }}</td>
+          <td>{{product.modelNo }}</td>
+          <td>{{product.price }}</td>
+          <!--<td>
+            <img [src]="'data:image/png;base64,'+product.image" height="50" width="100">
+          </td>-->
+          <td>
+            <button type="button" class="btn btn-secondary" (click)="onClickSelect(product.id)" style="margin-left: 1%">
+              Select
+            </button>
+          </td>
+        </tr>
+        </tbody>
+        <tbody *ngIf="productViewModelList?.length == 0">
+        <tr>
+          <td colspan="7" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

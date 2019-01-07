@@ -24,6 +24,7 @@ import {Subject} from "rxjs/index";
 import {DataTableDirective} from "angular-datatables";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import {StoreSalesProductsService} from "../../service/store-sales-products.service";
+import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
@@ -56,6 +57,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   //====================================================
 
 
+
   //========== Variables for this page business =====================================================
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public customerModelList: Array<CustomerModel> = new Array<CustomerModel>();
@@ -71,7 +73,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   public grandTotalSalesPrice:number = 0;
 
-//========== Variables for this page business =====================================================
+  //========== Variables for this page business =====================================================
 
   //======= save modal text ======================================
   public modalHeader: string;
@@ -86,8 +88,6 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
 
 
-
-
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
               private storeSalesProductsService: StoreSalesProductsService,
@@ -95,7 +95,8 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
               private toaster: ToastrService,
-              public  ngxSmartModalService: NgxSmartModalService) { }
+              public  ngxSmartModalService: NgxSmartModalService,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
 

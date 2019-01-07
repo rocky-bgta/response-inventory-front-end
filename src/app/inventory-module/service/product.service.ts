@@ -27,6 +27,10 @@ export class ProductService {
     return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.product+"/list",dataTableParameter);
   }
 
+  getProductViewList(dataTableParameter:any): Observable<any> {
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.product+"/list-view",dataTableParameter);
+  }
+
 
   getById(id): Observable<any> {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.product, id);
