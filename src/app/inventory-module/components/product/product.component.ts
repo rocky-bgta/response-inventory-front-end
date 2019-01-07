@@ -54,7 +54,7 @@ export class ProductComponent implements OnInit {
   constructor(private productService: ProductService,
               private categoryService: CategoryService,
               private brandService: BrandService,
-              private toastr: ToastrService,
+              private toaster: ToastrService,
               public  ngxSmartModalService: NgxSmartModalService,
               private formBuilder:FormBuilder) {
   }
@@ -92,7 +92,7 @@ export class ProductComponent implements OnInit {
     if (this.isPageUpdateState == false) {
       //stop here if form is invalid
       if (this.productForm.invalid) {
-        this.toastr.info("Please provide required form data",this.pageTitle);
+        this.toaster.info("Please provide required form data",this.pageTitle);
         //console.log(this.productForm.controls);
         //======== R&D================
         //let errors = this.productForm.errors;
@@ -183,7 +183,7 @@ export class ProductComponent implements OnInit {
   public onDeleteConfirm(id: string) {
     this.productService.delete(id).subscribe(
       (responseMessage: ResponseMessage) => {
-        this.toastr.success('Product', responseMessage.message);
+        this.toaster.success('Product', responseMessage.message);
         this.resetPage();
         this.hideAndClearInputForm();
       },
@@ -233,7 +233,7 @@ export class ProductComponent implements OnInit {
 
         this.productModelList = <Array<ProductModel>>responseMessage.data;
         if(this.productModelList == null || this.productModelList.length==0){
-          this.toastr.info("No result product found",this.pageTitle)
+          this.toaster.info("No result product found",this.pageTitle)
         }else {
           //Util.logConsole(this.productModelList);
           this.setCategoryNameForProductList();
@@ -258,7 +258,7 @@ export class ProductComponent implements OnInit {
     let file = event.target.files[0];
     uploadFileSize = file.size;
     if(uploadFileSize>uploadFileSizeLimit){
-      this.toastr.error("File size must not exceeded 500KB","File Upload");
+      this.toaster.error("File size must not exceeded 500KB","File Upload");
       return;
     }
     //console.log(file.size);
@@ -350,14 +350,14 @@ export class ProductComponent implements OnInit {
       (responseMessage: ResponseMessage) =>
       {
         if(responseMessage.httpStatus==HttpStatus.OK){
-          this.toastr.success(responseMessage.message,this.pageTitle);
+          this.toaster.success(responseMessage.message,this.pageTitle);
           this.resetPage();
           return;
         }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY){
-          this.toastr.info(responseMessage.message,this.pageTitle);
+          this.toaster.info(responseMessage.message,this.pageTitle);
           return;
         }else {
-          this.toastr.error(responseMessage.message,this.pageTitle);
+          this.toaster.error(responseMessage.message,this.pageTitle);
           return;
         }
       },
@@ -385,10 +385,10 @@ export class ProductComponent implements OnInit {
       (responseMessage: ResponseMessage) =>
               {
                 if(responseMessage.httpStatus==HttpStatus.CONFLICT) {
-                  this.toastr.info(responseMessage.message,this.pageTitle);
+                  this.toaster.info(responseMessage.message,this.pageTitle);
                   return;
                 }else if(responseMessage.httpStatus==HttpStatus.CREATED){
-                  this.toastr.success(responseMessage.message,this.pageTitle);
+                  this.toaster.success(responseMessage.message,this.pageTitle);
                   this.productModel = <ProductModel> responseMessage.data;
                   if(this.productModel.image!=null)
                     this.setImage(this.productModel.image);
@@ -396,10 +396,10 @@ export class ProductComponent implements OnInit {
                   this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
                   return;
                 }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY) {
-                  this.toastr.error(responseMessage.message,this.pageTitle);
+                  this.toaster.error(responseMessage.message,this.pageTitle);
                   return;
                 }else {
-                  this.toastr.error(responseMessage.message,this.pageTitle);
+                  this.toaster.error(responseMessage.message,this.pageTitle);
                   return;
                 }
               },
@@ -407,10 +407,10 @@ export class ProductComponent implements OnInit {
       (httpErrorResponse: HttpErrorResponse) =>
               {
                 if (httpErrorResponse.error instanceof Error) {
-                  this.toastr.error( "Client-side error occurred",this.pageTitle);
+                  this.toaster.error( "Client-side error occurred",this.pageTitle);
                   console.log("Client-side error occurred.");
                 } else {
-                  this.toastr.error( "Server-side error occurred.",this.pageTitle);
+                  this.toaster.error( "Server-side error occurred.",this.pageTitle);
                   console.log("Server-side error occurred.");
                 }
               }
