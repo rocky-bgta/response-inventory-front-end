@@ -105,7 +105,8 @@ img {
   overflow-y: scroll;
 }
 
-/*modify modal css*/
+
+/*
 .nsm-content {
   position: relative;
   display: flex;
@@ -118,5 +119,9 @@ img {
   width: 200%;
   margin-left: -50%;
 }
+*/
 
-
+/*modify modal css*/
+.nsm-content {
+  margin-left: -5rem;
+}
