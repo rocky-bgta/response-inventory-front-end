@@ -34,7 +34,7 @@
                 type="text"
                 [(ngModel)]="customerModel.name"
                 formControlName="name"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name'].hasError('required') }">
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name']?.hasError('required') }">
 
               <div *ngIf="formSubmitted && entryForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
                 {{pageTitle}} name required
@@ -57,7 +57,7 @@
                 type="text"
                 [(ngModel)]="customerModel.phoneNo1"
                 formControlName="phoneNo1"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo1'].hasError('required') }">
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo1']?.hasError('required') }">
 
               <div *ngIf="formSubmitted && entryForm.controls['phoneNo1'].hasError('required')" class="custom-invalid-feedback">
                 {{pageTitle}} name required

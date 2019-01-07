@@ -325,6 +325,7 @@ export class VendorComponent implements OnInit {
       name:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       phoneNo1:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       phoneNo2:  ['', Validators.compose([Validators.maxLength(20)])],
+      bankAccountNo:  ['', Validators.compose([Validators.maxLength(20)])],
       email:    ['', Validators.compose([Validators.email, Validators.maxLength(50)])],
       address: ['', Validators.compose([Validators.maxLength(200)])],
       description: ['', Validators.compose([Validators.maxLength(200)])]

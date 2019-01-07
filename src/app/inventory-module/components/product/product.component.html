@@ -38,7 +38,7 @@
                 type="text"
                 [(ngModel)]="productModel.name"
                 formControlName="name"
-                [ngClass]="{ 'is-invalid': submitted && productForm.controls['name'].hasError('required')}">
+                [ngClass]="{ 'is-invalid': submitted && productForm.controls['name']?.hasError('required')}">
               <div *ngIf="submitted && productForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
                 Product name required
               </div>
@@ -60,7 +60,7 @@
                          (change)="onChangeCategory($event)"
                          [ngModel]="productModel.categoryId"
                          bindValue="id"
-                         [ngClass]="{ 'custom-invalid-ng-select': submitted && productForm.controls['categories'].hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
+                         [ngClass]="{ 'custom-invalid-ng-select': submitted && productForm.controls['categories']?.hasError('required'), 'avoid-clicks': disableElementOnDetailsView }"
                          formControlName="categories"
                          placeholder="Select category">
               </ng-select>
@@ -76,7 +76,6 @@
               <ng-select [items]="brandModelList"
                          id="brands"
                          bindLabel="name"
-                         required
                          [attr.disabled]="disableElementOnDetailsView"
                          name="brands"
                          (change)="onChangeBrand($event)"
@@ -169,7 +168,7 @@
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="price"
-                [ngClass]="{ 'is-invalid': submitted && productForm.controls['price'].hasError('required')}"
+                [ngClass]="{ 'is-invalid': submitted && productForm.controls['price']?.hasError('required')}"
                 [(ngModel)]="productModel.price">
               <div *ngIf="submitted && productForm.controls['price'].hasError('required')" class="custom-invalid-feedback">
                 Enter Price for this product
@@ -199,8 +198,8 @@
           </div>
 
 
-          <div class="form-group required row">
-            <label for="barcode" class="col-sm-4 control-label">Barcode:</label>
+          <div class="form-group row">
+            <label for="barcode" class="col-sm-4">Barcode:</label>
             <div class="col-sm-6">
               <input
                 id="barcode"

@@ -33,7 +33,7 @@
                 type="text"
                 [(ngModel)]="brandModel.name"
                 formControlName="name"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name'].hasError('required') }">
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name']?.hasError('required') }">
 
               <div *ngIf="formSubmitted && entryForm.controls['name'].hasError('required')"class="custom-invalid-feedback">
                 Brand name required

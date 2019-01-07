@@ -20,7 +20,7 @@
                          (change)="onChangeStore($event, storeSalesProductViewModel.storeId)"
                          (clear)="onClearStore()"
                          [(ngModel)]="storeSalesProductViewModel.storeId"
-                         [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['store'].hasError('required') }"
+                         [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['store']?.hasError('required') }"
                          formControlName="store"
                          placeholder="Select Store">
               </ng-select>
@@ -44,7 +44,7 @@
                          (change)="onChangeCustomer($event,storeSalesProductViewModel.customerId)"
                          (clear)="onClearCustomer()"
                          [(ngModel)]="storeSalesProductViewModel.customerId"
-                         [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['customer'].hasError('required')}"
+                         [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['customer']?.hasError('required')}"
                          formControlName="customer"
                          placeholder="Select Customer">
               </ng-select>
@@ -135,7 +135,7 @@
                          (change)="onChangeSaleMethod($event)"
                          (clear)="onClearSaleMethod()"
                          [(ngModel)]="storeSalesProductViewModel.salesMethod"
-                         [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['saleOn'].hasError('required')}"
+                         [ngClass]="{'custom-invalid-ng-select': productAdded && entryForm.controls['saleOn']?.hasError('required')}"
                          formControlName="saleOn"
                          placeholder="Select Sales Method">
               </ng-select>

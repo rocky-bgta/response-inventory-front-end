@@ -34,7 +34,7 @@
                 type="text"
                 [(ngModel)]="vendorModel.name"
                 formControlName="name"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name'].hasError('required') }">
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name']?.hasError('required') }">
 
               <div *ngIf="formSubmitted && entryForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
                 Vendor name required
@@ -57,7 +57,7 @@
                 type="text"
                 [(ngModel)]="vendorModel.phoneNo1"
                 formControlName="phoneNo1"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo1'].hasError('required') }">
+                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo1']?.hasError('required') }">
 
               <div *ngIf="formSubmitted && entryForm.controls['phoneNo1'].hasError('required')" class="custom-invalid-feedback">
                 Vendor Phone no required
@@ -82,6 +82,24 @@
                 formControlName="phoneNo2">
               <span *ngIf="entryForm.controls['phoneNo2'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for phone no is 20
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="bankAccountNo" class="col-sm-4">Bank A/C:</label>
+            <div class="col-sm-8">
+              <input
+                id="bankAccountNo"
+                class="form-control"
+                name="bankAccountNo"
+                autocomplete="off"
+                [attr.disabled]="disablePageElementOnDetailsView?'':null"
+                type="text"
+                [(ngModel)]="vendorModel.bankAccountNo"
+                formControlName="bankAccountNo">
+              <span *ngIf="entryForm.controls['bankAccountNo'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for bank account no is 20
               </span>
             </div>
           </div>
