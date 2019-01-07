@@ -319,7 +319,8 @@ export class ProductComponent implements OnInit {
     for (let index in this.productModelList) {
       let id = this.productModelList[index].brandId;
       brandModel = _.find(this.brandModelList, {id});
-      this.productModelList[index].brandName = brandModel.name;
+      if(brandModel!=null && !_.isEmpty(brandModel))
+        this.productModelList[index].brandName = brandModel.name;
     }
   }
 
