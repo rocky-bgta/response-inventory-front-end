@@ -44,7 +44,7 @@ export class ProductListComponent implements OnInit {
       this.selectedProductList.push(selectedProduct);
     }else {
       //remove product
-        this.selectedProductList =_.filter(this.selectedProductList, (currentObject) => {
+        this.selectedProductList =_.remove(this.selectedProductList, (currentObject) => {
           return currentObject.id !== id;
         });
       Util.logConsole(this.selectedProductList,"After remove Product");
@@ -75,7 +75,7 @@ export class ProductListComponent implements OnInit {
   private checkIsProductAlreadySelected(){
     Util.logConsole(this.selectedProductList,"Selected Product");
     let selectedProduct:ProductViewModel;
-    for(let index:number in this.productViewModelList){
+    for(let index in this.productViewModelList){
       let id = this.productViewModelList[index].id;
       selectedProduct = _.find(this.selectedProductList,{id});
         if (selectedProduct != null && !_.isEmpty(selectedProduct))
