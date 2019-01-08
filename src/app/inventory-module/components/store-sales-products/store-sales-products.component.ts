@@ -133,7 +133,9 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
   }
 
   public onClearStore(){
+    let length:number=this.availableSalesProductViewModelList.length;
     this.storeSelected=false;
+    this.availableSalesProductViewModelList.splice(0,length);
   }
 
   public onClickRemoveRow(index){
@@ -546,7 +548,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     this.entryForm = this.formBuilder.group({
       store: ['',     Validators.compose([Validators.required])],
       customer: ['',  Validators.compose([Validators.required])],
-      product: ['',   Validators.compose([Validators.required])],
+      //product: ['',   Validators.compose([Validators.required])],
       barcode: ['',   Validators.compose([Validators.maxLength(20)])],
       serialNo: ['',  Validators.compose([Validators.maxLength(20)])],
       saleOn: ['',    Validators.compose([Validators.required])],
