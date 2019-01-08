@@ -16,23 +16,25 @@
           <th style="width: 15%">Model No</th>
           <th style="width: 10%">Price</th>
           <!--<th style="width: 7%">Image</th>-->
-          <th style="width: 5%">Action</th>
+          <th style="width: 5%">Select</th>
         </tr>
         </thead>
         <tbody *ngIf="productViewModelList?.length != 0">
-        <tr *ngFor="let product of productViewModelList">
+        <tr *ngFor="let product of productViewModelList;let i=index">
           <td>{{product.name }}</td>
           <td>{{product.category}}</td>
           <td>{{product.brand }}</td>
           <td>{{product.modelNo }}</td>
           <td>{{product.price }}</td>
-          <!--<td>
-            <img [src]="'data:image/png;base64,'+product.image" height="50" width="100">
-          </td>-->
           <td>
-            <button type="button" class="btn btn-secondary" (click)="onClickSelect(product.id)" style="margin-left: 1%">
-              Select
-            </button>
+            <div class="form-group">
+              <input type="checkbox"
+                     #selectProduct
+                     name="selectProduct"
+                     [(ngModel)]="product.selectedProduct"
+                     (change)="onClickSelect(i,$event.target.checked)"
+                     class="form-control-file">
+            </div>
           </td>
         </tr>
         </tbody>

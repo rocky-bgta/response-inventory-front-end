@@ -64,6 +64,27 @@
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group required">
+            <label class="required-label lb-sm">Product:</label>
+
+            <div class="input-group mb-3">
+
+              <input type="text" class="form-control">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary"
+                        (click)="modalData.open()"
+                        type="button">...</button>
+              </div>
+
+            </div>
+            <div *ngIf="productAdded && entryForm.controls['product'].hasError('required')"
+                 class="custom-invalid-feedback">
+              Select Product
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
             <div class="col-sm-12">
               <label for="barcode" class="required-label lb-sm">Product barcode:</label>
 
@@ -440,3 +461,20 @@
     </div>
 
 </div>
+
+<ngx-smart-modal #modalData [closable]="false"
+                 identifier="modalData"
+                 [dismissable]="false"
+                 customClass="nsm-dialog-animation-fade nsm-centered">
+  <h4>Select a product</h4>
+  <p>
+    <product-list></product-list>
+  </p>
+
+
+  <div *ngIf="modalData.hasData()">
+    <pre>{{ modalData.getData() | json }}</pre>
+  </div>
+  <button class="button -dark"
+          (click)="modalData.close()">Close</button>
+</ngx-smart-modal>

@@ -21,7 +21,7 @@ import {BsDatepickerModule} from "ngx-bootstrap";
 import {StockComponent} from './components/stock/stock.component';
 import {SaveConfirmationModalComponent} from "../core/components/save-confirmation-modal/save-confirmation-modal.component";
 import {ProductSalesReportComponent} from "./components/product-sales-report/product-sales-report.component";
-import {ProductListComponent} from './view-components/product-list/product-list.component';
+import {ProductListComponent} from './helper-components/product-list/product-list.component';
 
 @NgModule({
   declarations: [

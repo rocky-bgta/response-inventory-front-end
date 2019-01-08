@@ -7,4 +7,6 @@ export class ProductViewModel {
   price: number;
   description: string;
   image: string;
+
+  selectedProduct:boolean;
 }
