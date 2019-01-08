@@ -1,4 +1,6 @@
-1. Install apach server 
+Set Environment path variable to apache24/bin
+1. Install apache server by the following command: httpd -k install
+
 2. create .htaccess file with following content
 RewriteEngine On
     # If an existing asset or directory is requested go to it as it is
@@ -11,15 +13,18 @@ RewriteRule ^ /index.html
 3.put this file dist folder's content
 
 4.now got conf folder of apache server
-5.open httpd.conf 
+5.open httpd.conf
 
    find and uncomment the following line:
 a> LoadModule rewrite_module modules/mod_rewrite.so
-b> fine <Directory "${SRVROOT}/htdocs"> xml tag 
+b> fine <Directory "${SRVROOT}/htdocs"> xml tag
 c> uncomment the following line and change to all.
    AllowOverride all
-   
-   
+
+
 
 if any problem with apache server un-install it by the following command:
-httpd -k uninstall   
+httpd -k uninstall
+
+Trouble shoot
+net stop http
