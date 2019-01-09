@@ -329,7 +329,7 @@ export class StoreComponent implements OnInit, AfterViewInit {
       owner:     ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       phoneNo:  ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
       email:    ['', Validators.compose([Validators.email, Validators.maxLength(50)])],
-      address: ['', Validators.compose([Validators.maxLength(200)])],
+      address: ['', Validators.compose([Validators.required,Validators.maxLength(200)])],
       comment: ['', Validators.compose([Validators.maxLength(200)])]
 
       //address: ['', Validators.compose([Validators.maxLength(200), Validators.pattern(notAllowedCharacter)])],

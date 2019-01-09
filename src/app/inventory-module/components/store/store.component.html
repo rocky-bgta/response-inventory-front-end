@@ -34,7 +34,7 @@
                 type="text"
                 [(ngModel)]="storeModel.name"
                 formControlName="name"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name'].hasError('required') }">
+                >
 
               <div *ngIf="formSubmitted && entryForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
                 Store name required
@@ -58,7 +58,7 @@
                 type="text"
                 [(ngModel)]="storeModel.owner"
                 formControlName="owner"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['owner'].hasError('required') }">
+                >
 
               <div *ngIf="formSubmitted && entryForm.controls['owner'].hasError('required')" class="custom-invalid-feedback">
                 Store name required
@@ -82,7 +82,7 @@
                 type="text"
                 [(ngModel)]="storeModel.phoneNo"
                 formControlName="phoneNo"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo'].hasError('required') }">
+                >
 
               <div *ngIf="formSubmitted && entryForm.controls['phoneNo'].hasError('required')" class="custom-invalid-feedback">
                 Owner Phone number is required
@@ -116,8 +116,8 @@
           </div>
 
 
-          <div class="form-group row">
-            <label for="address" class="col-sm-4">Address:</label>
+          <div class="form-group required row">
+            <label for="address" class="col-sm-4 required-label">Address:</label>
             <div class="col-sm-8">
               <textarea
                 name="address"
@@ -127,6 +127,9 @@
                 class="form-control rounded-0"
                 id="address">
               </textarea>
+              <div *ngIf="formSubmitted && entryForm.controls['address'].hasError('required')" class="custom-invalid-feedback">
+                Store Address Required
+              </div>
               <span *ngIf="entryForm.controls['address'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for Store Address is 200
               </span>

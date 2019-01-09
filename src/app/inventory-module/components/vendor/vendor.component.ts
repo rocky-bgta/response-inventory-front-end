@@ -81,16 +81,16 @@ export class VendorComponent implements OnInit {
   public onClickReset(){
     let editItemId:string;
     if(!this.isPageInUpdateState){
-      //this.vendorModel = new VendorModel();
+      this.vendorModel = new VendorModel();
     }else {
       editItemId = this.vendorModel.id;
-      //this.vendorModel = new VendorModel();
+      this.vendorModel = new VendorModel();
       this.vendorModel.id=editItemId;
     }
   }
 
   public onClickCancel(){
-    //this.vendorModel = new VendorModel();
+    this.vendorModel = new VendorModel();
     this.isPageInUpdateState=false;
     this.disablePageElementOnDetailsView=false;
     this.hideEntryForm();

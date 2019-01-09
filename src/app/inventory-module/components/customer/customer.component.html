@@ -33,8 +33,7 @@
                 [attr.disabled]="disablePageElementOnDetailsView?'':null"
                 type="text"
                 [(ngModel)]="customerModel.name"
-                formControlName="name"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['name']?.hasError('required') }">
+                formControlName="name">
 
               <div *ngIf="formSubmitted && entryForm.controls['name'].hasError('required')" class="custom-invalid-feedback">
                 {{pageTitle}} name required
@@ -56,8 +55,7 @@
                 [attr.disabled]="disablePageElementOnDetailsView?'':null"
                 type="text"
                 [(ngModel)]="customerModel.phoneNo1"
-                formControlName="phoneNo1"
-                [ngClass]="{ 'is-invalid': formSubmitted && entryForm.controls['phoneNo1']?.hasError('required') }">
+                formControlName="phoneNo1">
 
               <div *ngIf="formSubmitted && entryForm.controls['phoneNo1'].hasError('required')" class="custom-invalid-feedback">
                 {{pageTitle}} name required
