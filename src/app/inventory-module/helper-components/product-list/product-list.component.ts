@@ -21,16 +21,21 @@ export class ProductListComponent implements OnInit {
 
   public productViewModelList: Array<ProductViewModel>;
 
-  private selectedProductList: Array<ProductViewModel>;
+  private _selectedProductList: Array<ProductViewModel>;
 
-  @Output() isConfirm = new EventEmitter<ProductViewModel>();
+  @Output() selectedProductList = new EventEmitter<Array<ProductViewModel>>();
 
   constructor(private productService: ProductService,
-              private toaster: ToastrService,) { }
+              private toaster: ToastrService
+  ) { }
 
   ngOnInit() {
-    this.selectedProductList = new Array<ProductViewModel>();
+    this._selectedProductList = new Array<ProductViewModel>();
     this.populateDataTable();
+  }
+
+  public onClickSubmit(){
+    this.selectedProductList.emit(this._selectedProductList);
   }
 
   public onClickSelect(index:number,value){
@@ -41,13 +46,13 @@ export class ProductListComponent implements OnInit {
     id=selectedProduct.id;
     if(value){
       this.productViewModelList[index].selectedProduct=true;
-      this.selectedProductList.push(selectedProduct);
+      this._selectedProductList.push(selectedProduct);
     }else {
       //remove product
-        this.selectedProductList =_.remove(this.selectedProductList, (currentObject) => {
+        this._selectedProductList =_.remove(this._selectedProductList, (currentObject) => {
           return currentObject.id !== id;
         });
-      Util.logConsole(this.selectedProductList,"After remove Product");
+      Util.logConsole(this._selectedProductList,"After remove Product");
     }
   }
 
@@ -73,11 +78,11 @@ export class ProductListComponent implements OnInit {
   }
 
   private checkIsProductAlreadySelected(){
-    Util.logConsole(this.selectedProductList,"Selected Product");
+    Util.logConsole(this._selectedProductList,"Selected Product");
     let selectedProduct:ProductViewModel;
     for(let index in this.productViewModelList){
       let id = this.productViewModelList[index].id;
-      selectedProduct = _.find(this.selectedProductList,{id});
+      selectedProduct = _.find(this._selectedProductList,{id});
         if (selectedProduct != null && !_.isEmpty(selectedProduct))
           this.productViewModelList[index].selectedProduct = true;
     }
@@ -105,8 +110,4 @@ export class ProductListComponent implements OnInit {
       ]
     };
   }
-}
-
-function remove(array, element) {
-  return array.filter((el) => el !== element);
 }

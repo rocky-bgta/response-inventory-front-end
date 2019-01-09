@@ -71,7 +71,7 @@
               <input type="text" class="form-control">
               <div class="input-group-append">
                 <button class="btn btn-outline-secondary"
-                        (click)="modalData.open()"
+                        (click)="productListModal.open()"
                         type="button">...</button>
               </div>
 
@@ -462,19 +462,19 @@
 
 </div>
 
-<ngx-smart-modal #modalData [closable]="false"
-                 identifier="modalData"
+<ngx-smart-modal #productListModal [closable]="false"
+                 identifier="productListModal"
                  [dismissable]="false"
                  customClass="nsm-dialog-animation-fade nsm-centered">
-  <h4>Select a product</h4>
+  <h4>Select products</h4>
   <p>
-    <product-list></product-list>
+    <product-list (selectedProductList)="onClickSelectedProductOfModal($event)"></product-list>
   </p>
 
 
-  <div *ngIf="modalData.hasData()">
-    <pre>{{ modalData.getData() | json }}</pre>
+  <div *ngIf="productListModal.hasData()">
+    <pre>{{ productListModal.getData() | json }}</pre>
   </div>
   <button class="button -dark"
-          (click)="modalData.close()">Close</button>
+          (click)="productListModal.close()">Close</button>
 </ngx-smart-modal>
