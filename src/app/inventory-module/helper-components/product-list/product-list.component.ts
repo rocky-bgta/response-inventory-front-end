@@ -36,6 +36,9 @@ export class ProductListComponent implements OnInit {
 
   public onClickSubmit(){
     this.selectedProductList.emit(this._selectedProductList);
+    for(let product of this._selectedProductList){
+      product.selectedProduct=false;
+    }
   }
 
   public onClickSelect(index:number,value){
