@@ -281,7 +281,7 @@ export class CategoryComponent implements OnInit {
   private initializeReactiveFormValidation(){
     //========== form validation ==========
     this.categoryForm = this.formBuilder.group({
-      name: ['',  Validators.compose([Validators.required, Validators.maxLength(20)])],
+      name: ['',  Validators.compose([Validators.required, Validators.maxLength(50)])],
       description: ['', Validators.maxLength(100)]
     });
   }
