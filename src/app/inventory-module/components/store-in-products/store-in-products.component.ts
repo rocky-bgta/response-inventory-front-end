@@ -222,22 +222,27 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
   public async onChangeBarcode(barcode: string, event) {
+    let isProductContainedInList:boolean;
     let productModel: ProductModel;
     productModel = await this.getProductByBarcode(barcode);
-    this.storeInProductViewModel.productName = productModel.name;
-    this.storeInProductViewModel.productId = productModel.id;
-    this.storeInProductViewModel.price = productModel.price;
-    this.setTotalPrice();
-    this.addProductToList();
+    isProductContainedInList = this.checkIsProductAlreadyAddedToList(productModel.id);
+    if (!isProductContainedInList) {
+      this.storeInProductViewModel.productName = productModel.name;
+      this.storeInProductViewModel.productId = productModel.id;
+      this.storeInProductViewModel.price = productModel.price;
+      this.setTotalPrice();
+      this.addProductToList();
+    }
     event.target.select();
     event.target.value = "";
+
   }
 
 
-  public onFocusOutQuantityEvent() {
+ /* public onFocusOutQuantityEvent() {
     this.setTotalPrice();
   }
-
+*/
   public onFocusOutQuantityRowEvent(index: number) {
     this.setTotalPrice(index);
   }
@@ -262,7 +267,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     storeInProductViewModel.vendorName = this._vendorName;
     storeInProductViewModel.vendorId = _.clone(this.storeInProductViewModel.vendorId);
     this.storeInProductViewModelList.push(storeInProductViewModel);
-    //this.productAdded=true;
+    this.productAdded=true;
 
 
     //this.storeInProductViewModel.barcode="";
@@ -279,6 +284,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       index = _.findIndex(this.storeInProductViewModelList, {productId: productId});
       if (!_.isNaN(index)) {
         this.storeInProductViewModelList[index].quantity += 1;
+        this.setTotalPrice(index);
       }
     }
     return isProductContainedInList;
@@ -482,10 +488,10 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.entryForm = this.formBuilder.group({
       store: ['', Validators.compose([Validators.required])],
       vendor: ['', Validators.compose([Validators.required])],
-      barcode: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
-      price: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
-      quantity: ['', Validators.compose([Validators.max(100)])],
-      total: ['', Validators.compose([Validators.max(1000000000000)])],
+      barcode: ['', Validators.compose([Validators.maxLength(20)])],
+      //price: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
+      //quantity: ['', Validators.compose([Validators.max(100)])],
+      //total: ['', Validators.compose([Validators.max(1000000000000)])],
       mfDate: ['',],
       expDate: ['',],
       entryDate: ['', Validators.compose([Validators.required])],

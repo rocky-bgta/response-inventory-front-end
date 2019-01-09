@@ -15,7 +15,7 @@
     <div class="card-body">
       <div class="row" style="padding: 0">
 
-        <div class="col-sm-2" style="padding-left: 0">
+        <div class="col-sm-3" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="store" class="required-label lb-sm">Store:</label>
@@ -39,7 +39,7 @@
           </div>
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0">
+        <div class="col-sm-3" style="padding-left: 0">
           <div class="form-group required">
             <div class="col-sm-12">
               <label for="vendor" class="required-label lb-sm">Vendor:</label>
@@ -63,30 +63,29 @@
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
-          <div class="form-group required">
-            <label class="required-label lb-sm">Product:</label>
+          <div class="form-group">
+            <label class="lb-sm">Product Menu:</label>
 
             <div class="input-group mb-3">
 
-              <input type="text" class="form-control">
+              <input type="text"
+                     [attr.disabled]="isDisableBarcodeInput()?'':null"
+                     class="form-control">
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary"
+                <button [attr.disabled]="isDisableBarcodeInput()?'':null"
+                        class="btn btn-outline-secondary"
                         (click)="productListModal.open()"
                         type="button">...</button>
               </div>
 
             </div>
-            <div *ngIf="productAdded && entryForm.controls['product'].hasError('required')"
-                 class="custom-invalid-feedback">
-              Select Product
-            </div>
           </div>
         </div>
 
         <div class="col-sm-2" style="padding-left: 0">
-          <div class="form-group required">
+          <div class="form-group">
             <div class="col-sm-12">
-              <label for="barcode" class="required-label lb-sm">Product barcode:</label>
+              <label for="barcode" class="lb-sm">Product barcode:</label>
 
               <input class="form-control"
                      #barcode
@@ -95,21 +94,43 @@
                      [attr.disabled]="isDisableBarcodeInput()?'':null"
                      (change)="onChangeBarcode(storeInProductViewModel.barcode,$event)"
                      formControlName="barcode"
-                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['barcode']?.hasError('required') }"
                      autocomplete="off"
                      name="barcode"
                      [(ngModel)]="storeInProductViewModel.barcode">
-
-              <div *ngIf="productAdded && entryForm.controls['barcode'].hasError('required')"
-                   class="custom-invalid-feedback">
-                Enter barcode
-              </div>
               <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
                 Maximum character for barcode is 20
               </span>
             </div>
           </div>
         </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <label for="entryDate" class="required-label lb-sm">Entry Date</label>
+            <div class="input-group datepicker-input">
+              <input type="text"
+                     name="entryDate"
+                     id="entryDate"
+                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['entryDate']?.hasError('required')}"
+                     #entryDMY="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     formControlName="entryDate"
+                     [(ngModel)]="storeInProductViewModel.entryDate"
+                     class="form-control"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="entryDMY.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+              <div *ngIf="productAdded && entryForm.controls['entryDate'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Select Entry Date
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group">
@@ -131,7 +152,6 @@
             </div>
           </div>
         </div>
-
 
         <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group">
@@ -173,6 +193,8 @@
             </div>
           </div>
         </div>
+
+        -->
 
       </div>
       <div class="row" style="padding: 0; margin: 0">
@@ -227,37 +249,9 @@
               </div>
             </div>
           </div>
-
-
         </div>
 
-        <div class="col-sm-2" style="padding-left: 0">
-          <div class="form-group required">
-            <label for="entryDate" class="required-label lb-sm">Entry Date</label>
-            <div class="input-group datepicker-input">
-              <input type="text"
-                     name="entryDate"
-                     id="entryDate"
-                     [ngClass]="{ 'is-invalid': productAdded && entryForm.controls['entryDate']?.hasError('required')}"
-                     #entryDMY="bsDatepicker"
-                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                     placeholder="Select a date"
-                     formControlName="entryDate"
-                     [(ngModel)]="storeInProductViewModel.entryDate"
-                     class="form-control"
-                     bsDatepicker>
-              <button class="input-group-addon" (click)="entryDMY.toggle()" type="button">
-                <span class="fa fa-calendar"></span>
-              </button>
-              <div *ngIf="productAdded && entryForm.controls['entryDate'].hasError('required')"
-                   class="custom-invalid-feedback">
-                Select Entry Date
-              </div>
-            </div>
-          </div>
 
-
-        </div>
 
         <!--  <div class="col-sm-6" style="padding-left: 0">
             <div class="form-group required">
