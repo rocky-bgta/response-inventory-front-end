@@ -76,7 +76,7 @@ export class CustomerComponent implements OnInit {
   public onClickReset(){
     let editItemId:string;
     if(!this.isPageInUpdateState){
-      this.customerModel = new CustomerModel();
+      //this.customerModel = new CustomerModel();
     }else {
       editItemId = this.customerModel.id;
       this.customerModel = new CustomerModel();
@@ -85,7 +85,7 @@ export class CustomerComponent implements OnInit {
   }
 
   public onClickCancel(){
-    this.customerModel = new CustomerModel();
+    //this.customerModel = new CustomerModel();
     this.isPageInUpdateState=false;
     this.disablePageElementOnDetailsView=false;
     this.hideEntryForm();

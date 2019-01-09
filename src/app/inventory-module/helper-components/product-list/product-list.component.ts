@@ -39,6 +39,8 @@ export class ProductListComponent implements OnInit {
     for(let product of this._selectedProductList){
       product.selectedProduct=false;
     }
+    this._selectedProductList= new Array<ProductViewModel>();
+
   }
 
   public onClickSelect(index:number,value){
@@ -99,7 +101,7 @@ export class ProductListComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: false,
-      searching: true,
+      searching: false,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
         this.getProductList(dataTablesParameters, callback);
       },
