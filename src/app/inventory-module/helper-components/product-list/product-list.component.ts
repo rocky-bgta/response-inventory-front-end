@@ -101,7 +101,7 @@ export class ProductListComponent implements OnInit {
       pageLength: 10,
       serverSide: true,
       processing: false,
-      searching: false,
+      searching: true,
       ajax: (dataTablesParameters: DataTableRequest, callback) => {
         this.getProductList(dataTablesParameters, callback);
       },
