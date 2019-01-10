@@ -45,6 +45,10 @@
               <span *ngIf="productForm.controls['name'].hasError('maxlength') " class="custom-invalid-feedback">
                 Max character for Brand Name is 50
               </span>
+              <span *ngIf="productForm.controls['name'].hasError('pattern') " class="custom-invalid-feedback">
+                Invalid Character
+              </span>
+
             </div>
           </div>
 

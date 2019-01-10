@@ -444,9 +444,12 @@ export class ProductComponent implements OnInit {
   }
 
   private initializeReactiveFormValidation(){
+    let allowedCharacter="^[a-zA-Z0-9 \\\\/,=()!@#%:_.-]*$";
     //========== form validation ==========
     this.productForm = this.formBuilder.group({
-      name: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
+      name: ['', Validators.compose([Validators.required,
+        Validators.maxLength(50),
+      Validators.pattern(allowedCharacter)])],
       categories: ['',Validators.required],
       brands: ['',],
       modelNo: ['',Validators.compose([Validators.required, Validators.maxLength(50)])],
