@@ -58,7 +58,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public vendorModelList: Array<VendorModel> = new Array<VendorModel>();
-  //public productModelList: Array<ProductModel> = new Array<ProductModel>();
+  public productModelList: Array<ProductModel> = new Array<ProductModel>();
   //private _productModel:ProductModel;
 
   public storeInProductViewModel: StoreInProductViewModel = new StoreInProductViewModel();
@@ -71,13 +71,14 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   //helper variable==========
   private _storeName: string;
   private _vendorName: string;
-  //private _productName:string;
+  public selectedProductIdFromDropdownMenu:string;
 //========== Variables for this page business =====================================================
 
 
   //get by id as jQuery and access native property of element
   @ViewChild('storeDropDown') storeDropDownRef: ElementRef;
   @ViewChild('barcode') barcodeRef: ElementRef;
+
 
   //get by id as jQuery and access native property of element
 
@@ -104,6 +105,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
     this.getStoreList();
     this.getVendorList();
+    this.getProductList();
 
     //for the time being ============
     this.storeInProductViewModel.entryDate = new Date();
@@ -139,8 +141,6 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
         return;
       }
     }
-
-
   }
 
   public onClickSave(dynamicForm: NgForm) {
@@ -158,19 +158,40 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.storeSelected = false;
     this.vendorSelected = false;
     this.productAdded = false;
+    this.selectedProductIdFromDropdownMenu = null;
   }
 
   public onClickClearAllAddedProduct() {
     this.storeInProductViewModelList = new Array<StoreInProductViewModel>();
+    this.selectedProductIdFromDropdownMenu = null;
   }
 
   public onClearStore() {
     this.storeSelected = false;
+    this.selectedProductIdFromDropdownMenu=null;
   }
 
   public onClearVendor() {
     this.vendorSelected = false;
+    if(!this.vendorSelected){
+      this.selectedProductIdFromDropdownMenu=null;
+    }
   }
+
+  public onChangeProduct(productModel:ProductModel){
+    let isProductContainedInList:boolean;
+    if(productModel!==undefined) {
+      isProductContainedInList = this.checkIsProductAlreadyAddedToList(productModel.id);
+      if (!isProductContainedInList) {
+        this.storeInProductViewModel.productName = productModel.name;
+        this.storeInProductViewModel.productId = productModel.id;
+        this.storeInProductViewModel.price = productModel.price;
+        this.setTotalPrice();
+        this.addProductToList()
+      }
+    }
+  }
+
 
   public onClickRemoveRow(index) {
     //Util.logConsole("Remove index: "+index);
@@ -238,11 +259,33 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   }
 
+  private getProductList(){
+    this.productService.getList(null).subscribe(
+      (responseMessage: ResponseMessage) => {
 
- /* public onFocusOutQuantityEvent() {
-    this.setTotalPrice();
+        if (responseMessage.httpStatus == HttpStatusCode.OK) {
+          this.productModelList = <Array<ProductModel>>responseMessage.data;
+          return;
+        } else {
+          this.toaster.error(responseMessage.message, this.pageTitle);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) => {
+        this.toaster.error('Failed to save Store in Product', this.pageTitle);
+        if (httpErrorResponse.error instanceof ErrorEvent) {
+          Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
+        } else {
+          this.toaster.error('There is a problem with the service. We are notified and working on it', this.pageTitle);
+          Util.logConsole(httpErrorResponse, "Server Side error occurred");
+        }
+        return;
+      }
+    );
+    return;
   }
-*/
+
   public onFocusOutQuantityRowEvent(index: number) {
     this.setTotalPrice(index);
   }
@@ -481,6 +524,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.storeInProductViewModel.productName = null;
     this.storeInProductViewModel.totalPrice = null;
     this.productAdded = false;
+    this.selectedProductIdFromDropdownMenu = null;
   }
 
   private initializeReactiveFormValidation(): void {
@@ -488,6 +532,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.entryForm = this.formBuilder.group({
       store: ['', Validators.compose([Validators.required])],
       vendor: ['', Validators.compose([Validators.required])],
+      productList: [''],
       barcode: ['', Validators.compose([Validators.maxLength(20)])],
       //price: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
       //quantity: ['', Validators.compose([Validators.max(100)])],
