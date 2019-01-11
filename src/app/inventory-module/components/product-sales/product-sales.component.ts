@@ -18,7 +18,6 @@ import {ProductSalesService} from "../../service/product-sales.service";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import * as _ from 'lodash';
 import {RequestMessage} from "../../../core/model/request-message";
-import {StoreSalesProductsService} from "../../service/store-sales-products.service";
 
 declare var jQuery: any;
 
@@ -65,7 +64,6 @@ export class ProductSalesComponent implements OnInit {
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
               private toaster: ToastrService,
-              private storeSalesProductsService: StoreSalesProductsService,
               private productSalesService: ProductSalesService,
               public  ngxSmartModalService: NgxSmartModalService) {
   }
@@ -433,10 +431,9 @@ export class ProductSalesComponent implements OnInit {
 
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(this.productSalesViewModel);
-    Util.logConsole(requestMessage,"request message");
-    return;
+    //Util.logConsole(requestMessage,"request message");
     //requestMessage.list = this.availableSalesProductViewModelList;
-    this.storeSalesProductsService.save(requestMessage).subscribe
+    this.productSalesService.saveSalesProduct(requestMessage).subscribe
     (
       (responseMessage: ResponseMessage) =>
       {
@@ -490,6 +487,7 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel.storeId=null;
     this.productSalesViewModel.productId=null;
     this.productSalesViewModel.customerId=null;
+    this.setInvoiceNo();
     //this.storeSalesProductViewModel.salesMethod=null;
   }
 

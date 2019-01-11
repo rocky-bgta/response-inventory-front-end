@@ -12,8 +12,8 @@ export class ProductSalesService {
   constructor(private httpRequestHelperService: HttpRequestHelperService) {
   }
 
-  save(data): Observable<any> {
-    return this.httpRequestHelperService.postRequest(InventoryApiEndPoint.storeInProducts, data);
+  saveSalesProduct(data): Observable<any> {
+    return this.httpRequestHelperService.postRequest(InventoryApiEndPoint.storeSalesProducts, data);
   }
 
   getAllAvailableProduct(queryParameter:any): Observable<any> {
