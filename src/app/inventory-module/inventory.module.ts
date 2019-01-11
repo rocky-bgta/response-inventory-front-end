@@ -22,6 +22,7 @@ import {StockComponent} from './components/stock/stock.component';
 import {SaveConfirmationModalComponent} from "../core/components/save-confirmation-modal/save-confirmation-modal.component";
 import {ProductSalesReportComponent} from "./components/product-sales-report/product-sales-report.component";
 import {ProductListComponent} from './helper-components/product-list/product-list.component';
+import { ProductSalesComponent } from './components/product-sales/product-sales.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {ProductListComponent} from './helper-components/product-list/product-lis
     CustomerComponent,
     StockComponent,
     ProductSalesReportComponent,
-    ProductListComponent
+    ProductListComponent,
+    ProductSalesComponent
   ],
   imports: [
     [
