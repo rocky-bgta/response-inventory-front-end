@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {StoreService} from "../../service/store.service";
 import {StoreInProductsService} from "../../service/store-in-products.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {NgxSmartModalService} from "ngx-smart-modal";
 import {StoreModel} from "../../model/store-model";
@@ -17,7 +17,9 @@ import {CustomObject} from "../../../core/interface/CustomObject";
 import {ProductSalesService} from "../../service/product-sales.service";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import * as _ from 'lodash';
-import {StoreSalesProductViewModel} from "../../model/view-model/store-sales-product-view-model";
+import {RequestMessage} from "../../../core/model/request-message";
+import {StoreSalesProductsService} from "../../service/store-sales-products.service";
+
 declare var jQuery: any;
 
 @Component({
@@ -29,6 +31,15 @@ export class ProductSalesComponent implements OnInit {
 
   public pageTitle: string = "Product Sales";
   public entryForm: FormGroup;
+  //get by id as jQuery and access native property of element
+  //@ViewChild('productList') productDropDownRef :ElementRef ;
+
+  //======= save modal text ======================================
+  public modalHeader: string;
+  public modalBodyText:string = "You are about to confirm sales, of those selected products";
+  //======= save modal text ======================================
+
+
 
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public productModelList: Array<ProductModel> = new Array<ProductModel>();
@@ -42,7 +53,7 @@ export class ProductSalesComponent implements OnInit {
 
   public selectedProductListForSales: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
 
-  public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
+  //public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
 
   public grandTotalSalesPrice:number = 0;
 
@@ -51,17 +62,40 @@ export class ProductSalesComponent implements OnInit {
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
               private toaster: ToastrService,
+              private storeSalesProductsService: StoreSalesProductsService,
               private productSalesService: ProductSalesService,
               public  ngxSmartModalService: NgxSmartModalService) {
   }
 
 
   public isStoreSelected:boolean=false;
+  public isProductSelected:boolean=false;
 
   ngOnInit() {
     this.initializeReactiveFormValidation();
     this.getStoreList();
     this.getCustomerList();
+    this.setInvoiceNo();
+  }
+
+  public onClickConfirmSales(dynamicForm:NgForm){
+    if(!dynamicForm.invalid) {
+      this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
+      this.productSalesViewModel.grandTotal = this.grandTotalSalesPrice;
+      Util.logConsole(this.productSalesViewModel);
+      this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+
+      return
+    }else {
+      this.toaster.info("Please correct entered sales products value");
+    }
+    return;
+  }
+
+  public onClickSaveConfirmationOfModal(isConfirm:boolean){
+    if(isConfirm){
+      this.saveStoreSalesProduct();
+    }
   }
 
   public onChangeStore(event:StoreModel) {
@@ -76,7 +110,11 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onClearStore() {
+    let length:number;
     this.isStoreSelected=false;
+    this.productSalesViewModel.productId=null;
+    //lenght = this.selectedProductListForSales.length;
+    //this.selectedProductListForSales.splice(0,length);
   }
 
   public onChangeCustomer(event, customerId: string) {
@@ -91,11 +129,17 @@ export class ProductSalesComponent implements OnInit {
     if(event!==undefined) {
       this.searchRequestParameter.productId = event.id;
       this.getAvailableProductsForSales(this.searchRequestParameter);
+      //Util.logConsole(this.productDropDownRef);
+      //this.productDropDownRef.nativeElement.clear();
+      //event.id=null;
+      //this.productSalesViewModel.productId=null;
+      this.isProductSelected=true;
+
     }
   }
 
   public onClearProduct() {
-
+    //this.isProductSelected=true;
   }
 
   public onFocusOutSalesPriceRowEvent(index:number, salesPrice:number){
@@ -121,11 +165,10 @@ export class ProductSalesComponent implements OnInit {
     this.setRowWiseTotalPrice(index);
   }
 
-
-
   public onClickRemoveRow(index){
     this.selectedProductListForSales[index].required=false;
     this.selectedProductListForSales.splice(index,1);
+    this.setGrandTotalSalesPrice();
   }
 
   public onFocusOutPaidAmount(paidAmount:number){
@@ -139,7 +182,7 @@ export class ProductSalesComponent implements OnInit {
     }else if(paidAmount<this.grandTotalSalesPrice){
       dueAmount = this.grandTotalSalesPrice - paidAmount;
     }
-    this.storeSalesProductViewModel.dueAmount = dueAmount;
+    this.productSalesViewModel.dueAmount = dueAmount;
   }
 
   private verifyAvailableQuantity(index:number, salesQty:number):boolean{
@@ -187,7 +230,7 @@ export class ProductSalesComponent implements OnInit {
       grandTotal+= product.totalPrice;
     }
     this.grandTotalSalesPrice = grandTotal;
-    this.storeSalesProductViewModel.paidAmount = grandTotal;
+    this.productSalesViewModel.paidAmount = grandTotal;
   }
 
   private getAvailableProductsForSales(searchRequestParameter:any){
@@ -330,7 +373,7 @@ export class ProductSalesComponent implements OnInit {
 
   private addAvailableProductToSalesProductList(availableProductList:Array<SalesProductViewModel>){
     let isProductContainedInList:boolean;
-    let salesProductViewModel:SalesProductViewModel;// = new SalesProductViewModel();
+    let salesProductViewModel:SalesProductViewModel;
 
     for(let product of availableProductList){
       isProductContainedInList = this.checkIsProductAlreadyAddedToList(product.productId);
@@ -342,18 +385,70 @@ export class ProductSalesComponent implements OnInit {
         this.selectedProductListForSales.push(salesProductViewModel);
       }
     }
+  }
 
-
-    //let productModel: ProductModel;
-    //productModel = await this.getProductByBarcode(barcode);
-    //isProductContainedInList = this.checkIsProductAlreadyAddedToList(productModel.id);
-    //if (!isProductContainedInList) {
-        //this.storeInProductViewModel.productName = productModel.name;
-        //this.storeInProductViewModel.productId = productModel.id;
-        //this.storeInProductViewModel.price = productModel.price;
-        //this.setTotalPrice();
-        //this.addProductToList();
+  private setInvoiceNo(){
+    let invoiceNo:string;
+    //if(this.selectedProductListForSales!=null && this.selectedProductListForSales.length>0){
+      invoiceNo = Util.getInvoiceNo();
+      this.productSalesViewModel.invoiceNo =invoiceNo;
+      this.modalHeader = invoiceNo;
    // }
+  }
+
+  private saveStoreSalesProduct(){
+    this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
+
+    let requestMessage: RequestMessage;
+    requestMessage = Util.getRequestMessage(this.productSalesViewModel);
+    Util.logConsole(requestMessage,"request message");
+    return;
+    //requestMessage.list = this.availableSalesProductViewModelList;
+    this.storeSalesProductsService.save(requestMessage).subscribe
+    (
+      (responseMessage: ResponseMessage) =>
+      {
+        if(responseMessage.httpStatus== HttpStatusCode.CONFLICT) {
+          this.toaster.info(responseMessage.message, this.pageTitle);
+        }else if(responseMessage.httpStatus==HttpStatusCode.FAILED_DEPENDENCY) {
+          this.toaster.error(responseMessage.message,this.pageTitle);
+        }else if(responseMessage.httpStatus==HttpStatusCode.CREATED){
+          this.toaster.success( responseMessage.message,this.pageTitle);
+          this.resetPage();
+          return;
+        }else {
+          this.toaster.error(responseMessage.message,this.pageTitle);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        this.toaster.error('Failed to save Store in Product',this.pageTitle);
+        if (httpErrorResponse.error instanceof ErrorEvent) {
+          Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
+        } else {
+          this.toaster.error('There is a problem with the service. We are notified and working on it',this.pageTitle);
+          Util.logConsole(httpErrorResponse,"Server Side error occurred" );
+        }
+        return;
+      }
+    );
+    return;
+  }
+
+  private resetPage(){
+    let length:number=this.selectedProductListForSales.length;
+    this.productSalesViewModel = new ProductSalesViewModel();
+    this.isStoreSelected=false;
+    this.isProductSelected=false;
+    //this.iscustomerSelected=false;
+
+    this.selectedProductListForSales.splice(0,length);
+    this.productSalesViewModel.storeId=null;
+    this.productSalesViewModel.productId=null;
+    this.productSalesViewModel.customerId=null;
+    //this.storeSalesProductViewModel.salesMethod=null;
   }
 
   private initializeReactiveFormValidation(): void {

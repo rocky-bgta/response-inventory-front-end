@@ -3,7 +3,7 @@
   <div class="card" style="padding: 0">
 
     <div class="card-header">
-
+      <strong>Select Products for Sales</strong>
     </div>
 
     <div class="card-body" style="height: 300px">
@@ -40,7 +40,7 @@
             <div class="col-sm-12">
               <label for="store" class="lb-sm">Product:</label>
               <ng-select [items]="productModelList"
-                         #product
+                         #productList
                          id="product"
                          name="product"
                          bindLabel="name"
@@ -90,14 +90,24 @@
 
 </form>
 
-<!--[hidden]="availableSalesProductViewModelList?.length==0-->
+<!--
+<div class="card" style="margin-top: 1%"
+     *ngIf="(selectedProductListForSales?.length==0) && (isStoreSelected && isProductSelected)">
+  <div class="card-body">
+    <div class="header">
+      <strong>No Product available for Sales for this store !!!</strong>
+    </div>
+  </div>
+</div>
+-->
 
-<div class="card" style="margin-top: 1%">
+
+<div class="card" style="margin-top: 1%" [hidden]="selectedProductListForSales?.length==0">
   <form #dynamicForm="ngForm" novalidate autocomplete="off">
 
     <div class="card-header">
 
-     <!-- <strong>Invoice No:&nbsp; {{storeSalesProductViewModel.invoiceNo}}</strong>-->
+     <strong>Invoice No:&nbsp; {{productSalesViewModel.invoiceNo}}</strong>
 
     </div>
     <div class="card-body custom-scroll-x-y">
@@ -199,14 +209,17 @@
           <td class="align-baseline">
 
             <div class="row" style="margin-right: 0px;">
-              <div class="col-sm-4">
+
+             <!-- <div class="col-sm-4">
                 <button
                   placement="top"
                   class="btn btn-sm btn-pill btn-outline-info"
                   type="button">
                   <i class="fa fa-pencil-square"></i>
                 </button>
-              </div>
+              </div>-->
+
+
               <div class="col-sm-6">
                 <button
                   placement="top"
@@ -229,7 +242,7 @@
         </tr>
         </tbody>
 
-        <tbody *ngIf="availableSalesProductViewModelList?.length == 0">
+        <tbody *ngIf="selectedProductListForSales?.length == 0">
         <tr>
           <td colspan="12" class="no-data-available">No data!</td>
         </tr>
@@ -246,7 +259,7 @@
                      #paidAmount
                      maxlength="8"
                      pattern="^((?!(0))[0-9]{1,10})$"
-                     (focusout)="onFocusOutPaidAmount(storeSalesProductViewModel.paidAmount)"
+                     (focusout)="onFocusOutPaidAmount(productSalesViewModel.paidAmount)"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                      type="text"
                      [ngClass]="{ 'is-invalid': paidAmount.errors?.required || paidAmount.errors?.pattern}"
@@ -255,7 +268,7 @@
                      [attr.disabled]="grandTotalSalesPrice==0?'':null"
                      autocomplete="off"
                      name="paidAmount"
-                     [(ngModel)]="storeSalesProductViewModel.paidAmount">
+                     [(ngModel)]="productSalesViewModel.paidAmount">
             </div>
           </td>
           <td colspan="2">
@@ -268,7 +281,7 @@
                      disabled
                      id="dueAmount"
                      name="dueAmount"
-                     [(ngModel)]="storeSalesProductViewModel.dueAmount">
+                     [ngModel]="productSalesViewModel.dueAmount">
 
             </div>
 
@@ -306,3 +319,9 @@
 
   </form>
 </div>
+
+<save-confirmation-modal
+  [header]="modalHeader"
+  [body]="modalBodyText"
+  (isConfirm)="onClickSaveConfirmationOfModal($event)">
+</save-confirmation-modal>
