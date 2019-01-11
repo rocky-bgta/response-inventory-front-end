@@ -46,6 +46,8 @@ export class ProductSalesComponent implements OnInit {
 
   public grandTotalSalesPrice:number = 0;
 
+  private _saleQuantity:number;
+
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
               private storeInProductService: StoreInProductsService,
@@ -113,6 +115,7 @@ export class ProductSalesComponent implements OnInit {
 
   public onFocusOutSalesQtyRowEvent(index:number, salesQty:number){
     let availableQty:number;
+    this._saleQuantity = salesQty;
     availableQty = this.selectedProductListForSales[index].available;
     if(salesQty>availableQty){
       this.selectedProductListForSales[index].salesQty = availableQty;
@@ -120,6 +123,8 @@ export class ProductSalesComponent implements OnInit {
     //this.setGrandTotalSalesPrice();
     this.setRowWiseTotalPrice(index);
   }
+
+
 
   public onClickRemoveRow(index){
     this.selectedProductListForSales[index].required=false;
@@ -138,6 +143,17 @@ export class ProductSalesComponent implements OnInit {
       dueAmount = this.grandTotalSalesPrice - paidAmount;
     }
     this.storeSalesProductViewModel.dueAmount = dueAmount;
+  }
+
+  private verifyAvailableQuantity(index:number, salesQty:number):boolean{
+    let isAllowedInputSalesQty:boolean=true;
+    let availableQty:number;
+    availableQty = this.selectedProductListForSales[index].available;
+    if(salesQty>availableQty){
+      this.selectedProductListForSales[index].salesQty = availableQty;
+      isAllowedInputSalesQty = false;
+    }
+    return isAllowedInputSalesQty;
   }
 
   private verifySalesPrice(index:number, salesPrice):boolean{
@@ -287,16 +303,28 @@ export class ProductSalesComponent implements OnInit {
 
   private checkIsProductAlreadyAddedToList(productId: string): boolean {
     let isProductContainedInList:boolean=false;
+    let isAllowedInputSalesQty:boolean;
+
     let salesProductViewModel: SalesProductViewModel;
     let index: number;
+    let salesQty:number;
+
     salesProductViewModel = _.find(this.selectedProductListForSales, {productId});
 
     if (salesProductViewModel != null && !_.isEmpty(salesProductViewModel)) {
       isProductContainedInList=true;
+      // if product exist then do not add new row just increase qty
       index = _.findIndex(this.selectedProductListForSales, {productId: productId});
       if (!_.isNaN(index)) {
-        this.selectedProductListForSales[index].salesQty += 1;
-        //this.setTotalPrice(index);
+
+        salesQty = this.selectedProductListForSales[index].salesQty;
+        salesQty = salesQty+1;
+
+        isAllowedInputSalesQty = this.verifyAvailableQuantity(index,salesQty);
+        if(isAllowedInputSalesQty==true) {
+          this.selectedProductListForSales[index].salesQty = salesQty;
+          this.setRowWiseTotalPrice(index);
+        }
       }
     }
     return isProductContainedInList;
@@ -307,9 +335,14 @@ export class ProductSalesComponent implements OnInit {
     let salesProductViewModel:SalesProductViewModel;// = new SalesProductViewModel();
 
     for(let product of availableProductList){
-      salesProductViewModel = new SalesProductViewModel();
-      salesProductViewModel = _.clone(product);
-      this.selectedProductListForSales.push(salesProductViewModel);
+      isProductContainedInList = this.checkIsProductAlreadyAddedToList(product.productId);
+      if(!isProductContainedInList) {
+        salesProductViewModel = new SalesProductViewModel();
+        salesProductViewModel = _.clone(product);
+        salesProductViewModel.salesPrice=0;
+        salesProductViewModel.salesQty=1;
+        this.selectedProductListForSales.push(salesProductViewModel);
+      }
     }
 
 
