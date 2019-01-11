@@ -504,6 +504,7 @@ export class ProductSalesComponent implements OnInit {
       quantity: ['', Validators.compose([Validators.max(100)])],
       buyPrice: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
       salesPrice: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
+      customerName: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
     });
   }
 
