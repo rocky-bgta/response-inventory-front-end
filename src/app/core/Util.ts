@@ -142,4 +142,15 @@ export class Util{
     invoiceNo = "INV-"+timestamp;
     return invoiceNo;
   }
+
+  public static isNullOrUndefined(value):boolean{
+    let isNullOrUndefined:boolean;
+    if(value===undefined || value==null){
+      isNullOrUndefined = true;
+    }else {
+      isNullOrUndefined = false;
+    }
+     return isNullOrUndefined;
+  }
+
 }

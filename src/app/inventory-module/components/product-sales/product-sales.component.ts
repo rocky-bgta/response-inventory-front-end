@@ -17,6 +17,7 @@ import {CustomObject} from "../../../core/interface/CustomObject";
 import {ProductSalesService} from "../../service/product-sales.service";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import * as _ from 'lodash';
+import {StoreSalesProductViewModel} from "../../model/view-model/store-sales-product-view-model";
 declare var jQuery: any;
 
 @Component({
@@ -40,6 +41,8 @@ export class ProductSalesComponent implements OnInit {
   public availableSalesProductViewModelList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
 
   public selectedProductListForSales: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
+
+  public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
 
   public grandTotalSalesPrice:number = 0;
 
@@ -103,21 +106,45 @@ export class ProductSalesComponent implements OnInit {
       //this.setGrandTotalSalesPrice();
     }
     else {
-      this.availableSalesProductViewModelList[index].salesPrice=0;
-      this.availableSalesProductViewModelList[index].totalPrice=0;
+      this.selectedProductListForSales[index].salesPrice=0;
+      this.selectedProductListForSales[index].totalPrice=0;
     }
   }
 
+  public onFocusOutSalesQtyRowEvent(index:number, salesQty:number){
+    let availableQty:number;
+    availableQty = this.selectedProductListForSales[index].available;
+    if(salesQty>availableQty){
+      this.selectedProductListForSales[index].salesQty = availableQty;
+    }
+    //this.setGrandTotalSalesPrice();
+    this.setRowWiseTotalPrice(index);
+  }
+
   public onClickRemoveRow(index){
-    this.availableSalesProductViewModelList[index].required=false;
-    this.availableSalesProductViewModelList.splice(index,1);
+    this.selectedProductListForSales[index].required=false;
+    this.selectedProductListForSales.splice(index,1);
+  }
+
+  public onFocusOutPaidAmount(paidAmount:number){
+    this.setDueAmount(paidAmount);
+  }
+
+  private setDueAmount(paidAmount:number){
+    let dueAmount:number;
+    if(this.grandTotalSalesPrice == paidAmount){
+      dueAmount =0;
+    }else if(paidAmount<this.grandTotalSalesPrice){
+      dueAmount = this.grandTotalSalesPrice - paidAmount;
+    }
+    this.storeSalesProductViewModel.dueAmount = dueAmount;
   }
 
   private verifySalesPrice(index:number, salesPrice):boolean{
     let buyPrice:number;
     let isSalesPriceAllowed:boolean=false;
     if(index!=null && !_.isNaN(index)){
-      buyPrice = this.availableSalesProductViewModelList[index].buyPrice;
+      buyPrice = this.selectedProductListForSales[index].buyPrice;
       if(salesPrice<buyPrice){
         isSalesPriceAllowed = false;
       }else {
@@ -131,22 +158,22 @@ export class ProductSalesComponent implements OnInit {
     let salesPrice: number;
     let salesQty:number;
     let totalPrice:number;
-    salesPrice = this.availableSalesProductViewModelList[index].salesPrice;
-    salesQty = this.availableSalesProductViewModelList[index].salesQty;
-    if(index!=null && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))){
+    salesPrice = this.selectedProductListForSales[index].salesPrice;
+    salesQty = this.selectedProductListForSales[index].salesQty;
+    if(index!=null && !Util.isNullOrUndefined(salesQty) && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))){
       totalPrice = salesPrice * salesQty;
-      this.availableSalesProductViewModelList[index].totalPrice = totalPrice;
+      this.selectedProductListForSales[index].totalPrice = totalPrice;
       this.setGrandTotalSalesPrice();
     }
   }
 
   private setGrandTotalSalesPrice(){
     let grandTotal:number=0;
-    for(let product of this.availableSalesProductViewModelList){
+    for(let product of this.selectedProductListForSales){
       grandTotal+= product.totalPrice;
     }
     this.grandTotalSalesPrice = grandTotal;
-    //this.storeSalesProductViewModel.paidAmount = grandTotal;
+    this.storeSalesProductViewModel.paidAmount = grandTotal;
   }
 
   private getAvailableProductsForSales(searchRequestParameter:any){
@@ -156,7 +183,7 @@ export class ProductSalesComponent implements OnInit {
         if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
           this.availableSalesProductViewModelList = <Array<SalesProductViewModel>>responseMessage.data;
           this.addAvailableProductToSalesProductList(this.availableSalesProductViewModelList);
-          Util.logConsole(this.availableSalesProductViewModelList);
+          //Util.logConsole(this.availableSalesProductViewModelList);
         } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
           this.toaster.error(responseMessage.message, this.pageTitle);
           return;
