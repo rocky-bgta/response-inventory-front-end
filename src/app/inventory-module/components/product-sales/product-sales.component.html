@@ -23,7 +23,6 @@
                          (change)="onChangeStore($event)"
                          (clear)="onClearStore()"
                          [(ngModel)]="productSalesViewModel.storeId"
-                         [ngClass]="{ 'custom-invalid-ng-select': entryForm.controls['store']?.hasError('required') }"
                          formControlName="store"
                          placeholder="Select Store">
               </ng-select>
@@ -52,6 +51,29 @@
                          formControlName="product"
                          placeholder="Select Product">
               </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="barcode" class="lb-sm">Barcode:</label>
+
+              <input class="form-control"
+                     #barcode
+                     type="text"
+                     id="barcode"
+                     [attr.disabled]="isDisableBarcodeInput()?'':null"
+                     (focus)="onFocusBarcode()"
+                     (change)="onChangeBarcode(productSalesViewModel.barcode,$event)"
+                     formControlName="barcode"
+                     autocomplete="off"
+                     name="barcode"
+                     [(ngModel)]="productSalesViewModel.barcode">
+              <span *ngIf="entryForm.controls['barcode'].hasError('maxlength') " class="custom-invalid-feedback">
+                Maximum character for barcode is 20
+              </span>
             </div>
           </div>
         </div>

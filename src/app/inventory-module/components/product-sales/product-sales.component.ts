@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {StoreService} from "../../service/store.service";
 import {StoreInProductsService} from "../../service/store-in-products.service";
 import {FormBuilder, FormGroup, NgForm, Validators} from "@angular/forms";
@@ -33,6 +33,7 @@ export class ProductSalesComponent implements OnInit {
   public entryForm: FormGroup;
   //get by id as jQuery and access native property of element
   //@ViewChild('productList') productDropDownRef :ElementRef ;
+  @ViewChild('barcode') barcodeRef :ElementRef ;
 
   //======= save modal text ======================================
   public modalHeader: string;
@@ -56,6 +57,8 @@ export class ProductSalesComponent implements OnInit {
   //public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
 
   public grandTotalSalesPrice:number = 0;
+
+  //private barcode:string;
 
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
@@ -104,18 +107,21 @@ export class ProductSalesComponent implements OnInit {
       this.isStoreSelected=true;
       this.getProductListByStoreId(event.id);
       this.searchRequestParameter.storeId = event.id;
+      this.setFocusOnBarcodeInputTextBox();
       //this.getAvailableProductsForSales(this.searchRequestParameter);
     }
 
   }
 
   public onClearStore() {
-    let length:number;
+    //let length:number;
     this.isStoreSelected=false;
     this.productSalesViewModel.productId=null;
-    //lenght = this.selectedProductListForSales.length;
+    //length = this.selectedProductListForSales.length;
     //this.selectedProductListForSales.splice(0,length);
   }
+
+
 
   public onChangeCustomer(event, customerId: string) {
 
@@ -128,6 +134,7 @@ export class ProductSalesComponent implements OnInit {
   public onChangeProduct(event:ProductModel) {
     if(event!==undefined) {
       this.searchRequestParameter.productId = event.id;
+      this.searchRequestParameter.barcode=null;
       this.getAvailableProductsForSales(this.searchRequestParameter);
       //Util.logConsole(this.productDropDownRef);
       //this.productDropDownRef.nativeElement.clear();
@@ -140,6 +147,19 @@ export class ProductSalesComponent implements OnInit {
 
   public onClearProduct() {
     //this.isProductSelected=true;
+  }
+
+  public onChangeBarcode(barcode:string, event){
+    this.productSalesViewModel.barcode=null;
+    this.searchRequestParameter.productId=null;
+    this.searchRequestParameter.barcode = barcode;
+    this.getAvailableProductsForSales(this.searchRequestParameter);
+    event.target.select();
+    event.target.value="";
+  }
+
+  public onFocusBarcode(){
+    this.productSalesViewModel.productId=null;
   }
 
   public onFocusOutSalesPriceRowEvent(index:number, salesPrice:number){
@@ -175,6 +195,10 @@ export class ProductSalesComponent implements OnInit {
     this.setDueAmount(paidAmount);
   }
 
+  public onClickReset(){
+    this.resetPage();
+  }
+
   private setDueAmount(paidAmount:number){
     let dueAmount:number;
     if(this.grandTotalSalesPrice == paidAmount){
@@ -183,6 +207,14 @@ export class ProductSalesComponent implements OnInit {
       dueAmount = this.grandTotalSalesPrice - paidAmount;
     }
     this.productSalesViewModel.dueAmount = dueAmount;
+  }
+
+  public isDisableBarcodeInput():boolean{
+    if(this.isStoreSelected)
+      return false;
+    else {
+      return true;
+    }
   }
 
   private verifyAvailableQuantity(index:number, salesQty:number):boolean{
@@ -435,6 +467,16 @@ export class ProductSalesComponent implements OnInit {
       }
     );
     return;
+  }
+
+  private setFocusOnBarcodeInputTextBox(){
+    //Util.logConsole(this.barcodeRef.nativeElement);
+    if(this.isStoreSelected){
+      //this.barcodeRef.nativeElement.dis
+      this.barcodeRef.nativeElement.disabled=false;
+      this.barcodeRef.nativeElement.focus();
+      //this.barcodeRef.nativeElement.focus();
+    }
   }
 
   private resetPage(){
