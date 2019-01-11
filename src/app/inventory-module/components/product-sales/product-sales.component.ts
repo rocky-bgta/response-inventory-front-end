@@ -46,8 +46,6 @@ export class ProductSalesComponent implements OnInit {
 
   public grandTotalSalesPrice:number = 0;
 
-  private _saleQuantity:number;
-
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
               private storeInProductService: StoreInProductsService,
@@ -115,7 +113,6 @@ export class ProductSalesComponent implements OnInit {
 
   public onFocusOutSalesQtyRowEvent(index:number, salesQty:number){
     let availableQty:number;
-    this._saleQuantity = salesQty;
     availableQty = this.selectedProductListForSales[index].available;
     if(salesQty>availableQty){
       this.selectedProductListForSales[index].salesQty = availableQty;
@@ -186,6 +183,7 @@ export class ProductSalesComponent implements OnInit {
   private setGrandTotalSalesPrice(){
     let grandTotal:number=0;
     for(let product of this.selectedProductListForSales){
+      if(Util.isNullOrUndefined(product.totalPrice)==false)
       grandTotal+= product.totalPrice;
     }
     this.grandTotalSalesPrice = grandTotal;
