@@ -82,26 +82,34 @@ export class ProductSalesComponent implements OnInit {
     this.setInvoiceNo();
   }
 
+  private setModelForSave() {
+    this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
+    this.productSalesViewModel.grandTotal = this.grandTotalSalesPrice;
+    Util.logConsole(this.productSalesViewModel);
+    this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+  }
+
   public onClickSave(dynamicForm: NgForm) {
     this.formSubmitted = true;
-    let isCustomerInformationValid:boolean;
+    let isCustomerInformationValid: boolean;
 
     if (!dynamicForm.invalid) {
 
-      //manually required field check for customer
-      if(!this.isCustomerSelected){
+      //manually required field check for customer ==================
+      if (!this.isCustomerSelected) {
         isCustomerInformationValid = this.customerRequiredInfoCheck();
-        if(isCustomerInformationValid){
-          this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
-          this.productSalesViewModel.grandTotal = this.grandTotalSalesPrice;
-          Util.logConsole(this.productSalesViewModel);
-          this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+        if (isCustomerInformationValid) {
+          this.setModelForSave();
           return
-        }else {
+        } else {
           this.toaster.info("Please enter customer information");
         }
+        //manually required field check for customer ===============
+      } else {
+        this.setModelForSave();
+        return
       }
-    }else {
+    } else {
       this.toaster.info("Please correct entered sales products value");
     }
     return;
@@ -520,6 +528,7 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel.customerId = null;
     this.formSubmitted = false;
     this.setInvoiceNo();
+    this.customerModel = new CustomerModel();
     //this.storeSalesProductViewModel.salesMethod=null;
   }
 
@@ -542,9 +551,9 @@ export class ProductSalesComponent implements OnInit {
     });
   }
 
-  private customerRequiredInfoCheck():boolean{
-    if(!this.isCustomerSelected){
-      if(this.customerModel.name!=null && this.customerModel.phoneNo1!=null)
+  private customerRequiredInfoCheck(): boolean {
+    if (!this.isCustomerSelected) {
+      if (this.customerModel.name != null && this.customerModel.phoneNo1 != null)
         return true;
       else
         return false;
