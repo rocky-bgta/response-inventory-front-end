@@ -30,6 +30,7 @@ export class ProductSalesComponent implements OnInit {
 
   public pageTitle: string = "Product Sales";
   public entryForm: FormGroup;
+  public formSubmitted:boolean=false;
   //get by id as jQuery and access native property of element
   //@ViewChild('productList') productDropDownRef :ElementRef ;
   @ViewChild('barcode') barcodeRef :ElementRef ;
@@ -46,6 +47,7 @@ export class ProductSalesComponent implements OnInit {
   public customerModelList: Array<CustomerModel> = new Array<CustomerModel>();
 
   public productSalesViewModel: ProductSalesViewModel = new ProductSalesViewModel();
+  public customerModel:CustomerModel = new CustomerModel();
 
   private searchRequestParameter:CustomObject = {};
 
@@ -71,6 +73,7 @@ export class ProductSalesComponent implements OnInit {
 
   public isStoreSelected:boolean=false;
   public isProductSelected:boolean=false;
+  public isCustomerSelected:boolean=false;
 
   ngOnInit() {
     this.initializeReactiveFormValidation();
@@ -79,7 +82,8 @@ export class ProductSalesComponent implements OnInit {
     this.setInvoiceNo();
   }
 
-  public onClickConfirmSales(dynamicForm:NgForm){
+  public onClickSave(dynamicForm:NgForm){
+    this.formSubmitted=true;
     if(!dynamicForm.invalid) {
       this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
       this.productSalesViewModel.grandTotal = this.grandTotalSalesPrice;
@@ -122,11 +126,12 @@ export class ProductSalesComponent implements OnInit {
 
 
   public onChangeCustomer(event, customerId: string) {
-
+    this.isCustomerSelected=true;
+    this.customerModel = new CustomerModel();
   }
 
   public onClearCustomer() {
-
+    this.isCustomerSelected=false;
   }
 
   public onChangeProduct(event:ProductModel) {
@@ -487,6 +492,7 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel.storeId=null;
     this.productSalesViewModel.productId=null;
     this.productSalesViewModel.customerId=null;
+    this.formSubmitted=false;
     this.setInvoiceNo();
     //this.storeSalesProductViewModel.salesMethod=null;
   }
@@ -504,8 +510,15 @@ export class ProductSalesComponent implements OnInit {
       quantity: ['', Validators.compose([Validators.max(100)])],
       buyPrice: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
       salesPrice: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
-      customerName: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
+      customerName: ['', Validators.compose([Validators.maxLength(50)])],
+      customerPhoneNo: ['', Validators.compose([Validators.maxLength(20)])],
+      customerAddress: ['', Validators.compose([Validators.maxLength(200)])]
     });
   }
 
 }
+/*
+
+customerName: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
+  customerPhoneNo: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+  customerAddress: ['', Validators.compose([Validators.maxLength(200)])]*/
