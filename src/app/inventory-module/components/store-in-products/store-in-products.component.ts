@@ -117,6 +117,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   }
 
+  /*
+
 
   public onClickAddProduct() {
     //set this value for validation purpose only
@@ -142,6 +144,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+
+*/
 
   public onClickSave(dynamicForm: NgForm) {
     if (!dynamicForm.invalid) {
