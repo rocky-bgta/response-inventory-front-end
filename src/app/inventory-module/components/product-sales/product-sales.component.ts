@@ -139,6 +139,7 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel.productId = null;
     length = this.selectedProductListForSales.length;
     this.selectedProductListForSales.splice(0,length);
+    this.productModelList = null;
   }
 
 
@@ -376,6 +377,7 @@ export class ProductSalesComponent implements OnInit {
           return;
         } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           this.toaster.error(response.message, this.pageTitle);
+          this.productModelList = <Array<ProductModel>>response.data;
           return;
         } else {
           Util.logConsole(response);
