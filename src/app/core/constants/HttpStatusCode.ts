@@ -1,4 +1,7 @@
 export class HttpStatusCode{
+
+  public static IM_USED = 226;
+
   /**
    * Official Documentation @ https://tools.ietf.org/html/rfc7231#section-6.3.3
    *

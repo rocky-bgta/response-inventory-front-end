@@ -1,4 +1,5 @@
 import {SalesProductViewModel} from "./sales-product-view-model";
+import {CustomerModel} from "../customer-model";
 
 export class ProductSalesViewModel{
   storeId:string;
@@ -11,6 +12,7 @@ export class ProductSalesViewModel{
   dueAmount:number;
   grandTotal:number;
   invoiceNo:string;
+  customerModel:CustomerModel;
   //================
   productId:string;
   serialNo: string;

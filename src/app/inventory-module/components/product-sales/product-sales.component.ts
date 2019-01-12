@@ -18,6 +18,7 @@ import {ProductSalesService} from "../../service/product-sales.service";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import * as _ from 'lodash';
 import {RequestMessage} from "../../../core/model/request-message";
+import {el} from "@angular/platform-browser/testing/src/browser_util";
 
 declare var jQuery: any;
 
@@ -30,16 +31,15 @@ export class ProductSalesComponent implements OnInit {
 
   public pageTitle: string = "Product Sales";
   public entryForm: FormGroup;
-  public formSubmitted:boolean=false;
+  public formSubmitted: boolean = false;
   //get by id as jQuery and access native property of element
   //@ViewChild('productList') productDropDownRef :ElementRef ;
-  @ViewChild('barcode') barcodeRef :ElementRef ;
+  @ViewChild('barcode') barcodeRef: ElementRef;
 
   //======= save modal text ======================================
   public modalHeader: string;
-  public modalBodyText:string = "You are about to confirm sales, of those selected products";
+  public modalBodyText: string = "You are about to confirm sales, of those selected products";
   //======= save modal text ======================================
-
 
 
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
@@ -47,9 +47,9 @@ export class ProductSalesComponent implements OnInit {
   public customerModelList: Array<CustomerModel> = new Array<CustomerModel>();
 
   public productSalesViewModel: ProductSalesViewModel = new ProductSalesViewModel();
-  public customerModel:CustomerModel = new CustomerModel();
+  public customerModel: CustomerModel = new CustomerModel();
 
-  private searchRequestParameter:CustomObject = {};
+  private searchRequestParameter: CustomObject = {};
 
   public availableSalesProductViewModelList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
 
@@ -57,7 +57,7 @@ export class ProductSalesComponent implements OnInit {
 
   //public storeSalesProductViewModel: StoreSalesProductViewModel = new StoreSalesProductViewModel();
 
-  public grandTotalSalesPrice:number = 0;
+  public grandTotalSalesPrice: number = 0;
 
   //private barcode:string;
 
@@ -71,9 +71,9 @@ export class ProductSalesComponent implements OnInit {
   }
 
 
-  public isStoreSelected:boolean=false;
-  public isProductSelected:boolean=false;
-  public isCustomerSelected:boolean=false;
+  public isStoreSelected: boolean = false;
+  public isProductSelected: boolean = false;
+  public isCustomerSelected: boolean = false;
 
   ngOnInit() {
     this.initializeReactiveFormValidation();
@@ -82,31 +82,41 @@ export class ProductSalesComponent implements OnInit {
     this.setInvoiceNo();
   }
 
-  public onClickSave(dynamicForm:NgForm){
-    this.formSubmitted=true;
-    if(!dynamicForm.invalid) {
-      this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
-      this.productSalesViewModel.grandTotal = this.grandTotalSalesPrice;
-      Util.logConsole(this.productSalesViewModel);
-      this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+  public onClickSave(dynamicForm: NgForm) {
+    this.formSubmitted = true;
+    let isCustomerInformationValid:boolean;
 
-      return
+    if (!dynamicForm.invalid) {
+
+      //manually required field check for customer
+      if(!this.isCustomerSelected){
+        isCustomerInformationValid = this.customerRequiredInfoCheck();
+        if(isCustomerInformationValid){
+          this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
+          this.productSalesViewModel.grandTotal = this.grandTotalSalesPrice;
+          Util.logConsole(this.productSalesViewModel);
+          this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+          return
+        }else {
+          this.toaster.info("Please enter customer information");
+        }
+      }
     }else {
       this.toaster.info("Please correct entered sales products value");
     }
     return;
   }
 
-  public onClickSaveConfirmationOfModal(isConfirm:boolean){
-    if(isConfirm){
-      this.saveStoreSalesProduct();
+  public onClickSaveConfirmationOfModal(isConfirm: boolean) {
+    if (isConfirm) {
+      this.saveSalesProduct();
     }
   }
 
-  public onChangeStore(event:StoreModel) {
+  public onChangeStore(event: StoreModel) {
     //Util.logConsole(event);
-    if(event!==undefined) {
-      this.isStoreSelected=true;
+    if (event !== undefined) {
+      this.isStoreSelected = true;
       this.getProductListByStoreId(event.id);
       this.searchRequestParameter.storeId = event.id;
       this.setFocusOnBarcodeInputTextBox();
@@ -117,33 +127,32 @@ export class ProductSalesComponent implements OnInit {
 
   public onClearStore() {
     //let length:number;
-    this.isStoreSelected=false;
-    this.productSalesViewModel.productId=null;
+    this.isStoreSelected = false;
+    this.productSalesViewModel.productId = null;
     //length = this.selectedProductListForSales.length;
     //this.selectedProductListForSales.splice(0,length);
   }
 
 
-
   public onChangeCustomer(event, customerId: string) {
-    this.isCustomerSelected=true;
+    this.isCustomerSelected = true;
     this.customerModel = new CustomerModel();
   }
 
   public onClearCustomer() {
-    this.isCustomerSelected=false;
+    this.isCustomerSelected = false;
   }
 
-  public onChangeProduct(event:ProductModel) {
-    if(event!==undefined) {
+  public onChangeProduct(event: ProductModel) {
+    if (event !== undefined) {
       this.searchRequestParameter.productId = event.id;
-      this.searchRequestParameter.barcode=null;
+      this.searchRequestParameter.barcode = null;
       this.getAvailableProductsForSales(this.searchRequestParameter);
       //Util.logConsole(this.productDropDownRef);
       //this.productDropDownRef.nativeElement.clear();
       //event.id=null;
       //this.productSalesViewModel.productId=null;
-      this.isProductSelected=true;
+      this.isProductSelected = true;
 
     }
   }
@@ -152,123 +161,123 @@ export class ProductSalesComponent implements OnInit {
     //this.isProductSelected=true;
   }
 
-  public onChangeBarcode(barcode:string, event){
-    this.productSalesViewModel.barcode=null;
-    this.searchRequestParameter.productId=null;
+  public onChangeBarcode(barcode: string, event) {
+    this.productSalesViewModel.barcode = null;
+    this.searchRequestParameter.productId = null;
     this.searchRequestParameter.barcode = barcode;
     this.getAvailableProductsForSales(this.searchRequestParameter);
     event.target.select();
-    event.target.value="";
+    event.target.value = "";
   }
 
-  public onFocusBarcode(){
-    this.productSalesViewModel.productId=null;
+  public onFocusBarcode() {
+    this.productSalesViewModel.productId = null;
   }
 
-  public onFocusOutSalesPriceRowEvent(index:number, salesPrice:number){
-    let isAllowedSalePrice:boolean;
-    isAllowedSalePrice = this.verifySalesPrice(index,salesPrice);
-    if(isAllowedSalePrice) {
+  public onFocusOutSalesPriceRowEvent(index: number, salesPrice: number) {
+    let isAllowedSalePrice: boolean;
+    isAllowedSalePrice = this.verifySalesPrice(index, salesPrice);
+    if (isAllowedSalePrice) {
       this.setRowWiseTotalPrice(index);
       //this.setGrandTotalSalesPrice();
     }
     else {
-      this.selectedProductListForSales[index].salesPrice=0;
-      this.selectedProductListForSales[index].totalPrice=0;
+      this.selectedProductListForSales[index].salesPrice = 0;
+      this.selectedProductListForSales[index].totalPrice = 0;
     }
   }
 
-  public onFocusOutSalesQtyRowEvent(index:number, salesQty:number){
-    let availableQty:number;
+  public onFocusOutSalesQtyRowEvent(index: number, salesQty: number) {
+    let availableQty: number;
     availableQty = this.selectedProductListForSales[index].available;
-    if(salesQty>availableQty){
+    if (salesQty > availableQty) {
       this.selectedProductListForSales[index].salesQty = availableQty;
     }
     //this.setGrandTotalSalesPrice();
     this.setRowWiseTotalPrice(index);
   }
 
-  public onClickRemoveRow(index){
-    this.selectedProductListForSales[index].required=false;
-    this.selectedProductListForSales.splice(index,1);
+  public onClickRemoveRow(index) {
+    this.selectedProductListForSales[index].required = false;
+    this.selectedProductListForSales.splice(index, 1);
     this.setGrandTotalSalesPrice();
   }
 
-  public onFocusOutPaidAmount(paidAmount:number){
+  public onFocusOutPaidAmount(paidAmount: number) {
     this.setDueAmount(paidAmount);
   }
 
-  public onClickReset(){
+  public onClickReset() {
     this.resetPage();
   }
 
-  private setDueAmount(paidAmount:number){
-    let dueAmount:number;
-    if(this.grandTotalSalesPrice == paidAmount){
-      dueAmount =0;
-    }else if(paidAmount<this.grandTotalSalesPrice){
+  private setDueAmount(paidAmount: number) {
+    let dueAmount: number;
+    if (this.grandTotalSalesPrice == paidAmount) {
+      dueAmount = 0;
+    } else if (paidAmount < this.grandTotalSalesPrice) {
       dueAmount = this.grandTotalSalesPrice - paidAmount;
     }
     this.productSalesViewModel.dueAmount = dueAmount;
   }
 
-  public isDisableBarcodeInput():boolean{
-    if(this.isStoreSelected)
+  public isDisableBarcodeInput(): boolean {
+    if (this.isStoreSelected)
       return false;
     else {
       return true;
     }
   }
 
-  private verifyAvailableQuantity(index:number, salesQty:number):boolean{
-    let isAllowedInputSalesQty:boolean=true;
-    let availableQty:number;
+  private verifyAvailableQuantity(index: number, salesQty: number): boolean {
+    let isAllowedInputSalesQty: boolean = true;
+    let availableQty: number;
     availableQty = this.selectedProductListForSales[index].available;
-    if(salesQty>availableQty){
+    if (salesQty > availableQty) {
       this.selectedProductListForSales[index].salesQty = availableQty;
       isAllowedInputSalesQty = false;
     }
     return isAllowedInputSalesQty;
   }
 
-  private verifySalesPrice(index:number, salesPrice):boolean{
-    let buyPrice:number;
-    let isSalesPriceAllowed:boolean=false;
-    if(index!=null && !_.isNaN(index)){
+  private verifySalesPrice(index: number, salesPrice): boolean {
+    let buyPrice: number;
+    let isSalesPriceAllowed: boolean = false;
+    if (index != null && !_.isNaN(index)) {
       buyPrice = this.selectedProductListForSales[index].buyPrice;
-      if(salesPrice<buyPrice){
+      if (salesPrice < buyPrice) {
         isSalesPriceAllowed = false;
-      }else {
+      } else {
         isSalesPriceAllowed = true;
       }
     }
     return isSalesPriceAllowed;
   }
 
-  private setRowWiseTotalPrice(index:number){
+  private setRowWiseTotalPrice(index: number) {
     let salesPrice: number;
-    let salesQty:number;
-    let totalPrice:number;
+    let salesQty: number;
+    let totalPrice: number;
     salesPrice = this.selectedProductListForSales[index].salesPrice;
     salesQty = this.selectedProductListForSales[index].salesQty;
-    if(index!=null && !Util.isNullOrUndefined(salesQty) && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))){
+    if (index != null && !Util.isNullOrUndefined(salesQty) && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))) {
       totalPrice = salesPrice * salesQty;
       this.selectedProductListForSales[index].totalPrice = totalPrice;
       this.setGrandTotalSalesPrice();
     }
   }
 
-  private setGrandTotalSalesPrice(){
-    let grandTotal:number=0;
-    for(let product of this.selectedProductListForSales){
-      if(Util.isNullOrUndefined(product.totalPrice)==false)
-      grandTotal+= product.totalPrice;
+  private setGrandTotalSalesPrice() {
+    let grandTotal: number = 0;
+    for (let product of this.selectedProductListForSales) {
+      if (Util.isNullOrUndefined(product.totalPrice) == false)
+        grandTotal += product.totalPrice;
     }
     this.grandTotalSalesPrice = grandTotal;
     this.productSalesViewModel.paidAmount = grandTotal;
   }
 
-  private getAvailableProductsForSales(searchRequestParameter:any){
+  private getAvailableProductsForSales(searchRequestParameter: any) {
     this.productSalesService.getAllAvailableProduct(searchRequestParameter).subscribe
     (
       (responseMessage: ResponseMessage) => {
@@ -378,26 +387,26 @@ export class ProductSalesComponent implements OnInit {
   }
 
   private checkIsProductAlreadyAddedToList(productId: string): boolean {
-    let isProductContainedInList:boolean=false;
-    let isAllowedInputSalesQty:boolean;
+    let isProductContainedInList: boolean = false;
+    let isAllowedInputSalesQty: boolean;
 
     let salesProductViewModel: SalesProductViewModel;
     let index: number;
-    let salesQty:number;
+    let salesQty: number;
 
     salesProductViewModel = _.find(this.selectedProductListForSales, {productId});
 
     if (salesProductViewModel != null && !_.isEmpty(salesProductViewModel)) {
-      isProductContainedInList=true;
+      isProductContainedInList = true;
       // if product exist then do not add new row just increase qty
       index = _.findIndex(this.selectedProductListForSales, {productId: productId});
       if (!_.isNaN(index)) {
 
         salesQty = this.selectedProductListForSales[index].salesQty;
-        salesQty = salesQty+1;
+        salesQty = salesQty + 1;
 
-        isAllowedInputSalesQty = this.verifyAvailableQuantity(index,salesQty);
-        if(isAllowedInputSalesQty==true) {
+        isAllowedInputSalesQty = this.verifyAvailableQuantity(index, salesQty);
+        if (isAllowedInputSalesQty == true) {
           this.selectedProductListForSales[index].salesQty = salesQty;
           this.setRowWiseTotalPrice(index);
         }
@@ -406,64 +415,81 @@ export class ProductSalesComponent implements OnInit {
     return isProductContainedInList;
   }
 
-  private addAvailableProductToSalesProductList(availableProductList:Array<SalesProductViewModel>){
-    let isProductContainedInList:boolean;
-    let salesProductViewModel:SalesProductViewModel;
+  private addAvailableProductToSalesProductList(availableProductList: Array<SalesProductViewModel>) {
+    let isProductContainedInList: boolean;
+    let salesProductViewModel: SalesProductViewModel;
 
-    for(let product of availableProductList){
+    for (let product of availableProductList) {
       isProductContainedInList = this.checkIsProductAlreadyAddedToList(product.productId);
-      if(!isProductContainedInList) {
+      if (!isProductContainedInList) {
         salesProductViewModel = new SalesProductViewModel();
         salesProductViewModel = _.clone(product);
-        salesProductViewModel.salesPrice=0;
-        salesProductViewModel.salesQty=1;
+        salesProductViewModel.salesPrice = 0;
+        salesProductViewModel.salesQty = 1;
         this.selectedProductListForSales.push(salesProductViewModel);
       }
     }
   }
 
-  private setInvoiceNo(){
-    let invoiceNo:string;
+  private setInvoiceNo() {
+    let invoiceNo: string;
     //if(this.selectedProductListForSales!=null && this.selectedProductListForSales.length>0){
-      invoiceNo = Util.getInvoiceNo();
-      this.productSalesViewModel.invoiceNo =invoiceNo;
-      this.modalHeader = invoiceNo;
-   // }
+    invoiceNo = Util.getInvoiceNo();
+    this.productSalesViewModel.invoiceNo = invoiceNo;
+    this.modalHeader = invoiceNo;
+    // }
   }
 
-  private saveStoreSalesProduct(){
+  private isNewCustomerInfoEntered(): boolean {
+    let isNewCustomer: boolean;
+    if (this.customerModel.name != null && this.customerModel.phoneNo1 != null)
+      isNewCustomer = true;
+    else
+      isNewCustomer = false;
+    return isNewCustomer;
+  }
+
+  private saveSalesProduct() {
+    let requestMessage: RequestMessage;
+    let isNewCustomerInfoEntered: boolean;
+
     this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
 
-    let requestMessage: RequestMessage;
+    isNewCustomerInfoEntered = this.isNewCustomerInfoEntered();
+    if (isNewCustomerInfoEntered)
+      this.productSalesViewModel.customerModel = this.customerModel;
+
+
     requestMessage = Util.getRequestMessage(this.productSalesViewModel);
     //Util.logConsole(requestMessage,"request message");
     //requestMessage.list = this.availableSalesProductViewModelList;
     this.productSalesService.saveSalesProduct(requestMessage).subscribe
     (
-      (responseMessage: ResponseMessage) =>
-      {
-        if(responseMessage.httpStatus== HttpStatusCode.CONFLICT) {
+      (responseMessage: ResponseMessage) => {
+        if (responseMessage.httpStatus == HttpStatusCode.CONFLICT) {
           this.toaster.info(responseMessage.message, this.pageTitle);
-        }else if(responseMessage.httpStatus==HttpStatusCode.FAILED_DEPENDENCY) {
-          this.toaster.error(responseMessage.message,this.pageTitle);
-        }else if(responseMessage.httpStatus==HttpStatusCode.CREATED){
-          this.toaster.success( responseMessage.message,this.pageTitle);
+        } else if (responseMessage.httpStatus == HttpStatusCode.FAILED_DEPENDENCY) {
+          this.toaster.error(responseMessage.message, this.pageTitle);
+        } else if (responseMessage.httpStatus == HttpStatusCode.IM_USED) {
+          this.toaster.info(responseMessage.message, this.pageTitle);
+          return;
+        } else if (responseMessage.httpStatus == HttpStatusCode.CREATED) {
+          this.toaster.success(responseMessage.message, this.pageTitle);
           this.resetPage();
           return;
-        }else {
-          this.toaster.error(responseMessage.message,this.pageTitle);
+        } else {
+          this.toaster.error(responseMessage.message, this.pageTitle);
           return;
         }
       },
 
-      (httpErrorResponse: HttpErrorResponse) =>
-      {
-        this.toaster.error('Failed to save Store in Product',this.pageTitle);
+      (httpErrorResponse: HttpErrorResponse) => {
+        this.toaster.error('Failed to save Store in Product', this.pageTitle);
         if (httpErrorResponse.error instanceof ErrorEvent) {
           Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
         } else {
-          this.toaster.error('There is a problem with the service. We are notified and working on it',this.pageTitle);
-          Util.logConsole(httpErrorResponse,"Server Side error occurred" );
+          this.toaster.error('There is a problem with the service. We are notified and working on it', this.pageTitle);
+          Util.logConsole(httpErrorResponse, "Server Side error occurred");
         }
         return;
       }
@@ -471,28 +497,28 @@ export class ProductSalesComponent implements OnInit {
     return;
   }
 
-  private setFocusOnBarcodeInputTextBox(){
+  private setFocusOnBarcodeInputTextBox() {
     //Util.logConsole(this.barcodeRef.nativeElement);
-    if(this.isStoreSelected){
+    if (this.isStoreSelected) {
       //this.barcodeRef.nativeElement.dis
-      this.barcodeRef.nativeElement.disabled=false;
+      this.barcodeRef.nativeElement.disabled = false;
       this.barcodeRef.nativeElement.focus();
       //this.barcodeRef.nativeElement.focus();
     }
   }
 
-  private resetPage(){
-    let length:number=this.selectedProductListForSales.length;
+  private resetPage() {
+    let length: number = this.selectedProductListForSales.length;
     this.productSalesViewModel = new ProductSalesViewModel();
-    this.isStoreSelected=false;
-    this.isProductSelected=false;
+    this.isStoreSelected = false;
+    this.isProductSelected = false;
     //this.iscustomerSelected=false;
 
-    this.selectedProductListForSales.splice(0,length);
-    this.productSalesViewModel.storeId=null;
-    this.productSalesViewModel.productId=null;
-    this.productSalesViewModel.customerId=null;
-    this.formSubmitted=false;
+    this.selectedProductListForSales.splice(0, length);
+    this.productSalesViewModel.storeId = null;
+    this.productSalesViewModel.productId = null;
+    this.productSalesViewModel.customerId = null;
+    this.formSubmitted = false;
     this.setInvoiceNo();
     //this.storeSalesProductViewModel.salesMethod=null;
   }
@@ -516,7 +542,17 @@ export class ProductSalesComponent implements OnInit {
     });
   }
 
+  private customerRequiredInfoCheck():boolean{
+    if(!this.isCustomerSelected){
+      if(this.customerModel.name!=null && this.customerModel.phoneNo1!=null)
+        return true;
+      else
+        return false;
+    }
+  }
+
 }
+
 /*
 
 customerName: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],

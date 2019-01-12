@@ -2,8 +2,7 @@
 <app-header></app-header>
 <app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar>
 
-<section class="main-container" [ngClass]="{collapsed: collapedSideBar}"
-         style="padding:2%; margin-top: 34px;margin-left: 210px;">
+<section class="main-container" [ngClass]="{collapsed: collapedSideBar}" style="padding:2%; margin-top: 34px;">
  <!-- <div *ngIf="showPageLoader" class="spinner"></div>-->
   <!--spinner for routing-->
   <ngx-spinner
