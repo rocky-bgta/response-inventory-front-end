@@ -10,6 +10,7 @@ import {CustomerComponent} from "./components/customer/customer.component";
 import {StockComponent} from "./components/stock/stock.component";
 import {ProductSalesReportComponent} from "./components/product-sales-report/product-sales-report.component";
 import {ProductSalesComponent} from "./components/product-sales/product-sales.component";
+import {CustomerPaymentComponent} from "./components/customer-payment/customer-payment.component";
 
 
 export const inventoryRoutes: Routes = [
@@ -24,9 +25,10 @@ export const inventoryRoutes: Routes = [
       {path: 'customer', component: CustomerComponent, pathMatch: 'full'},
       {path: 'store', component: StoreComponent, pathMatch: 'full'},
       {path: 'store-in-products', component: StoreInProductsComponent, pathMatch: 'full'},
-      {path: 'store-sales-products', component: StoreSalesProductsComponent, pathMatch: 'full'},
+      //{path: 'store-sales-products', component: StoreSalesProductsComponent, pathMatch: 'full'},
       {path: 'product-sales-report', component: ProductSalesReportComponent, pathMatch: 'full'},
       {path: 'product-sales', component: ProductSalesComponent, pathMatch: 'full'},
+      {path: 'customer-payment', component: CustomerPaymentComponent, pathMatch: 'full'},
 
     ]
   },
