@@ -134,11 +134,11 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onClearStore() {
-    let length:number;
+    //let length:number;
     this.isStoreSelected = false;
     this.productSalesViewModel.productId = null;
-    length = this.selectedProductListForSales.length;
-    this.selectedProductListForSales.splice(0,length);
+    //length = this.selectedProductListForSales.length;
+    //this.selectedProductListForSales.splice(0,length);
     this.productModelList = null;
   }
 
