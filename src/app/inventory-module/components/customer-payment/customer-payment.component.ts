@@ -11,6 +11,7 @@ import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 import {RequestMessage} from "../../../core/model/request-message";
 import {Util} from "../../../core/Util";
 
+import * as _ from 'lodash';
 declare var jQuery: any;
 
 @Component({
@@ -47,6 +48,29 @@ export class CustomerPaymentComponent implements OnInit {
 
   ngOnInit() {
     this.initializeReactiveFormValidation();
+    this.populateDataTable();
+  }
+
+  public onClickPayment(id){
+    this.customerPaymentModel = _.find(this.customerPaymentModelList,{id});
+    this.customerPaymentModel.paidAmount=this.customerPaymentModel.dueAmount;
+    this.disablePageElementOnDetailsView=true;
+    this.isPageInUpdateState=false;
+    this.showEntryForm();
+  }
+
+  public onClickCancel(){
+    this.resetPage();
+  }
+
+  public onClickClickConfirmPayment(){
+    this.formSubmitted = true;
+
+    if(!this.entryForm.invalid){
+      return;
+      this.updateCustomerPayment();
+      return;
+    }
   }
 
   private updateCustomerPayment():void{
@@ -83,6 +107,52 @@ export class CustomerPaymentComponent implements OnInit {
       }
     );
   }
+
+  private resetPage():void {
+    this.customerPaymentModel = new CustomerPaymentModel();
+    this.isPageInUpdateState = false;
+    this.formSubmitted=false;
+    this.hideEntryForm();
+    return;
+  }
+
+  /*
+  private updateCustomerPayment():void{
+    let requestMessage: RequestMessage;
+    //this.replaceCharacterFromModelField();
+    requestMessage = Util.getRequestMessage(this.customerPaymentModel);
+    //requestMessage = Util.getRequestMessage(this.vendorModel);
+
+    this.customerPaymentService.update(requestMessage).subscribe
+    (
+      (responseMessage: ResponseMessage) =>
+      {
+        if(responseMessage.httpStatus==HttpStatusCode.CONFLICT) {
+          this.toaster.info(responseMessage.message,this.pageTitle);
+          return;
+        }else if(responseMessage.httpStatus==HttpStatusCode.OK){
+          this.toaster.success(responseMessage.message, this.pageTitle);
+          this.resetPage();
+          return;
+        }else {
+          this.toaster.error(responseMessage.message,this.pageTitle);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) =>
+      {
+        this.toaster.error('Failed to update brand',this.pageTitle);
+        if (httpErrorResponse.error instanceof Error) {
+          Util.logConsole(null,"Client-side error occurred.");
+        } else {
+          Util.logConsole(null,"Client-side error occurred.");
+        }
+      }
+    );
+  }
+
+  */
 
   private getCustomerPaymentList(dataTablesParameters: DataTableRequest, callback: any):Array<CustomerPaymentModel> {
     //this.dataTablesCallBackParameters = dataTablesParameters;
@@ -144,14 +214,6 @@ export class CustomerPaymentComponent implements OnInit {
           {data: 'invoiceDate'}
           ]
       };
-  }
-
-  private resetPage():void {
-    this.customerPaymentModel = new CustomerPaymentModel();
-    this.isPageInUpdateState = false;
-    this.formSubmitted=false;
-    this.getCustomerPaymentList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
-    return;
   }
 
   private initializedPageStateVariable():void{

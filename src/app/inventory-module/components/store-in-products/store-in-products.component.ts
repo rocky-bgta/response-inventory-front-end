@@ -530,6 +530,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.storeInProductViewModel.totalPrice = null;
     this.productAdded = false;
     this.selectedProductIdFromDropdownMenu = null;
+    this.productModelList.splice(0,this.productModelList.length);
   }
 
   private initializeReactiveFormValidation(): void {
