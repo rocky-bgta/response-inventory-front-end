@@ -28,6 +28,7 @@ export class InventoryApiEndPoint{
 
   public static readonly productSales:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"product-sales";
 
+  public static readonly customerPayment:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"customer-payment";
 
 
 
