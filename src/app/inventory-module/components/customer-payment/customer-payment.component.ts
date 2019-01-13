@@ -34,7 +34,7 @@ export class CustomerPaymentComponent implements OnInit {
 
   public isPageInUpdateState: boolean;
   public hideInputForm: boolean;
-  public disablePageElementOnDetailsView: boolean;
+  //public disablePageElementOnDetailsView: boolean;
 
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction: any;
@@ -53,9 +53,10 @@ export class CustomerPaymentComponent implements OnInit {
 
   public onClickPayment(id){
     this.customerPaymentModel = _.find(this.customerPaymentModelList,{id});
-    this.customerPaymentModel.paidAmount=this.customerPaymentModel.dueAmount;
-    this.disablePageElementOnDetailsView=true;
-    this.isPageInUpdateState=false;
+    this.customerPaymentModel.paidAmount=null;
+    this.customerPaymentModel.paymentDate = new Date();
+    //this.disablePageElementOnDetailsView=true;
+    //this.isPageInUpdateState=false;
     this.showEntryForm();
   }
 
@@ -110,49 +111,13 @@ export class CustomerPaymentComponent implements OnInit {
 
   private resetPage():void {
     this.customerPaymentModel = new CustomerPaymentModel();
-    this.isPageInUpdateState = false;
+    //this.isPageInUpdateState = false;
     this.formSubmitted=false;
     this.hideEntryForm();
     return;
   }
 
-  /*
-  private updateCustomerPayment():void{
-    let requestMessage: RequestMessage;
-    //this.replaceCharacterFromModelField();
-    requestMessage = Util.getRequestMessage(this.customerPaymentModel);
-    //requestMessage = Util.getRequestMessage(this.vendorModel);
 
-    this.customerPaymentService.update(requestMessage).subscribe
-    (
-      (responseMessage: ResponseMessage) =>
-      {
-        if(responseMessage.httpStatus==HttpStatusCode.CONFLICT) {
-          this.toaster.info(responseMessage.message,this.pageTitle);
-          return;
-        }else if(responseMessage.httpStatus==HttpStatusCode.OK){
-          this.toaster.success(responseMessage.message, this.pageTitle);
-          this.resetPage();
-          return;
-        }else {
-          this.toaster.error(responseMessage.message,this.pageTitle);
-          return;
-        }
-      },
-
-      (httpErrorResponse: HttpErrorResponse) =>
-      {
-        this.toaster.error('Failed to update brand',this.pageTitle);
-        if (httpErrorResponse.error instanceof Error) {
-          Util.logConsole(null,"Client-side error occurred.");
-        } else {
-          Util.logConsole(null,"Client-side error occurred.");
-        }
-      }
-    );
-  }
-
-  */
 
   private getCustomerPaymentList(dataTablesParameters: DataTableRequest, callback: any):Array<CustomerPaymentModel> {
     //this.dataTablesCallBackParameters = dataTablesParameters;
@@ -217,9 +182,9 @@ export class CustomerPaymentComponent implements OnInit {
   }
 
   private initializedPageStateVariable():void{
-    this.isPageInUpdateState = false;
+    //this.isPageInUpdateState = false;
     this.hideInputForm = false;
-    this.disablePageElementOnDetailsView = false;
+    //this.disablePageElementOnDetailsView = false;
     this.dataTablesCallBackParameters = new DataTableRequest();
     this.dataTablesCallBackParameters.start = 0;
     this.dataTablesCallBackParameters.length = 10;
@@ -250,7 +215,7 @@ export class CustomerPaymentComponent implements OnInit {
     (
       () =>
       {
-        this.disablePageElementOnDetailsView = false;
+        //this.disablePageElementOnDetailsView = false;
       }, 500
     );
     return;
