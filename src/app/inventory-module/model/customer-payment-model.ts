@@ -6,7 +6,8 @@ export class CustomerPaymentModel{
    dueAmount:number;
    grandTotal:number;
    paidStatus:number;
-   date:Date;
+   invoiceDate:Date;
+   paymentDate:Date;
 
   //========================
    customerName:string;

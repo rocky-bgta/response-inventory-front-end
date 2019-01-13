@@ -141,7 +141,7 @@ export class CustomerPaymentComponent implements OnInit {
           {data: 'grandTotal'},
           {data: 'paidAmount'},
           {data: 'dueAmount'},
-          {data: 'date'}
+          {data: 'invoiceDate'}
           ]
       };
   }
