@@ -177,7 +177,7 @@ export class CustomerPaymentComponent implements OnInit {
         pageLength: 10,
         serverSide: true,
         processing: false,
-        searching: false,
+        searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
           this.getCustomerPaymentList(dataTablesParameters, callback);
         },
