@@ -147,3 +147,66 @@
     </div>
   </form>
 </div>
+
+<div class="">
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>{{pageTitle}} List</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dataTableOptions" class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <!-- <th>ID</th>-->
+          <th style="width: 20%">Invoice No</th>
+          <th style="width: 10%">Customer</th>
+          <th style="width: 20%">Total</th>
+          <th style="width: 30%">Paid Amount</th>
+          <th style="width: 30%">Due Amount</th>
+          <th style="width: 30%">Invoice Date</th>
+          <th style="width: 10%">Action</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="customerPaymentModelList?.length != 0">
+        <tr *ngFor="let item of customerPaymentModelList">
+          <td>{{item.invoiceNo }}</td>
+          <td class="ellipsis">{{item.customerName}}</td>
+          <td>{{item.grandTotal}}</td>
+          <td>{{item.paidAmount}}</td>
+          <td>{{item.dueAmount}}</td>
+          <td>{{item.invoiceDate | date: 'dd/MM/yyyy'}}</td>
+          <td>
+            <button type="button" class="btn btn-secondary" (click)="onClickEdit(item.id)" style="margin-left: 1%">
+              Edit
+            </button>
+
+            <button type="button" class="btn btn-info" (click)="onClickDetails(item.id)" style="margin-left: 1%">
+              Details
+            </button>
+
+            <button type="button" class="btn btn-danger" (click)="onClickDelete(item.id)" style="margin-left: 1%">
+              Delete
+            </button>
+
+          </td>
+
+
+        </tr>
+        </tbody>
+        <tbody *ngIf="customerPaymentModelList?.length == 0">
+        <tr>
+          <td colspan="7" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+
+
+    </div>
+    <div class="">
+
+    </div>
+  </div>
+
+</div>
