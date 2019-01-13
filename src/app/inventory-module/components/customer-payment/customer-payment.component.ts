@@ -48,12 +48,13 @@ export class CustomerPaymentComponent implements OnInit {
 
   ngOnInit() {
     this.initializeReactiveFormValidation();
+    this.initializedPageStateVariable();
     this.populateDataTable();
   }
 
   public onClickPayment(id){
-    this.customerPaymentModel = _.find(this.customerPaymentModelList,{id});
-    this.customerPaymentModel.paidAmount=null;
+    this.customerPaymentModel = _.clone(_.find(this.customerPaymentModelList,{id}));
+    //this.customerPaymentModel.paidAmount=null;
     this.customerPaymentModel.paymentDate = new Date();
     //this.disablePageElementOnDetailsView=true;
     //this.isPageInUpdateState=false;
@@ -64,13 +65,22 @@ export class CustomerPaymentComponent implements OnInit {
     this.resetPage();
   }
 
+  public onFocusOutCurrentPayment(currentPayment: number) {
+    let dueAmount: number;
+    dueAmount = this.customerPaymentModel.dueAmount;
+    if (currentPayment > dueAmount) {
+      this.customerPaymentModel.currentPayment = dueAmount;
+    }
+  }
+
   public onClickClickConfirmPayment(){
     this.formSubmitted = true;
 
     if(!this.entryForm.invalid){
-      return;
       this.updateCustomerPayment();
       return;
+    }else {
+      this.toaster.info("Please provide required form data",this.pageTitle);
     }
   }
 
@@ -90,6 +100,7 @@ export class CustomerPaymentComponent implements OnInit {
         }else if(responseMessage.httpStatus==HttpStatusCode.OK){
           this.toaster.success(responseMessage.message, this.pageTitle);
           this.resetPage();
+          this.getCustomerPaymentList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
           return;
         }else {
           this.toaster.error(responseMessage.message,this.pageTitle);
@@ -120,8 +131,8 @@ export class CustomerPaymentComponent implements OnInit {
 
 
   private getCustomerPaymentList(dataTablesParameters: DataTableRequest, callback: any):Array<CustomerPaymentModel> {
-    //this.dataTablesCallBackParameters = dataTablesParameters;
-    //this.dataTableCallbackFunction = callback;
+    this.dataTablesCallBackParameters = dataTablesParameters;
+    this.dataTableCallbackFunction = callback;
 
     this.customerPaymentService.getList(dataTablesParameters).subscribe
     (

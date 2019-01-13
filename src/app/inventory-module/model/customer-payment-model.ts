@@ -11,4 +11,6 @@ export class CustomerPaymentModel{
 
   //========================
    customerName:string;
+
+   currentPayment:number;
 }

@@ -30,6 +30,6 @@ export class CustomerPaymentService {
   }
 
   delete(id) {
-    return this.httpRequestHelperService.deleteRequest(InventoryApiEndPoint.stock, id);
+    return this.httpRequestHelperService.deleteRequest(InventoryApiEndPoint.customerPayment, id);
   }
 }
