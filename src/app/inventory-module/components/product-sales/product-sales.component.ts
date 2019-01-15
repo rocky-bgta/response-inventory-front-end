@@ -213,7 +213,11 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onFocusOutPaidAmount(paidAmount: number) {
-    this.setDueAmount(paidAmount);
+    if(this.grandTotalSalesPrice<paidAmount){
+      this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
+    }else {
+      this.setDueAmount(paidAmount);
+    }
   }
 
   public onClickReset() {
