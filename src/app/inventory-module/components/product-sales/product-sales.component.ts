@@ -522,7 +522,7 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel = new ProductSalesViewModel();
     this.isStoreSelected = false;
     this.isProductSelected = false;
-    //this.iscustomerSelected=false;
+    this.isCustomerSelected=false;
 
     this.selectedProductListForSales.splice(0, length);
     this.productSalesViewModel.storeId = null;
@@ -531,6 +531,9 @@ export class ProductSalesComponent implements OnInit {
     this.formSubmitted = false;
     this.setInvoiceNo();
     this.customerModel = new CustomerModel();
+    this.customerModel.name=null;
+    this.customerModel.phoneNo1=null;
+    this.customerModel.address=null;
     //this.storeSalesProductViewModel.salesMethod=null;
   }
 
