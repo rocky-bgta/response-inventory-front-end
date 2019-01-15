@@ -13,4 +13,5 @@ export class  StoreInProductViewModel{
   public entryDate:Date;
   public manufacturingDate:Date;
   public expirationDate:Date;
+  public modelNo:string;
 }

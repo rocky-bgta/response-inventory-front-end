@@ -71,6 +71,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   //helper variable==========
   private _storeName: string;
   private _vendorName: string;
+  //private _modelNo:string;
   public selectedProductIdFromDropdownMenu:string;
 //========== Variables for this page business =====================================================
 
@@ -191,7 +192,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
         this.storeInProductViewModel.productName = productModel.name;
         this.storeInProductViewModel.productId = productModel.id;
         this.storeInProductViewModel.price = productModel.price;
-        this.setTotalPrice();
+        this.storeInProductViewModel.modelNo= productModel.modelNo;
+        this.setTotalPrice(null);
         this.addProductToList()
       }
     }
@@ -239,12 +241,17 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
         this.storeInProductViewModel.productName = productViewModel.name;
         this.storeInProductViewModel.productId = productViewModel.id;
         this.storeInProductViewModel.price = productViewModel.price;
-        this.setTotalPrice();
+        this.storeInProductViewModel.modelNo = productViewModel.modelNo;
+        this.setTotalPrice(null);
         this.addProductToList()
         //Util.logConsole(productViewModel,"Selected Product");
       }
     }
     this.ngxSmartModalService.get('productListModal').close();
+  }
+
+  public onFocusBarcode(){
+    //this.selectedProductIdFromDropdownMenu=null;
   }
 
   public async onChangeBarcode(barcode: string, event) {
@@ -256,7 +263,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
       this.storeInProductViewModel.productName = productModel.name;
       this.storeInProductViewModel.productId = productModel.id;
       this.storeInProductViewModel.price = productModel.price;
-      this.setTotalPrice();
+      this.storeInProductViewModel.modelNo = productModel.modelNo;
+      this.setTotalPrice(null);
       this.addProductToList();
     }
     event.target.select();
@@ -306,6 +314,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     storeInProductViewModel.entryDate = _.clone(this.storeInProductViewModel.entryDate);
     storeInProductViewModel.productId = _.clone(this.storeInProductViewModel.productId);
     storeInProductViewModel.productName = _.clone(this.storeInProductViewModel.productName);
+    storeInProductViewModel.modelNo = _.clone(this.storeInProductViewModel.modelNo);
     storeInProductViewModel.price = _.clone(this.storeInProductViewModel.price);
     storeInProductViewModel.quantity = _.clone(this.storeInProductViewModel.quantity);
     storeInProductViewModel.serialNo = _.clone(this.storeInProductViewModel.serialNo);
