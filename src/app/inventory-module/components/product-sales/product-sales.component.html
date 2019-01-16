@@ -212,11 +212,12 @@
           <th style="width: 8%">Category</th>
           <th style="width: 5%">Brand</th>
           <th style="width: 5%">Model No</th>
-          <th style="width: 5%">Stock Qty</th>
-          <th style="width: 8%">Buy Price</th>
+          <th style="width: 4%">Stock Qty</th>
+          <th style="width: 5%">Buy Price</th>
           <th style="width: 8%">Sales Price</th>
           <th style="width: 5%">Sales Qty</th>
-          <th style="width: 10%">Total</th>
+          <th style="width: 5%">Discount%</th>
+          <th style="width: 8%">Total</th>
           <th style="width: 5%">Serial No</th>
           <th style="width: 5%">Support Period</th>
           <th style="width: 5%">Action</th>
@@ -261,6 +262,20 @@
                    [(ngModel)]="product.salesQty">
           </td>
 
+
+          <td>
+            <input class="form-control form-control-sm"
+                   type="text"
+                   maxlength="3"
+                   (focusout)="onFocusOutDiscountRowEvent(i)"
+                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                   #discount="ngModel"
+                   autocomplete="off"
+                   id="dynamicDiscount{{i}}"
+                   name="dynamicDiscount{{i}}"
+                   [(ngModel)]="product.discount">
+          </td>
+
           <td>
             <input class="form-control form-control-sm"
                    type="text"
@@ -284,6 +299,8 @@
                    name="dynamicSerialNo{{i}}"
                    [(ngModel)]="product.serialNo">
           </td>
+
+
 
           <td>
             <input class="form-control form-control-sm"

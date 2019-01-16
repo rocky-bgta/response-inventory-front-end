@@ -188,6 +188,7 @@ export class ProductSalesComponent implements OnInit {
     isAllowedSalePrice = this.verifySalesPrice(index, salesPrice);
     if (isAllowedSalePrice) {
       this.setRowWiseTotalPrice(index);
+      this.setRowWiseDiscountSalesPrice(index);
       //this.setGrandTotalSalesPrice();
     }
     else {
@@ -202,8 +203,13 @@ export class ProductSalesComponent implements OnInit {
     if (salesQty > availableQty) {
       this.selectedProductListForSales[index].salesQty = availableQty;
     }
-    //this.setGrandTotalSalesPrice();
     this.setRowWiseTotalPrice(index);
+    this.setRowWiseDiscountSalesPrice(index);
+  }
+
+  public onFocusOutDiscountRowEvent(index:number){
+    this.setRowWiseTotalPrice(index);
+    this.setRowWiseDiscountSalesPrice(index);
   }
 
   public onClickRemoveRow(index) {
@@ -222,6 +228,34 @@ export class ProductSalesComponent implements OnInit {
 
   public onClickReset() {
     this.resetPage();
+  }
+
+  private setRowWiseDiscountSalesPrice(index:number){
+    let salesPrice:number;
+    let qty:number;
+    let discountPercent:number;
+    let totalPriceBeforeDiscount:number;
+    let totalPriceAfterDiscount:number;
+    let discountAmount:number;
+    if(!_.isNaN(index)) {
+      discountAmount = this.selectedProductListForSales[index].discount;
+      if(!_.isNaN(discountAmount) && +discountAmount>0) {
+        salesPrice = this.selectedProductListForSales[index].salesPrice;
+        qty = this.selectedProductListForSales[index].salesQty;
+
+        if(!_.isNaN(qty) && +qty>0){
+          totalPriceBeforeDiscount = salesPrice * qty;
+        }else{
+          totalPriceBeforeDiscount = salesPrice;
+        }
+
+        if(!_.isNaN(totalPriceBeforeDiscount) && +totalPriceBeforeDiscount>0) {
+          discountPercent = discountAmount / 100;
+          totalPriceAfterDiscount = totalPriceBeforeDiscount - (totalPriceBeforeDiscount * discountPercent);
+          this.selectedProductListForSales[index].totalPrice = totalPriceAfterDiscount;
+        }
+      }
+    }
   }
 
   private setDueAmount(paidAmount: number) {
@@ -271,10 +305,15 @@ export class ProductSalesComponent implements OnInit {
     let salesPrice: number;
     let salesQty: number;
     let totalPrice: number;
+    //let discountAmount:number;
     salesPrice = this.selectedProductListForSales[index].salesPrice;
     salesQty = this.selectedProductListForSales[index].salesQty;
+    //discountAmount = this.selectedProductListForSales[index].discount;
     if (index != null && !Util.isNullOrUndefined(salesQty) && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))) {
       totalPrice = salesPrice * salesQty;
+      /*if(!_.isNaN(discountAmount) && discountAmount>0){
+        totalPrice = totalPrice - discountAmount;
+      }*/
       this.selectedProductListForSales[index].totalPrice = totalPrice;
       this.setGrandTotalSalesPrice();
     }
@@ -440,6 +479,7 @@ export class ProductSalesComponent implements OnInit {
         salesProductViewModel = _.clone(product);
         salesProductViewModel.salesPrice = 0;
         salesProductViewModel.salesQty = 1;
+        salesProductViewModel.discount=0;
         this.selectedProductListForSales.push(salesProductViewModel);
       }
     }

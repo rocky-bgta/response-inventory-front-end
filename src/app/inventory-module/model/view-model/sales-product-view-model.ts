@@ -10,6 +10,7 @@ export class SalesProductViewModel {
   description: string;
   barcode: string;
   image: string;
+  discount:number;
 
 
   //=========================
@@ -23,5 +24,11 @@ export class SalesProductViewModel {
   totalPrice: number;
   stockId: string;
   stockInProductId: string;
+
+  constructor(){
+    this.discount=0;
+    this.salesPrice=0;
+    this.salesQty=1;
+  }
 
 }
