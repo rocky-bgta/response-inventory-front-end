@@ -187,8 +187,8 @@ export class ProductSalesComponent implements OnInit {
     let isAllowedSalePrice: boolean;
     isAllowedSalePrice = this.verifySalesPrice(index, salesPrice);
     if (isAllowedSalePrice) {
-      this.setRowWiseTotalPrice(index);
       this.setRowWiseDiscountSalesPrice(index);
+      this.setRowWiseTotalPrice(index);
       //this.setGrandTotalSalesPrice();
     }
     else {
@@ -203,13 +203,13 @@ export class ProductSalesComponent implements OnInit {
     if (salesQty > availableQty) {
       this.selectedProductListForSales[index].salesQty = availableQty;
     }
-    this.setRowWiseTotalPrice(index);
     this.setRowWiseDiscountSalesPrice(index);
+    this.setRowWiseTotalPrice(index);
   }
 
   public onFocusOutDiscountRowEvent(index:number){
-    this.setRowWiseTotalPrice(index);
     this.setRowWiseDiscountSalesPrice(index);
+    this.setRowWiseTotalPrice(index);
   }
 
   public onClickRemoveRow(index) {
@@ -305,18 +305,31 @@ export class ProductSalesComponent implements OnInit {
     let salesPrice: number;
     let salesQty: number;
     let totalPrice: number;
-    //let discountAmount:number;
+    let discountAmount:number;
     salesPrice = this.selectedProductListForSales[index].salesPrice;
     salesQty = this.selectedProductListForSales[index].salesQty;
-    //discountAmount = this.selectedProductListForSales[index].discount;
-    if (index != null && !Util.isNullOrUndefined(salesQty) && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))) {
-      totalPrice = salesPrice * salesQty;
-      /*if(!_.isNaN(discountAmount) && discountAmount>0){
-        totalPrice = totalPrice - discountAmount;
-      }*/
-      this.selectedProductListForSales[index].totalPrice = totalPrice;
+    discountAmount = this.selectedProductListForSales[index].discount;
+
+    if(!_.isNaN(salesQty) && salesQty==0){
+      this.selectedProductListForSales[index].totalPrice = 0;
       this.setGrandTotalSalesPrice();
+      return;
     }
+
+    if(!_.isNaN(discountAmount) && discountAmount>0){
+      //perform no calculation
+      //this.selectedProductListForSales[index].totalPrice = totalPrice;
+    }else {
+      if (index != null && !Util.isNullOrUndefined(salesQty) && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))) {
+        totalPrice = salesPrice * salesQty;
+        /*if(!_.isNaN(discountAmount) && discountAmount>0){
+          totalPrice = totalPrice - discountAmount;
+        }*/
+        this.selectedProductListForSales[index].totalPrice = totalPrice;
+
+      }
+    }
+    this.setGrandTotalSalesPrice();
   }
 
   private setGrandTotalSalesPrice() {
