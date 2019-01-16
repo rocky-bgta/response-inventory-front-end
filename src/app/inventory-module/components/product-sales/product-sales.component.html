@@ -348,12 +348,14 @@
             <div class="form-group">
 
               <label for="paidAmount" class="lb-sm">Paid Amount:</label>
+             <!-- pattern="^((?!(0))[0-9]{1,10})$"-->
               <input class="form-control"
                      #paidAmount
                      maxlength="8"
-                     pattern="^((?!(0))[0-9]{1,10})$"
+                     pattern="^(\d*\.)?\d+$"
                      (focusout)="onFocusOutPaidAmount(productSalesViewModel.paidAmount)"
-                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
+                     || event.charCode==46"
                      type="text"
                      [ngClass]="{ 'is-invalid': paidAmount.errors?.required || paidAmount.errors?.pattern}"
                      required
