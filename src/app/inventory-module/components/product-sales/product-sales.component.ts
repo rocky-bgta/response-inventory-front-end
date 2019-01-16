@@ -306,6 +306,9 @@ export class ProductSalesComponent implements OnInit {
     let salesQty: number;
     let totalPrice: number;
     let discountAmount:number;
+    //reset due amount====================
+    this.productSalesViewModel.dueAmount=0;
+    //====================================
     salesPrice = this.selectedProductListForSales[index].salesPrice;
     salesQty = this.selectedProductListForSales[index].salesQty;
     discountAmount = this.selectedProductListForSales[index].discount;
