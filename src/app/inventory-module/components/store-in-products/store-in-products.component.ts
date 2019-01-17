@@ -72,7 +72,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   private _storeName: string;
   private _vendorName: string;
   //private _modelNo:string;
-  public selectedProductIdFromDropdownMenu:string;
+  public selectedProductIdFromDropDownMenu:string;
 //========== Variables for this page business =====================================================
 
 
@@ -164,23 +164,23 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.storeSelected = false;
     this.vendorSelected = false;
     this.productAdded = false;
-    this.selectedProductIdFromDropdownMenu = null;
+    this.selectedProductIdFromDropDownMenu = null;
   }
 
   public onClickClearAllAddedProduct() {
     this.storeInProductViewModelList = new Array<StoreInProductViewModel>();
-    this.selectedProductIdFromDropdownMenu = null;
+    this.selectedProductIdFromDropDownMenu = null;
   }
 
   public onClearStore() {
     this.storeSelected = false;
-    this.selectedProductIdFromDropdownMenu=null;
+    this.selectedProductIdFromDropDownMenu=null;
   }
 
   public onClearVendor() {
     this.vendorSelected = false;
     if(!this.vendorSelected){
-      this.selectedProductIdFromDropdownMenu=null;
+      this.selectedProductIdFromDropDownMenu=null;
     }
   }
 
@@ -251,7 +251,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   }
 
   public onFocusBarcode(){
-    //this.selectedProductIdFromDropdownMenu=null;
+    //this.selectedProductIdFromDropDownMenu=null;
   }
 
   public async onChangeBarcode(barcode: string, event) {
@@ -538,7 +538,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.storeInProductViewModel.productName = null;
     this.storeInProductViewModel.totalPrice = null;
     this.productAdded = false;
-    this.selectedProductIdFromDropdownMenu = null;
+    this.selectedProductIdFromDropDownMenu = null;
     this.productModelList.splice(0,this.productModelList.length);
   }
 
