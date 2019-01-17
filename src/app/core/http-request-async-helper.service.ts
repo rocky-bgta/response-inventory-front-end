@@ -37,6 +37,11 @@ export class HttpRequestAsyncHelperService {
 
   */
 
+  public async getRequestWithUrl(requestUrl:string): Promise<ResponseMessage>{
+    let response = this.httpClient.get<any>(requestUrl, this.httpHeaderOptions)
+      .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError)).toPromise();
+    return response;
+  }
 
   public async getRequestWithQueryParameter(requestUrl: string, params: any): Promise<ResponseMessage> {
     let response = this.httpClient.get<any>(requestUrl, {params: params})

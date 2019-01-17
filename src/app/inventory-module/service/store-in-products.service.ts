@@ -32,6 +32,11 @@ export class StoreInProductsService {
     return this.httpRequestHelperService.getRequestWithUrl(InventoryApiEndPoint.storeInProducts+"/store-id/"+storeId);
   }
 
+  async getProductListByStoreIdAsync(storeId:string) {
+    return await this.httpRequestAsyncHelperService.getRequestWithUrl(InventoryApiEndPoint.storeInProducts+"/store-id/"+storeId);
+  }
+
+
   getById(id): Observable<any> {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.storeInProducts, id);
   }

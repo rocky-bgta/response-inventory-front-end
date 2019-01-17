@@ -19,6 +19,7 @@ import {SalesProductViewModel} from "../../model/view-model/sales-product-view-m
 import * as _ from 'lodash';
 import {RequestMessage} from "../../../core/model/request-message";
 import {el} from "@angular/platform-browser/testing/src/browser_util";
+import {DropDownModel} from "../../../core/model/DropDownModel";
 
 declare var jQuery: any;
 
@@ -60,6 +61,8 @@ export class ProductSalesComponent implements OnInit {
   public grandTotalSalesPrice: number = 0;
 
   //private barcode:string;
+
+  public dropDownModelList:Array<DropDownModel> = new Array<DropDownModel>();
 
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
@@ -121,11 +124,12 @@ export class ProductSalesComponent implements OnInit {
     }
   }
 
-  public onChangeStore(event: StoreModel) {
+  public async onChangeStore(event: StoreModel) {
     //Util.logConsole(event);
     if (event !== undefined) {
       this.isStoreSelected = true;
-      this.getProductListByStoreId(event.id);
+      this.productModelList = await this.getProductListByStoreId(event.id);
+      this.dropDownModelList= await this.buildDropDownModel(this.productModelList);
       this.searchRequestParameter.storeId = event.id;
       this.setFocusOnBarcodeInputTextBox();
       //this.getAvailableProductsForSales(this.searchRequestParameter);
@@ -152,7 +156,7 @@ export class ProductSalesComponent implements OnInit {
     this.isCustomerSelected = false;
   }
 
-  public onChangeProduct(event: ProductModel) {
+  public onChangeProduct(event: DropDownModel) {
     if (event !== undefined) {
       this.searchRequestParameter.productId = event.id;
       this.searchRequestParameter.barcode = null;
@@ -427,32 +431,39 @@ export class ProductSalesComponent implements OnInit {
     )
   }
 
-  private getProductListByStoreId(storeId: string) {
-    this.storeInProductService.getProductListByStoreId(storeId).subscribe
+  private async getProductListByStoreId(storeId: string):Promise<Array<ProductModel>> {
+    let productModelList: Array<ProductModel> = null;
+    await this.storeInProductService.getProductListByStoreIdAsync(storeId).then
     (
       (response: ResponseMessage) => {
         if (response.httpStatus == HttpStatusCode.FOUND) {
-          this.productModelList = <Array<ProductModel>>response.data;
-          return;
+          productModelList = <Array<ProductModel>>response.data;
+          return productModelList;
         } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           this.toaster.error(response.message, this.pageTitle);
-          this.productModelList = <Array<ProductModel>>response.data;
-          return;
+          productModelList = <Array<ProductModel>>response.data;
+          //await this.buildDropDownModel(this.productModelList);
+          return productModelList;
         } else {
           Util.logConsole(response);
           return;
         }
-      },
-
-      (httpErrorResponse: HttpErrorResponse) => {
-        if (httpErrorResponse.error instanceof Error) {
-          Util.logConsole(httpErrorResponse, "Client Side error occurred.");
-        } else {
-          Util.logConsole(httpErrorResponse, "Server-side error occurred.");
-        }
-        return;
       }
-    )
+    );
+    return productModelList;
+  }
+
+  private async buildDropDownModel(productModelList: Array<ProductModel>):Promise<Array<DropDownModel>>{
+    let dropDownModel:DropDownModel;
+    let dropDownModelList:Array<DropDownModel> = new Array<DropDownModel>();
+    for(let item of productModelList){
+      dropDownModel = new DropDownModel();
+      dropDownModel.id = item.id;
+      dropDownModel.name = item.name + ", ModelNo: "+item.modelNo;
+      dropDownModelList.push(dropDownModel)
+    }
+
+    return dropDownModelList;
   }
 
   private checkIsProductAlreadyAddedToList(productId: string): boolean {
