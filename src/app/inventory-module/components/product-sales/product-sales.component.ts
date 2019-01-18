@@ -332,6 +332,7 @@ export class ProductSalesComponent implements OnInit {
     } else {
       if (index != null && !Util.isNullOrUndefined(salesQty) && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))) {
         totalPrice = salesPrice * salesQty;
+        totalPrice = Util.roundNumberToTwoDecimalPlace(totalPrice);
         /*if(!_.isNaN(discountAmount) && discountAmount>0){
           totalPrice = totalPrice - discountAmount;
         }*/
