@@ -37,6 +37,9 @@ export class ProductSalesComponent implements OnInit {
   //@ViewChild('productList') productDropDownRef :ElementRef ;
   @ViewChild('barcode') barcodeRef: ElementRef;
 
+  public showBuyPrice: boolean = false;
+  //public showBrand: boolean = false;
+
   //======= save modal text ======================================
   public modalHeader: string;
   public modalBodyText: string = "You are about to confirm sales, of those selected products";
@@ -62,7 +65,7 @@ export class ProductSalesComponent implements OnInit {
 
   //private barcode:string;
 
-  public dropDownModelList:Array<DropDownModel> = new Array<DropDownModel>();
+  public dropDownModelList: Array<DropDownModel> = new Array<DropDownModel>();
 
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
@@ -129,7 +132,7 @@ export class ProductSalesComponent implements OnInit {
     if (event !== undefined) {
       this.isStoreSelected = true;
       this.productModelList = await this.getProductListByStoreId(event.id);
-      this.dropDownModelList= await this.buildDropDownModel(this.productModelList);
+      this.dropDownModelList = await this.buildDropDownModel(this.productModelList);
       this.searchRequestParameter.storeId = event.id;
       this.setFocusOnBarcodeInputTextBox();
       //this.getAvailableProductsForSales(this.searchRequestParameter);
@@ -211,7 +214,7 @@ export class ProductSalesComponent implements OnInit {
     this.setRowWiseTotalPrice(index);
   }
 
-  public onFocusOutDiscountRowEvent(index:number){
+  public onFocusOutDiscountRowEvent(index: number) {
     this.setRowWiseDiscountSalesPrice(index);
     this.setRowWiseTotalPrice(index);
   }
@@ -223,9 +226,9 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onFocusOutPaidAmount(paidAmount: number) {
-    if(this.grandTotalSalesPrice<paidAmount){
+    if (this.grandTotalSalesPrice < paidAmount) {
       this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
-    }else {
+    } else {
       this.setDueAmount(paidAmount);
     }
   }
@@ -234,26 +237,26 @@ export class ProductSalesComponent implements OnInit {
     this.resetPage();
   }
 
-  private setRowWiseDiscountSalesPrice(index:number){
-    let salesPrice:number;
-    let qty:number;
-    let discountPercent:number;
-    let totalPriceBeforeDiscount:number;
-    let totalPriceAfterDiscount:number;
-    let discountAmount:number;
-    if(!_.isNaN(index)) {
+  private setRowWiseDiscountSalesPrice(index: number) {
+    let salesPrice: number;
+    let qty: number;
+    let discountPercent: number;
+    let totalPriceBeforeDiscount: number;
+    let totalPriceAfterDiscount: number;
+    let discountAmount: number;
+    if (!_.isNaN(index)) {
       discountAmount = this.selectedProductListForSales[index].discount;
-      if(!_.isNaN(discountAmount) && +discountAmount>0) {
+      if (!_.isNaN(discountAmount) && +discountAmount > 0) {
         salesPrice = this.selectedProductListForSales[index].salesPrice;
         qty = this.selectedProductListForSales[index].salesQty;
 
-        if(!_.isNaN(qty) && +qty>0){
+        if (!_.isNaN(qty) && +qty > 0) {
           totalPriceBeforeDiscount = salesPrice * qty;
-        }else{
+        } else {
           totalPriceBeforeDiscount = salesPrice;
         }
 
-        if(!_.isNaN(totalPriceBeforeDiscount) && +totalPriceBeforeDiscount>0) {
+        if (!_.isNaN(totalPriceBeforeDiscount) && +totalPriceBeforeDiscount > 0) {
           discountPercent = discountAmount / 100;
           totalPriceAfterDiscount = totalPriceBeforeDiscount - (totalPriceBeforeDiscount * discountPercent);
           this.selectedProductListForSales[index].totalPrice = totalPriceAfterDiscount;
@@ -309,24 +312,24 @@ export class ProductSalesComponent implements OnInit {
     let salesPrice: number;
     let salesQty: number;
     let totalPrice: number;
-    let discountAmount:number;
+    let discountAmount: number;
     //reset due amount====================
-    this.productSalesViewModel.dueAmount=0;
+    this.productSalesViewModel.dueAmount = 0;
     //====================================
     salesPrice = this.selectedProductListForSales[index].salesPrice;
     salesQty = this.selectedProductListForSales[index].salesQty;
     discountAmount = this.selectedProductListForSales[index].discount;
 
-    if(!_.isNaN(salesQty) && salesQty==0){
+    if (!_.isNaN(salesQty) && salesQty == 0) {
       this.selectedProductListForSales[index].totalPrice = 0;
       this.setGrandTotalSalesPrice();
       return;
     }
 
-    if(!_.isNaN(discountAmount) && discountAmount>0){
+    if (!_.isNaN(discountAmount) && discountAmount > 0) {
       //perform no calculation
       //this.selectedProductListForSales[index].totalPrice = totalPrice;
-    }else {
+    } else {
       if (index != null && !Util.isNullOrUndefined(salesQty) && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))) {
         totalPrice = salesPrice * salesQty;
         /*if(!_.isNaN(discountAmount) && discountAmount>0){
@@ -431,7 +434,7 @@ export class ProductSalesComponent implements OnInit {
     )
   }
 
-  private async getProductListByStoreId(storeId: string):Promise<Array<ProductModel>> {
+  private async getProductListByStoreId(storeId: string): Promise<Array<ProductModel>> {
     let productModelList: Array<ProductModel> = null;
     await this.storeInProductService.getProductListByStoreIdAsync(storeId).then
     (
@@ -453,13 +456,13 @@ export class ProductSalesComponent implements OnInit {
     return productModelList;
   }
 
-  private async buildDropDownModel(productModelList: Array<ProductModel>):Promise<Array<DropDownModel>>{
-    let dropDownModel:DropDownModel;
-    let dropDownModelList:Array<DropDownModel> = new Array<DropDownModel>();
-    for(let item of productModelList){
+  private async buildDropDownModel(productModelList: Array<ProductModel>): Promise<Array<DropDownModel>> {
+    let dropDownModel: DropDownModel;
+    let dropDownModelList: Array<DropDownModel> = new Array<DropDownModel>();
+    for (let item of productModelList) {
       dropDownModel = new DropDownModel();
       dropDownModel.id = item.id;
-      dropDownModel.name = item.name + ", ModelNo: "+item.modelNo;
+      dropDownModel.name = item.name + ", ModelNo: " + item.modelNo;
       dropDownModelList.push(dropDownModel)
     }
 
@@ -506,7 +509,7 @@ export class ProductSalesComponent implements OnInit {
         salesProductViewModel = _.clone(product);
         salesProductViewModel.salesPrice = 0;
         salesProductViewModel.salesQty = 1;
-        salesProductViewModel.discount=0;
+        salesProductViewModel.discount = 0;
         this.selectedProductListForSales.push(salesProductViewModel);
       }
     }
@@ -593,7 +596,7 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel = new ProductSalesViewModel();
     this.isStoreSelected = false;
     this.isProductSelected = false;
-    this.isCustomerSelected=false;
+    this.isCustomerSelected = false;
 
     this.selectedProductListForSales.splice(0, length);
     this.productSalesViewModel.storeId = null;
@@ -602,9 +605,9 @@ export class ProductSalesComponent implements OnInit {
     this.formSubmitted = false;
     this.setInvoiceNo();
     this.customerModel = new CustomerModel();
-    this.customerModel.name=null;
-    this.customerModel.phoneNo1=null;
-    this.customerModel.address=null;
+    this.customerModel.name = null;
+    this.customerModel.phoneNo1 = null;
+    this.customerModel.address = null;
     //this.storeSalesProductViewModel.salesMethod=null;
   }
 
@@ -619,8 +622,8 @@ export class ProductSalesComponent implements OnInit {
       serialNo: ['', Validators.compose([Validators.maxLength(20)])],
       saleOn: ['', Validators.compose([Validators.required])],
       quantity: ['', Validators.compose([Validators.max(100)])],
-      buyPrice: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
-      salesPrice: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],
+      buyPrice: ['',],
+      salesPrice: ['', Validators.compose([Validators.maxLength(20)])],
       customerName: ['', Validators.compose([Validators.maxLength(50)])],
       customerPhoneNo: ['', Validators.compose([Validators.maxLength(20)])],
       customerAddress: ['', Validators.compose([Validators.maxLength(200)])]
