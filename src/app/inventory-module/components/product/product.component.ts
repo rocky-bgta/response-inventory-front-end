@@ -48,7 +48,7 @@ export class ProductComponent implements OnInit {
   public deleteObjectType: string = 'Product';
 
   public productForm: FormGroup;
-  public submitted:boolean=false;
+  public submitted: boolean = false;
   public pageTitle: "Product";
 
   constructor(private productService: ProductService,
@@ -56,7 +56,7 @@ export class ProductComponent implements OnInit {
               private brandService: BrandService,
               private toaster: ToastrService,
               public  ngxSmartModalService: NgxSmartModalService,
-              private formBuilder:FormBuilder) {
+              private formBuilder: FormBuilder) {
   }
 
   get f() {
@@ -83,7 +83,7 @@ export class ProductComponent implements OnInit {
 
   //work as a save and update method
   public onSubmit() {
-    this.submitted=true;
+    this.submitted = true;
     if (this.isPageUpdateState == true && !this.productForm.invalid) {
       this.updateProduct();
       return;
@@ -92,7 +92,7 @@ export class ProductComponent implements OnInit {
     if (this.isPageUpdateState == false) {
       //stop here if form is invalid
       if (this.productForm.invalid) {
-        this.toaster.info("Please provide required form data",this.pageTitle);
+        this.toaster.info("Please provide required form data", this.pageTitle);
         //console.log(this.productForm.controls);
         //======== R&D================
         //let errors = this.productForm.errors;
@@ -114,26 +114,26 @@ export class ProductComponent implements OnInit {
 
   public onClickImageClear() {
     //console.log(this.myFileInput.nativeElement.files[0]);
-    this.base64imageString=null;
+    this.base64imageString = null;
     this.base64textString = [];
-    this.productModel.image=null;
+    this.productModel.image = null;
     //this.productModel.base64ImageString = null;
     //this.productModel.image=null;
   }
 
   public onClickReset() {
-    let editObjectId:string;
-    if(this.isPageUpdateState){
+    let editObjectId: string;
+    if (this.isPageUpdateState) {
       editObjectId = this.productModel.id;
       this.productModel = new ProductModel();
-      this.productModel.id=editObjectId;
-    }else {
+      this.productModel.id = editObjectId;
+    } else {
       this.productModel = new ProductModel();
     }
     //this.base64textString = [];
-    this.base64imageString=null;
+    this.base64imageString = null;
     this.base64textString = [];
-    this.submitted=false;
+    this.submitted = false;
     //this.productModel = new ProductModel();
   }
 
@@ -143,7 +143,7 @@ export class ProductComponent implements OnInit {
     this.showInputForm();
     detailsProductModel = _.find(this.productModelList, {id});
     this.productModel = detailsProductModel;
-    if(this.productModel.image!=null)
+    if (this.productModel.image != null)
       this.setImage(this.productModel.image);
   }
 
@@ -153,7 +153,7 @@ export class ProductComponent implements OnInit {
         this.productModel = null;
         this.productModel = <ProductModel> responseMessage.data;
         //Util.logConsole(this.productModel);
-        if(this.productModel.image!=null)
+        if (this.productModel.image != null)
           this.setImage(this.productModel.image);
         this.openEntryForm();
       },
@@ -169,7 +169,7 @@ export class ProductComponent implements OnInit {
 
   public onClickCancel() {
     this.hideAndClearInputForm();
-    this.submitted=false;
+    this.submitted = false;
 
   }
 
@@ -196,13 +196,13 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  public onChangeCategory(event:any){
-    if(!_.isEmpty(event))
+  public onChangeCategory(event: any) {
+    if (!_.isEmpty(event))
       this.productModel.categoryId = event.id;
   }
 
-  public onChangeBrand(event:any){
-    if(!_.isEmpty(event))
+  public onChangeBrand(event: any) {
+    if (!_.isEmpty(event))
       this.productModel.brandId = event.id;
   }
 
@@ -232,9 +232,9 @@ export class ProductComponent implements OnInit {
       .subscribe((responseMessage: ResponseMessage) => {
 
         this.productModelList = <Array<ProductModel>>responseMessage.data;
-        if(this.productModelList == null || this.productModelList.length==0){
-          this.toaster.info("No result product found",this.pageTitle)
-        }else {
+        if (this.productModelList == null || this.productModelList.length == 0) {
+          this.toaster.info("No result product found", this.pageTitle)
+        } else {
           //Util.logConsole(this.productModelList);
           this.setCategoryNameForProductList();
           this.setBrandNameForProductList();
@@ -252,13 +252,13 @@ export class ProductComponent implements OnInit {
   }
 
   public onUploadChange(event: any) {
-    let uploadFileSize:number;
-    let uploadFileSizeLimit= FileConstant.uploadFileSizeLimit;
+    let uploadFileSize: number;
+    let uploadFileSizeLimit = FileConstant.uploadFileSizeLimit;
     this.base64textString = [];
     let file = event.target.files[0];
     uploadFileSize = file.size;
-    if(uploadFileSize>uploadFileSizeLimit){
-      this.toaster.error("File size must not exceeded 500KB","File Upload");
+    if (uploadFileSize > uploadFileSizeLimit) {
+      this.toaster.error("File size must not exceeded 500KB", "File Upload");
       return;
     }
     //console.log(file.size);
@@ -319,17 +319,17 @@ export class ProductComponent implements OnInit {
     for (let index in this.productModelList) {
       let id = this.productModelList[index].brandId;
       brandModel = _.find(this.brandModelList, {id});
-      if(brandModel!=null && !_.isEmpty(brandModel))
+      if (brandModel != null && !_.isEmpty(brandModel))
         this.productModelList[index].brandName = brandModel.name;
     }
   }
 
   private setImagePathForProductList() {
     //for (let index in this.productModelList) {
-      //if(this.productModelList[index].image!=null)
-        //this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
-      //this.productModelList[index].image = 'data:image/png;base64,' + this.productModelList[index].image;
-      //this.base64textString.push('data:image/png;base64,' + this.base64imageString);
+    //if(this.productModelList[index].image!=null)
+    //this.productModelList[index].base64ImageString = 'data:image/png;base64,' + this.productModelList[index].image.toString();
+    //this.productModelList[index].image = 'data:image/png;base64,' + this.productModelList[index].image;
+    //this.base64textString.push('data:image/png;base64,' + this.base64imageString);
     //}
   }
 
@@ -347,23 +347,21 @@ export class ProductComponent implements OnInit {
     //console.log(this.base64imageString);
     requestMessage = Util.getRequestMessage(this.productModel);
     this.productService.update(requestMessage).subscribe(
-      (responseMessage: ResponseMessage) =>
-      {
-        if(responseMessage.httpStatus==HttpStatus.OK){
-          this.toaster.success(responseMessage.message,this.pageTitle);
+      (responseMessage: ResponseMessage) => {
+        if (responseMessage.httpStatus == HttpStatus.OK) {
+          this.toaster.success(responseMessage.message, this.pageTitle);
           this.resetPage();
           return;
-        }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY){
-          this.toaster.info(responseMessage.message,this.pageTitle);
+        } else if (responseMessage.httpStatus == HttpStatus.FAILED_DEPENDENCY) {
+          this.toaster.info(responseMessage.message, this.pageTitle);
           return;
-        }else {
-          this.toaster.error(responseMessage.message,this.pageTitle);
+        } else {
+          this.toaster.error(responseMessage.message, this.pageTitle);
           return;
         }
       },
 
-      (httpErrorResponse: HttpErrorResponse) =>
-      {
+      (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {
           console.log("Client-side error occurred.");
         } else {
@@ -376,44 +374,42 @@ export class ProductComponent implements OnInit {
   private saveProduct() {
     let requestMessage: RequestMessage;
     //first set converted base64 image string to model then build request message
-    if(this.base64imageString!=null && this.base64imageString.length>0)
+    if (this.base64imageString != null && this.base64imageString.length > 0)
       this.productModel.image = this.base64imageString;
     requestMessage = Util.getRequestMessage(this.productModel);
     //==========================================================================
 
     this.productService.save(requestMessage).subscribe(
-      (responseMessage: ResponseMessage) =>
-              {
-                if(responseMessage.httpStatus==HttpStatus.CONFLICT) {
-                  this.toaster.info(responseMessage.message,this.pageTitle);
-                  return;
-                }else if(responseMessage.httpStatus==HttpStatus.CREATED){
-                  this.toaster.success(responseMessage.message,this.pageTitle);
-                  this.productModel = <ProductModel> responseMessage.data;
-                  if(this.productModel.image!=null)
-                    this.setImage(this.productModel.image);
-                  // update data of data table
-                  this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
-                  return;
-                }else if(responseMessage.httpStatus==HttpStatus.FAILED_DEPENDENCY) {
-                  this.toaster.error(responseMessage.message,this.pageTitle);
-                  return;
-                }else {
-                  this.toaster.error(responseMessage.message,this.pageTitle);
-                  return;
-                }
-              },
+      (responseMessage: ResponseMessage) => {
+        if (responseMessage.httpStatus == HttpStatus.CONFLICT) {
+          this.toaster.info(responseMessage.message, this.pageTitle);
+          return;
+        } else if (responseMessage.httpStatus == HttpStatus.CREATED) {
+          this.toaster.success(responseMessage.message, this.pageTitle);
+          this.productModel = <ProductModel> responseMessage.data;
+          if (this.productModel.image != null)
+            this.setImage(this.productModel.image);
+          // update data of data table
+          this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
+          return;
+        } else if (responseMessage.httpStatus == HttpStatus.FAILED_DEPENDENCY) {
+          this.toaster.error(responseMessage.message, this.pageTitle);
+          return;
+        } else {
+          this.toaster.error(responseMessage.message, this.pageTitle);
+          return;
+        }
+      },
 
-      (httpErrorResponse: HttpErrorResponse) =>
-              {
-                if (httpErrorResponse.error instanceof Error) {
-                  this.toaster.error( "Client-side error occurred",this.pageTitle);
-                  console.log("Client-side error occurred.");
-                } else {
-                  this.toaster.error( "Server-side error occurred.",this.pageTitle);
-                  console.log("Server-side error occurred.");
-                }
-              }
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          this.toaster.error("Client-side error occurred", this.pageTitle);
+          console.log("Client-side error occurred.");
+        } else {
+          this.toaster.error("Server-side error occurred.", this.pageTitle);
+          console.log("Server-side error occurred.");
+        }
+      }
     );
   }
 
@@ -421,11 +417,11 @@ export class ProductComponent implements OnInit {
     this.productModel = new ProductModel();
     this.base64textString = [];
     this.isPageUpdateState = false;
-    this.submitted=false;
+    this.submitted = false;
     this.getProductList(this.dataTablesCallBackParameters, this.dataTableCallbackFunction);
   }
 
-  private hideAndClearInputForm(){
+  private hideAndClearInputForm() {
     jQuery('#collapseInputForm').collapse('hide');
     setTimeout(() => {
       //reset model
@@ -433,30 +429,34 @@ export class ProductComponent implements OnInit {
       //reset image
       this.base64textString = [];
       this.disableElementOnDetailsView = false;
-      this.isPageUpdateState=false;
+      this.isPageUpdateState = false;
     }, 500);
   }
 
-  private showInputForm(){
+  private showInputForm() {
     jQuery('#collapseInputForm').collapse('show');
     jQuery('html, body').animate({scrollTop: '0px'}, 500);
     jQuery("#collapseInputForm").scrollTop()
   }
 
-  private initializeReactiveFormValidation(){
-    let allowedCharacter="^[a-zA-Z0-9 \\\\/,=()!@#%:_.-]*$";
+  private initializeReactiveFormValidation() {
+    let allowedCharacter = "^[a-zA-Z0-9 \\\\/,=()!@#%:_.-]*$";
+    let decimalNumberValidationRexPattern = "^(\\d*\\.)?\\d+$";
     //========== form validation ==========
     this.productForm = this.formBuilder.group({
       name: ['', Validators.compose([Validators.required,
         Validators.maxLength(50),
-      Validators.pattern(allowedCharacter)])],
-      categories: ['',Validators.required],
+        Validators.pattern(allowedCharacter)])],
+      categories: ['', Validators.required],
       brands: ['',],
-      modelNo: ['',Validators.compose([Validators.required, Validators.maxLength(50)])],
+      modelNo: ['', Validators.compose([Validators.required, Validators.maxLength(50)])],
       //serialNo: ['',Validators.maxLength(20)],
-      price: ['', Validators.compose([Validators.max(1000000000),Validators.required])],
-      description: ['',Validators.maxLength(200)],
-      barcode: ['',Validators.compose([Validators.maxLength(20)])]
+      price: ['', Validators.compose([
+        Validators.max(1000000000),
+        Validators.required,
+        Validators.pattern(decimalNumberValidationRexPattern)])],
+      description: ['', Validators.maxLength(200)],
+      barcode: ['', Validators.compose([Validators.maxLength(20)])]
     });
   }
 }

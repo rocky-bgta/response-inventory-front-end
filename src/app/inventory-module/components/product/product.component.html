@@ -168,7 +168,8 @@
                 class="form-control"
                 autocomplete="off"
                 name="price"
-                onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
+                || event.charCode==46"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
                 type="text"
                 formControlName="price"
