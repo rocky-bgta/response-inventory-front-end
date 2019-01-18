@@ -88,7 +88,7 @@
                 class="form-control"
                 name="paidAmount"
                 (focusout)="onFocusOutCurrentPayment(customerPaymentModel.currentPayment)"
-                onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)  || event.charCode==46"
                 type="text"
                 [(ngModel)]="customerPaymentModel.currentPayment"
                 formControlName="paidAmount">

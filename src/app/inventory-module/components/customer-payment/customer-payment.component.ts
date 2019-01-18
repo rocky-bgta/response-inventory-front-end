@@ -204,10 +204,12 @@ export class CustomerPaymentComponent implements OnInit {
   private initializeReactiveFormValidation():void{
     //let notAllowedCharacter = "^[A-Za-z0-9_.]+$";
     //let notAllowedCharacter = "^[A-Za-z0-9-_. \\\\ \\/ - \\n]+$";
+    let decimalNumberValidationRexPattern = "^(\\d*\\.)?\\d+$";
     this.entryForm = this.formBuilder.group({
       customerName:  [''],
       invoiceNo:     [''],
-      paidAmount:  ['', Validators.compose([Validators.required])],
+      paidAmount:  ['', Validators.compose([Validators.required,
+        Validators.pattern(decimalNumberValidationRexPattern)])],
       dueAmount:  [''],
       grandTotal:  [''],
       paymentDate:    ['', Validators.compose([Validators.required])],
