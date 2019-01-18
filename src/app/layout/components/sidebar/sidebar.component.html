@@ -56,6 +56,12 @@
       <span>{{ 'Store-sales-products' | translate }}</span>
     </a>-->
 
+    <a routerLink="/inventory/invoice-history" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-calculator"></i>
+      <span>{{ 'Invoice Report' | translate }}</span>
+    </a>
+
+
     <a routerLink="/inventory/product-sales-report" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-amazon"></i>
       <span>{{ 'Product Sales Report' | translate }}</span>
