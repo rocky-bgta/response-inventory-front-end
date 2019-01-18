@@ -333,7 +333,7 @@
               <th style="width: 2%">Quantity</th>
               <th style="width: 10%">Total</th>
 
-              <th style="width: 12%">Entry Date</th>
+            <!--  <th style="width: 12%">Entry Date</th>-->
               <th style="width: 4%">Action</th>
             </tr>
             </thead>
@@ -354,9 +354,10 @@
                 <input class="form-control form-control-sm"
                        type="text"
                        maxlength="8"
-                       pattern="^((?!(0))[0-9]{1,10})$"
+                       pattern="^(\d*\.)?\d+$"
                        (focusout)="onFocusOutPriceRowEvent(i)"
-                       onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
+                       onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
+                       || event.charCode==46"
                        #dynamicPrice="ngModel"
                        required
                        autocomplete="off"
@@ -418,7 +419,7 @@
               </td>-->
 
 
-              <td>
+             <!-- <td>
                 <div class="input-group datepicker-input">
                   <input name="dynamicEntryDate{{i}}"
                          type="text"
@@ -434,7 +435,8 @@
                     <span class="fa fa-calendar"></span>
                   </button>
                 </div>
-              </td>
+              </td>-->
+
               <td class="align-baseline">
 
                 <div class="row" style="margin-right: 0px;">

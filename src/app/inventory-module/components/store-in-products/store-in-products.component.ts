@@ -396,6 +396,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     }
     if (!_.isNaN(price) && price > 0 && !_.isNaN(quantity) && quantity > 0) {
       total = price * quantity;
+      total= Util.roundNumberToTwoDecimalPlace(total);
     }
     if (index != null && !_.isNaN(index)) {
       this.storeInProductViewModelList[index].totalPrice = total;

@@ -153,4 +153,16 @@ export class Util{
      return isNullOrUndefined;
   }
 
+  public static roundNumberToTwoDecimalPlace(givenNumber:number):number{
+    let convertedRoundNumber:string;
+    let roundNumber:number;
+    let convertNumberToString:string;
+    let result:number;
+    roundNumber = Math.round(givenNumber*100)/100;
+    convertNumberToString = roundNumber+"";
+    convertedRoundNumber = parseFloat(convertNumberToString).toFixed(2);
+    result = +convertedRoundNumber;
+    return result;
+  }
+
 }
