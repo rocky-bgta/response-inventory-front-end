@@ -29,7 +29,10 @@
           <td>{{item.date | date: 'dd/MM/yyyy'}}</td>
           <td>
             <!--(click)="onClickEdit(item.id)"-->
-            <button type="button" class="btn btn-secondary"  style="margin-left: 1%">
+            <button type="button"
+                    (click)="onClickSalesDetails(item.invoiceNo);salesHistoryListModal.open();"
+                    class="btn btn-secondary"
+                    style="margin-left: 1%">
               Sales Details
             </button>
 
@@ -64,3 +67,15 @@
   </div>
 
 </div>
+
+<ngx-smart-modal #salesHistoryListModal [closable]="false"
+                 identifier="salesHistoryListModal"
+                 [dismissable]="false"
+                 customClass="nsm-dialog-animation-fade nsm-centered">
+  <h4>Select products</h4>
+  <p>
+    <sales-history-list></sales-history-list>
+  </p>
+  <button class="button -dark"
+          (click)="salesHistoryListModal.close()">Close</button>
+</ngx-smart-modal>

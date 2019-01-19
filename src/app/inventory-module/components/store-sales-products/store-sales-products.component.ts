@@ -21,7 +21,7 @@ import {KeyValueModel} from "../../../core/model/KeyValueModel";
 import {Subject} from "rxjs/index";
 import {DataTableDirective} from "angular-datatables";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
-import {StoreSalesProductsService} from "../../service/store-sales-products.service";
+import {SalesHistoryService} from "../../service/sales-history.service";
 
 
 @Component({
@@ -87,7 +87,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
 
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
-              private storeSalesProductsService: StoreSalesProductsService,
+              private salesHistoryService: SalesHistoryService,
               private enumService: EnumService,
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
@@ -335,7 +335,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(this.storeSalesProductViewModel);
     //requestMessage.list = this.availableSalesProductViewModelList;
-    this.storeSalesProductsService.save(requestMessage).subscribe
+    this.salesHistoryService.save(requestMessage).subscribe
     (
       (responseMessage: ResponseMessage) =>
       {

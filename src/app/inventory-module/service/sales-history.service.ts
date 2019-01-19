@@ -6,7 +6,7 @@ import {InventoryApiEndPoint} from "../inventory-api-end-point";
 @Injectable({
   providedIn: 'root'
 })
-export class StoreSalesProductsService {
+export class SalesHistoryService {
 
   constructor(private httpRequestHelperService: HttpRequestHelperService) {
   }
@@ -22,6 +22,10 @@ export class StoreSalesProductsService {
 
   getById(id): Observable<any> {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.storeSalesProducts, id);
+  }
+
+  getSalesHistoryByInvoiceNo(invoiceNo:string): Observable<any> {
+    return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.storeSalesProducts+"/invoice-no", invoiceNo);
   }
 
   update(data) {

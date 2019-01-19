@@ -25,6 +25,7 @@ import {ProductListComponent} from './helper-components/product-list/product-lis
 import { ProductSalesComponent } from './components/product-sales/product-sales.component';
 import { CustomerPaymentComponent } from './components/customer-payment/customer-payment.component';
 import { InvoiceHistoryComponent } from './components/invoice-history/invoice-history.component';
+import {SalesHistoryListComponent} from "./helper-components/sales-history-list/sales-history-list.component";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { InvoiceHistoryComponent } from './components/invoice-history/invoice-hi
     ProductListComponent,
     ProductSalesComponent,
     CustomerPaymentComponent,
-    InvoiceHistoryComponent
+    InvoiceHistoryComponent,
+    SalesHistoryListComponent
   ],
   imports: [
     [

@@ -15,6 +15,7 @@ import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 import {ToastrService} from "ngx-toastr";
 import {Util} from "../../../core/Util";
 import {HttpErrorResponse} from "@angular/common/http";
+import {MessageService} from "../../../core/MessageService";
 
 @Component({
   selector: 'app-invoice-history',
@@ -52,13 +53,16 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
   public storeSelected: boolean = false;
   public customerSelected: boolean = false;
 
+  public invoiceNo:string;
+
   //========== Variables for this page business =====================================================
 
 
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
               private invoiceHistoryService: InvoiceHistoryService,
-              private toaster: ToastrService) {
+              private toaster: ToastrService,
+              private messageService: MessageService) {
   }
 
   ngOnInit() {
@@ -81,6 +85,24 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
+  }
+
+  public onClickSalesDetails(invoiceNo:string){
+   this.invoiceNo = invoiceNo;
+   let customObject:CustomObject={};
+   customObject.invoiceNo=this.invoiceNo;
+
+   this.sendMessage(customObject);
+  }
+
+  sendMessage(message:CustomObject): void {
+    // send message to subscribers via observable subject
+    this.messageService.sendMessage(message);
+  }
+
+  clearMessage(): void {
+    // clear message
+    this.messageService.clearMessage();
   }
 
   private getInvoiceHistoryByQueryParameters(dataTablesParameters: DataTableRequest, callback: any, searchParameter:CustomObject){
