@@ -27,6 +27,7 @@ import { CustomerPaymentComponent } from './components/customer-payment/customer
 import { InvoiceHistoryComponent } from './components/invoice-history/invoice-history.component';
 import {SalesHistoryListComponent} from "./helper-components/sales-history-list/sales-history-list.component";
 import {CustomerDuePaymentHistoryListComponent} from "./helper-components/customer-due-payment-history-list/customer-due-payment-history-list.component";
+import {UiSwitchModule} from "ngx-ui-switch";
 
 @NgModule({
   declarations: [
@@ -60,7 +61,9 @@ import {CustomerDuePaymentHistoryListComponent} from "./helper-components/custom
     NgSelectModule,
     NgxSmartModalModule.forRoot(),
     NgbModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    UiSwitchModule
+
   ],
   bootstrap: []
 })

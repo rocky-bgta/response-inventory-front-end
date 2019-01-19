@@ -633,7 +633,8 @@ export class ProductSalesComponent implements OnInit {
       salesPrice: ['', Validators.compose([Validators.maxLength(20)])],
       customerName: ['', Validators.compose([Validators.maxLength(50)])],
       customerPhoneNo: ['', Validators.compose([Validators.maxLength(20)])],
-      customerAddress: ['', Validators.compose([Validators.maxLength(200)])]
+      customerAddress: ['', Validators.compose([Validators.maxLength(200)])],
+      showBuyPrice: ['', ]
     });
   }
 
