@@ -10,9 +10,7 @@ import {StoreModel} from "../../model/store-model";
 import {StoreService} from "../../service/store.service";
 import * as _ from 'lodash';
 import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
-import {StoreInProductViewModel} from "../../model/view-model/store-in-product-view-model";
 import {StoreInProductsService} from "../../service/store-in-products.service";
-import {ProductService} from "../../service/product.service";
 import {CustomerModel} from "../../model/customer-model";
 import {CustomerService} from "../../service/customer.service";
 import {DataTableRequest} from "../../../core/model/data-table-request";
@@ -24,7 +22,6 @@ import {Subject} from "rxjs/index";
 import {DataTableDirective} from "angular-datatables";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import {StoreSalesProductsService} from "../../service/store-sales-products.service";
-import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 
 @Component({
@@ -95,8 +92,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
               private storeInProductService: StoreInProductsService,
               private formBuilder: FormBuilder,
               private toaster: ToastrService,
-              public  ngxSmartModalService: NgxSmartModalService,
-              private modalService: NgbModal) { }
+              public  ngxSmartModalService: NgxSmartModalService) { }
 
   ngOnInit() {
 

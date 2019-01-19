@@ -43,17 +43,17 @@ export class HttpRequestAsyncHelperService {
     return response;
   }
 
-  public async getRequestWithQueryParameter(requestUrl: string, params: any): Promise<ResponseMessage> {
-    let response = this.httpClient.get<any>(requestUrl, {params: params})
+  public async getRequestWithQueryParameter(requestUrl: string, queryParams?: any): Promise<ResponseMessage> {
+    let response = this.httpClient.get<any>(requestUrl, {params: queryParams})
       .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError)).toPromise();
     return response;
   }
 
-  public async getRequest(requestUrl: string,dataTableParameter?:any): Promise<ResponseMessage> {
+  public async getRequest(requestUrl: string,dataTableParameter?:any,queryParams?:any): Promise<ResponseMessage> {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(null,dataTableParameter);
 
-    let response = await this.httpClient.post<any>(requestUrl, requestMessage,this.httpHeaderOptions)
+    let response = await this.httpClient.post<any>(requestUrl, requestMessage,{params:queryParams})
       .pipe(retry(3),delay(this.delayTimeForResponse), catchError(this.handleError)).toPromise();
     return response;
   }
@@ -104,7 +104,6 @@ export class HttpRequestAsyncHelperService {
       Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
     } else {
       this.toastr.error('There is a problem with the service. We are notified and working on it');
-      this.toastr.info("Please reload this page");
       Util.logConsole(httpErrorResponse,"Server Side error occurred" );
     }
     return throwError('There is a problem with the service. We are notified and working on it')

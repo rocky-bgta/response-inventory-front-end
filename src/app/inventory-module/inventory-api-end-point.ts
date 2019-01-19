@@ -30,6 +30,8 @@ export class InventoryApiEndPoint{
 
   public static readonly customerPayment:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"customer-payment";
 
+  public static readonly invoiceHistory:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"invoice-history";
+
 
 
 }
