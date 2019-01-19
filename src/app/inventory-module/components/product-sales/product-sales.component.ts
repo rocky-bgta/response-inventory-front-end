@@ -210,9 +210,9 @@ export class ProductSalesComponent implements OnInit {
     if (salesQty > availableQty) {
       this.selectedProductListForSales[index].salesQty = availableQty;
     }
-    if(!_.isNaN(salesQty)){
+   /* if(!_.isNaN(salesQty)){
       this.selectedProductListForSales[index].salesQty = 1;
-    }
+    }*/
     this.setRowWiseDiscountSalesPrice(index);
     this.setRowWiseTotalPrice(index);
   }
@@ -232,9 +232,9 @@ export class ProductSalesComponent implements OnInit {
     if (this.grandTotalSalesPrice < paidAmount) {
       this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
     } else {
-      if(!_.isNaN(paidAmount)){
+     /* if(!_.isNaN(paidAmount)){
         this.productSalesViewModel.paidAmount=0;
-      }
+      }*/
       this.setDueAmount(paidAmount);
     }
   }
