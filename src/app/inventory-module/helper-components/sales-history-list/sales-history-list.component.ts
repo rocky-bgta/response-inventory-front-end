@@ -44,7 +44,7 @@ export class SalesHistoryListComponent implements OnInit, AfterViewInit, OnDestr
       (message:CustomObject) =>
       {
       //this.message = message;
-      Util.logConsole(message.invoiceNo,"Message");
+      //Util.logConsole(message.invoiceNo,"Message");
       this.invoiceNo = message.invoiceNo;
       this.getSalesHistoryByInvoiceNo();
       this.rerender();
@@ -78,15 +78,15 @@ export class SalesHistoryListComponent implements OnInit, AfterViewInit, OnDestr
     });
   }
 
-
+/*
   public onClickSubmit(){
-   /* this.selectedProductList.emit(this._selectedProductList);
+   /!* this.selectedProductList.emit(this._selectedProductList);
     for(let product of this._selectedProductList){
       product.selectedProduct=false;
     }
-    this._selectedProductList= new Array<ProductViewModel>();*/
+    this._selectedProductList= new Array<ProductViewModel>();*!/
 
-  }
+  }*/
 
 
 
@@ -116,7 +116,7 @@ export class SalesHistoryListComponent implements OnInit, AfterViewInit, OnDestr
 
   private populateDataTable() {
     this.dtOptions = {
-      pagingType: 'full_numbers',
+      pagingType: 'numbers',
       pageLength: 25,
       //serverSide: false,
       //processing: false,
