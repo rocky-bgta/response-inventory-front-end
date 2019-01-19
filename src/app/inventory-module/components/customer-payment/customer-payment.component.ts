@@ -147,7 +147,9 @@ export class CustomerPaymentComponent implements OnInit {
           });
           return;
         }else if(response.httpStatus == HttpStatusCode.NOT_FOUND){
-          this.toaster.error(response.message,this.pageTitle);
+          this.customerPaymentModelList.splice(0,this.customerPaymentModelList.length);
+          //this.customerPaymentModelList = <Array<CustomerPaymentModel>>response.data;
+          //this.toaster.error(response.message,this.pageTitle);
           return;
         }else {
           return;
