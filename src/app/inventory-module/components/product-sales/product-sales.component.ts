@@ -210,6 +210,9 @@ export class ProductSalesComponent implements OnInit {
     if (salesQty > availableQty) {
       this.selectedProductListForSales[index].salesQty = availableQty;
     }
+    if(salesQty==""){
+      this.selectedProductListForSales[index].salesQty = 1;
+    }
     this.setRowWiseDiscountSalesPrice(index);
     this.setRowWiseTotalPrice(index);
   }
