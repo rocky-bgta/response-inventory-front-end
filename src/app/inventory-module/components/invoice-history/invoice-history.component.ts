@@ -135,6 +135,7 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
           {title: 'Invoice No',     data: 'invoiceNo'},
           {title: 'Invoice Amount', data: 'invoiceAmount'},
           {title: 'Invoice Status', data: 'invoiceStatus'},
+          {title: 'Invoice Date',   data: 'date'},
           {title: 'Action',         data: ''}
         ]
       };

@@ -15,6 +15,7 @@
           <th style="width: 20%">Invoice No</th>
           <th style="width: 30%">Invoice Amount</th>
           <th style="width: 20%">Invoice Status</th>
+          <th style="width: 20%">Invoice Date</th>
           <th style="width: 10%">Action</th>
         </tr>
         </thead>
@@ -25,23 +26,25 @@
           <td>{{item.invoiceNo }}</td>
           <td>{{item.invoiceAmount}}</td>
           <td>{{item.invoiceStatus}}</td>
+          <td>{{item.date | date: 'dd/MM/yyyy'}}</td>
           <td>
             <!--(click)="onClickEdit(item.id)"-->
             <button type="button" class="btn btn-secondary"  style="margin-left: 1%">
-              Edit
+              Sales Details
             </button>
 
             <!--(click)="onClickDetails(item.id)"-->
             <button type="button" class="btn btn-info"  style="margin-left: 1%">
-              Details
+              Payment History
             </button>
 
             <!--(click)="onClickDelete(item.id)"-->
-            <button type="button" class="btn btn-danger"  style="margin-left: 1%">
+           <!-- <button type="button" class="btn btn-danger"  style="margin-left: 1%">
               Delete
-            </button>
+            </button>-->
 
           </td>
+
 
 
         </tr>
