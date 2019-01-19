@@ -32,6 +32,8 @@ export class InventoryApiEndPoint{
 
   public static readonly invoiceHistory:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"invoice-history";
 
+  public static readonly customerDuePaymentHistory:string = InventoryApiEndPoint.rootUrl+InventoryApiEndPoint.apiPrefix+"customer-due-payment-history";
+
 
 
 }

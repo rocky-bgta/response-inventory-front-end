@@ -95,6 +95,14 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
    this.sendMessage(customObject);
   }
 
+  public onClickPaymentHistory(invoiceNo:string){
+    this.invoiceNo = invoiceNo;
+    let customObject:CustomObject={};
+    customObject.invoiceNo=this.invoiceNo;
+
+    this.sendMessage(customObject);
+  }
+
   sendMessage(message:CustomObject): void {
     // send message to subscribers via observable subject
     this.messageService.sendMessage(message);

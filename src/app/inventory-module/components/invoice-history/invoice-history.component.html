@@ -37,7 +37,9 @@
             </button>
 
             <!--(click)="onClickDetails(item.id)"-->
-            <button type="button" class="btn btn-info"  style="margin-left: 1%">
+            <button type="button"
+                    (click)="onClickPaymentHistory(item.invoiceNo);customerDuePaymentHistoryListModal.open()"
+                    class="btn btn-info"  style="margin-left: 1%">
               Payment History
             </button>
 
@@ -72,10 +74,20 @@
                  identifier="salesHistoryListModal"
                  [dismissable]="false"
                  customClass="nsm-dialog-animation-fade nsm-centered">
-  <h4>Select products</h4>
   <p>
     <sales-history-list></sales-history-list>
   </p>
   <button class="button -dark"
           (click)="salesHistoryListModal.close()">Close</button>
+</ngx-smart-modal>
+
+<ngx-smart-modal #customerDuePaymentHistoryListModal [closable]="false"
+                 identifier="customerDuePaymentHistoryListModal"
+                 [dismissable]="false"
+                 customClass="nsm-dialog-animation-fade nsm-centered">
+  <p>
+    <customer-due-payment-history-list></customer-due-payment-history-list>
+  </p>
+  <button class="button -dark"
+          (click)="customerDuePaymentHistoryListModal.close()">Close</button>
 </ngx-smart-modal>

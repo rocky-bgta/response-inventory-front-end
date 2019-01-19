@@ -1,0 +1,52 @@
+<div [hidden]="productViewModelList?.length==0">
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>Customer Due Payment History</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+             class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <th style="width: 10%">Invoice No</th>
+          <th style="width: 10%">Customer Name</th>
+          <th style="width: 10%">Paid Amount</th>
+          <th style="width: 15%">Payment Date</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="customerDuePaymentHistoryViewModelList?.length != 0">
+        <tr *ngFor="let item of customerDuePaymentHistoryViewModelList;let i=index">
+          <td>{{item.invoiceNo }}</td>
+          <td>{{item.customerName}}</td>
+          <td>{{item.paidAmount }}</td>
+          <td>{{item.paymentDate | date: 'dd/MM/yyyy'}}</td>
+         <!-- <td>
+            <div class="form-group">
+              <input type="checkbox"
+                     #selectProduct
+                     name="selectProduct"
+                     [(ngModel)]="product.selectedProduct"
+                     (change)="onClickSelect(i,$event.target.checked)"
+                     class="form-control-file">
+            </div>
+          </td>-->
+        </tr>
+        </tbody>
+        <tbody *ngIf="customerDuePaymentHistoryViewModelList?.length == 0">
+        <tr>
+          <td colspan="5" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+    </div>
+    <!--<div class="card-footer">
+      <button
+        type="button"
+        class="button -dark pull-right"
+        (click)="onClickSubmit()">Submit</button>
+    </div>-->
+  </div>
+
+</div>
