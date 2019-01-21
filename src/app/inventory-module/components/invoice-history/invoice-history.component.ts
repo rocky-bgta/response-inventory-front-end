@@ -17,6 +17,9 @@ import {Util} from "../../../core/Util";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MessageService} from "../../../core/MessageService";
 
+
+declare var $: any;
+
 @Component({
   selector: 'app-invoice-history',
   templateUrl: './invoice-history.component.html',
@@ -67,6 +70,7 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
 
   ngOnInit() {
     this.populateDataTable();
+
   }
 
   ngAfterViewInit(): void {
@@ -93,6 +97,13 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
    customObject.invoiceNo=this.invoiceNo;
 
    this.sendMessage(customObject);
+
+    setTimeout(function () {
+      $(".nsm-content").draggable();
+      Util.logConsole("Function executed");
+    },500);
+
+
   }
 
   public onClickPaymentHistory(invoiceNo:string){
@@ -101,6 +112,13 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
     customObject.invoiceNo=this.invoiceNo;
 
     this.sendMessage(customObject);
+
+    setTimeout(function () {
+      $(".nsm-content").draggable();
+      Util.logConsole("Function executed");
+    },500);
+
+
   }
 
   sendMessage(message:CustomObject): void {
