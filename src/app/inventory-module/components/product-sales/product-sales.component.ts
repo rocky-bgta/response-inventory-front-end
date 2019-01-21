@@ -18,7 +18,6 @@ import {ProductSalesService} from "../../service/product-sales.service";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import * as _ from 'lodash';
 import {RequestMessage} from "../../../core/model/request-message";
-import {el} from "@angular/platform-browser/testing/src/browser_util";
 import {DropDownModel} from "../../../core/model/DropDownModel";
 
 declare var jQuery: any;
@@ -210,9 +209,9 @@ export class ProductSalesComponent implements OnInit {
     if (salesQty > availableQty) {
       this.selectedProductListForSales[index].salesQty = availableQty;
     }
-   /* if(!_.isNaN(salesQty)){
-      this.selectedProductListForSales[index].salesQty = 1;
-    }*/
+    /* if(!_.isNaN(salesQty)){
+       this.selectedProductListForSales[index].salesQty = 1;
+     }*/
     this.setRowWiseDiscountSalesPrice(index);
     this.setRowWiseTotalPrice(index);
   }
@@ -232,9 +231,9 @@ export class ProductSalesComponent implements OnInit {
     if (this.grandTotalSalesPrice < paidAmount) {
       this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
     } else {
-     /* if(!_.isNaN(paidAmount)){
-        this.productSalesViewModel.paidAmount=0;
-      }*/
+      /* if(!_.isNaN(paidAmount)){
+         this.productSalesViewModel.paidAmount=0;
+       }*/
       this.setDueAmount(paidAmount);
     }
   }
@@ -634,7 +633,7 @@ export class ProductSalesComponent implements OnInit {
       customerName: ['', Validators.compose([Validators.maxLength(50)])],
       customerPhoneNo: ['', Validators.compose([Validators.maxLength(20)])],
       customerAddress: ['', Validators.compose([Validators.maxLength(200)])],
-      showBuyPrice: ['', ]
+      showBuyPrice: ['',]
     });
   }
 
