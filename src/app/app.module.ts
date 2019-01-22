@@ -38,7 +38,7 @@ export const createTranslateLoader = (http: HttpClient) => {
       }
     }),
     AppRoutingModule,
-    ToastrModule.forRoot() //
+    ToastrModule.forRoot({timeOut:3000,preventDuplicates: true}) //
   ],
   declarations: [AppComponent],
 
