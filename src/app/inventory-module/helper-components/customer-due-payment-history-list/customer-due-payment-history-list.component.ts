@@ -119,7 +119,11 @@ export class CustomerDuePaymentHistoryListComponent implements OnInit, AfterView
   private populateDataTable() {
     this.dtOptions = {
       pagingType: 'numbers',
-      pageLength: 25,
+      lengthChange:false,
+      //bInfo:false,
+      ordering:false,
+      info:false,
+      //pageLength: 25,
       //serverSide: false,
       //processing: false,
       searching: false,

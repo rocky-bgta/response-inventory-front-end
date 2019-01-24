@@ -174,7 +174,7 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
         pageLength: 10,
         serverSide: true,
         processing: false,
-        searching: false,
+        searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
           this.getInvoiceHistoryByQueryParameters(dataTablesParameters, callback,this.searchRequestParameter);
         },
