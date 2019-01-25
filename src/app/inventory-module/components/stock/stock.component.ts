@@ -16,6 +16,8 @@ import {AvailableStockModel} from "../../model/available-stock-model";
 import {StockService} from "../../service/stock.service";
 import {DataTableRequest} from "../../../core/model/data-table-request";
 import {CustomObject} from "../../../core/interface/CustomObject";
+import {CategoryService} from "../../service/category.service";
+import {CategoryModel} from "../../model/category-model";
 
 @Component({
   selector: 'app-stock',
@@ -25,23 +27,23 @@ import {CustomObject} from "../../../core/interface/CustomObject";
 export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
-  public pageTitle:string="Stock";
+  public pageTitle: string = "Stock";
 
 
   public entryForm: FormGroup;
 
   //======== page state variables star ===========
-  public formSubmitted:boolean;
-  public productAdded:boolean;
+  public formSubmitted: boolean;
+  public productAdded: boolean;
   public isPageInUpdateState: boolean;
 
 
   //======== Variables for this page business ====================
-  public stockViewModel :StockViewModel = new StockViewModel();
+  public stockViewModel: StockViewModel = new StockViewModel();
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public productModelList: Array<ProductModel> = new Array<ProductModel>();
-  public availableStockModelList:Array<AvailableStockModel> = new Array<AvailableStockModel>();
-
+  public availableStockModelList: Array<AvailableStockModel> = new Array<AvailableStockModel>();
+  public categoryModelList: Array<CategoryModel> = new Array<CategoryModel>();
 
   //======== Variables related to data-table =======================
   @ViewChild(DataTableDirective)
@@ -49,17 +51,20 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public dtTrigger: Subject<any> = new Subject<any>();
   public dataTableOptions: DataTables.Settings = {};
 
-  private searchParameter:CustomObject = {};
+  private searchParameter: CustomObject = {};
 
 
   constructor(private formBuilder: FormBuilder,
               private storeInProductService: StoreInProductsService,
+              private categoryService: CategoryService,
               private stockService: StockService,
               private storeService: StoreService,
-              private toaster: ToastrService) { }
+              private toaster: ToastrService) {
+  }
 
   ngOnInit() {
     this.getStoreList();
+    //this.getCategoryList();
     this.populateDataTable();
   }
 
@@ -82,129 +87,169 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  public onChangeStore(storeId:string){
-    if(storeId!=null) {
+  public onChangeStore(storeId: string) {
+    if (storeId != null) {
       this.getProductListByStoreId(storeId);
+      this.getCategoryListByStoreId(storeId);
       this.searchParameter.storeId = storeId;
+      this.rerender();
+
+    }
+  }
+
+  public onClearStore() {
+    this.stockViewModel.productId = null;
+    this.stockViewModel.categoryId = null;
+    this.productModelList = null;
+    this.categoryModelList = null;
+    this.searchParameter = {};
+    //this.clearCategoryAndProductList();
+    this.rerender();
+  }
+
+  public onChangeCategory(categoryId: string) {
+    if (categoryId != null) {
+      this.searchParameter.categoryId = categoryId;
       this.rerender();
     }
   }
 
-  public onClearStore(){
-    this.stockViewModel.productId=null;
-    this.productModelList=null;
-    this.searchParameter={};
+  public onClearCategory() {
+    this.searchParameter.categoryId = "";
     this.rerender();
   }
 
-  public onChangeProduct(productId:string){
-    this.searchParameter.productId=productId;
+  public onChangeProduct(productId: string) {
+    if (productId != null) {
+      this.searchParameter.productId = productId;
+      this.rerender();
+    }
+  }
+
+  public onClearProduct() {
+    this.searchParameter.productId = "";
     this.rerender();
   }
 
-  public onClearProduct(){
+  private getCategoryListByStoreId(storeId: string) {
+    this.categoryService.getCategoryListByStoreId(storeId).subscribe
+    (
+      (response: ResponseMessage) => {
+        if (response.httpStatus == HttpStatusCode.FOUND) {
+          this.categoryModelList = <Array<CategoryModel>>response.data;
+          return;
+        } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
+          this.categoryModelList.splice(0, this.categoryModelList.length);
+          this.toaster.error(response.message, this.pageTitle);
+          return;
+        } else {
+          Util.logConsole(response);
+          return;
+        }
+      },
 
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          Util.logConsole(httpErrorResponse, "Client Side error occurred.");
+        } else {
+          Util.logConsole(httpErrorResponse, "Server-side error occurred.");
+        }
+        return;
+      }
+    )
   }
 
-
-  private getStoreList(){
+  private getStoreList() {
     this.storeService.getList().subscribe
     (
-      (response:ResponseMessage)=>
-      {
-        if(response.httpStatus==HttpStatusCode.FOUND){
+      (response: ResponseMessage) => {
+        if (response.httpStatus == HttpStatusCode.FOUND) {
           this.storeModelList = <Array<StoreModel>>response.data;
           return;
-        }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toaster.error(response.message,this.pageTitle);
+        } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
+          this.toaster.error(response.message, this.pageTitle);
           return;
-        }else {
+        } else {
           Util.logConsole(response);
           return;
         }
       },
 
-      (httpErrorResponse: HttpErrorResponse) =>
-      {
+      (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {
-          Util.logConsole(httpErrorResponse,"Client Side error occurred.");
+          Util.logConsole(httpErrorResponse, "Client Side error occurred.");
         } else {
-          Util.logConsole(httpErrorResponse,"Server-side error occurred.");
+          Util.logConsole(httpErrorResponse, "Server-side error occurred.");
         }
         return;
       }
-
     )
   }
 
-  private getProductListByStoreId(storeId:string){
+  private getProductListByStoreId(storeId: string) {
     this.storeInProductService.getProductListByStoreId(storeId).subscribe
     (
-      (response:ResponseMessage)=>
-      {
-        if(response.httpStatus==HttpStatusCode.FOUND){
+      (response: ResponseMessage) => {
+        if (response.httpStatus == HttpStatusCode.FOUND) {
           this.productModelList = <Array<ProductModel>>response.data;
           return;
-        }else if(response.httpStatus==HttpStatusCode.NOT_FOUND) {
-          this.toaster.error(response.message,this.pageTitle);
+        } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
+          this.toaster.error(response.message, this.pageTitle);
           return;
-        }else {
+        } else {
           Util.logConsole(response);
           return;
         }
       },
 
-      (httpErrorResponse: HttpErrorResponse) =>
-      {
+      (httpErrorResponse: HttpErrorResponse) => {
         if (httpErrorResponse.error instanceof Error) {
-          Util.logConsole(httpErrorResponse,"Client Side error occurred.");
+          Util.logConsole(httpErrorResponse, "Client Side error occurred.");
         } else {
-          Util.logConsole(httpErrorResponse,"Server-side error occurred.");
+          Util.logConsole(httpErrorResponse, "Server-side error occurred.");
         }
         return;
       }
-
     )
   }
 
+  private getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any, searchParameter: any) {
 
-  private getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any, searchParameter:any){
-
-      this.stockService.getList(dataTablesParameters,searchParameter).subscribe
-      (
-        (responseMessage: ResponseMessage) => {
-          if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
-            this.availableStockModelList = <Array<AvailableStockModel>>responseMessage.data;
-            //Util.logConsole(this.availableProductViewModelList);
-            //return productViewModelList;
-          } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
-            this.toaster.error(responseMessage.message, this.pageTitle);
-            return;
-          } else {
-            Util.logConsole(responseMessage);
-            return;
-          }
-
-          callback({
-            recordsTotal: responseMessage.dataTableResponse.recordsTotal,
-            recordsFiltered: responseMessage.dataTableResponse.recordsFiltered,
-            data: []
-          });
-        }
-        ,
-        (httpErrorResponse: HttpErrorResponse) => {
-          if (httpErrorResponse.error instanceof ErrorEvent) {
-            Util.logConsole(httpErrorResponse, "Client-side error occurred.");
-          } else {
-            this.toaster.error('There is a problem with the service. We are notified and working on it');
-            //this.toastr.info("Please reload this page");
-            Util.logConsole(httpErrorResponse, "Server Side error occurred");
-          }
+    this.stockService.getList(dataTablesParameters, searchParameter).subscribe
+    (
+      (responseMessage: ResponseMessage) => {
+        if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
+          this.availableStockModelList = <Array<AvailableStockModel>>responseMessage.data;
+          //Util.logConsole(this.availableProductViewModelList);
+          //return productViewModelList;
+        } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
+          this.toaster.error(responseMessage.message, this.pageTitle);
           return;
+        } else {
+          Util.logConsole(responseMessage);
+          return;
+        }
+
+        callback({
+          recordsTotal: responseMessage.dataTableResponse.recordsTotal,
+          recordsFiltered: responseMessage.dataTableResponse.recordsFiltered,
+          data: []
         });
+      }
+      ,
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof ErrorEvent) {
+          Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+        } else {
+          this.toaster.error('There is a problem with the service. We are notified and working on it');
+          //this.toastr.info("Please reload this page");
+          Util.logConsole(httpErrorResponse, "Server Side error occurred");
+        }
+        return;
+      });
   }
 
-  private populateDataTable():void{
+  private populateDataTable(): void {
     // Util.logConsole("Populate table");
 
     this.dataTableOptions =
@@ -213,29 +258,36 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         pageLength: 10,
         serverSide: true,
         processing: false,
-        searching: false,
+        searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
-          this.getAvailableStockProducts(dataTablesParameters, callback,this.searchParameter);
+          this.getAvailableStockProducts(dataTablesParameters, callback, this.searchParameter);
         },
         columns: [
-          {title:'Product Name',  data: 'productName'},
-          {title:'Store Name',    data: 'storeName'},
-          {title:'Available Qty', data: 'availableQty'},
-          {title:'Total Price',   data: 'totalPrice'},
-          {title:'Action',        data: ''},
+          /* {title:'Category',      data: 'categoryName'},*/
+          {data: 'categoryName'},
+          {data: 'productName'},
+          {data: 'storeName'},
+          {data: 'availableQty'},
+          {data: 'totalPrice'},
+          {data: ''},
         ]
       };
   }
 
-  private initializeReactiveFormValidation(index?:number){
-    this.entryForm=this.formBuilder.group({
-      dynamicSerialNo:  new FormControl(''),
-      dynamicPrice:     new FormControl('',[Validators.required]),
-      dynamicQuantity:  new FormControl('',[Validators.required]),
-      dynamicMfDate:    new FormControl(''),
-      dynamicExpDate:   new FormControl(''),
-      dynamicEntryDate: new FormControl('',[Validators.required])
-    });
+  private clearCategoryAndProductList() {
+    this.categoryModelList = this.categoryModelList.splice(0, this.categoryModelList.length);
+    this.productModelList = this.productModelList.splice(0, this.productModelList.length);
   }
+
+  /* private initializeReactiveFormValidation(index?:number){
+     this.entryForm=this.formBuilder.group({
+       dynamicSerialNo:  new FormControl(''),
+       dynamicPrice:     new FormControl('',[Validators.required]),
+       dynamicQuantity:  new FormControl('',[Validators.required]),
+       dynamicMfDate:    new FormControl(''),
+       dynamicExpDate:   new FormControl(''),
+       dynamicEntryDate: new FormControl('',[Validators.required])
+     });
+   }*/
 
 }

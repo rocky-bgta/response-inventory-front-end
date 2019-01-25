@@ -25,6 +25,10 @@ export class CategoryService {
     return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.category+"/list",dataTableParameter);
   }
 
+  getCategoryListByStoreId(storeId:string): Observable<any> {
+    return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.category+"/store-id",storeId);
+  }
+
 
   getById(id): Observable<any> {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.category, id);

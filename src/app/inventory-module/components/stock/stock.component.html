@@ -36,6 +36,24 @@
           </div>
         </div>
 
+        <div class="col-sm-4" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="category" class="lb-sm">Category:</label>
+              <ng-select [items]="categoryModelList"
+                         #category
+                         id="category"
+                         name="category"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeCategory(stockViewModel.categoryId)"
+                         (clear)="onClearCategory()"
+                         [(ngModel)]="stockViewModel.categoryId"
+                         placeholder="Select Category">
+              </ng-select>
+            </div>
+          </div>
+        </div>
 
         <div class="col-sm-4" style="padding-left: 0">
           <div class="form-group">
@@ -76,7 +94,7 @@
     </div>
 </div>
 
-<div [hidden]="availableStockModelList?.length == 0">
+<div>
 
 
   <div class="card" style="margin-top: 1%">
@@ -89,6 +107,7 @@
              style="width: 100%">
         <thead>
         <tr>
+          <th style="width: 10%">Category</th>
           <th style="width: 10%">Product Name</th>
           <th style="width: 20%">Store Name</th>
           <th style="width: 30%">Available Qty</th>
@@ -99,6 +118,7 @@
         <tbody *ngIf="availableStockModelList?.length != 0">
         <tr *ngFor="let item of availableStockModelList">
           <!-- <td>{{ category.id }}</td>-->
+          <td>{{item.categoryName}}</td>
           <td>{{item.productName}}</td>
           <td>{{item.storeName }}</td>
           <td>{{item.availableQty}}</td>
