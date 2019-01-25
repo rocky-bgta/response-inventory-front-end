@@ -13,7 +13,9 @@ export class ProductSalesViewModel{
   grandTotal:number;
   invoiceNo:string;
   customerModel:CustomerModel;
+  discountAmount:number;
   //================
+  saveAmount:number;
   productId:string;
   serialNo: string;
 }

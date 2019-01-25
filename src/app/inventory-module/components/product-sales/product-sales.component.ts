@@ -148,7 +148,6 @@ export class ProductSalesComponent implements OnInit {
     this.productModelList = null;
   }
 
-
   public onChangeCustomer(event, customerId: string) {
     this.isCustomerSelected = true;
     this.customerModel = new CustomerModel();
@@ -240,6 +239,23 @@ export class ProductSalesComponent implements OnInit {
 
   public onClickReset() {
     this.resetPage();
+  }
+
+  public onFocusOutInvoiceDiscountAmount(discount:string){
+    this.setInvoiceDiscount(discount);
+  }
+
+  private setInvoiceDiscount(discount:string){
+    let discountAmount:number;
+    let invoiceAmount:number;
+    let grandTotalAmountAfterDiscount:number;
+    if(discount!=null && !_.isNaN(discount)){
+      discountAmount =  +discount;
+      invoiceAmount =  this.grandTotalSalesPrice;
+      grandTotalAmountAfterDiscount = invoiceAmount - discountAmount;
+      this.grandTotalSalesPrice = grandTotalAmountAfterDiscount;
+      this.productSalesViewModel.paidAmount = grandTotalAmountAfterDiscount;
+    }
   }
 
   private setRowWiseDiscountSalesPrice(index: number) {

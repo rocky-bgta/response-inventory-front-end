@@ -418,6 +418,48 @@
 
           </td>
         </tr>
+
+        <tr>
+
+          <td *ngIf="showBuyPrice" colspan="8"></td>
+          <td *ngIf="!showBuyPrice" colspan="7"></td>
+
+          <td colspan="2">
+            <div class="form-group">
+
+              <label for="discountAmount" class="lb-sm">Discount Amount:</label>
+              <!-- pattern="^((?!(0))[0-9]{1,10})$"-->
+              <input class="form-control"
+                     #discountAmount
+                     id="discountAmount"
+                     maxlength="8"
+                     pattern="^(\d*\.)?\d+$"
+                     (focusout)="onFocusOutInvoiceDiscountAmount(productSalesViewModel.discountAmount)"
+                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
+                     || event.charCode==46"
+                     type="text"
+                     [attr.disabled]="grandTotalSalesPrice==0?'':null"
+                     autocomplete="off"
+                     name="discountAmount"
+                     [(ngModel)]="productSalesViewModel.discountAmount">
+            </div>
+          </td>
+          <td colspan="2">
+            <div class="form-group">
+
+              <label for="saveAmount" class="lb-sm">Save Amount:</label>
+              <input class="form-control"
+                     #saveAmount
+                     type="text"
+                     disabled
+                     id="saveAmount"
+                     name="saveAmount"
+                     [ngModel]="productSalesViewModel.saveAmount">
+
+            </div>
+
+          </td>
+        </tr>
         </tbody>
 
 
