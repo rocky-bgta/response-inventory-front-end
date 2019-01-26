@@ -19,6 +19,8 @@ import {SalesProductViewModel} from "../../model/view-model/sales-product-view-m
 import * as _ from 'lodash';
 import {RequestMessage} from "../../../core/model/request-message";
 import {DropDownModel} from "../../../core/model/DropDownModel";
+import {CustomerDuePaymentHistoryService} from "../../service/customer-due-payment-history.service";
+import {CustomerPreviousDueViewModel} from "../../model/view-model/customer-previous-due-view-model";
 
 declare var jQuery: any;
 
@@ -52,6 +54,8 @@ export class ProductSalesComponent implements OnInit {
   public productSalesViewModel: ProductSalesViewModel = new ProductSalesViewModel();
   public customerModel: CustomerModel = new CustomerModel();
 
+  public customerPreviousDueViewModel:CustomerPreviousDueViewModel = new CustomerPreviousDueViewModel();
+
   private searchRequestParameter: CustomObject = {};
 
   public availableSalesProductViewModelList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
@@ -69,6 +73,7 @@ export class ProductSalesComponent implements OnInit {
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
               private storeInProductService: StoreInProductsService,
+              private customerDuePaymentHistoryService: CustomerDuePaymentHistoryService,
               private formBuilder: FormBuilder,
               private toaster: ToastrService,
               private productSalesService: ProductSalesService,
@@ -148,13 +153,15 @@ export class ProductSalesComponent implements OnInit {
     this.productModelList = null;
   }
 
-  public onChangeCustomer(event, customerId: string) {
+  public onChangeCustomer(customerId: string) {
     this.isCustomerSelected = true;
+    this.getCustomerPreviousDueByCustomerId(customerId);
     this.customerModel = new CustomerModel();
   }
 
   public onClearCustomer() {
     this.isCustomerSelected = false;
+    this.productSalesViewModel.proviousDue=null;
   }
 
   public onChangeProduct(event: DropDownModel) {
@@ -668,6 +675,34 @@ export class ProductSalesComponent implements OnInit {
       else
         return false;
     }
+  }
+
+  private getCustomerPreviousDueByCustomerId(customerId:string){
+    this.customerDuePaymentHistoryService.getPreviousDueByCustomerId(customerId).subscribe
+    (
+      (response: ResponseMessage) => {
+        if (response.httpStatus == HttpStatusCode.FOUND) {
+          this.customerPreviousDueViewModel = <CustomerPreviousDueViewModel>response.data;
+          this.productSalesViewModel.proviousDue = this.customerPreviousDueViewModel.previousDue;
+          return;
+        //} //else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
+          //this.toaster.error('Failed to get Store list ', this.pageTitle);
+          //return;
+        } else {
+          Util.logConsole(response);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+        } else {
+          Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+        }
+        return;
+      }
+    )
   }
 
 }

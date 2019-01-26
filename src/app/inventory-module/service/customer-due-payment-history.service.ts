@@ -28,6 +28,10 @@ export class CustomerDuePaymentHistoryService {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.customerDuePaymentHistory+"/invoice-no", invoiceNo);
   }
 
+  getPreviousDueByCustomerId(customerId:string): Observable<any> {
+    return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.customerDuePaymentHistory+"/previous-due/customer-id", customerId);
+  }
+
   update(data) {
     return this.httpRequestHelperService.updateRequest(InventoryApiEndPoint.customerDuePaymentHistory, data);
   }

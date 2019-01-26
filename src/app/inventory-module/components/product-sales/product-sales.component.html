@@ -86,7 +86,7 @@
                          id="customer"
                          bindLabel="name"
                          bindValue="id"
-                         (change)="onChangeCustomer($event,productSalesViewModel.customerId)"
+                         (change)="onChangeCustomer(productSalesViewModel.customerId)"
                          (clear)="onClearCustomer()"
                          [(ngModel)]="productSalesViewModel.customerId"
                          formControlName="customer"
