@@ -56,7 +56,7 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
   public storeSelected: boolean = false;
   public customerSelected: boolean = false;
 
-  public invoiceNo:string;
+  public invoiceNo: string;
 
   //========== Variables for this page business =====================================================
 
@@ -91,37 +91,37 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
     });
   }
 
-  public onClickSalesDetails(invoiceNo:string){
-   this.invoiceNo = invoiceNo;
-   let customObject:CustomObject={};
-   customObject.invoiceNo=this.invoiceNo;
-
-   this.sendMessage(customObject);
-
-    setTimeout(function () {
-      $(".nsm-content").draggable();
-      Util.logConsole("Function executed");
-    },500);
-
-
-  }
-
-  public onClickPaymentHistory(invoiceNo:string){
+  public onClickSalesDetails(invoiceNo: string) {
     this.invoiceNo = invoiceNo;
-    let customObject:CustomObject={};
-    customObject.invoiceNo=this.invoiceNo;
+    let customObject: CustomObject = {};
+    customObject.invoiceNo = this.invoiceNo;
 
     this.sendMessage(customObject);
 
     setTimeout(function () {
       $(".nsm-content").draggable();
       Util.logConsole("Function executed");
-    },500);
+    }, 500);
 
 
   }
 
-  sendMessage(message:CustomObject): void {
+  public onClickPaymentHistory(invoiceNo: string) {
+    this.invoiceNo = invoiceNo;
+    let customObject: CustomObject = {};
+    customObject.invoiceNo = this.invoiceNo;
+
+    this.sendMessage(customObject);
+
+    setTimeout(function () {
+      $(".nsm-content").draggable();
+      Util.logConsole("Function executed");
+    }, 500);
+
+
+  }
+
+  sendMessage(message: CustomObject): void {
     // send message to subscribers via observable subject
     this.messageService.sendMessage(message);
   }
@@ -131,38 +131,38 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
     this.messageService.clearMessage();
   }
 
-  private getInvoiceHistoryByQueryParameters(dataTablesParameters: DataTableRequest, callback: any, searchParameter:CustomObject){
-     this.invoiceHistoryService.getListByQueryParameter(dataTablesParameters,searchParameter).subscribe
-     (
-       (responseMessage: ResponseMessage) => {
-         if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
-           this.invoiceHistoryList = <Array<InvoiceHistoryModel>>responseMessage.data;
-           //Util.logConsole(this.availableProductViewModelList);
-           //return productViewModelList;
-         } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
-           this.toaster.error(responseMessage.message, this.pageTitle);
-           return;
-         } else {
-           Util.logConsole(responseMessage);
-           return;
-         }
+  private getInvoiceHistoryByQueryParameters(dataTablesParameters: DataTableRequest, callback: any, searchParameter: CustomObject) {
+    this.invoiceHistoryService.getListByQueryParameter(dataTablesParameters, searchParameter).subscribe
+    (
+      (responseMessage: ResponseMessage) => {
+        if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
+          this.invoiceHistoryList = <Array<InvoiceHistoryModel>>responseMessage.data;
+          //Util.logConsole(this.availableProductViewModelList);
+          //return productViewModelList;
+        } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
+          this.toaster.error(responseMessage.message, this.pageTitle);
+          return;
+        } else {
+          Util.logConsole(responseMessage);
+          return;
+        }
 
-         callback({
-           recordsTotal: responseMessage.dataTableResponse.recordsTotal,
-           recordsFiltered: responseMessage.dataTableResponse.recordsFiltered,
-           data: []
-         });
-       }
-       ,
-       (httpErrorResponse: HttpErrorResponse) => {
-         if (httpErrorResponse.error instanceof ErrorEvent) {
-           Util.logConsole(httpErrorResponse, "Client-side error occurred.");
-         } else {
-           this.toaster.error('There is a problem with the service. We are notified and working on it');
-           Util.logConsole(httpErrorResponse, "Server Side error occurred");
-         }
-         return;
-       });
+        callback({
+          recordsTotal: responseMessage.dataTableResponse.recordsTotal,
+          recordsFiltered: responseMessage.dataTableResponse.recordsFiltered,
+          data: []
+        });
+      }
+      ,
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof ErrorEvent) {
+          Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+        } else {
+          this.toaster.error('There is a problem with the service. We are notified and working on it');
+          Util.logConsole(httpErrorResponse, "Server Side error occurred");
+        }
+        return;
+      });
   }
 
   private populateDataTable(): void {
@@ -176,15 +176,15 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
         processing: false,
         searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
-          this.getInvoiceHistoryByQueryParameters(dataTablesParameters, callback,this.searchRequestParameter);
+          this.getInvoiceHistoryByQueryParameters(dataTablesParameters, callback, this.searchRequestParameter);
         },
         columns: [
-          {title: 'Customer Name',  data: 'customerName'},
-          {title: 'Invoice No',     data: 'invoiceNo'},
-          {title: 'Invoice Amount', data: 'invoiceAmount'},
-          {title: 'Invoice Status', data: 'invoiceStatus'},
-          {title: 'Invoice Date',   data: 'date'},
-          {title: 'Action',         data: ''}
+          {data: 'customerName'},
+          {data: 'invoiceNo'},
+          {data: 'invoiceAmount'},
+          {data: 'discountAmount'},
+          {data: 'invoiceStatus'},
+          {data: 'date'}
         ]
       };
   }

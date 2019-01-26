@@ -5,5 +5,6 @@ export class InvoiceHistoryModel {
   invoiceNo: string;
   invoiceAmount: number;
   invoiceStatus: string;
+  discountAmount:number;
   date:Date;
 }
