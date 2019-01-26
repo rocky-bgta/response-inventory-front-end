@@ -70,6 +70,8 @@ export class ProductSalesComponent implements OnInit {
 
   public dropDownModelList: Array<DropDownModel> = new Array<DropDownModel>();
 
+  public isPayPreviousDueAmount:boolean=false;
+
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
               private storeInProductService: StoreInProductsService,
@@ -90,6 +92,7 @@ export class ProductSalesComponent implements OnInit {
     this.getStoreList();
     this.getCustomerList();
     this.setInvoiceNo();
+    this.productSalesViewModel.proviousDue=0;
   }
 
   private setModelForSave() {
@@ -161,7 +164,7 @@ export class ProductSalesComponent implements OnInit {
 
   public onClearCustomer() {
     this.isCustomerSelected = false;
-    this.productSalesViewModel.proviousDue=null;
+    this.productSalesViewModel.proviousDue=0;
   }
 
   public onChangeProduct(event: DropDownModel) {
@@ -202,7 +205,7 @@ export class ProductSalesComponent implements OnInit {
     if (isAllowedSalePrice) {
       this.setRowWiseDiscountSalesPrice(index);
       this.setRowWiseTotalPrice(index);
-      this.setInvoiceDiscount(this.productSalesViewModel.discountAmount.toString());
+      this.setInvoiceDiscount(this.productSalesViewModel.discountAmount);
       //this.setGrandTotalSalesPrice();
     }
     else {
@@ -238,13 +241,22 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onFocusOutPaidAmount(paidAmount: number) {
-    if (this.grandTotalSalesPrice < paidAmount) {
+    if (this.grandTotalSalesPrice + this.productSalesViewModel.proviousDue < paidAmount) {
       this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
     } else {
       /* if(!_.isNaN(paidAmount)){
          this.productSalesViewModel.paidAmount=0;
        }*/
       this.setDueAmount(paidAmount);
+    }
+  }
+
+  onCheckPreviousDuePayment(isPayPreviousDueAmount){
+    let previousDue:number = this.productSalesViewModel.proviousDue;
+    if(isPayPreviousDueAmount){
+      this.productSalesViewModel.paidAmount+=previousDue;
+    }else {
+      this.productSalesViewModel.paidAmount-=previousDue;
     }
   }
 
@@ -303,7 +315,7 @@ export class ProductSalesComponent implements OnInit {
 
   private setDueAmount(paidAmount: number) {
     let dueAmount: number;
-    if (this.grandTotalSalesPrice == paidAmount) {
+    if ((this.grandTotalSalesPrice + this.productSalesViewModel.proviousDue) == paidAmount) {
       dueAmount = 0;
     } else if (paidAmount < this.grandTotalSalesPrice) {
       dueAmount = this.grandTotalSalesPrice - paidAmount;
