@@ -220,6 +220,7 @@
              style="width: 100%">
         <thead>
         <tr>
+          <th style="width: 2%">SL No</th>
           <th style="width: 10%">Name</th>
           <th style="width: 8%">Category</th>
           <!-- <th style="width: 5%">Brand</th>-->
@@ -236,6 +237,7 @@
         </thead>
         <tbody *ngIf="selectedProductListForSales?.length != 0">
         <tr *ngFor="let product of selectedProductListForSales; let i=index">
+          <td>{{i+1}}</td>
           <td>{{product.productName }}</td>
           <td>{{product.categoryName}}</td>
           <!--  <td>{{product.brandName }}</td>-->
@@ -361,8 +363,8 @@
         <tbody *ngIf="grandTotalSalesPrice!=0">
         <tr>
 
-          <td *ngIf="showBuyPrice" colspan="8"></td>
-          <td *ngIf="!showBuyPrice" colspan="7"></td>
+          <td *ngIf="showBuyPrice" colspan="9"></td>
+          <td *ngIf="!showBuyPrice" colspan="8"></td>
 
           <td colspan="2">{{grandTotalSalesPrice}}</td>
         </tr>
@@ -378,8 +380,8 @@
 
           <tr>
 
-        <td *ngIf="showBuyPrice" colspan="8"></td>
-        <td *ngIf="!showBuyPrice" colspan="7"></td>
+        <td *ngIf="showBuyPrice" colspan="9"></td>
+        <td *ngIf="!showBuyPrice" colspan="8"></td>
 
         <td colspan="2">
           <div class="form-group">
@@ -418,8 +420,8 @@
       </tr>
           <tr>
 
-            <td *ngIf="showBuyPrice" colspan="8"></td>
-            <td *ngIf="!showBuyPrice" colspan="7"></td>
+            <td *ngIf="showBuyPrice" colspan="9"></td>
+            <td *ngIf="!showBuyPrice" colspan="8"></td>
 
             <td colspan="2">
               <div class="form-group">
