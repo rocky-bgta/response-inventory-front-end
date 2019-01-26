@@ -326,6 +326,7 @@
           <table class="table table-hover table-bordered table-sm table-striped">
             <thead>
             <tr>
+              <th style="width: 2%">SL No</th>
               <th style="width: 14%">Product</th>
               <th style="width: 8%">Model No</th>
               <th style="width: 10%">SerialNo</th>
@@ -339,6 +340,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let storeInProductViewModel of storeInProductViewModelList; let i=index">
+              <td>{{i+1}}</td>
               <td><strong>{{storeInProductViewModel.productName}}</strong></td>
               <td>{{storeInProductViewModel.modelNo}}</td>
               <td>
