@@ -15,6 +15,7 @@
           <th style="width: 10%">Customer Name</th>
           <th style="width: 15%">Product Name</th>
           <th style="width: 10%">Sales Price</th>
+          <th style="width: 10%">Discount(%)</th>
         </tr>
         </thead>
         <tbody *ngIf="salesHistoryViewModelList?.length != 0">
@@ -24,6 +25,7 @@
           <td>{{item.customerName }}</td>
           <td>{{item.productName }}</td>
           <td>{{item.salesPrice }}</td>
+          <td>{{item.discount}}</td>
          <!-- <td>
             <div class="form-group">
               <input type="checkbox"

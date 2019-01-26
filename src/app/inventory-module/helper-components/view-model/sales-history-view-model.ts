@@ -7,4 +7,5 @@ export class SalesHistoryViewModel {
   productId: string;
   productName: string;
   salesPrice: number;
+  discount: number;
 }
