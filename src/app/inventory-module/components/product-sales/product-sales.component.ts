@@ -245,11 +245,11 @@ export class ProductSalesComponent implements OnInit {
     this.resetPage();
   }
 
-  public onFocusOutInvoiceDiscountAmount(discount: string) {
+  public onFocusOutInvoiceDiscountAmount(discount) {
     this.setInvoiceDiscount(discount);
   }
 
-  private setInvoiceDiscount(discount: string) {
+  private setInvoiceDiscount(discount) {
     let discountAmount: number;
     let invoiceAmount: number;
     let grandTotalAmountAfterDiscount: number;
