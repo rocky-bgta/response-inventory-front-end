@@ -205,3 +205,9 @@
   </div>
 
 </div>
+
+<save-confirmation-modal
+  [header]="modalHeader"
+  [body]="modalBodyText"
+  (isConfirm)="onClickSaveConfirmationOfModal($event)">
+</save-confirmation-modal>

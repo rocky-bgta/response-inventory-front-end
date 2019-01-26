@@ -39,6 +39,12 @@ export class CustomerPaymentComponent implements OnInit {
   private dataTablesCallBackParameters: DataTableRequest;
   private dataTableCallbackFunction: any;
 
+  //======= save modal text ======================================
+  public modalHeader: string;
+  public modalBodyText: string;// = "You are about to confirm Payment";
+  //======= save modal text ======================================
+
+
 
   constructor(private customerPaymentService: CustomerPaymentService,
               private formBuilder: FormBuilder,
@@ -77,10 +83,23 @@ export class CustomerPaymentComponent implements OnInit {
     this.formSubmitted = true;
 
     if(!this.entryForm.invalid){
-      this.updateCustomerPayment();
+      this.setModelForSave();
+      //this.updateCustomerPayment();
       return;
     }else {
       this.toaster.info("Please provide required form data",this.pageTitle);
+    }
+  }
+
+  private setModelForSave() {
+    this.modalHeader=this.pageTitle;
+    this.modalBodyText = "Your about pay due amount " +this.customerPaymentModel.currentPayment+ " Taka";
+    this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+  }
+
+  public onClickSaveConfirmationOfModal(isConfirm: boolean) {
+    if (isConfirm) {
+      this.updateCustomerPayment();
     }
   }
 

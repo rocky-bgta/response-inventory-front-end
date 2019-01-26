@@ -90,7 +90,7 @@ export class ProductSalesComponent implements OnInit {
   private setModelForSave() {
     this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
     this.productSalesViewModel.grandTotal = this.grandTotalSalesPrice;
-    Util.logConsole(this.productSalesViewModel);
+    //Util.logConsole(this.productSalesViewModel);
     this.ngxSmartModalService.getModal('saveConfirmationModal').open();
   }
 
