@@ -190,10 +190,12 @@ export class ProductSalesComponent implements OnInit {
 
   public onFocusOutSalesPriceRowEvent(index: number, salesPrice: number) {
     let isAllowedSalePrice: boolean;
+    //let invoiceDiscountAmount: number = this.productSalesViewModel.discountAmount;
     isAllowedSalePrice = this.verifySalesPrice(index, salesPrice);
     if (isAllowedSalePrice) {
       this.setRowWiseDiscountSalesPrice(index);
       this.setRowWiseTotalPrice(index);
+      this.setInvoiceDiscount(this.productSalesViewModel.discountAmount.toString());
       //this.setGrandTotalSalesPrice();
     }
     else {
@@ -213,11 +215,13 @@ export class ProductSalesComponent implements OnInit {
      }*/
     this.setRowWiseDiscountSalesPrice(index);
     this.setRowWiseTotalPrice(index);
+    this.setInvoiceDiscount(this.productSalesViewModel.discountAmount.toString());
   }
 
   public onFocusOutDiscountRowEvent(index: number) {
     this.setRowWiseDiscountSalesPrice(index);
     this.setRowWiseTotalPrice(index);
+    this.setInvoiceDiscount(this.productSalesViewModel.discountAmount.toString());
   }
 
   public onClickRemoveRow(index) {
@@ -241,20 +245,24 @@ export class ProductSalesComponent implements OnInit {
     this.resetPage();
   }
 
-  public onFocusOutInvoiceDiscountAmount(discount:string){
+  public onFocusOutInvoiceDiscountAmount(discount: string) {
     this.setInvoiceDiscount(discount);
   }
 
-  private setInvoiceDiscount(discount:string){
-    let discountAmount:number;
-    let invoiceAmount:number;
-    let grandTotalAmountAfterDiscount:number;
-    if(discount!=null && !_.isNaN(discount)){
-      discountAmount =  +discount;
-      invoiceAmount =  this.grandTotalSalesPrice;
-      grandTotalAmountAfterDiscount = invoiceAmount - discountAmount;
-      this.grandTotalSalesPrice = grandTotalAmountAfterDiscount;
-      this.productSalesViewModel.paidAmount = grandTotalAmountAfterDiscount;
+  private setInvoiceDiscount(discount: string) {
+    let discountAmount: number;
+    let invoiceAmount: number;
+    let grandTotalAmountAfterDiscount: number;
+    if (discount != null && discount!="") {
+      discountAmount = +discount;
+      if (discountAmount > 0) {
+        invoiceAmount = this.grandTotalSalesPrice;
+        grandTotalAmountAfterDiscount = invoiceAmount - discountAmount;
+        this.grandTotalSalesPrice = grandTotalAmountAfterDiscount;
+        this.productSalesViewModel.paidAmount = grandTotalAmountAfterDiscount;
+      }
+    } else {
+      this.setGrandTotalSalesPrice();
     }
   }
 
