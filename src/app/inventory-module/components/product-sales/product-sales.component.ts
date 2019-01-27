@@ -243,42 +243,16 @@ export class ProductSalesComponent implements OnInit {
     this.setGrandTotalSalesPrice();
   }
 
-  public onFocusOutPaidAmount(paidAmount: number) {
-    //let grandTotalSalesPrice:number;
+  public onFocusOutPaidAmount(paidAmount) {
+    if(paidAmount==""){
+      this.productSalesViewModel.paidAmount=0;
+      paidAmount = 0;
+    }
     this.checkoutPreviousDue(paidAmount);
-
-    /* let totalWithPreviousDue: number;
-     let previousDueAmount: number;
-     let grandTotalSalesPrice: number;
-     this.productSalesViewModel.previousDue = this._previousDueAmount;
-     previousDueAmount = this._previousDueAmount;
-     grandTotalSalesPrice = this.grandTotalSalesPrice;
-
-     if(previousDueAmount!=null)
-       totalWithPreviousDue = grandTotalSalesPrice + previousDueAmount;
-     else
-       totalWithPreviousDue = grandTotalSalesPrice;
-
-
-     if (totalWithPreviousDue < paidAmount)
-       this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
-     else if (paidAmount == totalWithPreviousDue)
-       this.productSalesViewModel.previousDue = 0;
-     else if ((paidAmount > grandTotalSalesPrice) && (paidAmount < totalWithPreviousDue)) {
-       totalWithPreviousDue = (+totalWithPreviousDue) - (+paidAmount);
-       this.productSalesViewModel.previousDue = totalWithPreviousDue;
-     }*/
-
-
-    /* if(!_.isNaN(paidAmount)){
-       this.productSalesViewModel.paidAmount=0;
-     }*/
     this.setDueAmount(paidAmount);
-
-
   }
 
-  onCheckPreviousDuePayment(isPayPreviousDueAmount) {
+  public onCheckPreviousDuePayment(isPayPreviousDueAmount) {
     let grandTotalWithPreviousDueAmount: number;
     grandTotalWithPreviousDueAmount = (+this.grandTotalSalesPrice) + (+this._previousDueAmount);
     if (isPayPreviousDueAmount) {
