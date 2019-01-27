@@ -251,7 +251,10 @@ export class ProductSalesComponent implements OnInit {
     previousDueAmount = this._previousDueAmount;
     grandTotalSalesPrice = this.grandTotalSalesPrice;
 
-    totalWithPreviousDue = grandTotalSalesPrice + previousDueAmount;
+    if(previousDueAmount!=null)
+      totalWithPreviousDue = grandTotalSalesPrice + previousDueAmount;
+    else
+      totalWithPreviousDue = grandTotalSalesPrice;
 
 
     if (totalWithPreviousDue < paidAmount)
@@ -275,9 +278,9 @@ export class ProductSalesComponent implements OnInit {
     let previousDue: number = this.productSalesViewModel.previousDue;
     let paidAmount: number = this.productSalesViewModel.paidAmount;
     if (isPayPreviousDueAmount) {
-      paidAmount += previousDue;
+      paidAmount = (+paidAmount) + (+previousDue);
     } else {
-      paidAmount -= previousDue;
+      paidAmount = (+paidAmount) - (+previousDue);
     }
     this.productSalesViewModel.paidAmount = paidAmount;
   }
