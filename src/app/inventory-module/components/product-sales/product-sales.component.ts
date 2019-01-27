@@ -279,7 +279,7 @@ export class ProductSalesComponent implements OnInit {
   }
 
   onCheckPreviousDuePayment(isPayPreviousDueAmount) {
-    let grandTotalWithPreviousDueAmount:number;
+    let grandTotalWithPreviousDueAmount: number;
     grandTotalWithPreviousDueAmount = (+this.grandTotalSalesPrice) + (+this._previousDueAmount);
     if (isPayPreviousDueAmount) {
       this.productSalesViewModel.previousDue = 0;
@@ -304,16 +304,24 @@ export class ProductSalesComponent implements OnInit {
     let discountAmount: number;
     let invoiceAmount: number;
     let grandTotalAmountAfterDiscount: number;
-    if (discount != null && discount != "") {
-      discountAmount = +discount;
-      if (discountAmount > 0) {
-        invoiceAmount = this.grandTotalSalesPrice;
-        grandTotalAmountAfterDiscount = invoiceAmount - discountAmount;
-        this.grandTotalSalesPrice = grandTotalAmountAfterDiscount;
-        this.productSalesViewModel.paidAmount = grandTotalAmountAfterDiscount;
-      }
-    } else {
+    let paidAmount: number;
+    paidAmount = this.productSalesViewModel.paidAmount;
+    if (discount == "" && (paidAmount == null || paidAmount==0)) {
       this.setGrandTotalSalesPrice();
+      this.productSalesViewModel.dueAmount = this.grandTotalSalesPrice;
+      this.productSalesViewModel.paidAmount = 0;
+    } else {
+      if (discount != null && discount != "") {
+        discountAmount = +discount;
+        if (discountAmount > 0) {
+          invoiceAmount = this.grandTotalSalesPrice;
+          grandTotalAmountAfterDiscount = invoiceAmount - discountAmount;
+          this.grandTotalSalesPrice = grandTotalAmountAfterDiscount;
+          this.productSalesViewModel.paidAmount = grandTotalAmountAfterDiscount;
+        }
+      }else {
+        this.setGrandTotalSalesPrice();
+      }
     }
   }
 
