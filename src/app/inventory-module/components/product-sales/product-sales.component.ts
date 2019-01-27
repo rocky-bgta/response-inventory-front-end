@@ -54,7 +54,7 @@ export class ProductSalesComponent implements OnInit {
   public productSalesViewModel: ProductSalesViewModel = new ProductSalesViewModel();
   public customerModel: CustomerModel = new CustomerModel();
 
-  public customerPreviousDueViewModel:CustomerPreviousDueViewModel = new CustomerPreviousDueViewModel();
+  public customerPreviousDueViewModel: CustomerPreviousDueViewModel = new CustomerPreviousDueViewModel();
 
   private searchRequestParameter: CustomObject = {};
 
@@ -70,7 +70,7 @@ export class ProductSalesComponent implements OnInit {
 
   public dropDownModelList: Array<DropDownModel> = new Array<DropDownModel>();
 
-  public isPayPreviousDueAmount:boolean=false;
+  public isPayPreviousDueAmount: boolean = false;
 
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
@@ -87,12 +87,14 @@ export class ProductSalesComponent implements OnInit {
   public isProductSelected: boolean = false;
   public isCustomerSelected: boolean = false;
 
+  private _previousDueAmount: number;
+
   ngOnInit() {
     this.initializeReactiveFormValidation();
     this.getStoreList();
     this.getCustomerList();
     this.setInvoiceNo();
-    this.productSalesViewModel.previousDue=0;
+    this.productSalesViewModel.previousDue = 0;
   }
 
   private setModelForSave() {
@@ -164,7 +166,7 @@ export class ProductSalesComponent implements OnInit {
 
   public onClearCustomer() {
     this.isCustomerSelected = false;
-    this.productSalesViewModel.previousDue=0;
+    this.productSalesViewModel.previousDue = 0;
   }
 
   public onChangeProduct(event: DropDownModel) {
@@ -241,23 +243,40 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onFocusOutPaidAmount(paidAmount: number) {
-    let totalWithPreviousDue
-    if (this.grandTotalSalesPrice + this.productSalesViewModel.previousDue < paidAmount) {
+    //let grandTotalSalesPrice:number;
+    let totalWithPreviousDue: number;
+    let previousDueAmount: number;
+    let grandTotalSalesPrice: number;
+    this.productSalesViewModel.previousDue = this._previousDueAmount;
+    previousDueAmount = this._previousDueAmount;
+    grandTotalSalesPrice = this.grandTotalSalesPrice;
+
+    totalWithPreviousDue = grandTotalSalesPrice + previousDueAmount;
+
+
+    if (totalWithPreviousDue < paidAmount)
       this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
-    } else {
+    else if (paidAmount == totalWithPreviousDue)
+      this.productSalesViewModel.previousDue = 0;
+    else if ((paidAmount > grandTotalSalesPrice) && (paidAmount < totalWithPreviousDue)) {
+      totalWithPreviousDue -= paidAmount;
+      this.productSalesViewModel.previousDue = totalWithPreviousDue;
+    }
+
+
       /* if(!_.isNaN(paidAmount)){
          this.productSalesViewModel.paidAmount=0;
        }*/
       this.setDueAmount(paidAmount);
-    }
+
   }
 
-  onCheckPreviousDuePayment(isPayPreviousDueAmount){
-    let previousDue:number = this.productSalesViewModel.previousDue;
-    if(isPayPreviousDueAmount){
-      this.productSalesViewModel.paidAmount+=previousDue;
-    }else {
-      this.productSalesViewModel.paidAmount-=previousDue;
+  onCheckPreviousDuePayment(isPayPreviousDueAmount) {
+    let previousDue: number = this.productSalesViewModel.previousDue;
+    if (isPayPreviousDueAmount) {
+      this.productSalesViewModel.paidAmount += previousDue;
+    } else {
+      this.productSalesViewModel.paidAmount -= previousDue;
     }
   }
 
@@ -273,7 +292,7 @@ export class ProductSalesComponent implements OnInit {
     let discountAmount: number;
     let invoiceAmount: number;
     let grandTotalAmountAfterDiscount: number;
-    if (discount != null && discount!="") {
+    if (discount != null && discount != "") {
       discountAmount = +discount;
       if (discountAmount > 0) {
         invoiceAmount = this.grandTotalSalesPrice;
@@ -690,15 +709,16 @@ export class ProductSalesComponent implements OnInit {
     }
   }
 
-  private getCustomerPreviousDueByCustomerId(customerId:string){
+  private getCustomerPreviousDueByCustomerId(customerId: string) {
     this.customerDuePaymentHistoryService.getPreviousDueByCustomerId(customerId).subscribe
     (
       (response: ResponseMessage) => {
         if (response.httpStatus == HttpStatusCode.FOUND) {
           this.customerPreviousDueViewModel = <CustomerPreviousDueViewModel>response.data;
           this.productSalesViewModel.previousDue = this.customerPreviousDueViewModel.previousDue;
+          this._previousDueAmount = this.customerPreviousDueViewModel.previousDue;
           return;
-        //} //else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
+          //} //else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           //this.toaster.error('Failed to get Store list ', this.pageTitle);
           //return;
         } else {
