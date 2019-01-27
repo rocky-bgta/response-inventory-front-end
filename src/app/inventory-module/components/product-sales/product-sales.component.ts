@@ -71,7 +71,7 @@ export class ProductSalesComponent implements OnInit {
   public dropDownModelList: Array<DropDownModel> = new Array<DropDownModel>();
 
   public isPayPreviousDueAmount: boolean = false;
-  public disablePreviousPaidAmoutCheckBox: boolean = true;
+  public disablePreviousPaidAmountCheckBox: boolean = true;
 
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
@@ -714,9 +714,9 @@ export class ProductSalesComponent implements OnInit {
           this.enableDisablePreviousDueCheckBox();
 
           /* if(this._previousDueAmount==null)
-             this.disablePreviousPaidAmoutCheckBox=true;
+             this.disablePreviousPaidAmountCheckBox=true;
            else
-             this.disablePreviousPaidAmoutCheckBox=false;*/
+             this.disablePreviousPaidAmountCheckBox=false;*/
 
           return;
           //} //else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
@@ -762,9 +762,9 @@ export class ProductSalesComponent implements OnInit {
     }
 
     if (paidAmount == grandTotalSalesPrice && previousDueAmount != null && previousDueAmount > 0) {
-      this.disablePreviousPaidAmoutCheckBox = false;
+      this.disablePreviousPaidAmountCheckBox = false;
     } else {
-      this.disablePreviousPaidAmoutCheckBox = true;
+      this.disablePreviousPaidAmountCheckBox = true;
     }
   }
 
@@ -777,9 +777,9 @@ export class ProductSalesComponent implements OnInit {
     if ((this._previousDueAmount != null
         && this._previousDueAmount > 0)
       && (grandTotalSalesPrice == paidAmount))
-      this.disablePreviousPaidAmoutCheckBox = false;
+      this.disablePreviousPaidAmountCheckBox = false;
     else
-      this.disablePreviousPaidAmoutCheckBox = true;
+      this.disablePreviousPaidAmountCheckBox = true;
 
   }
 
