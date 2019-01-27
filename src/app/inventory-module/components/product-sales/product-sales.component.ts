@@ -71,6 +71,7 @@ export class ProductSalesComponent implements OnInit {
   public dropDownModelList: Array<DropDownModel> = new Array<DropDownModel>();
 
   public isPayPreviousDueAmount: boolean = false;
+  public disablePreviousPaidAmoutCheckBox:boolean=true;
 
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
@@ -244,7 +245,9 @@ export class ProductSalesComponent implements OnInit {
 
   public onFocusOutPaidAmount(paidAmount: number) {
     //let grandTotalSalesPrice:number;
-    let totalWithPreviousDue: number;
+    this.checkoutPreviousDue(paidAmount);
+
+   /* let totalWithPreviousDue: number;
     let previousDueAmount: number;
     let grandTotalSalesPrice: number;
     this.productSalesViewModel.previousDue = this._previousDueAmount;
@@ -262,9 +265,9 @@ export class ProductSalesComponent implements OnInit {
     else if (paidAmount == totalWithPreviousDue)
       this.productSalesViewModel.previousDue = 0;
     else if ((paidAmount > grandTotalSalesPrice) && (paidAmount < totalWithPreviousDue)) {
-      totalWithPreviousDue -= paidAmount;
+      totalWithPreviousDue = (+totalWithPreviousDue) - (+paidAmount);
       this.productSalesViewModel.previousDue = totalWithPreviousDue;
-    }
+    }*/
 
 
       /* if(!_.isNaN(paidAmount)){
@@ -272,17 +275,31 @@ export class ProductSalesComponent implements OnInit {
        }*/
       this.setDueAmount(paidAmount);
 
+
   }
 
   onCheckPreviousDuePayment(isPayPreviousDueAmount) {
-    let previousDue: number = this.productSalesViewModel.previousDue;
+    //let previousDue: number = this.productSalesViewModel.previousDue;
     let paidAmount: number = this.productSalesViewModel.paidAmount;
+    this.checkoutPreviousDue(paidAmount);
     if (isPayPreviousDueAmount) {
-      paidAmount = (+paidAmount) + (+previousDue);
+
+
+  /*  else if(paidAmount==grandTotalSalesPrice && this.isPayPreviousDueAmount){
+        this.productSalesViewModel.previousDue = 0;
+        this.productSalesViewModel.paidAmount = (+grandTotalSalesPrice) + (+previousDueAmount);
+      }else if(!this.isPayPreviousDueAmount){
+        totalWithPreviousDue = (+totalWithPreviousDue) - (+previousDueAmount);
+        this.productSalesViewModel.previousDue = previousDueAmount;
+        this.productSalesViewModel.paidAmount = totalWithPreviousDue;
+      }*/
+
+      //paidAmount = (+paidAmount) + (+previousDue);
+      //this.productSalesViewModel.previousDue=0;
     } else {
-      paidAmount = (+paidAmount) - (+previousDue);
+      //paidAmount = (+paidAmount) - (+previousDue);
     }
-    this.productSalesViewModel.paidAmount = paidAmount;
+    //this.productSalesViewModel.paidAmount = paidAmount;
   }
 
   public onClickReset() {
@@ -722,6 +739,13 @@ export class ProductSalesComponent implements OnInit {
           this.customerPreviousDueViewModel = <CustomerPreviousDueViewModel>response.data;
           this.productSalesViewModel.previousDue = this.customerPreviousDueViewModel.previousDue;
           this._previousDueAmount = this.customerPreviousDueViewModel.previousDue;
+          this.enableDisablePreviousDueCheckBox();
+
+         /* if(this._previousDueAmount==null)
+            this.disablePreviousPaidAmoutCheckBox=true;
+          else
+            this.disablePreviousPaidAmoutCheckBox=false;*/
+
           return;
           //} //else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           //this.toaster.error('Failed to get Store list ', this.pageTitle);
@@ -741,6 +765,50 @@ export class ProductSalesComponent implements OnInit {
         return;
       }
     )
+  }
+
+  private checkoutPreviousDue(paidAmount: number){
+    let totalWithPreviousDue: number;
+    let previousDueAmount: number;
+    let grandTotalSalesPrice: number;
+    this.productSalesViewModel.previousDue = this._previousDueAmount;
+    previousDueAmount = this._previousDueAmount;
+    grandTotalSalesPrice = this.grandTotalSalesPrice;
+
+    if(previousDueAmount!=null)
+      totalWithPreviousDue = (+grandTotalSalesPrice) + (+previousDueAmount);
+    else
+      totalWithPreviousDue = grandTotalSalesPrice;
+
+    if (totalWithPreviousDue < paidAmount)
+      this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
+    else if (paidAmount == totalWithPreviousDue)
+      this.productSalesViewModel.previousDue = 0;
+    else if ((paidAmount > grandTotalSalesPrice) && (paidAmount < totalWithPreviousDue)) {
+      totalWithPreviousDue = (+totalWithPreviousDue) - (+paidAmount);
+      this.productSalesViewModel.previousDue = totalWithPreviousDue;
+    }
+
+    if(paidAmount>= grandTotalSalesPrice && previousDueAmount!=null && previousDueAmount>0){
+      this.disablePreviousPaidAmoutCheckBox=false;
+    }else {
+      this.disablePreviousPaidAmoutCheckBox=true;
+    }
+  }
+
+  private enableDisablePreviousDueCheckBox(){
+    let grandTotalSalesPrice: number;
+    let paidAmount: number;
+    grandTotalSalesPrice = this.grandTotalSalesPrice;
+    paidAmount = this.productSalesViewModel.paidAmount;
+
+    if((this._previousDueAmount!=null
+      && this._previousDueAmount>0)
+      && (grandTotalSalesPrice == paidAmount))
+      this.disablePreviousPaidAmoutCheckBox=false;
+    else
+      this.disablePreviousPaidAmoutCheckBox=true;
+
   }
 
 }

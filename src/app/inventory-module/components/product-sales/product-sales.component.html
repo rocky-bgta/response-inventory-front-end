@@ -376,7 +376,7 @@
                      name="previousDueAmount"
                      class="form-check-input"
                      [(ngModel)]="isPayPreviousDueAmount"
-                     [disabled]="productSalesViewModel.previousDue==0 || productSalesViewModel.paidAmount==0"
+                     [disabled]="disablePreviousPaidAmoutCheckBox"
                      (change)="onCheckPreviousDuePayment(isPayPreviousDueAmount)"
                      id="previousDueAmount">
               <label class="form-check-label" for="previousDueAmount">Pay Previous due</label>
