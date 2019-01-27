@@ -273,11 +273,13 @@ export class ProductSalesComponent implements OnInit {
 
   onCheckPreviousDuePayment(isPayPreviousDueAmount) {
     let previousDue: number = this.productSalesViewModel.previousDue;
+    let paidAmount: number = this.productSalesViewModel.paidAmount;
     if (isPayPreviousDueAmount) {
-      this.productSalesViewModel.paidAmount += previousDue;
+      paidAmount += previousDue;
     } else {
-      this.productSalesViewModel.paidAmount -= previousDue;
+      paidAmount -= previousDue;
     }
+    this.productSalesViewModel.paidAmount = paidAmount;
   }
 
   public onClickReset() {
