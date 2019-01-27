@@ -376,7 +376,7 @@
                      name="previousDueAmount"
                      class="form-check-input"
                      [(ngModel)]="isPayPreviousDueAmount"
-                     [disabled]="productSalesViewModel.proviousDue==0"
+                     [disabled]="productSalesViewModel.previousDue==0"
                      (change)="onCheckPreviousDuePayment(isPayPreviousDueAmount)"
                      id="previousDueAmount">
               <label class="form-check-label" for="previousDueAmount">Pay Previous due</label>
@@ -420,14 +420,14 @@
         <td colspan="2">
           <div class="form-group">
 
-            <label for="saveAmount" class="lb-sm">Previous Due:</label>
+            <label for="previousDue" class="lb-sm">Previous Due:</label>
             <input class="form-control"
-                   #saveAmount
+                   #previousDue
                    type="text"
                    disabled
-                   id="saveAmount"
-                   name="saveAmount"
-                   [ngModel]="productSalesViewModel.proviousDue">
+                   id="previousDue"
+                   name="previousDue"
+                   [ngModel]="productSalesViewModel.previousDue">
 
           </div>
 

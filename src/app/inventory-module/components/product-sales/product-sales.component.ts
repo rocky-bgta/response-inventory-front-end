@@ -92,7 +92,7 @@ export class ProductSalesComponent implements OnInit {
     this.getStoreList();
     this.getCustomerList();
     this.setInvoiceNo();
-    this.productSalesViewModel.proviousDue=0;
+    this.productSalesViewModel.previousDue=0;
   }
 
   private setModelForSave() {
@@ -164,7 +164,7 @@ export class ProductSalesComponent implements OnInit {
 
   public onClearCustomer() {
     this.isCustomerSelected = false;
-    this.productSalesViewModel.proviousDue=0;
+    this.productSalesViewModel.previousDue=0;
   }
 
   public onChangeProduct(event: DropDownModel) {
@@ -241,7 +241,8 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onFocusOutPaidAmount(paidAmount: number) {
-    if (this.grandTotalSalesPrice + this.productSalesViewModel.proviousDue < paidAmount) {
+    let totalWithPreviousDue
+    if (this.grandTotalSalesPrice + this.productSalesViewModel.previousDue < paidAmount) {
       this.productSalesViewModel.paidAmount = this.grandTotalSalesPrice;
     } else {
       /* if(!_.isNaN(paidAmount)){
@@ -252,7 +253,7 @@ export class ProductSalesComponent implements OnInit {
   }
 
   onCheckPreviousDuePayment(isPayPreviousDueAmount){
-    let previousDue:number = this.productSalesViewModel.proviousDue;
+    let previousDue:number = this.productSalesViewModel.previousDue;
     if(isPayPreviousDueAmount){
       this.productSalesViewModel.paidAmount+=previousDue;
     }else {
@@ -315,7 +316,7 @@ export class ProductSalesComponent implements OnInit {
 
   private setDueAmount(paidAmount: number) {
     let dueAmount: number;
-    if ((this.grandTotalSalesPrice + this.productSalesViewModel.proviousDue) == paidAmount) {
+    if ((this.grandTotalSalesPrice + this.productSalesViewModel.previousDue) == paidAmount) {
       dueAmount = 0;
     } else if (paidAmount < this.grandTotalSalesPrice) {
       dueAmount = this.grandTotalSalesPrice - paidAmount;
@@ -695,7 +696,7 @@ export class ProductSalesComponent implements OnInit {
       (response: ResponseMessage) => {
         if (response.httpStatus == HttpStatusCode.FOUND) {
           this.customerPreviousDueViewModel = <CustomerPreviousDueViewModel>response.data;
-          this.productSalesViewModel.proviousDue = this.customerPreviousDueViewModel.previousDue;
+          this.productSalesViewModel.previousDue = this.customerPreviousDueViewModel.previousDue;
           return;
         //} //else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           //this.toaster.error('Failed to get Store list ', this.pageTitle);

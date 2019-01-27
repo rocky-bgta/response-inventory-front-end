@@ -15,7 +15,7 @@ export class ProductSalesViewModel{
   customerModel:CustomerModel;
   discountAmount:number;
   //================
-  proviousDue:number;
+  previousDue:number;
   productId:string;
   serialNo: string;
 }
