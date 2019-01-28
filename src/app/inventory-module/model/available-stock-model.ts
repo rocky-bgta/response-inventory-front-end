@@ -4,6 +4,7 @@ export class AvailableStockModel{
   productId:string;
   categoryName:string;
   productName:string;
+  modelNo:string;
   totalPrice:number;
   availableQty:number;
 }

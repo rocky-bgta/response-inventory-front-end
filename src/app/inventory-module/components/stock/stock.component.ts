@@ -266,6 +266,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
           /* {title:'Category',      data: 'categoryName'},*/
           {data: 'categoryName'},
           {data: 'productName'},
+          {data: 'modelNo'},
           {data: 'storeName'},
           {data: 'availableQty'},
           {data: 'totalPrice'},
