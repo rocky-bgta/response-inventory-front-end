@@ -89,7 +89,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onChangeStore(storeId: string) {
     if (storeId != null) {
-      this.getProductListByStoreId(storeId);
+      //this.getProductListByStoreId(storeId);
       this.getCategoryListByStoreId(storeId);
       this.searchParameter.storeId = storeId;
       this.rerender();
