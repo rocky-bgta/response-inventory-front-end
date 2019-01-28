@@ -672,7 +672,7 @@ export class ProductSalesComponent implements OnInit {
     this.customerModel.name = null;
     this.customerModel.phoneNo1 = null;
     this.customerModel.address = null;
-    this.isPayPreviousDueAmount=null;
+    this.isPayPreviousDueAmount=false;
     this._previousDueAmount=null;
     //this.storeSalesProductViewModel.salesMethod=null;
   }
