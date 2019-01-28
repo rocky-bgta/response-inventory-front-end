@@ -413,6 +413,7 @@ export class ProductSalesComponent implements OnInit {
     }
     this.grandTotalSalesPrice = grandTotal;
     this.productSalesViewModel.paidAmount = grandTotal;
+    this.enableDisablePreviousDueCheckBox();
   }
 
   private getAvailableProductsForSales(searchRequestParameter: any) {
@@ -671,6 +672,8 @@ export class ProductSalesComponent implements OnInit {
     this.customerModel.name = null;
     this.customerModel.phoneNo1 = null;
     this.customerModel.address = null;
+    this.isPayPreviousDueAmount=null;
+    this._previousDueAmount=null;
     //this.storeSalesProductViewModel.salesMethod=null;
   }
 
