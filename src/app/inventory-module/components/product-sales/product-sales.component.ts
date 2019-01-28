@@ -764,11 +764,14 @@ export class ProductSalesComponent implements OnInit {
       this.productSalesViewModel.previousDue = totalWithPreviousDue;
     }
 
-    if (paidAmount == grandTotalSalesPrice && previousDueAmount != null && previousDueAmount > 0) {
+   /* if (paidAmount == grandTotalSalesPrice && previousDueAmount != null && previousDueAmount > 0) {
       this.disablePreviousPaidAmountCheckBox = false;
     } else {
       this.disablePreviousPaidAmountCheckBox = true;
-    }
+    }*/
+
+   this.enableDisablePreviousDueCheckBox();
+
   }
 
   private enableDisablePreviousDueCheckBox() {
