@@ -18,4 +18,5 @@ export class ProductSalesViewModel{
   previousDue:number;
   productId:string;
   serialNo: string;
+  invoiceDate:Date;
 }

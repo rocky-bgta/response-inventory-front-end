@@ -96,6 +96,7 @@ export class ProductSalesComponent implements OnInit {
     this.getCustomerList();
     this.setInvoiceNo();
     this.productSalesViewModel.previousDue = 0;
+    this.productSalesViewModel.invoiceDate= new Date();
   }
 
   private setModelForSave() {
@@ -674,6 +675,7 @@ export class ProductSalesComponent implements OnInit {
     this.customerModel.address = null;
     this.isPayPreviousDueAmount=false;
     this._previousDueAmount=null;
+    this.productSalesViewModel.invoiceDate = new Date();
     //this.storeSalesProductViewModel.salesMethod=null;
   }
 
@@ -693,7 +695,8 @@ export class ProductSalesComponent implements OnInit {
       customerName: ['', Validators.compose([Validators.maxLength(50)])],
       customerPhoneNo: ['', Validators.compose([Validators.maxLength(20)])],
       customerAddress: ['', Validators.compose([Validators.maxLength(200)])],
-      showBuyPrice: ['',]
+      showBuyPrice: ['',],
+      invoiceDate: ['',Validators.required]
     });
   }
 

@@ -101,7 +101,7 @@
 
       <div class="row">
 
-        <div class="col-sm-10" style="padding-left: 0%;">
+        <div class="col-sm-7" style="padding-left: 0%;">
           <div class="form-group required row">
             <label for="customerName" class="col-sm-3 required-label">Customer Name:</label>
             <div class="col-sm-6">
@@ -175,6 +175,36 @@
           </div>
         </div>
 
+        <div class="col-sm-3">
+
+                <div class="form-group required row">
+                        <div class="col-sm-3">
+                          <label for="invoiceDate" class="required-label lb-sm">Date</label>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="input-group datepicker-input">
+                              <input type="text"
+                                   name="invoiceDate"
+                                   id="invoiceDate"
+                                   #invoiceDate="bsDatepicker"
+                                   [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                                   placeholder="Select a date"
+                                   formControlName="invoiceDate"
+                                   [(ngModel)]="productSalesViewModel.invoiceDate"
+                                   class="form-control"
+                                   bsDatepicker>
+                              <button class="input-group-addon" (click)="invoiceDate.toggle()" type="button">
+                              <span class="fa fa-calendar"></span>
+                            </button>
+                              <div *ngIf="entryForm.controls['invoiceDate'].hasError('required')"
+                                 class="custom-invalid-feedback">
+                              Invoice Date Required
+                            </div>
+                            </div>
+                        </div>
+                  </div>
+        </div>
+
         <div class="col-sm-2" style="padding-left: 0%;">
           <ui-switch
             name="showBuyPrice"
@@ -182,6 +212,7 @@
             [(ngModel)]="showBuyPrice">
           </ui-switch>
         </div>
+
       </div>
 
     </div>
@@ -394,90 +425,89 @@
 
         <tbody>
 
-          <tr>
+        <tr>
 
-        <td *ngIf="showBuyPrice" colspan="9"></td>
-        <td *ngIf="!showBuyPrice" colspan="8"></td>
+          <td *ngIf="showBuyPrice" colspan="9"></td>
+          <td *ngIf="!showBuyPrice" colspan="8"></td>
 
-        <td colspan="2">
-          <div class="form-group">
+          <td colspan="2">
+            <div class="form-group">
 
-            <label for="discountAmount" class="lb-sm">Discount Amount:</label>
-            <input class="form-control"
-                   #discountAmount
-                   id="discountAmount"
-                   maxlength="8"
-                   pattern="^(\d*\.)?\d+$"
-                   (focusout)="onFocusOutInvoiceDiscountAmount(productSalesViewModel.discountAmount)"
-                   onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
+              <label for="discountAmount" class="lb-sm">Discount Amount:</label>
+              <input class="form-control"
+                     #discountAmount
+                     id="discountAmount"
+                     maxlength="8"
+                     pattern="^(\d*\.)?\d+$"
+                     (focusout)="onFocusOutInvoiceDiscountAmount(productSalesViewModel.discountAmount)"
+                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
                        || event.charCode==46"
-                   type="text"
-                   [attr.disabled]="grandTotalSalesPrice==0 || isPayPreviousDueAmount ?'':null"
-                   autocomplete="off"
-                   name="discountAmount"
-                   [(ngModel)]="productSalesViewModel.discountAmount">
-          </div>
-        </td>
-        <td colspan="2">
-          <div class="form-group">
+                     type="text"
+                     [attr.disabled]="grandTotalSalesPrice==0 || isPayPreviousDueAmount ?'':null"
+                     autocomplete="off"
+                     name="discountAmount"
+                     [(ngModel)]="productSalesViewModel.discountAmount">
+            </div>
+          </td>
+          <td colspan="2">
+            <div class="form-group">
 
-            <label for="previousDue" class="lb-sm">Previous Due:</label>
-            <input class="form-control"
-                   #previousDue
-                   type="text"
-                   disabled
-                   id="previousDue"
-                   name="previousDue"
-                   [ngModel]="productSalesViewModel.previousDue">
+              <label for="previousDue" class="lb-sm">Previous Due:</label>
+              <input class="form-control"
+                     #previousDue
+                     type="text"
+                     disabled
+                     id="previousDue"
+                     name="previousDue"
+                     [ngModel]="productSalesViewModel.previousDue">
 
-          </div>
+            </div>
 
-        </td>
-      </tr>
-          <tr>
+          </td>
+        </tr>
+        <tr>
 
-            <td *ngIf="showBuyPrice" colspan="9"></td>
-            <td *ngIf="!showBuyPrice" colspan="8"></td>
+          <td *ngIf="showBuyPrice" colspan="9"></td>
+          <td *ngIf="!showBuyPrice" colspan="8"></td>
 
-            <td colspan="2">
-              <div class="form-group">
+          <td colspan="2">
+            <div class="form-group">
 
-                <label for="paidAmount" class="lb-sm">Paid Amount:</label>
-                <!-- pattern="^((?!(0))[0-9]{1,10})$"-->
-                <input class="form-control"
-                       #paidAmount
-                       maxlength="8"
-                       pattern="^(\d*\.)?\d+$"
-                       (focusout)="onFocusOutPaidAmount(productSalesViewModel.paidAmount)"
-                       onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
+              <label for="paidAmount" class="lb-sm">Paid Amount:</label>
+              <!-- pattern="^((?!(0))[0-9]{1,10})$"-->
+              <input class="form-control"
+                     #paidAmount
+                     maxlength="8"
+                     pattern="^(\d*\.)?\d+$"
+                     (focusout)="onFocusOutPaidAmount(productSalesViewModel.paidAmount)"
+                     onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
                        || event.charCode==46"
-                       type="text"
-                       [ngClass]="{ 'is-invalid': paidAmount.errors?.required || paidAmount.errors?.pattern}"
-                       required
-                       id="paidAmount"
-                       [attr.disabled]="grandTotalSalesPrice==0 || isPayPreviousDueAmount ?'':null"
-                       autocomplete="off"
-                       name="paidAmount"
-                       [(ngModel)]="productSalesViewModel.paidAmount">
-              </div>
-            </td>
-            <td colspan="2">
-              <div class="form-group">
+                     type="text"
+                     [ngClass]="{ 'is-invalid': paidAmount.errors?.required || paidAmount.errors?.pattern}"
+                     required
+                     id="paidAmount"
+                     [attr.disabled]="grandTotalSalesPrice==0 || isPayPreviousDueAmount ?'':null"
+                     autocomplete="off"
+                     name="paidAmount"
+                     [(ngModel)]="productSalesViewModel.paidAmount">
+            </div>
+          </td>
+          <td colspan="2">
+            <div class="form-group">
 
-                <label for="dueAmount" class="lb-sm">Due Amount:</label>
-                <input class="form-control"
-                       #dueAmount
-                       type="text"
-                       disabled
-                       id="dueAmount"
-                       name="dueAmount"
-                       [ngModel]="productSalesViewModel.dueAmount">
+              <label for="dueAmount" class="lb-sm">Due Amount:</label>
+              <input class="form-control"
+                     #dueAmount
+                     type="text"
+                     disabled
+                     id="dueAmount"
+                     name="dueAmount"
+                     [ngModel]="productSalesViewModel.dueAmount">
 
-              </div>
+            </div>
 
-            </td>
-          </tr>
-
+          </td>
+        </tr>
 
 
         </tbody>
