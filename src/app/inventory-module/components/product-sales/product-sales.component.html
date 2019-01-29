@@ -112,6 +112,7 @@
                 [attr.disabled]="isCustomerSelected?'':null"
                 [required]="!isCustomerSelected"
                 autocomplete="off"
+                placeholder="new customer's name"
                 type="text"
                 [(ngModel)]="customerModel.name"
                 formControlName="customerName">
@@ -133,6 +134,7 @@
                 id="customerPhoneNo"
                 class="form-control form-control-sm"
                 name="customerPhoneNo"
+                placeholder="new customer's phone no"
                 [attr.disabled]="isCustomerSelected?'':null"
                 [required]="!isCustomerSelected"
                 autocomplete="off"
@@ -156,6 +158,7 @@
             <div class="col-sm-6">
               <textarea
                 name="customerAddress"
+                placeholder="new customer's address"
                 [attr.disabled]="isCustomerSelected?'':null"
                 [(ngModel)]="customerModel.address"
                 formControlName="customerAddress"
