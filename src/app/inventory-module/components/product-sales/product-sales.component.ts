@@ -18,7 +18,7 @@ import {ProductSalesService} from "../../service/product-sales.service";
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import * as _ from 'lodash';
 import {RequestMessage} from "../../../core/model/request-message";
-import {DropDownModel} from "../../../core/model/DropDownModel";
+import {DropDownSelectModel} from "../../../core/model/DropDownSelectModel";
 import {CustomerDuePaymentHistoryService} from "../../service/customer-due-payment-history.service";
 import {CustomerPreviousDueViewModel} from "../../model/view-model/customer-previous-due-view-model";
 
@@ -68,7 +68,7 @@ export class ProductSalesComponent implements OnInit {
 
   //private barcode:string;
 
-  public dropDownModelList: Array<DropDownModel> = new Array<DropDownModel>();
+  public dropDownModelList: Array<DropDownSelectModel> = new Array<DropDownSelectModel>();
 
   public isPayPreviousDueAmount: boolean = false;
   public disablePreviousPaidAmountCheckBox: boolean = true;
@@ -142,7 +142,7 @@ export class ProductSalesComponent implements OnInit {
     if (event !== undefined) {
       this.isStoreSelected = true;
       this.productModelList = await this.getProductListByStoreId(event.id);
-      this.dropDownModelList = await this.buildDropDownModel(this.productModelList);
+      this.dropDownModelList = await this.buildDropDownSelectModel(this.productModelList);
       this.searchRequestParameter.storeId = event.id;
       this.setFocusOnBarcodeInputTextBox();
       //this.getAvailableProductsForSales(this.searchRequestParameter);
@@ -170,7 +170,7 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel.previousDue = 0;
   }
 
-  public onChangeProduct(event: DropDownModel) {
+  public onChangeProduct(event: DropDownSelectModel) {
     if (event !== undefined) {
       this.searchRequestParameter.productId = event.id;
       this.searchRequestParameter.barcode = null;
@@ -509,7 +509,7 @@ export class ProductSalesComponent implements OnInit {
         } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           this.toaster.error(response.message, this.pageTitle);
           productModelList = <Array<ProductModel>>response.data;
-          //await this.buildDropDownModel(this.productModelList);
+          //await this.buildDropDownSelectModel(this.productModelList);
           return productModelList;
         } else {
           Util.logConsole(response);
@@ -520,11 +520,11 @@ export class ProductSalesComponent implements OnInit {
     return productModelList;
   }
 
-  private async buildDropDownModel(productModelList: Array<ProductModel>): Promise<Array<DropDownModel>> {
-    let dropDownModel: DropDownModel;
-    let dropDownModelList: Array<DropDownModel> = new Array<DropDownModel>();
+  private async buildDropDownSelectModel(productModelList: Array<ProductModel>): Promise<Array<DropDownSelectModel>> {
+    let dropDownModel: DropDownSelectModel;
+    let dropDownModelList: Array<DropDownSelectModel> = new Array<DropDownSelectModel>();
     for (let item of productModelList) {
-      dropDownModel = new DropDownModel();
+      dropDownModel = new DropDownSelectModel();
       dropDownModel.id = item.id;
       dropDownModel.name = item.name + ", ModelNo: " + item.modelNo;
       dropDownModelList.push(dropDownModel)

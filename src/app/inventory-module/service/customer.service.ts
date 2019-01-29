@@ -19,6 +19,9 @@ export class CustomerService {
     return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.customer+"/list",dataTableParameter);
   }
 
+  getInvoiceCustomerList(): Observable<any> {
+    return this.httpRequestHelperService.getRequestWithUrl(InventoryApiEndPoint.customer+"/invoice-customer-list");
+  }
 
   getById(id): Observable<any> {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.customer, id);

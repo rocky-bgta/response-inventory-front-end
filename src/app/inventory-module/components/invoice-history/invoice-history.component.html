@@ -1,4 +1,54 @@
-<div>
+<div class="card">
+
+  <div class="card-header">
+    <strong>Search Invoice By Customer</strong>
+  </div>
+
+  <div class="card-body">
+
+    <div class="row" style="padding: 0">
+
+      <div class="col-sm-4" style="padding-left: 0">
+        <div class="form-group required">
+          <div class="col-sm-12">
+            <label for="customer" class="required-label lb-sm">Customer:</label>
+            <ng-select [items]="customerModelList"
+                       #customer
+                       id="customer"
+                       (change)="onChangeCustomer($event)"
+                       (clear)="onClearCustomer()"
+                       name="customer"
+                       bindLabel="name"
+                       bindValue="id"
+                       placeholder="Select Customer">
+            </ng-select>
+
+        </div>
+      </div>
+
+    </div>
+
+     <!-- (change)="onChangeStore($event)"
+      (clear)="onClearStore()"-->
+<!--
+    [(ngModel)]="productSalesViewModel.storeId"
+    formControlName="store"
+    -->
+
+
+  </div>
+  </div>
+
+  <div class="card-footer">
+
+  </div>
+
+</div>
+
+
+
+
+
 
 
   <div class="card" style="margin-top: 1%">
@@ -70,7 +120,7 @@
     </div>
   </div>
 
-</div>
+
 
 <ngx-smart-modal #salesHistoryListModal [closable]="false"
                  identifier="salesHistoryListModal"

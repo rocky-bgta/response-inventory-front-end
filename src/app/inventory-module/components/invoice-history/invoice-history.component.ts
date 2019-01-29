@@ -16,6 +16,7 @@ import {ToastrService} from "ngx-toastr";
 import {Util} from "../../../core/Util";
 import {HttpErrorResponse} from "@angular/common/http";
 import {MessageService} from "../../../core/MessageService";
+import {DropDownSelectModel} from "../../../core/model/DropDownSelectModel";
 
 
 declare var $: any;
@@ -50,7 +51,7 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
 
   //========== Variables for this page business =====================================================
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
-  public customerModelList: Array<CustomerModel> = new Array<CustomerModel>();
+  public customerModelList: Array<DropDownSelectModel> = new Array<DropDownSelectModel>();
   public invoiceHistoryList: Array<InvoiceHistoryModel> = new Array<InvoiceHistoryModel>();
 
   public storeSelected: boolean = false;
@@ -69,6 +70,7 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngOnInit() {
+    this.getInvoiceCustomerList();
     this.populateDataTable();
 
   }
@@ -89,6 +91,19 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
       // Call the dtTrigger to rerender again
       this.dtTrigger.next();
     });
+  }
+
+  public onChangeCustomer(event){
+    if(event!=null){
+      this.searchRequestParameter.customerId = event.id;
+      this.rerender();
+    }
+    //Util.logConsole(event.id);
+  }
+
+  public onClearCustomer(){
+    this.searchRequestParameter.customerId="";
+    this.rerender();
   }
 
   public onClickSalesDetails(invoiceNo: string) {
@@ -129,6 +144,30 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
   clearMessage(): void {
     // clear message
     this.messageService.clearMessage();
+  }
+
+  private getInvoiceCustomerList() {
+    this.customerService.getInvoiceCustomerList().subscribe
+    (
+      (response: ResponseMessage) => {
+        if (response.httpStatus == HttpStatusCode.FOUND) {
+          this.customerModelList = <Array<DropDownSelectModel>>response.data;
+          return;
+        } else {
+          Util.logConsole(response);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+        } else {
+          Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+        }
+        return;
+      }
+    )
   }
 
   private getInvoiceHistoryByQueryParameters(dataTablesParameters: DataTableRequest, callback: any, searchParameter: CustomObject) {
@@ -184,7 +223,8 @@ export class InvoiceHistoryComponent implements OnInit, AfterViewInit, OnDestroy
           {data: 'invoiceAmount'},
           {data: 'discountAmount'},
           {data: 'invoiceStatus'},
-          {data: 'date'}
+          {data: 'date'},
+          {data: ''}
         ]
       };
   }
