@@ -386,59 +386,6 @@
                        [(ngModel)]="storeInProductViewModel.quantity">
               </td>
               <td>{{storeInProductViewModel.totalPrice}}</td>
-
-
-              <!--<td>
-                <div class="input-group datepicker-input">
-                  <input name="dynamicMfDate{{i}}"
-                         type="text"
-                         #dynamicMfDate="bsDatepicker"
-                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                         placeholder="Select a date"
-                         [(ngModel)]="storeInProductViewModel.manufacturingDate"
-                         class="form-control form-control-sm"
-                         bsDatepicker>
-                  <button class="input-group-addon" (click)="dynamicMfDate.toggle()" type="button">
-                    <span class="fa fa-calendar"></span>
-                  </button>
-                </div>
-              </td>-->
-
-            <!--  <td>
-                <div class="input-group datepicker-input">
-                  <input name="dynamicExpDate{{i}}"
-                         type="text"
-                         #dynamicExpDate="bsDatepicker"
-                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                         placeholder="Select a date"
-                         [(ngModel)]="storeInProductViewModel.expirationDate"
-                         class="form-control form-control-sm"
-                         bsDatepicker>
-                  <button class="input-group-addon" (click)="dynamicExpDate.toggle()" type="button">
-                    <span class="fa fa-calendar"></span>
-                  </button>
-                </div>
-              </td>-->
-
-
-             <!-- <td>
-                <div class="input-group datepicker-input">
-                  <input name="dynamicEntryDate{{i}}"
-                         type="text"
-                         required
-                         #dynamicEntryDate="bsDatepicker"
-                         [ngClass]="{ 'is-invalid': dynamicEntryDate.invalid }"
-                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                         placeholder="Select a date"
-                         [(ngModel)]="storeInProductViewModel.entryDate"
-                         class="form-control form-control-sm"
-                         bsDatepicker>
-                  <button class="input-group-addon" (click)="dynamicEntryDate.toggle()" type="button">
-                    <span class="fa fa-calendar"></span>
-                  </button>
-                </div>
-              </td>-->
-
               <td class="align-baseline">
 
                 <div class="row" style="margin-right: 0px;">
@@ -462,6 +409,13 @@
                 </div>
               </td>
             </tr>
+            </tbody>
+            <tbody *ngIf="grandTotalStockInPrice!=0">
+              <tr>
+                <td colspan="4"></td>
+                <td colspan="2">Grand Total</td>
+                <td colspan="1">{{grandTotalStockInPrice}}</td>
+              </tr>
             </tbody>
           </table>
         </div>

@@ -67,6 +67,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public storeSelected: boolean = false;
   public vendorSelected: boolean = false;
 
+  public grandTotalStockInPrice:number;
+
 
   //helper variable==========
   private _storeName: string;
@@ -199,10 +201,10 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   public onClickRemoveRow(index) {
     //Util.logConsole("Remove index: "+index);
     this.storeInProductViewModelList.splice(index, 1);
+    this.setGrandTotalStockInPrice();
     if (this.storeInProductViewModelList.length == 0) {
       this.productAdded = false;
       //this.hideProductAddedTable=true;
@@ -301,10 +303,12 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
   public onFocusOutQuantityRowEvent(index: number) {
     this.setTotalPrice(index);
+    this.setGrandTotalStockInPrice();
   }
 
   public onFocusOutPriceRowEvent(index: number) {
     this.setTotalPrice(index);
+    this.setGrandTotalStockInPrice();
   }
 
   private addProductToList(): void {
@@ -325,6 +329,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     storeInProductViewModel.vendorId = _.clone(this.storeInProductViewModel.vendorId);
     this.storeInProductViewModelList.push(storeInProductViewModel);
     this.productAdded=true;
+    this.setGrandTotalStockInPrice();
 
 
     //this.storeInProductViewModel.barcode="";
@@ -541,6 +546,15 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     this.productAdded = false;
     this.selectedProductIdFromDropDownMenu = null;
     this.productModelList.splice(0,this.productModelList.length);
+  }
+
+  private setGrandTotalStockInPrice() {
+    let grandTotal: number = 0;
+    for (let product of this.storeInProductViewModelList) {
+      if (Util.isNullOrUndefined(product.totalPrice) == false)
+        grandTotal += product.totalPrice;
+    }
+    this.grandTotalStockInPrice = grandTotal;
   }
 
   private initializeReactiveFormValidation(): void {
