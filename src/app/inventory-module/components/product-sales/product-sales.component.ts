@@ -738,6 +738,11 @@ export class ProductSalesComponent implements OnInit {
           //} //else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           //this.toaster.error('Failed to get Store list ', this.pageTitle);
           //return;
+        }else if(response.httpStatus==HttpStatusCode.NOT_FOUND){
+          this.productSalesViewModel.previousDue = 0;
+          this._previousDueAmount = 0;
+          this.enableDisablePreviousDueCheckBox();
+          return;
         } else {
           Util.logConsole(response);
           return;
