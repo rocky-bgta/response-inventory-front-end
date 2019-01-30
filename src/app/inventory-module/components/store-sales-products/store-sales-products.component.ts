@@ -195,7 +195,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
       //this.setGrandTotalSalesPrice();
     }
     else {
-     this.availableSalesProductViewModelList[index].salesPrice=0;
+     this.availableSalesProductViewModelList[index].salePrice=0;
      this.availableSalesProductViewModelList[index].totalPrice=0;
     }
   }
@@ -254,7 +254,7 @@ export class StoreSalesProductsComponent implements OnInit,  AfterViewInit, OnDe
     let salesPrice: number;
     let salesQty:number;
     let totalPrice:number;
-    salesPrice = this.availableSalesProductViewModelList[index].salesPrice;
+    salesPrice = this.availableSalesProductViewModelList[index].salePrice;
     salesQty = this.availableSalesProductViewModelList[index].salesQty;
     if(index!=null && (!_.isNaN(salesPrice) && !_.isNaN(salesQty))){
       totalPrice = salesPrice * salesQty;

@@ -6,6 +6,7 @@ export class ProductModel {
   modelNo: string;
   //serialNo: string;
   price: number;
+  salePrice:number;
   description: string;
   barcode: string;
   image: string;

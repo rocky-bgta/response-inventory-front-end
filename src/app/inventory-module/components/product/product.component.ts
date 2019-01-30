@@ -299,6 +299,7 @@ export class ProductComponent implements OnInit {
         {data: 'modelNo'},
         {data: 'serialNo'},
         {data: 'price'},
+        {data: 'salePrice'},
         {data: 'image'}
       ]
     };
@@ -454,6 +455,9 @@ export class ProductComponent implements OnInit {
       price: ['', Validators.compose([
         Validators.max(1000000000),
         Validators.required,
+        Validators.pattern(decimalNumberValidationRexPattern)])],
+      salePrice: ['', Validators.compose([
+        Validators.max(1000000000),
         Validators.pattern(decimalNumberValidationRexPattern)])],
       description: ['', Validators.maxLength(200)],
       barcode: ['', Validators.compose([Validators.maxLength(20)])]

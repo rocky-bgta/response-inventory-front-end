@@ -7,6 +7,7 @@ export class SalesProductViewModel {
   brandName: string;
   modelNo: string;
   buyPrice: number;
+  salePrice:number;
   description: string;
   barcode: string;
   image: string;
@@ -17,7 +18,6 @@ export class SalesProductViewModel {
   required: boolean;
 
 
-  salesPrice: number;
   salesQty: number;
   serialNo: number;
   supportPeriodInMonth: number;
@@ -27,7 +27,7 @@ export class SalesProductViewModel {
 
   constructor(){
     this.discount=0;
-    this.salesPrice=0;
+    this.salePrice=0;
     this.salesQty=1;
   }
 

@@ -286,7 +286,7 @@
                    maxlength="20"
                    pattern="^(?!(0))(\d*\.)?\d+$"
                    [attr.disabled]="isPayPreviousDueAmount ?'':null"
-                   (focusout)="onFocusOutSalesPriceRowEvent(i,product.salesPrice)"
+                   (focusout)="onFocusOutSalesPriceRowEvent(i,product.salePrice)"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
                     || event.charCode==46"
                    #dynamicSalesPrice="ngModel"
@@ -295,7 +295,7 @@
                    [ngClass]="{ 'is-invalid': dynamicSalesPrice.errors?.required || dynamicSalesPrice.errors?.pattern}"
                    id="dynamicSalesPrice{{i}}"
                    name="salesPrice{{i}}"
-                   [(ngModel)]="product.salesPrice">
+                   [(ngModel)]="product.salePrice">
           </td>
 
           <td>

@@ -202,10 +202,10 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel.productId = null;
   }
 
-  public onFocusOutSalesPriceRowEvent(index: number, salesPrice: number) {
+  public onFocusOutSalesPriceRowEvent(index: number, salePrice: number) {
     let isAllowedSalePrice: boolean;
     //let invoiceDiscountAmount: number = this.productSalesViewModel.discountAmount;
-    isAllowedSalePrice = this.verifySalesPrice(index, salesPrice);
+    isAllowedSalePrice = this.verifySalesPrice(index, salePrice);
     if (isAllowedSalePrice) {
       this.setRowWiseDiscountSalesPrice(index);
       this.setRowWiseTotalPrice(index);
@@ -213,7 +213,7 @@ export class ProductSalesComponent implements OnInit {
       //this.setGrandTotalSalesPrice();
     }
     else {
-      this.selectedProductListForSales[index].salesPrice = 0;
+      this.selectedProductListForSales[index].salePrice = 0;
       this.selectedProductListForSales[index].totalPrice = 0;
     }
   }
@@ -310,7 +310,7 @@ export class ProductSalesComponent implements OnInit {
     if (!_.isNaN(index)) {
       discountAmount = this.selectedProductListForSales[index].discount;
       if (!_.isNaN(discountAmount) && +discountAmount > 0) {
-        salesPrice = this.selectedProductListForSales[index].salesPrice;
+        salesPrice = this.selectedProductListForSales[index].salePrice;
         qty = this.selectedProductListForSales[index].salesQty;
 
         if (!_.isNaN(qty) && +qty > 0) {
@@ -379,7 +379,7 @@ export class ProductSalesComponent implements OnInit {
     //reset due amount====================
     this.productSalesViewModel.dueAmount = 0;
     //====================================
-    salesPrice = this.selectedProductListForSales[index].salesPrice;
+    salesPrice = this.selectedProductListForSales[index].salePrice;
     salesQty = this.selectedProductListForSales[index].salesQty;
     discountAmount = this.selectedProductListForSales[index].discount;
 
@@ -566,18 +566,28 @@ export class ProductSalesComponent implements OnInit {
   private addAvailableProductToSalesProductList(availableProductList: Array<SalesProductViewModel>) {
     let isProductContainedInList: boolean;
     let salesProductViewModel: SalesProductViewModel;
-
+    let index:number;
     for (let product of availableProductList) {
       isProductContainedInList = this.checkIsProductAlreadyAddedToList(product.productId);
       if (!isProductContainedInList) {
         salesProductViewModel = new SalesProductViewModel();
         salesProductViewModel = _.clone(product);
-        salesProductViewModel.salesPrice = 0;
+
+        if(salesProductViewModel.salePrice==null)
+          salesProductViewModel.salePrice = 0;
+
         salesProductViewModel.salesQty = 1;
         salesProductViewModel.discount = 0;
         this.selectedProductListForSales.push(salesProductViewModel);
+
+        index = this.selectedProductListForSales.findIndex(x=>x.productId==product.productId);
+        this.setRowWiseDiscountSalesPrice(index);
+        this.setRowWiseTotalPrice(index);
+        this.setInvoiceDiscount(this.productSalesViewModel.discountAmount);
       }
     }
+
+
   }
 
   private setInvoiceNo() {

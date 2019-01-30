@@ -5,6 +5,7 @@ export class ProductViewModel {
   brand: string;
   modelNo: string;
   price: number;
+  salePrice:number;
   description: string;
   image: string;
 

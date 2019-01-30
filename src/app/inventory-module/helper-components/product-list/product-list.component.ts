@@ -111,6 +111,7 @@ export class ProductListComponent implements OnInit {
         {data: 'brand'},
         {data: 'modelNo'},
         {data: 'price'},
+        {data: 'salePrice'},
         {data: 'image'}
       ]
     };

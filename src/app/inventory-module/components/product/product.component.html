@@ -185,6 +185,26 @@
           </div>
 
           <div class="form-group row">
+            <label for="salePrice" class="col-sm-4">Sale Price:</label>
+            <div class="col-sm-6">
+              <input
+                id="salePrice"
+                class="form-control"
+                autocomplete="off"
+                name="salePrice"
+                onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
+                || event.charCode==46"
+                [attr.disabled]="disableElementOnDetailsView?'':null"
+                type="text"
+                formControlName="salePrice"
+                [(ngModel)]="productModel.salePrice">
+              <span *ngIf="productForm.controls['salePrice'].hasError('max') " class="custom-invalid-feedback">
+                Maximum value can be entered 1000000000
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
             <label for="description" class="col-sm-4">Description:</label>
             <div class="col-sm-6">
               <textarea
@@ -319,6 +339,7 @@
           <th style="width: 10%">Brand</th>
           <th style="width: 15%">Model No</th>
           <th style="width: 10%">Price</th>
+          <th style="width: 10%">Sale Price</th>
           <th style="width: 7%">Image</th>
           <th style="width: 10%">Action</th>
         </tr>
@@ -330,6 +351,7 @@
           <td>{{product.brandName }}</td>
           <td>{{product.modelNo }}</td>
           <td>{{product.price }}</td>
+          <td>{{product.salePrice }}</td>
           <td class="ellipsis">
             <img [src]="'data:image/png;base64,'+product.image" height="50" width="100">
           </td>
@@ -350,7 +372,7 @@
         </tbody>
         <tbody *ngIf="productModelList?.length == 0">
         <tr>
-          <td colspan="8" class="no-data-available">No data!</td>
+          <td colspan="9" class="no-data-available">No data!</td>
         </tr>
         <tbody>
       </table>
