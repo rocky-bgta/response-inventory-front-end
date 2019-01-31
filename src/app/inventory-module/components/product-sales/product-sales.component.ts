@@ -168,6 +168,8 @@ export class ProductSalesComponent implements OnInit {
     this.productSalesViewModel.productId = null;
     this.productDropDownList = null;
     this.categoryModelList = null;
+    this.productSalesViewModel.categoryId=null;
+    this.productSalesViewModel.productId=null;
   }
 
   public async onChangeCategory(categoryId:string){
