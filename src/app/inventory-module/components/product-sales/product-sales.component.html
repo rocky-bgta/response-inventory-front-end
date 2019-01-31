@@ -205,7 +205,12 @@
   </div>
 
   <div class="card bg-light mb-3" style="max-width: 40rem; margin-top: 1%">
-    <div class="card-header">Header</div>
+      <div class="card-header">
+        <div *ngIf="isCustomerSelected"> Customer Details </div>
+        <div *ngIf="!isCustomerSelected"> New Customer </div>
+
+
+      </div>
     <div class="card-body">
       <div class="row">
         <div class="col-sm-12">

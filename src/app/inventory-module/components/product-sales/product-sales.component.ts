@@ -192,9 +192,13 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onChangeCustomer(customerId: string) {
-    this.isCustomerSelected = true;
-    this.getCustomerPreviousDueByCustomerId(customerId);
-    this.customerModel = new CustomerModel();
+    if(customerId!=null) {
+      this.isCustomerSelected = true;
+      this.getCustomerPreviousDueByCustomerId(customerId);
+      this.customerModel = this.customerModelList.find(x => x.id == customerId);
+    }else {
+      this.customerModel = new CustomerModel();
+    }
   }
 
   public onClearCustomer() {
@@ -682,9 +686,13 @@ export class ProductSalesComponent implements OnInit {
 
     this.productSalesViewModel.salesProductViewModelList = this.selectedProductListForSales;
 
-    isNewCustomerInfoEntered = this.isNewCustomerInfoEntered();
-    if (isNewCustomerInfoEntered)
-      this.productSalesViewModel.customerModel = this.customerModel;
+    if(!this.isCustomerSelected) {
+      isNewCustomerInfoEntered = this.isNewCustomerInfoEntered();
+      if (isNewCustomerInfoEntered)
+        this.productSalesViewModel.customerModel = this.customerModel;
+    }else {
+      this.productSalesViewModel.customerModel=null;
+    }
 
 
     requestMessage = Util.getRequestMessage(this.productSalesViewModel);
