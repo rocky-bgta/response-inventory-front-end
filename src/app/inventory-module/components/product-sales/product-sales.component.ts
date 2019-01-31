@@ -96,7 +96,7 @@ export class ProductSalesComponent implements OnInit {
     this.getCustomerList();
     this.setInvoiceNo();
     this.productSalesViewModel.previousDue = 0;
-    this.productSalesViewModel.invoiceDate= new Date();
+    this.productSalesViewModel.invoiceDate = new Date();
   }
 
   private setModelForSave() {
@@ -245,8 +245,8 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public onFocusOutPaidAmount(paidAmount) {
-    if(paidAmount==""){
-      this.productSalesViewModel.paidAmount=0;
+    if (paidAmount == "") {
+      this.productSalesViewModel.paidAmount = 0;
       paidAmount = 0;
     }
     this.checkoutPreviousDue(paidAmount);
@@ -281,7 +281,7 @@ export class ProductSalesComponent implements OnInit {
     let grandTotalAmountAfterDiscount: number;
     let paidAmount: number;
     paidAmount = this.productSalesViewModel.paidAmount;
-    if (discount == "" && (paidAmount == null || paidAmount==0)) {
+    if (discount == "" && (paidAmount == null || paidAmount == 0)) {
       this.setGrandTotalSalesPrice();
       this.productSalesViewModel.dueAmount = this.grandTotalSalesPrice;
       this.productSalesViewModel.paidAmount = 0;
@@ -294,7 +294,7 @@ export class ProductSalesComponent implements OnInit {
           this.grandTotalSalesPrice = grandTotalAmountAfterDiscount;
           this.productSalesViewModel.paidAmount = grandTotalAmountAfterDiscount;
         }
-      }else {
+      } else {
         this.setGrandTotalSalesPrice();
       }
     }
@@ -418,12 +418,13 @@ export class ProductSalesComponent implements OnInit {
   }
 
   private getAvailableProductsForSales(searchRequestParameter: any) {
+    let availableSalesProductViewModelList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
     this.productSalesService.getAllAvailableProduct(searchRequestParameter).subscribe
     (
       (responseMessage: ResponseMessage) => {
         if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
-          this.availableSalesProductViewModelList = <Array<SalesProductViewModel>>responseMessage.data;
-          this.addAvailableProductToSalesProductList(this.availableSalesProductViewModelList);
+          availableSalesProductViewModelList = <Array<SalesProductViewModel>>responseMessage.data;
+          this.addAvailableProductToSalesProductList(availableSalesProductViewModelList);
           //Util.logConsole(this.availableSalesProductViewModelList);
         } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
           this.toaster.error(responseMessage.message, this.pageTitle);
@@ -534,7 +535,7 @@ export class ProductSalesComponent implements OnInit {
     return dropDownModelList;
   }
 
-  private checkIsProductAlreadyAddedToList(productId: string): boolean {
+  private checkIsProductAlreadyAddedToList(storeId: string, productId: string, availableQty: number, buyPrice: number): boolean {
     let isProductContainedInList: boolean = false;
     let isAllowedInputSalesQty: boolean;
 
@@ -542,7 +543,14 @@ export class ProductSalesComponent implements OnInit {
     let index: number;
     let salesQty: number;
 
-    salesProductViewModel = _.find(this.selectedProductListForSales, {productId});
+    //salesProductViewModel = _.find(this.selectedProductListForSales, {productId});
+    salesProductViewModel = this.selectedProductListForSales.find
+    (
+      x => x.productId == productId
+        && x.storeId == storeId
+        && x.available == availableQty
+        && x.buyPrice == buyPrice
+    );
 
     if (salesProductViewModel != null && !_.isEmpty(salesProductViewModel)) {
       isProductContainedInList = true;
@@ -566,29 +574,34 @@ export class ProductSalesComponent implements OnInit {
   private addAvailableProductToSalesProductList(availableProductList: Array<SalesProductViewModel>) {
     let isProductContainedInList: boolean;
     let salesProductViewModel: SalesProductViewModel;
-    let index:number;
+    let index: number;
     for (let product of availableProductList) {
-      isProductContainedInList = this.checkIsProductAlreadyAddedToList(product.productId);
+      isProductContainedInList = this.checkIsProductAlreadyAddedToList(product.storeId, product.productId, product.available, product.buyPrice);
       if (!isProductContainedInList) {
         salesProductViewModel = new SalesProductViewModel();
         salesProductViewModel = _.clone(product);
 
-        if(salesProductViewModel.salePrice==null)
+        if (salesProductViewModel.salePrice == null)
           salesProductViewModel.salePrice = 0;
 
         salesProductViewModel.salesQty = 1;
         salesProductViewModel.discount = 0;
         this.selectedProductListForSales.push(salesProductViewModel);
 
-        index = this.selectedProductListForSales.findIndex(x=>x.productId==product.productId);
+        index = this.selectedProductListForSales.findIndex(x => x.productId == product.productId);
         this.setRowWiseDiscountSalesPrice(index);
         this.setRowWiseTotalPrice(index);
         this.setInvoiceDiscount(this.productSalesViewModel.discountAmount);
       }
     }
-
-
   }
+
+  /* private  isProductBuyingPriceSame(availableProductList: Array<SalesProductViewModel>):boolean{
+     let buyingPrice:number;
+     for(product of availableProductList){
+
+     }
+   }*/
 
   private setInvoiceNo() {
     let invoiceNo: string;
@@ -683,8 +696,8 @@ export class ProductSalesComponent implements OnInit {
     this.customerModel.name = null;
     this.customerModel.phoneNo1 = null;
     this.customerModel.address = null;
-    this.isPayPreviousDueAmount=false;
-    this._previousDueAmount=null;
+    this.isPayPreviousDueAmount = false;
+    this._previousDueAmount = null;
     this.productSalesViewModel.invoiceDate = new Date();
     //this.storeSalesProductViewModel.salesMethod=null;
   }
@@ -706,7 +719,7 @@ export class ProductSalesComponent implements OnInit {
       customerPhoneNo: ['', Validators.compose([Validators.maxLength(20)])],
       customerAddress: ['', Validators.compose([Validators.maxLength(200)])],
       showBuyPrice: ['',],
-      invoiceDate: ['',Validators.required]
+      invoiceDate: ['', Validators.required]
     });
   }
 
@@ -738,7 +751,7 @@ export class ProductSalesComponent implements OnInit {
           //} //else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           //this.toaster.error('Failed to get Store list ', this.pageTitle);
           //return;
-        }else if(response.httpStatus==HttpStatusCode.NOT_FOUND){
+        } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
           this.productSalesViewModel.previousDue = 0;
           this._previousDueAmount = 0;
           this.enableDisablePreviousDueCheckBox();
@@ -782,13 +795,13 @@ export class ProductSalesComponent implements OnInit {
       this.productSalesViewModel.previousDue = totalWithPreviousDue;
     }
 
-   /* if (paidAmount == grandTotalSalesPrice && previousDueAmount != null && previousDueAmount > 0) {
-      this.disablePreviousPaidAmountCheckBox = false;
-    } else {
-      this.disablePreviousPaidAmountCheckBox = true;
-    }*/
+    /* if (paidAmount == grandTotalSalesPrice && previousDueAmount != null && previousDueAmount > 0) {
+       this.disablePreviousPaidAmountCheckBox = false;
+     } else {
+       this.disablePreviousPaidAmountCheckBox = true;
+     }*/
 
-   this.enableDisablePreviousDueCheckBox();
+    this.enableDisablePreviousDueCheckBox();
 
   }
 
