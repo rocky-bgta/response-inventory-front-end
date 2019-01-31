@@ -1,12 +1,12 @@
 <form id="collapseInputForm" [formGroup]="entryForm">
 
-  <div class="card" style="padding: 0">
+  <div class="card">
 
     <div class="card-header">
       <strong>Select Products for Sales</strong>
     </div>
 
-    <div class="card-body" style="height: 305px">
+    <div class="card-body">
 
       <div class="row" style="padding: 0">
 
@@ -33,16 +33,37 @@
           </div>
         </div>
 
+        <div class="col-sm-3" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="category" class="lb-sm">Category:</label>
+              <ng-select [items]="categoryModelList"
+                         #category
+                         id="category"
+                         name="category"
+                         bindLabel="name"
+                         [ngClass]="{ 'avoid-clicks': !isStoreSelected}"
+                         bindValue="id"
+                         formControlName="category"
+                         (change)="onChangeCategory(productSalesViewModel.categoryId)"
+                         (clear)="onClearCategory()"
+                         [(ngModel)]="productSalesViewModel.categoryId"
+                         placeholder="Select Category">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
         <div class="col-sm-4" style="padding-left: 0">
           <div class="form-group">
             <div class="col-sm-12">
               <label for="store" class="lb-sm">Product:</label>
-              <ng-select [items]="dropDownModelList"
+              <ng-select [items]="productDropDownList"
                          #productList
                          id="product"
                          name="product"
                          bindLabel="name"
-                         [ngClass]="{ 'avoid-clicks': !isStoreSelected}"
+                         [ngClass]="{ 'avoid-clicks': !isCategorySelected}"
                          bindValue="id"
                          (change)="onChangeProduct($event)"
                          (clear)="onClearProduct()"
@@ -77,6 +98,9 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="row" style="padding: 0">
         <div class="col-sm-3" style="padding-left: 0">
           <div class="form-group">
             <div class="col-sm-12">
@@ -95,12 +119,180 @@
             </div>
           </div>
         </div>
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group required">
+            <label for="invoiceDate" class="required-label lb-sm">Invoice Date</label>
+            <div class="input-group datepicker-input">
+              <input type="text"
+                     name="entryDate"
+                     id="invoiceDate"
+                     #invoiceDate="bsDatepicker"
+                     [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                     placeholder="Select a date"
+                     formControlName="invoiceDate"
+                     [(ngModel)]="productSalesViewModel.invoiceDate"
+                     class="form-control"
+                     bsDatepicker>
+              <button class="input-group-addon" (click)="invoiceDate.toggle()" type="button">
+                <span class="fa fa-calendar"></span>
+              </button>
+              <div *ngIf="entryForm.controls['invoiceDate'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Invoice Date Required
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!--  <div class="col-sm-3">
+
+          <div class="form-group required row">
+            <div class="col-sm-3">
+              <label for="invoiceDate" class="required-label lb-sm">Date</label>
+            </div>
+            <div class="col-sm-9">
+              <div class="input-group datepicker-input">
+                <input type="text"
+                       name="invoiceDate"
+                       id="invoiceDate"
+                       #invoiceDate="bsDatepicker"
+                       [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                       placeholder="Select a date"
+                       formControlName="invoiceDate"
+                       [(ngModel)]="productSalesViewModel.invoiceDate"
+                       class="form-control"
+                       bsDatepicker>
+                <button class="input-group-addon" (click)="invoiceDate.toggle()" type="button">
+                  <span class="fa fa-calendar"></span>
+                </button>
+                <div *ngIf="entryForm.controls['invoiceDate'].hasError('required')"
+                     class="custom-invalid-feedback">
+                  Invoice Date Required
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>-->
+
+        <div class="col-sm-3" style="padding-left: 0;margin-top: 26px;">
+          <div class="form-group">
+            <div class="col-sm-12">
+             <!-- <label for="customer" class="lb-sm">Customer:</label>-->
+              <ui-switch
+                name="showBuyPrice"
+                formControlName="showBuyPrice"
+                [(ngModel)]="showBuyPrice">
+              </ui-switch>
+            </div>
+          </div>
+        </div>
+
+     <!--   <div class="col-sm-2 text-xl-right" style="padding-right: 2.8%;">
+          <ui-switch
+            name="showBuyPrice"
+            formControlName="showBuyPrice"
+            [(ngModel)]="showBuyPrice">
+          </ui-switch>
+        </div>-->
 
       </div>
 
+    </div>
 
+  <!--  <div class="card-footer">
+
+    </div>-->
+  </div>
+
+  <div class="card bg-light mb-3" style="max-width: 40rem; margin-top: 1%">
+    <div class="card-header">Header</div>
+    <div class="card-body">
       <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group required row">
+            <label for="customerName" class="col-sm-3 required-label">Customer Name:</label>
+            <div class="col-sm-9">
+              <input
+                id="customerName"
+                class="form-control form-control-sm"
+                name="customerName"
+                [attr.disabled]="isCustomerSelected?'':null"
+                [required]="!isCustomerSelected"
+                autocomplete="off"
+                placeholder="new customer's name"
+                type="text"
+                [(ngModel)]="customerModel.name"
+                formControlName="customerName">
+              <div *ngIf="formSubmitted && entryForm.controls['customerName'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Customer name required
+              </div>
+              <span *ngIf="formSubmitted && entryForm.controls['customerName'].hasError('maxlength') "
+                    class="custom-invalid-feedback">
+                  Maximum character for Customer Name is 50
+                </span>
+            </div>
+          </div>
 
+          <div class="form-group required row">
+            <label for="customerPhoneNo" class="col-sm-3 required-label">Phone No:</label>
+            <div class="col-sm-9">
+              <input
+                id="customerPhoneNo"
+                class="form-control form-control-sm"
+                name="customerPhoneNo"
+                placeholder="new customer's phone no"
+                [attr.disabled]="isCustomerSelected?'':null"
+                [required]="!isCustomerSelected"
+                autocomplete="off"
+                type="text"
+                [(ngModel)]="customerModel.phoneNo1"
+                formControlName="customerPhoneNo">
+
+              <div *ngIf="formSubmitted && entryForm.controls['customerPhoneNo'].hasError('required')"
+                   class="custom-invalid-feedback">
+                Customer Phone No required
+              </div>
+              <span *ngIf="formSubmitted && entryForm.controls['customerPhoneNo'].hasError('maxlength') "
+                    class="custom-invalid-feedback">
+                Maximum character for phone no1 is 20
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label for="customerAddress" class="col-sm-3">Address:</label>
+            <div class="col-sm-9">
+              <textarea
+                name="customerAddress"
+                placeholder="new customer's address"
+                [attr.disabled]="isCustomerSelected?'':null"
+                [(ngModel)]="customerModel.address"
+                formControlName="customerAddress"
+                class="form-control rounded-0 form-control-sm"
+                id="customerAddress"></textarea>
+              <span *ngIf="entryForm.controls['customerAddress'].hasError('maxlength') "
+                    class="custom-invalid-feedback">
+                Maximum character for Address is 200
+              </span>
+              <!--
+              <span *ngIf="entryForm.controls['address'].hasError('pattern') " class="custom-invalid-feedback">
+                Allowed character a-z A-Z 0-9 . _ - \ /
+              </span>
+              -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--
+
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
         <div class="col-sm-7">
           <div class="form-group required row">
             <label for="customerName" class="col-sm-3 required-label">Customer Name:</label>
@@ -168,64 +360,20 @@
                     class="custom-invalid-feedback">
                 Maximum character for Address is 200
               </span>
-              <!--
+              &lt;!&ndash;
               <span *ngIf="entryForm.controls['address'].hasError('pattern') " class="custom-invalid-feedback">
                 Allowed character a-z A-Z 0-9 . _ - \ /
               </span>
-              -->
+              &ndash;&gt;
 
             </div>
           </div>
         </div>
-
-        <div class="col-sm-3">
-
-                <div class="form-group required row">
-                        <div class="col-sm-3">
-                          <label for="invoiceDate" class="required-label lb-sm">Date</label>
-                        </div>
-                        <div class="col-sm-9">
-                            <div class="input-group datepicker-input">
-                              <input type="text"
-                                   name="invoiceDate"
-                                   id="invoiceDate"
-                                   #invoiceDate="bsDatepicker"
-                                   [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                                   placeholder="Select a date"
-                                   formControlName="invoiceDate"
-                                   [(ngModel)]="productSalesViewModel.invoiceDate"
-                                   class="form-control"
-                                   bsDatepicker>
-                              <button class="input-group-addon" (click)="invoiceDate.toggle()" type="button">
-                              <span class="fa fa-calendar"></span>
-                            </button>
-                              <div *ngIf="entryForm.controls['invoiceDate'].hasError('required')"
-                                 class="custom-invalid-feedback">
-                              Invoice Date Required
-                            </div>
-                            </div>
-                        </div>
-                  </div>
-        </div>
-
-        <div class="col-sm-2 text-xl-right" style="padding-right: 2.8%;">
-          <ui-switch
-            name="showBuyPrice"
-            formControlName="showBuyPrice"
-            [(ngModel)]="showBuyPrice">
-          </ui-switch>
-        </div>
-
       </div>
-
     </div>
-
-    <!--<div class="card-footer">
-
-    </div>-->
-
-
   </div>
+
+  -->
 
 </form>
 

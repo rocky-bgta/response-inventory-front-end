@@ -19,4 +19,5 @@ export class ProductSalesViewModel{
   productId:string;
   serialNo: string;
   invoiceDate:Date;
+  categoryId:string;
 }

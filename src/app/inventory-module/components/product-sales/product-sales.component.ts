@@ -21,6 +21,8 @@ import {RequestMessage} from "../../../core/model/request-message";
 import {DropDownSelectModel} from "../../../core/model/DropDownSelectModel";
 import {CustomerDuePaymentHistoryService} from "../../service/customer-due-payment-history.service";
 import {CustomerPreviousDueViewModel} from "../../model/view-model/customer-previous-due-view-model";
+import {CategoryModel} from "../../model/category-model";
+import {CategoryService} from "../../service/category.service";
 
 declare var jQuery: any;
 
@@ -50,6 +52,7 @@ export class ProductSalesComponent implements OnInit {
   public storeModelList: Array<StoreModel> = new Array<StoreModel>();
   public productModelList: Array<ProductModel> = new Array<ProductModel>();
   public customerModelList: Array<CustomerModel> = new Array<CustomerModel>();
+  public categoryModelList: Array<CategoryModel> = new Array<CategoryModel>();
 
   public productSalesViewModel: ProductSalesViewModel = new ProductSalesViewModel();
   public customerModel: CustomerModel = new CustomerModel();
@@ -68,13 +71,19 @@ export class ProductSalesComponent implements OnInit {
 
   //private barcode:string;
 
-  public dropDownModelList: Array<DropDownSelectModel> = new Array<DropDownSelectModel>();
+  public productDropDownList: Array<DropDownSelectModel> = new Array<DropDownSelectModel>();
 
   public isPayPreviousDueAmount: boolean = false;
   public disablePreviousPaidAmountCheckBox: boolean = true;
 
+  private _storeId:string;
+  private _categoryId:string;
+
+
+
   constructor(private storeService: StoreService,
               private customerService: CustomerService,
+              private categoryService: CategoryService,
               private storeInProductService: StoreInProductsService,
               private customerDuePaymentHistoryService: CustomerDuePaymentHistoryService,
               private formBuilder: FormBuilder,
@@ -85,6 +94,7 @@ export class ProductSalesComponent implements OnInit {
 
 
   public isStoreSelected: boolean = false;
+  public isCategorySelected:boolean=false;
   public isProductSelected: boolean = false;
   public isCustomerSelected: boolean = false;
 
@@ -142,22 +152,43 @@ export class ProductSalesComponent implements OnInit {
     //Util.logConsole(event);
     if (event !== undefined) {
       this.isStoreSelected = true;
-      this.productModelList = await this.getProductListByStoreId(event.id);
-      this.dropDownModelList = await this.buildDropDownSelectModel(this.productModelList);
+      //this.productModelList = await this.getProductListByStoreIdAndCategoryId(event.id);
+      //this.productDropDownList = await this.buildDropDownSelectModel(this.productModelList);
       this.searchRequestParameter.storeId = event.id;
-      this.setFocusOnBarcodeInputTextBox();
+      this._storeId = event.id;
+      this.getCategoryListByStoreId(event.id);
+
       //this.getAvailableProductsForSales(this.searchRequestParameter);
     }
 
   }
 
   public onClearStore() {
-    //let length:number;
     this.isStoreSelected = false;
     this.productSalesViewModel.productId = null;
-    //length = this.selectedProductListForSales.length;
-    //this.selectedProductListForSales.splice(0,length);
-    this.productModelList = null;
+    this.productDropDownList = null;
+    this.categoryModelList = null;
+  }
+
+  public async onChangeCategory(categoryId:string){
+    if(categoryId!=null) {
+      this.isCategorySelected = true;
+      this._categoryId = categoryId;
+      this.searchRequestParameter.categoryId=categoryId;
+      if (this.isStoreSelected && this.isCategorySelected) {
+        this.productModelList = await this.getProductListByStoreIdAndCategoryId(this._storeId, this._categoryId);
+        this.productDropDownList = await this.buildDropDownSelectModel(this.productModelList);
+        this.setFocusOnBarcodeInputTextBox();
+      }
+    }
+
+  }
+
+  public onClearCategory(){
+    this.searchRequestParameter.categoryId=null;
+    this.isCategorySelected=false;
+    this.productSalesViewModel.productId = null;
+    this.productDropDownList = null;
   }
 
   public onChangeCustomer(customerId: string) {
@@ -176,16 +207,12 @@ export class ProductSalesComponent implements OnInit {
       this.searchRequestParameter.productId = event.id;
       this.searchRequestParameter.barcode = null;
       this.getAvailableProductsForSales(this.searchRequestParameter);
-      //Util.logConsole(this.productDropDownRef);
-      //this.productDropDownRef.nativeElement.clear();
-      //event.id=null;
-      //this.productSalesViewModel.productId=null;
       this.isProductSelected = true;
-
     }
   }
 
   public onClearProduct() {
+    this.searchRequestParameter.productId=null;
     //this.isProductSelected=true;
   }
 
@@ -339,7 +366,7 @@ export class ProductSalesComponent implements OnInit {
   }
 
   public isDisableBarcodeInput(): boolean {
-    if (this.isStoreSelected)
+    if (this.isStoreSelected && this.isCategorySelected)
       return false;
     else {
       return true;
@@ -500,16 +527,44 @@ export class ProductSalesComponent implements OnInit {
     )
   }
 
-  private async getProductListByStoreId(storeId: string): Promise<Array<ProductModel>> {
+  private getCategoryListByStoreId(storeId: string) {
+    this.categoryService.getCategoryListByStoreId(storeId).subscribe
+    (
+      (response: ResponseMessage) => {
+        if (response.httpStatus == HttpStatusCode.FOUND) {
+          this.categoryModelList = <Array<CategoryModel>>response.data;
+          return;
+        } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
+          this.categoryModelList.splice(0, this.categoryModelList.length);
+          this.toaster.error(response.message, this.pageTitle);
+          return;
+        } else {
+          Util.logConsole(response);
+          return;
+        }
+      },
+
+      (httpErrorResponse: HttpErrorResponse) => {
+        if (httpErrorResponse.error instanceof Error) {
+          Util.logConsole(httpErrorResponse, "Client Side error occurred.");
+        } else {
+          Util.logConsole(httpErrorResponse, "Server-side error occurred.");
+        }
+        return;
+      }
+    )
+  }
+
+  private async getProductListByStoreIdAndCategoryId(storeId: string, categoryId:string): Promise<Array<ProductModel>> {
     let productModelList: Array<ProductModel> = null;
-    await this.storeInProductService.getProductListByStoreIdAsync(storeId).then
+    await this.storeInProductService.getProductListByStoreIdAndCategoryIdAsync(storeId,categoryId).then
     (
       (response: ResponseMessage) => {
         if (response.httpStatus == HttpStatusCode.FOUND) {
           productModelList = <Array<ProductModel>>response.data;
           return productModelList;
         } else if (response.httpStatus == HttpStatusCode.NOT_FOUND) {
-          this.toaster.error(response.message, this.pageTitle);
+          this.toaster.info(response.message, this.pageTitle);
           productModelList = <Array<ProductModel>>response.data;
           //await this.buildDropDownSelectModel(this.productModelList);
           return productModelList;
@@ -524,15 +579,15 @@ export class ProductSalesComponent implements OnInit {
 
   private async buildDropDownSelectModel(productModelList: Array<ProductModel>): Promise<Array<DropDownSelectModel>> {
     let dropDownModel: DropDownSelectModel;
-    let dropDownModelList: Array<DropDownSelectModel> = new Array<DropDownSelectModel>();
+    let productDropDownList: Array<DropDownSelectModel> = new Array<DropDownSelectModel>();
     for (let item of productModelList) {
       dropDownModel = new DropDownSelectModel();
       dropDownModel.id = item.id;
       dropDownModel.name = item.name + ", ModelNo: " + item.modelNo;
-      dropDownModelList.push(dropDownModel)
+      productDropDownList.push(dropDownModel)
     }
 
-    return dropDownModelList;
+    return productDropDownList;
   }
 
   private checkIsProductAlreadyAddedToList(storeId: string, productId: string, availableQty: number, buyPrice: number): boolean {
@@ -719,7 +774,8 @@ export class ProductSalesComponent implements OnInit {
       customerPhoneNo: ['', Validators.compose([Validators.maxLength(20)])],
       customerAddress: ['', Validators.compose([Validators.maxLength(200)])],
       showBuyPrice: ['',],
-      invoiceDate: ['', Validators.required]
+      invoiceDate: ['', Validators.required],
+      category: ['']
     });
   }
 

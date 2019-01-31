@@ -32,8 +32,8 @@ export class StoreInProductsService {
     return this.httpRequestHelperService.getRequestWithUrl(InventoryApiEndPoint.storeInProducts+"/store-id/"+storeId);
   }
 
-  async getProductListByStoreIdAsync(storeId:string) {
-    return await this.httpRequestAsyncHelperService.getRequestWithUrl(InventoryApiEndPoint.storeInProducts+"/store-id/"+storeId);
+  async getProductListByStoreIdAndCategoryIdAsync(storeId:string, categoryId:string) {
+    return await this.httpRequestAsyncHelperService.getRequestWithUrl(InventoryApiEndPoint.storeInProducts+"/store-id/category-id/"+storeId+"/"+categoryId);
   }
 
 
