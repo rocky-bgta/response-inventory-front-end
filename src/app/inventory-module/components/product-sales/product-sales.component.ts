@@ -165,6 +165,7 @@ export class ProductSalesComponent implements OnInit {
 
   public onClearStore() {
     this.isStoreSelected = false;
+    this.isCategorySelected=false;
     this.productSalesViewModel.productId = null;
     this.productDropDownList = null;
     this.categoryModelList = null;
