@@ -119,7 +119,11 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
     this.rerender();
   }
 
-  public onChangeProduct(productId: string) {
+  public onClickSearch(){
+    this.rerender();
+  }
+
+ /* public onChangeProduct(productId: string) {
     if (productId != null) {
       this.searchParameter.productId = productId;
       this.rerender();
@@ -129,7 +133,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public onClearProduct() {
     this.searchParameter.productId = "";
     this.rerender();
-  }
+  }*/
 
   private getCategoryListByStoreId(storeId: string) {
     this.categoryService.getCategoryListByStoreId(storeId).subscribe
@@ -186,6 +190,8 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
     )
   }
 
+/*
+
   private getProductListByStoreId(storeId: string) {
     this.storeInProductService.getProductListByStoreId(storeId).subscribe
     (
@@ -213,9 +219,12 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
     )
   }
 
+ */
+
+
   private getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any, searchParameter: any) {
 
-    this.stockService.getList(dataTablesParameters, searchParameter).subscribe
+    this.stockService.getListWithRequestModel(this.stockViewModel,dataTablesParameters, searchParameter).subscribe
     (
       (responseMessage: ResponseMessage) => {
         if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
@@ -257,6 +266,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         pagingType: 'full_numbers',
         pageLength: 10,
         serverSide: true,
+        ordering:false,
         processing: false,
         searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
@@ -275,10 +285,10 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
       };
   }
 
-  private clearCategoryAndProductList() {
+  /*private clearCategoryAndProductList() {
     this.categoryModelList = this.categoryModelList.splice(0, this.categoryModelList.length);
     this.productModelList = this.productModelList.splice(0, this.productModelList.length);
-  }
+  }*/
 
   /* private initializeReactiveFormValidation(index?:number){
      this.entryForm=this.formBuilder.group({

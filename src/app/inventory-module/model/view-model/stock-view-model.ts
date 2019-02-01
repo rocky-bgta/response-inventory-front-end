@@ -6,4 +6,6 @@ export class StockViewModel{
   updateQty:string;
   unitPrice:string;
   totalPrice:string;
+  fromDate:Date;
+  toDate:Date;
 }

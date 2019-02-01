@@ -20,6 +20,10 @@ export class StockService {
     return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.stock+"/list",dataTableParameter,queryParameter);
   }
 
+  getListWithRequestModel(requestModel:any,dataTableParameter?:any,queryParameter?:any): Observable<any> {
+    return this.httpRequestHelperService.getRequestWithRequestModel(InventoryApiEndPoint.stock+"/list",requestModel,dataTableParameter,queryParameter);
+  }
+
 
   getById(id): Observable<any> {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.stock, id);
