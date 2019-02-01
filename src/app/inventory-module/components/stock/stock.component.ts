@@ -266,7 +266,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         pagingType: 'full_numbers',
         pageLength: 10,
         serverSide: true,
-        ordering:false,
+        ordering:true,
         processing: false,
         searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
@@ -277,7 +277,6 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
           {data: 'categoryName'},
           {data: 'productName'},
           {data: 'modelNo'},
-          {data: 'storeName'},
           {data: 'availableQty'},
           {data: 'totalPrice'},
           {data: ''},

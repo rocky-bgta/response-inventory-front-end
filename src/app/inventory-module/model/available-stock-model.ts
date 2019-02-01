@@ -1,8 +1,7 @@
 export class AvailableStockModel{
-  storeId:string;
-  storeName:string;
-  productId:string;
+  categoryId:string;
   categoryName:string;
+  productId:string;
   productName:string;
   modelNo:string;
   totalPrice:number;
