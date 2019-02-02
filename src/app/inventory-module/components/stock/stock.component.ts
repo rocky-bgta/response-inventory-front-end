@@ -92,6 +92,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
       //this.getProductListByStoreId(storeId);
       this.getCategoryListByStoreId(storeId);
       this.searchParameter.storeId = storeId;
+      this.stockViewModel.totalStockProductPrice = null;
       this.rerender();
 
     }
