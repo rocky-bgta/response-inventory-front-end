@@ -263,13 +263,13 @@ export class ProductSalesComponent implements OnInit {
      }*/
     this.setRowWiseDiscountSalesPrice(index);
     this.setRowWiseTotalPrice(index);
-    this.setInvoiceDiscount(this.productSalesViewModel.discountAmount.toString());
+    this.setInvoiceDiscount(this.productSalesViewModel.discountAmount);
   }
 
   public onFocusOutDiscountRowEvent(index: number) {
     this.setRowWiseDiscountSalesPrice(index);
     this.setRowWiseTotalPrice(index);
-    this.setInvoiceDiscount(this.productSalesViewModel.discountAmount.toString());
+    this.setInvoiceDiscount(this.productSalesViewModel.discountAmount);
   }
 
   public onClickRemoveRow(index) {
