@@ -1,14 +1,7 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import {DataTableRequest} from "../../../core/model/data-table-request";
-import {ProductService} from "../../service/product.service";
-import {ProductViewModel} from "../view-model/product-view-model";
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ResponseMessage} from "../../../core/model/response-message";
 import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
-import {ToastrService} from "ngx-toastr";
-import * as _ from 'lodash';
 import {Util} from "../../../core/Util";
-import {SalesHistoryService} from "../../service/sales-history.service";
-import {SalesHistoryViewModel} from "../view-model/sales-history-view-model";
 import {MessageService} from "../../../core/MessageService";
 import {Subject, Subscription} from "rxjs/index";
 import {CustomObject} from "../../../core/interface/CustomObject";

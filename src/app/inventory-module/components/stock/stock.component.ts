@@ -223,12 +223,15 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   private getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any, searchParameter: any) {
-
+    let stockViewModel: StockViewModel;
     this.stockService.getListWithRequestModel(this.stockViewModel,dataTablesParameters, searchParameter).subscribe
     (
       (responseMessage: ResponseMessage) => {
         if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
-          this.availableStockModelList = <Array<AvailableStockModel>>responseMessage.data;
+          stockViewModel = <StockViewModel>responseMessage.data;
+          this.stockViewModel.totalStockProductPrice = stockViewModel.totalStockProductPrice;
+          this.availableStockModelList = stockViewModel.availableStockViewList;
+          //this.availableStockModelList = <Array<AvailableStockModel>>responseMessage.data;
           //Util.logConsole(this.availableProductViewModelList);
           //return productViewModelList;
         } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
