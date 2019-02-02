@@ -151,8 +151,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 */
 
-  public onClickSave(dynamicForm: NgForm) {
-    if (!dynamicForm.invalid) {
+  public onClickSave(entryForm: NgForm) {
+    if (!entryForm.invalid) {
       this.saveStoreInProduct();
     } else {
       this.toaster.info("Please correct entered product list value");
@@ -221,9 +221,9 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  public onChangeVendor(event, vendorId: string) {
-    this.storeInProductViewModel.vendorId = null;
-    this.storeInProductViewModel.vendorId = vendorId;
+  public onChangeVendor(event) {
+    //this.storeInProductViewModel.vendorId = null;
+    //this.storeInProductViewModel.vendorId = vendorId;
     if (event != null && !_.isEmpty(event)) {
       this._vendorName = event.name;
       this.vendorSelected = true;
@@ -561,7 +561,7 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
     let allowedCharacter = "^((?!(0))[0-9]{1,10})$";
     this.entryForm = this.formBuilder.group({
       store: ['', Validators.compose([Validators.required])],
-      vendor: ['', Validators.compose([Validators.required])],
+      vendor: ['', Validators.required],
       productList: [''],
       barcode: ['', Validators.compose([Validators.maxLength(20)])],
       //price: ['', Validators.compose([Validators.maxLength(10), Validators.pattern(allowedCharacter)])],

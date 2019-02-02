@@ -47,7 +47,7 @@
                          bindLabel="name"
                          bindValue="id"
                          (clear)="onClearVendor()"
-                         (change)="onChangeVendor($event, storeInProductViewModel.vendorId)"
+                         (change)="onChangeVendor($event)"
                          [(ngModel)]="storeInProductViewModel.vendorId"
                          [ngClass]="{ 'custom-invalid-ng-select': productAdded && entryForm.controls['vendor']?.hasError('required') }"
                          formControlName="vendor"
@@ -429,7 +429,7 @@
 
               name="saveBtn"
               id="saveBtn"
-              (click)="onClickSave(dynamicForm)"
+              (click)="onClickSave(entryForm)"
               class="btn btn-outline-success btn-sm pull-right">Save
       </button>
 
