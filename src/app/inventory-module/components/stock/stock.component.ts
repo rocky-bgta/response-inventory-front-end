@@ -270,7 +270,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         pagingType: 'full_numbers',
         pageLength: 10,
         serverSide: true,
-        ordering:true,
+        ordering:false,
         processing: false,
         searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {

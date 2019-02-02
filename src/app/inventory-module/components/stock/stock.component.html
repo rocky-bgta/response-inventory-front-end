@@ -17,7 +17,7 @@
     <div class="card-body">
       <div class="row" style="padding: 0">
 
-        <div class="col-sm-3" style="padding-left: 0">
+        <div class="col-sm-4" style="padding-left: 0">
           <div class="form-group">
             <div class="col-sm-12">
               <label for="store" class="lb-sm">Store:</label>
@@ -56,7 +56,7 @@
         </div>
 
        <!-- [(ngModel)]="productSalesReportViewModel.fromDate"-->
-        <div class="col-sm-3" style="padding-left: 0">
+        <div class="col-sm-2" style="padding-left: 0">
           <div class="form-group">
             <div class="col-sm-12">
               <label for="fromDate" class="lb-sm">From Date:</label>
@@ -68,7 +68,7 @@
                        [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
                        placeholder="Select a date"
                        [(ngModel)]="stockViewModel.fromDate"
-                       class="form-control"
+                       class="form-control lb-sm"
                        bsDatepicker>
                 <button class="input-group-addon" (click)="fromDate.toggle()" type="button">
                   <span class="fa fa-calendar"></span>
