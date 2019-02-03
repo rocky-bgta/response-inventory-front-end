@@ -151,8 +151,8 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 */
 
-  public onClickSave(entryForm: NgForm) {
-    if (!entryForm.invalid) {
+  public onClickSave() {
+    if (!this.entryForm.invalid) {
       this.saveStoreInProduct();
     } else {
       this.toaster.info("Please correct entered product list value");
