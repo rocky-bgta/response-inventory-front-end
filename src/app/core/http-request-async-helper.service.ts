@@ -49,6 +49,15 @@ export class HttpRequestAsyncHelperService {
     return response;
   }
 
+  public async getRequestWithRequestModel(requestUrl: string,requestModel:any, dataTableParameter?:any,queryParams?:any): Promise<ResponseMessage> {
+    let requestMessage: RequestMessage;
+    requestMessage = Util.getRequestMessage(requestModel,dataTableParameter);
+
+    let response = this.httpClient.post<any>(requestUrl, requestMessage,{params:queryParams})
+      .pipe(retry(1),delay(this.delayTimeForResponse), catchError(this.handleError)).toPromise();
+    return response;
+  }
+
   public async getRequest(requestUrl: string,dataTableParameter?:any,queryParams?:any): Promise<ResponseMessage> {
     let requestMessage: RequestMessage;
     requestMessage = Util.getRequestMessage(null,dataTableParameter);

@@ -3,13 +3,16 @@ import {HttpRequestHelperService} from "../../core/http-request-helper.service";
 import {Observable} from "rxjs/index";
 import {InventoryApiEndPoint} from "../inventory-api-end-point";
 import {HttpParams} from "@angular/common/http";
+import {HttpRequestAsyncHelperService} from "../../core/http-request-async-helper.service";
+import {ResponseMessage} from "../../core/model/response-message";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StockService {
 
-  constructor(private httpRequestHelperService: HttpRequestHelperService) {
+  constructor(private httpRequestHelperService: HttpRequestHelperService,
+              private httpRequestAsyncHelperService: HttpRequestAsyncHelperService) {
   }
 
   save(data): Observable<any> {
@@ -22,6 +25,10 @@ export class StockService {
 
   getListWithRequestModel(requestModel:any,dataTableParameter?:any,queryParameter?:any): Observable<any> {
     return this.httpRequestHelperService.getRequestWithRequestModel(InventoryApiEndPoint.stock+"/list",requestModel,dataTableParameter,queryParameter);
+  }
+
+  async getListWithRequestModelAsync(requestModel:any,dataTableParameter?:any,queryParameter?:any): Promise<ResponseMessage> {
+    return await this.httpRequestAsyncHelperService.getRequestWithRequestModel(InventoryApiEndPoint.stock+"/list",requestModel,dataTableParameter,queryParameter);
   }
 
 

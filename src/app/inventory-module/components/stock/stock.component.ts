@@ -223,16 +223,16 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
  */
 
 
-  private getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any, searchParameter: any) {
+  private async getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any, searchParameter: any):Promise<StockViewModel> {
     let stockViewModel: StockViewModel;
-    this.stockService.getListWithRequestModel(this.stockViewModel,dataTablesParameters, searchParameter).subscribe
+    await this.stockService.getListWithRequestModelAsync(this.stockViewModel,dataTablesParameters, searchParameter).then
     (
-      (responseMessage: ResponseMessage) => {
+      async (responseMessage: ResponseMessage) => {
         if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
           stockViewModel = <StockViewModel>responseMessage.data;
           this.stockViewModel.totalStockProductPrice = stockViewModel.totalStockProductPrice;
           this.availableStockModelList = stockViewModel.availableStockViewList;
-          this.setStoreNameForStockList();
+          await this.setStoreNameForStockList();
           //this.availableStockModelList = <Array<AvailableStockModel>>responseMessage.data;
           //Util.logConsole(this.availableProductViewModelList);
           //return productViewModelList;
@@ -261,9 +261,10 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         return;
       });
+    return stockViewModel;
   }
 
-  private setStoreNameForStockList() {
+  private async setStoreNameForStockList() {
     let storeModel: StoreModel;
     for (let index in this.availableStockModelList) {
       let id = this.availableStockModelList[index].storeId;
