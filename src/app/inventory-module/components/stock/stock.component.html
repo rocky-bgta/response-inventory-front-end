@@ -187,6 +187,7 @@
              style="width: 100%">
         <thead>
         <tr>
+          <th style="width: 10%">Store</th>
           <th style="width: 10%">Category</th>
           <th style="width: 10%">Product Name</th>
           <th style="width: 10%">Model No</th>
@@ -197,7 +198,7 @@
         </thead>
         <tbody *ngIf="availableStockModelList?.length != 0">
         <tr *ngFor="let item of availableStockModelList">
-          <!-- <td>{{ category.id }}</td>-->
+          <td>{{item.storeName}}</td>
           <td>{{item.categoryName}}</td>
           <td>{{item.productName}}</td>
           <td>{{item.modelNo}}</td>
@@ -226,7 +227,7 @@
         </tbody>
         <tbody *ngIf="availableStockModelList?.length == 0">
         <tr>
-          <td colspan="6" class="no-data-available">No data!</td>
+          <td colspan="7" class="no-data-available">No data!</td>
         </tr>
         <tbody>
       </table>

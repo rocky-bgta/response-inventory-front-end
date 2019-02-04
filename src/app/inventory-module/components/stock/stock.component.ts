@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
 import {StoreService} from "../../service/store.service";
 import {StockViewModel} from "../../model/view-model/stock-view-model";
 import {ResponseMessage} from "../../../core/model/response-message";
-import {HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {HttpErrorResponse} from "@angular/common/http";
 import {HttpStatusCode} from "../../../core/constants/HttpStatusCode";
 import {StoreModel} from "../../model/store-model";
 import {ProductModel} from "../../model/product-model";
@@ -18,7 +18,7 @@ import {DataTableRequest} from "../../../core/model/data-table-request";
 import {CustomObject} from "../../../core/interface/CustomObject";
 import {CategoryService} from "../../service/category.service";
 import {CategoryModel} from "../../model/category-model";
-
+import * as _ from 'lodash';
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.component.html',
@@ -232,6 +232,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
           stockViewModel = <StockViewModel>responseMessage.data;
           this.stockViewModel.totalStockProductPrice = stockViewModel.totalStockProductPrice;
           this.availableStockModelList = stockViewModel.availableStockViewList;
+          this.setStoreNameForStockList();
           //this.availableStockModelList = <Array<AvailableStockModel>>responseMessage.data;
           //Util.logConsole(this.availableProductViewModelList);
           //return productViewModelList;
@@ -262,6 +263,15 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  private setStoreNameForStockList() {
+    let storeModel: StoreModel;
+    for (let index in this.availableStockModelList) {
+      let id = this.availableStockModelList[index].storeId;
+      storeModel = _.find(this.storeModelList, {id});
+      this.availableStockModelList[index].storeName = storeModel.name;
+    }
+  }
+
   private populateDataTable(): void {
     // Util.logConsole("Populate table");
 
@@ -270,7 +280,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         pagingType: 'full_numbers',
         pageLength: 10,
         serverSide: true,
-        ordering:false,
+        ordering:true,
         processing: false,
         searching: true,
         ajax: (dataTablesParameters: DataTableRequest, callback) => {
@@ -278,6 +288,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         },
         columns: [
           /* {title:'Category',      data: 'categoryName'},*/
+          {data: 'storeId'},
           {data: 'categoryName'},
           {data: 'productName'},
           {data: 'modelNo'},
