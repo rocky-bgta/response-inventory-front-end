@@ -34,6 +34,10 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
   public entryForm: FormGroup;
   //public dynamicForm: FormGroup;
 
+  //======= save modal text ======================================
+  public modalHeader: string;
+  public modalBodyText: string;
+  //======= save modal text ======================================
 
   //======== page state variables star ===========
   public formSubmitted: boolean;
@@ -151,9 +155,24 @@ export class StoreInProductsComponent implements OnInit, AfterViewInit {
 
 */
 
-  public onClickSave() {
-    if (!this.entryForm.invalid) {
+  public onClickSaveConfirmationOfModal(isConfirm: boolean){
+    if(isConfirm){
       this.saveStoreInProduct();
+    }
+  }
+
+  private setModelForSave() {
+    this.modalHeader=this.pageTitle;
+    this.modalBodyText="You are about to Store those selected product";
+    this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+  }
+
+
+
+  public onClickSave(dynamicForm:NgForm) {
+    if (!this.entryForm.invalid && !dynamicForm.invalid) {
+      this.setModelForSave();
+      //this.saveStoreInProduct();
     } else {
       this.toaster.info("Please correct entered product list value");
     }

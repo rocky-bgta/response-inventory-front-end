@@ -430,7 +430,7 @@
 
               name="saveBtn"
               id="saveBtn"
-              (click)="onClickSave()"
+              (click)="onClickSave(dynamicForm)"
               class="btn btn-outline-success btn-sm pull-right">Save
       </button>
 
@@ -463,6 +463,11 @@
           (click)="productListModal.close()">Close</button>
 </ngx-smart-modal>
 
+<save-confirmation-modal
+  [header]="modalHeader"
+  [body]="modalBodyText"
+  (isConfirm)="onClickSaveConfirmationOfModal($event)">
+</save-confirmation-modal>
 
 
 
