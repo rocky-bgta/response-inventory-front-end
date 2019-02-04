@@ -73,8 +73,9 @@
               <div class="col-sm-10 " style="padding-right: 0% ">
               <ng-select [items]="productModelList"
                          id="productList"
-                         bindLabel="name"
+                         bindLabel="modelNo"
                          bindValue="id"
+                         groupBy="name"
                          [ngClass]="{ 'avoid-clicks': isDisableBarcodeInput() }"
                          (change)="onChangeProduct($event)"
                          [ngModel]="selectedProductIdFromDropDownMenu"
