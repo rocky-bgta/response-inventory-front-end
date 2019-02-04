@@ -430,7 +430,7 @@
           <!--  <td>{{product.brandName }}</td>-->
           <td>{{product.modelNo }}</td>
           <td>{{product.available}}</td>
-          <td *ngIf="showBuyPrice">{{product.buyPrice }}</td>
+          <td *ngIf="showBuyPrice">{{product.buyPrice | mask:'coma_separator'}}</td>
           <td>
 
             <!--//first not allowed 0 regx-->
@@ -438,6 +438,7 @@
                    type="text"
                    maxlength="20"
                    pattern="^(?!(0))(\d*\.)?\d+$"
+                   [dropSpecialCharacters]="true" mask="coma_separator"
                    [attr.disabled]="isPayPreviousDueAmount ?'':null"
                    (focusout)="onFocusOutSalesPriceRowEvent(i,product.salePrice)"
                    onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
@@ -488,6 +489,7 @@
                    type="text"
                    maxlength="8"
                    disabled
+                   [dropSpecialCharacters]="true" mask="coma_separator"
                    #dynamicTotalPrice="ngModel"
                    autocomplete="off"
                    [ngClass]="{ 'is-invalid': dynamicTotalPrice.errors?.pattern}"
@@ -557,7 +559,7 @@
           <td *ngIf="showBuyPrice" colspan="9"></td>
           <td *ngIf="!showBuyPrice" colspan="8"></td>
 
-          <td colspan="2">{{grandTotalSalesPrice}}</td>
+          <td colspan="2">{{grandTotalSalesPrice | mask:'coma_separator'}}</td>
           <td colspan="2">
             <div class="form-check">
               <input type="checkbox"
@@ -613,6 +615,7 @@
                      #previousDue
                      type="text"
                      disabled
+                     [dropSpecialCharacters]="true" mask="coma_separator"
                      id="previousDue"
                      name="previousDue"
                      [ngModel]="productSalesViewModel.previousDue">
@@ -634,6 +637,7 @@
               <input class="form-control"
                      #paidAmount
                      maxlength="8"
+                     [dropSpecialCharacters]="true" mask="coma_separator"
                      pattern="^(\d*\.)?\d+$"
                      (focusout)="onFocusOutPaidAmount(productSalesViewModel.paidAmount)"
                      onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
@@ -657,6 +661,7 @@
                      type="text"
                      disabled
                      id="dueAmount"
+                     [dropSpecialCharacters]="true" mask="coma_separator"
                      name="dueAmount"
                      [ngModel]="productSalesViewModel.dueAmount">
 

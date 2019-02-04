@@ -146,6 +146,7 @@
               <div class="col-sm-6">
               <input type="text"
                      disabled
+                     [dropSpecialCharacters]="true" mask="coma_separator"
                      name="stockProductPrice"
                      [ngModel]="stockViewModel.totalStockProductPrice"
                      class="form-control"
@@ -203,7 +204,7 @@
           <td>{{item.productName}}</td>
           <td>{{item.modelNo}}</td>
           <td>{{item.availableQty}}</td>
-          <td>{{item.totalPrice}}</td>
+          <td>{{item.totalPrice | mask:'coma_separator'}}</td>
           <td>
             <!--(click)="onClickEdit(item.id)"-->
             <button type="button" class="btn btn-secondary"  style="margin-left: 1%">

@@ -168,6 +168,7 @@
                 class="form-control"
                 autocomplete="off"
                 name="price"
+                [dropSpecialCharacters]="true" mask="coma_separator"
                 onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
                 || event.charCode==46"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
@@ -192,6 +193,7 @@
                 class="form-control"
                 autocomplete="off"
                 name="salePrice"
+                [dropSpecialCharacters]="true" mask="coma_separator"
                 onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
                 || event.charCode==46"
                 [attr.disabled]="disableElementOnDetailsView?'':null"
@@ -350,8 +352,8 @@
           <td>{{product.categoryName}}</td>
           <td>{{product.brandName }}</td>
           <td>{{product.modelNo }}</td>
-          <td>{{product.price }}</td>
-          <td>{{product.salePrice }}</td>
+          <td>{{product.price | mask:'coma_separator'}}</td>
+          <td>{{product.salePrice | mask:'coma_separator'}}</td>
           <td class="ellipsis">
             <img [src]="'data:image/png;base64,'+product.image" height="50" width="100">
           </td>

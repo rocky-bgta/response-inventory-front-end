@@ -357,6 +357,7 @@
                 <input class="form-control form-control-sm"
                        type="text"
                        maxlength="8"
+                       [dropSpecialCharacters]="true" mask="coma_separator"
                        pattern="^(\d*\.)?\d+$"
                        (focusout)="onFocusOutPriceRowEvent(i)"
                        onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
@@ -386,7 +387,7 @@
                        name="dynamicQuantity{{i}}"
                        [(ngModel)]="storeInProductViewModel.quantity">
               </td>
-              <td>{{storeInProductViewModel.totalPrice}}</td>
+              <td>{{storeInProductViewModel.totalPrice | mask:'coma_separator'}}</td>
               <td class="align-baseline">
 
                 <div class="row" style="margin-right: 0px;">
@@ -415,7 +416,7 @@
               <tr>
                 <td colspan="4"></td>
                 <td colspan="2">Grand Total</td>
-                <td colspan="1">{{grandTotalStockInPrice}}</td>
+                <td colspan="1">{{grandTotalStockInPrice | mask:'coma_separator'}}</td>
               </tr>
             </tbody>
           </table>
