@@ -281,11 +281,11 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         pagingType: 'full_numbers',
         pageLength: 10,
         serverSide: true,
-        ordering:true,
+        ordering:false,
         processing: false,
-        searching: true,
-        ajax: (dataTablesParameters: DataTableRequest, callback) => {
-          this.getAvailableStockProducts(dataTablesParameters, callback, this.searchParameter);
+        searching: false,
+        ajax: async(dataTablesParameters: DataTableRequest, callback) => {
+          await this.getAvailableStockProducts(dataTablesParameters, callback, this.searchParameter);
         },
         columns: [
           /* {title:'Category',      data: 'categoryName'},*/
