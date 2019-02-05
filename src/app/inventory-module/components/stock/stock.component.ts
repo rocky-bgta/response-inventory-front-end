@@ -224,7 +224,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   private async getAvailableStockProducts(dataTablesParameters: DataTableRequest, callback: any, searchParameter: any):Promise<StockViewModel> {
-    let stockViewModel: StockViewModel;
+    let stockViewModel: StockViewModel=null;
     await this.stockService.getListWithRequestModelAsync(this.stockViewModel,dataTablesParameters, searchParameter).then
     (
       async (responseMessage: ResponseMessage) => {
@@ -232,7 +232,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
           stockViewModel = <StockViewModel>responseMessage.data;
           this.stockViewModel.totalStockProductPrice = stockViewModel.totalStockProductPrice;
           this.availableStockModelList = stockViewModel.availableStockViewList;
-          await this.setStoreNameForStockList();
+          //await this.setStoreNameForStockList();
           //this.availableStockModelList = <Array<AvailableStockModel>>responseMessage.data;
           //Util.logConsole(this.availableProductViewModelList);
           //return productViewModelList;
@@ -264,14 +264,14 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
     return stockViewModel;
   }
 
-  private async setStoreNameForStockList() {
+ /* private async setStoreNameForStockList() {
     let storeModel: StoreModel;
     for (let index in this.availableStockModelList) {
       let id = this.availableStockModelList[index].storeId;
       storeModel = _.find(this.storeModelList, {id});
       this.availableStockModelList[index].storeName = storeModel.name;
     }
-  }
+  }*/
 
   private populateDataTable(): void {
     // Util.logConsole("Populate table");
@@ -281,20 +281,20 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
         pagingType: 'full_numbers',
         pageLength: 10,
         serverSide: true,
-        ordering:false,
+        ordering:true,
         processing: false,
-        searching: false,
+        searching: true,
         ajax: async(dataTablesParameters: DataTableRequest, callback) => {
           await this.getAvailableStockProducts(dataTablesParameters, callback, this.searchParameter);
         },
         columns: [
           /* {title:'Category',      data: 'categoryName'},*/
-          {data: 'storeId'},
-          {data: 'categoryName'},
-          {data: 'productName'},
-          {data: 'modelNo'},
-          {data: 'availableQty'},
-          {data: 'totalPrice'},
+          {data: 'store_name'},
+          {data: 'category_name'},
+          {data: 'product_name'},
+          {data: 'model_no'},
+          {data: 'available_qty'},
+          {data: 'total_price'},
           {data: ''},
         ]
       };

@@ -200,12 +200,12 @@
         </thead>
         <tbody *ngIf="availableStockModelList?.length != 0">
         <tr *ngFor="let item of availableStockModelList">
-          <td>{{item.storeName}}</td>
-          <td>{{item.categoryName}}</td>
-          <td>{{item.productName}}</td>
-          <td>{{item.modelNo}}</td>
-          <td>{{item.availableQty}}</td>
-          <td>{{item.totalPrice | mask:'coma_separator'}}</td>
+          <td>{{item.store_name}}</td>
+          <td>{{item.category_name}}</td>
+          <td>{{item.product_name}}</td>
+          <td>{{item.model_no}}</td>
+          <td>{{item.available_qty}}</td>
+          <td>{{item.total_price | mask:'coma_separator'}}</td>
          <!-- <td>{{item.stockDate | date: 'dd/MM/yyyy'}}</td>-->
           <td>
             <!--(click)="onClickEdit(item.id)"-->
