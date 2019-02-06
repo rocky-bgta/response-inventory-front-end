@@ -1,18 +1,7 @@
-<form id="collapseInputForm">
-
+<form>
   <div class="card" style="padding: 0">
-
     <div class="card-header">
-
-      Available Stock
-     <!-- <div *ngIf="!productAdded">
-        Select Product
-      </div>
-
-      <div *ngIf="productAdded">
-        Selected Product:  <strong>{{storeInProductViewModel.productName}}</strong>
-      </div>-->
-
+      <strong>Available Stock</strong>
     </div>
     <div class="card-body">
       <div class="row" style="padding: 0">
@@ -133,14 +122,13 @@
 
       </div>
     </div>
-
     <div class="card-footer">
       <div class="row">
-        <div class="col-sm-6"></div>
-        <div class="col-sm-6">
+        <div class="col-sm-8"></div>
+        <div class="col-sm-4">
           <div class="row">
               <div class="col-sm-6 text-xl-right">
-                <h5 class="card-title">Total Stock Price: </h5>
+                <h6 class="card-title" style="padding-top: 3%;">Total Stock Price: </h6>
               </div>
 
               <div class="col-sm-6">
@@ -149,7 +137,7 @@
                      [dropSpecialCharacters]="true" mask="coma_separator"
                      name="stockProductPrice"
                      [ngModel]="stockViewModel.totalStockProductPrice"
-                     class="form-control"
+                     class="form-control price"
                      id="stockProductPrice">
               </div>
           </div>
@@ -162,9 +150,7 @@
         </div>
       </div>-->
     </div>
-
   </div>
-
 </form>
 
 <div class="card" style="margin-top: 1%" *ngIf="availableStockModelList?.length == 0">
@@ -176,7 +162,6 @@
 </div>
 
 <div>
-
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">

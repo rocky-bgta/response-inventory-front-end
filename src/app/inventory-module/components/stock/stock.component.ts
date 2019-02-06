@@ -30,12 +30,12 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public pageTitle: string = "Stock";
 
 
-  public entryForm: FormGroup;
+  //public entryForm: FormGroup;
 
   //======== page state variables star ===========
-  public formSubmitted: boolean;
-  public productAdded: boolean;
   public isPageInUpdateState: boolean;
+  public hideInputForm: boolean;
+  public disablePageElementOnDetailsView: boolean;
 
 
   //======== Variables for this page business ====================
@@ -298,6 +298,30 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
           {data: ''},
         ]
       };
+  }
+
+  private initializedPageStateVariable():void{
+    this.isPageInUpdateState = false;
+    this.hideInputForm = false;
+    this.disablePageElementOnDetailsView = false;
+  }
+
+  private showEntryForm():void{
+    jQuery('#collapseInputForm').collapse('show');
+    jQuery('html, body').animate({scrollTop: '0px'}, 500);
+    jQuery("#collapseInputForm").scrollTop();
+  }
+
+  private hideEntryForm():void{
+    jQuery('#collapseInputForm').collapse('hide');
+    setTimeout
+    (
+      () =>
+      {
+        this.disablePageElementOnDetailsView = false;
+      }, 500
+    );
+    return;
   }
 
   /*private clearCategoryAndProductList() {
