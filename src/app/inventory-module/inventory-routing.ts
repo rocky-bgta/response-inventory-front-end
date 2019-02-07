@@ -12,13 +12,14 @@ import {ProductSalesReportComponent} from "./components/product-sales-report/pro
 import {ProductSalesComponent} from "./components/product-sales/product-sales.component";
 import {CustomerPaymentComponent} from "./components/customer-payment/customer-payment.component";
 import {InvoiceHistoryComponent} from "./components/invoice-history/invoice-history.component";
+import {AuthGuard} from "../shared/guard/auth.guard";
 
 
 export const inventoryRoutes: Routes = [
   {
     path: '',
     children: [
-      {path: 'stock', component: StockComponent, pathMatch: 'full'},
+      {path: 'stock', component: StockComponent, pathMatch: 'full',canActivate: [AuthGuard]},
       {path: 'category', component: CategoryComponent, pathMatch: 'full'},
       {path: 'product', component: ProductComponent, pathMatch: 'full'},
       {path: 'brand', component: BrandComponent, pathMatch: 'full'},

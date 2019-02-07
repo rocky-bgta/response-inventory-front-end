@@ -2,15 +2,37 @@
     <div class="row justify-content-md-center">
         <div class="col-md-4">
             <img src="assets/images/logo.png" width="150px" class="user-avatar" />
-            <h1>SB Admin BS4 Angular7</h1>
-            <form role="form">
+            <h1>Response Electronic</h1>
+            <form [formGroup]="loginForm" novalidate>
                 <div class="form-content">
                     <div class="form-group">
-                        <input type="text" ng-model="name" class="form-control input-underline input-lg" id="" placeholder="{{ 'Email' | translate }}">
+                        <input type="text"
+                               formControlName="username"
+                               name="username"
+                               [(ngModel)]="loginModel.username"
+                               class="form-control input-underline input-lg"
+                               placeholder="{{ 'User Name' | translate }}">
                     </div>
 
                     <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="{{ 'Password' | translate }}">
+                        <input
+                          formControlName="password"
+                          name="password"
+                          [(ngModel)]="loginModel.password"
+                          type="password"
+                          class="form-control input-underline input-lg"
+                          placeholder="{{ 'Password' | translate }}">
+                    </div>
+
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input type="checkbox"
+                               name="remember"
+                               [(ngModel)]="loginModel.remember"
+                               class="form-check-input"
+                               formControlName="remember"/>
+                        <span translate>Remember me</span>
+                      </label>
                     </div>
                 </div>
                 <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()">{{ 'Log in' | translate }}</a>
