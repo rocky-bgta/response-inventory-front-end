@@ -1,3 +1,4 @@
+$hover-background-color: rgb(184, 233, 17);
 $topnav-background-color: rgb(220,220,220);
 .sidebar {
     border-radius: 0;
@@ -35,7 +36,7 @@ $topnav-background-color: rgb(220,220,220);
             }
         }
         a:hover {
-            background: darken($topnav-background-color, 5%);
+            background: darken($hover-background-color, 5%);
             color: #fff;
         }
         a.router-link-active {
