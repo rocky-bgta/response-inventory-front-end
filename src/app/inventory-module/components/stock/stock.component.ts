@@ -19,6 +19,7 @@ import {CustomObject} from "../../../core/interface/CustomObject";
 import {CategoryService} from "../../service/category.service";
 import {CategoryModel} from "../../model/category-model";
 import * as _ from 'lodash';
+declare var jQuery: any;
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.component.html',
