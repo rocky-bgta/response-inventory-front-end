@@ -19,7 +19,7 @@ export const inventoryRoutes: Routes = [
   {
     path: '',
     children: [
-      {path: 'stock', component: StockComponent, pathMatch: 'full',canActivate: [AuthGuard]},
+      {path: 'stock', component: StockComponent, pathMatch: 'full'},
       {path: 'category', component: CategoryComponent, pathMatch: 'full'},
       {path: 'product', component: ProductComponent, pathMatch: 'full'},
       {path: 'brand', component: BrandComponent, pathMatch: 'full'},

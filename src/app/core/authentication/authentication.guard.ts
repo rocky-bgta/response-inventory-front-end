@@ -1,3 +1,4 @@
+/*
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
@@ -6,7 +7,9 @@ import { AuthenticationService } from './authentication.service';
 
 //const log = new Logger('AuthenticationGuard');
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthenticationGuard implements CanActivate {
 
   constructor(private router: Router,
@@ -23,3 +26,4 @@ export class AuthenticationGuard implements CanActivate {
   }
 
 }
+*/

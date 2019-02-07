@@ -1,3 +1,4 @@
+/*
 import { Observable, of } from 'rxjs';
 
 import { Credentials, LoginContext } from './authentication.service';
@@ -26,3 +27,4 @@ export class MockAuthenticationService {
   }
 
 }
+*/
