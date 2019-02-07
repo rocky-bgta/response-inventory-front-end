@@ -1,4 +1,4 @@
-$topnav-background-color: #222;
+$topnav-background-color: rgb(220,220,220);
 .sidebar {
     border-radius: 0;
     position: fixed;
@@ -27,7 +27,8 @@ $topnav-background-color: #222;
             background: $topnav-background-color;
             border: 0;
             border-radius: 0;
-            color: #999;
+            color: #000000;
+            font-weight: bold;
             text-decoration: none;
             .fa {
                 margin-right: 10px;
@@ -43,7 +44,7 @@ $topnav-background-color: #222;
         }
         .header-fields {
             padding-top: 10px;
-        
+
             > .list-group-item:first-child {
                 border-top: 1px solid rgba(255, 255, 255, 0.2);
             }
