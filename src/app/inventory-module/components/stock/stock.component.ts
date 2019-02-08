@@ -21,6 +21,7 @@ import {CategoryModel} from "../../model/category-model";
 import * as _ from 'lodash';
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import {ProductSalesService} from "../../service/product-sales.service";
+import {NgxSmartModalService} from "ngx-smart-modal";
 declare var jQuery: any;
 @Component({
   selector: 'app-stock',
@@ -34,6 +35,11 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   //public entryForm: FormGroup;
+
+  //======= save modal text ======================================
+  public modalHeader: string = this.pageTitle;
+  public modalBodyText: string = "You are about to Update Stock";
+  //======= save modal text ======================================
 
   //======== page state variables star ===========
   public isPageInUpdateState: boolean;
@@ -69,6 +75,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(//private formBuilder: FormBuilder,
               private productSalesService: ProductSalesService,
               private storeInProductService: StoreInProductsService,
+              private ngxSmartModalService: NgxSmartModalService,
               private categoryService: CategoryService,
               private stockService: StockService,
               private storeService: StoreService,
@@ -137,6 +144,24 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onClickSearch(){
     this.rerender();
+  }
+
+  public onClickUpdateStock(dynamicForm){
+    if (!dynamicForm.invalid) {
+      this.ngxSmartModalService.getModal('saveConfirmationModal').open();
+    }else {
+      this.toaster.info("Please Stock Update Information");
+    }
+  }
+
+  public onClickSaveConfirmationOfModal(isConfirm: boolean){
+    if (isConfirm) {
+      this.updateStock();
+    }
+  }
+
+  private updateStock(){
+
   }
 
  /* public onChangeProduct(productId: string) {
@@ -289,10 +314,6 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   }*/
 
   public onClickEditStock(selectedItem:AvailableStockModel){
-    //this._storeId = selectedItem.store_id;
-    //this._categoryId = selectedItem.category_id;
-    //this._productId = selectedItem.product_id;
-
     this.searchRequestParameter.storeId = selectedItem.store_id;
     this.searchRequestParameter.categoryId = selectedItem.category_id;
     this.searchRequestParameter.productId = selectedItem.product_id;
@@ -389,7 +410,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
     (
       () =>
       {
-        this.disablePageElementOnDetailsView = false;
+        //this.disablePageElementOnDetailsView = false;
       }, 500
     );
     return;

@@ -161,7 +161,7 @@
       #dynamicForm="ngForm"
       novalidate>
 
-  <div class="card" style="margin-top: 1%;">
+  <div class="card bg-light mb-3" style="margin-top: 1%;">
         <div class="card-header">
 
           <strong>Update Stock</strong>
@@ -235,7 +235,7 @@
 
               <button
                 type="button"
-
+                (click)="onClickUpdateStock(dynamicForm)"
                 class="btn btn-sm btn-success pull-right">
                 Update Stock
               </button>
@@ -334,3 +334,8 @@
   </div>
 
 </div>
+<save-confirmation-modal
+  [header]="modalHeader"
+  [body]="modalBodyText"
+  (isConfirm)="onClickSaveConfirmationOfModal($event)">
+</save-confirmation-modal>
