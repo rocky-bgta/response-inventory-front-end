@@ -37,8 +37,8 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
   //======== page state variables star ===========
   public isPageInUpdateState: boolean;
-  public hideInputForm: boolean;
-  public disablePageElementOnDetailsView: boolean;
+  //public hideInputForm: boolean;
+  //public disablePageElementOnDetailsView: boolean;
 
 
   //======== Variables for this page business ====================
@@ -77,8 +77,10 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.getStoreList();
+    this.initializedPageStateVariable();
     //this.getCategoryList();
     this.populateDataTable();
+
   }
 
   ngAfterViewInit(): void {
@@ -297,7 +299,12 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.getCurrentStockProductList(this.searchRequestParameter);
     this.showEntryForm();
+    this.isPageInUpdateState=true;
 
+  }
+
+  public onClickCancel(){
+    this.isPageInUpdateState=false;
   }
 
  private getCurrentStockProductList(searchRequestParameter:CustomObject){
@@ -308,6 +315,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
        if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
          currentStockProductList = <Array<SalesProductViewModel>>responseMessage.data;
          this.currentStockProductList = currentStockProductList;
+         this.setTotalPrice();
          Util.logConsole(currentStockProductList);
        } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
          this.toaster.error(responseMessage.message, this.pageTitle);
@@ -358,8 +366,8 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private initializedPageStateVariable():void{
     this.isPageInUpdateState = false;
-    this.hideInputForm = false;
-    this.disablePageElementOnDetailsView = false;
+    //this.hideInputForm = false;
+    //this.disablePageElementOnDetailsView = false;
   }
 
   private showEntryForm():void{
@@ -370,7 +378,9 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   public onClickCancelUpdate(){
+   this.isPageInUpdateState=false;
    this.hideEntryForm();
+   this.currentStockProductList = null;
   }
 
   private hideEntryForm():void{
@@ -383,6 +393,30 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
       }, 500
     );
     return;
+  }
+
+  public onFocusOutStockQty(stockQty){
+    if(stockQty>0)
+      this.setTotalPrice();
+  }
+
+  public onFocusOutBuyPrice(buyPrice){
+    if(buyPrice>0)
+      this.setTotalPrice();
+  }
+
+  private setTotalPrice() {
+    let grandTotal: number;
+    let stockQty:number;
+    let unitPrice:number;
+    for (let index in this.currentStockProductList) {
+      stockQty = this.currentStockProductList[index].available;
+      unitPrice = this.currentStockProductList[index].buyPrice;
+      grandTotal = stockQty*unitPrice;
+      grandTotal = Util.roundNumberToTwoDecimalPlace(grandTotal);
+      this.currentStockProductList[index].totalPrice = grandTotal;
+
+    }
   }
 
   /*private clearCategoryAndProductList() {

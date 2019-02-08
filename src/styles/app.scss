@@ -120,3 +120,8 @@ img {
 #toast-container > div {
   opacity:1;
 }
+
+.disabled-div {
+  pointer-events: none;
+  opacity: 0.4;
+}

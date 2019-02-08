@@ -1,157 +1,159 @@
-<form>
-  <div class="card" style="padding: 0">
-    <div class="card-header">
-      <strong>Available Stock</strong>
-    </div>
-    <div class="card-body">
-      <div class="row" style="padding: 0">
+<div [ngClass]="{ 'disabled-div': isPageInUpdateState}">
+  <form>
+    <div class="card" style="padding: 0">
+      <div class="card-header">
+        <strong>Available Stock</strong>
+      </div>
+      <div class="card-body">
+        <div class="row" style="padding: 0">
 
-        <div class="col-sm-4" style="padding-left: 0">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <label for="store" class="lb-sm">Store:</label>
-              <ng-select [items]="storeModelList"
-                         #store
-                         id="store"
-                         name="store"
-                         bindLabel="name"
-                         bindValue="id"
-                         (change)="onChangeStore(stockViewModel.storeId)"
-                         (clear)="onClearStore()"
-                         [(ngModel)]="stockViewModel.storeId"
-                         placeholder="Select Store">
-              </ng-select>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-3" style="padding-left: 0">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <label for="category" class="lb-sm">Category:</label>
-              <ng-select [items]="categoryModelList"
-                         #category
-                         id="category"
-                         name="category"
-                         bindLabel="name"
-                         bindValue="id"
-                         (change)="onChangeCategory(stockViewModel.categoryId)"
-                         (clear)="onClearCategory()"
-                         [(ngModel)]="stockViewModel.categoryId"
-                         placeholder="Select Category">
-              </ng-select>
-            </div>
-          </div>
-        </div>
-
-       <!-- [(ngModel)]="productSalesReportViewModel.fromDate"-->
-        <div class="col-sm-2" style="padding-left: 0">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <label for="fromDate" class="lb-sm">From Date:</label>
-              <div class="input-group datepicker-input">
-                <input type="text"
-                       name="fromDate"
-                       id="fromDate"
-                       #fromDate="bsDatepicker"
-                       [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                       placeholder="Select a date"
-                       [(ngModel)]="stockViewModel.fromDate"
-                       class="form-control lb-sm"
-                       bsDatepicker>
-                <button class="input-group-addon" (click)="fromDate.toggle()" type="button">
-                  <span class="fa fa-calendar"></span>
-                </button>
+          <div class="col-sm-4" style="padding-left: 0">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="store" class="lb-sm">Store:</label>
+                <ng-select [items]="storeModelList"
+                           #store
+                           id="store"
+                           name="store"
+                           bindLabel="name"
+                           bindValue="id"
+                           (change)="onChangeStore(stockViewModel.storeId)"
+                           (clear)="onClearStore()"
+                           [(ngModel)]="stockViewModel.storeId"
+                           placeholder="Select Store">
+                </ng-select>
               </div>
             </div>
           </div>
-        </div>
 
-        <!--[(ngModel)]="productSalesReportViewModel.toDate"-->
-
-        <div class="col-sm-3" style="padding-left: 0">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <label for="toDate" class="lb-sm">To Date:</label>
-              <div class="input-group datepicker-input">
-                <input type="text"
-                       name="toDate"
-                       id="toDate"
-                       #toDate="bsDatepicker"
-                       [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
-                       placeholder="Select to date"
-                       [(ngModel)]="stockViewModel.toDate"
-                       class="form-control"
-                       bsDatepicker>
-                <button class="input-group-addon" (click)="toDate.toggle()" type="button">
-                  <span class="fa fa-calendar"></span>
-                </button>
-                <button type="button"
-                        style="margin-left: 1%"
-                        name="btnSearch"
-                        id="btnSearch"
-                        (click)="onClickSearch()"
-                        class="btn btn-outline-success btn-sm pull-right">Search
-                </button>
+          <div class="col-sm-3" style="padding-left: 0">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="category" class="lb-sm">Category:</label>
+                <ng-select [items]="categoryModelList"
+                           #category
+                           id="category"
+                           name="category"
+                           bindLabel="name"
+                           bindValue="id"
+                           (change)="onChangeCategory(stockViewModel.categoryId)"
+                           (clear)="onClearCategory()"
+                           [(ngModel)]="stockViewModel.categoryId"
+                           placeholder="Select Category">
+                </ng-select>
               </div>
             </div>
           </div>
-        </div>
 
-
-        <!--<div class="col-sm-4" style="padding-left: 0">
-          <div class="form-group">
-            <div class="col-sm-12">
-              <label for="product" class="lb-sm">Product:</label>
-              <ng-select [items]="productModelList"
-                         #product
-                         id="product"
-                         name="product"
-                         bindLabel="name"
-                         bindValue="id"
-                         (change)="onChangeProduct(stockViewModel.productId)"
-                         (clear)="onClearProduct()"
-                         [(ngModel)]="stockViewModel.productId"
-                         placeholder="Select Product">
-              </ng-select>
+         <!-- [(ngModel)]="productSalesReportViewModel.fromDate"-->
+          <div class="col-sm-2" style="padding-left: 0">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="fromDate" class="lb-sm">From Date:</label>
+                <div class="input-group datepicker-input">
+                  <input type="text"
+                         name="fromDate"
+                         id="fromDate"
+                         #fromDate="bsDatepicker"
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                         placeholder="Select a date"
+                         [(ngModel)]="stockViewModel.fromDate"
+                         class="form-control lb-sm"
+                         bsDatepicker>
+                  <button class="input-group-addon" (click)="fromDate.toggle()" type="button">
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <!--[(ngModel)]="productSalesReportViewModel.toDate"-->
+
+          <div class="col-sm-3" style="padding-left: 0">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="toDate" class="lb-sm">To Date:</label>
+                <div class="input-group datepicker-input">
+                  <input type="text"
+                         name="toDate"
+                         id="toDate"
+                         #toDate="bsDatepicker"
+                         [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                         placeholder="Select to date"
+                         [(ngModel)]="stockViewModel.toDate"
+                         class="form-control"
+                         bsDatepicker>
+                  <button class="input-group-addon" (click)="toDate.toggle()" type="button">
+                    <span class="fa fa-calendar"></span>
+                  </button>
+                  <button type="button"
+                          style="margin-left: 1%"
+                          name="btnSearch"
+                          id="btnSearch"
+                          (click)="onClickSearch()"
+                          class="btn btn-outline-success btn-sm pull-right">Search
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!--<div class="col-sm-4" style="padding-left: 0">
+            <div class="form-group">
+              <div class="col-sm-12">
+                <label for="product" class="lb-sm">Product:</label>
+                <ng-select [items]="productModelList"
+                           #product
+                           id="product"
+                           name="product"
+                           bindLabel="name"
+                           bindValue="id"
+                           (change)="onChangeProduct(stockViewModel.productId)"
+                           (clear)="onClearProduct()"
+                           [(ngModel)]="stockViewModel.productId"
+                           placeholder="Select Product">
+                </ng-select>
+              </div>
+            </div>
+          </div>-->
+
+
+
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="row">
+          <div class="col-sm-8"></div>
+          <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-6 text-xl-right">
+                  <h6 class="card-title" style="padding-top: 3%;">Total Stock Price: </h6>
+                </div>
+
+                <div class="col-sm-6">
+                <input type="text"
+                       disabled
+                       [dropSpecialCharacters]="true" mask="coma_separator"
+                       name="stockProductPrice"
+                       [ngModel]="stockViewModel.totalStockProductPrice"
+                       class="form-control price"
+                       id="stockProductPrice">
+                </div>
+            </div>
+          </div>
+        </div>
+        <!--<div class="form-group row">
+          <label for="colFormLabel" class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-10">
+
           </div>
         </div>-->
-
-
-
       </div>
     </div>
-    <div class="card-footer">
-      <div class="row">
-        <div class="col-sm-8"></div>
-        <div class="col-sm-4">
-          <div class="row">
-              <div class="col-sm-6 text-xl-right">
-                <h6 class="card-title" style="padding-top: 3%;">Total Stock Price: </h6>
-              </div>
-
-              <div class="col-sm-6">
-              <input type="text"
-                     disabled
-                     [dropSpecialCharacters]="true" mask="coma_separator"
-                     name="stockProductPrice"
-                     [ngModel]="stockViewModel.totalStockProductPrice"
-                     class="form-control price"
-                     id="stockProductPrice">
-              </div>
-          </div>
-        </div>
-      </div>
-      <!--<div class="form-group row">
-        <label for="colFormLabel" class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-10">
-
-        </div>
-      </div>-->
-    </div>
-  </div>
-</form>
+  </form>
+</div>
 
 <form class="collapse"
       id="collapseInputForm"
@@ -176,6 +178,7 @@
               <th style="width: 5%">Model No</th>
               <th style="width: 4%">Stock Qty</th>
               <th style="width: 8%">Buy Price</th>
+              <th style="width: 8%">Total Price</th>
             </thead>
             <tbody>
             <tr *ngFor="let product of currentStockProductList; let i=index">
@@ -191,6 +194,7 @@
                        onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                        [dropSpecialCharacters]="true" mask="coma_separator"
                        #dynamicStockQty="ngModel"
+                       (focusout)="onFocusOutStockQty(product.available)"
                        autocomplete="off"
                        [ngClass]="{ 'is-invalid': dynamicStockQty.errors?.pattern}"
                        id="dynamicStockQty{{i}}"
@@ -207,12 +211,14 @@
                          || event.charCode==46"
                        [dropSpecialCharacters]="true" mask="coma_separator"
                        #dynamicTotalPrice="ngModel"
+                       (focusout)="onFocusOutBuyPrice(product.buyPrice)"
                        autocomplete="off"
                        [ngClass]="{ 'is-invalid': dynamicTotalPrice.errors?.pattern}"
                        id="dynamicTotalPrice{{i}}"
                        name="dynamicTotalPrice{{i}}"
                        [(ngModel)]="product.buyPrice">
               </td>
+              <td>{{product.totalPrice | mask:'coma_separator'}}</td>
 
             </tr>
             </tbody>
@@ -258,7 +264,7 @@
     </div>
 </div>
 
-<div>
+<div [ngClass]="{ 'disabled-div': isPageInUpdateState}">
 
   <div class="card" style="margin-top: 1%">
     <div class="card-header">
