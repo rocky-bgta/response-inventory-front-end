@@ -19,6 +19,8 @@ import {CustomObject} from "../../../core/interface/CustomObject";
 import {CategoryService} from "../../service/category.service";
 import {CategoryModel} from "../../model/category-model";
 import * as _ from 'lodash';
+import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
+import {ProductSalesService} from "../../service/product-sales.service";
 declare var jQuery: any;
 @Component({
   selector: 'app-stock',
@@ -46,6 +48,15 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public availableStockModelList: Array<AvailableStockModel> = new Array<AvailableStockModel>();
   public categoryModelList: Array<CategoryModel> = new Array<CategoryModel>();
 
+  public currentStockProductList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
+  public updatedStockProductList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
+
+  //private _storeId:string;
+  //private _productId:string;
+  //private _categoryId:string;
+
+  private searchRequestParameter: CustomObject = {};
+
   //======== Variables related to data-table =======================
   @ViewChild(DataTableDirective)
   public dtElement: DataTableDirective;
@@ -55,7 +66,8 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   private searchParameter: CustomObject = {};
 
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(//private formBuilder: FormBuilder,
+              private productSalesService: ProductSalesService,
               private storeInProductService: StoreInProductsService,
               private categoryService: CategoryService,
               private stockService: StockService,
@@ -274,6 +286,49 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }*/
 
+  public onClickEditStock(selectedItem:AvailableStockModel){
+    //this._storeId = selectedItem.store_id;
+    //this._categoryId = selectedItem.category_id;
+    //this._productId = selectedItem.product_id;
+
+    this.searchRequestParameter.storeId = selectedItem.store_id;
+    this.searchRequestParameter.categoryId = selectedItem.category_id;
+    this.searchRequestParameter.productId = selectedItem.product_id;
+
+    this.getCurrentStockProductList(this.searchRequestParameter);
+    this.showEntryForm();
+
+  }
+
+ private getCurrentStockProductList(searchRequestParameter:CustomObject){
+   let currentStockProductList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
+   this.productSalesService.getAllAvailableProduct(searchRequestParameter).subscribe
+   (
+     (responseMessage: ResponseMessage) => {
+       if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
+         currentStockProductList = <Array<SalesProductViewModel>>responseMessage.data;
+         this.currentStockProductList = currentStockProductList;
+         Util.logConsole(currentStockProductList);
+       } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
+         this.toaster.error(responseMessage.message, this.pageTitle);
+         return;
+       } else {
+         Util.logConsole(responseMessage);
+         return;
+       }
+     }
+     ,
+     (httpErrorResponse: HttpErrorResponse) => {
+       if (httpErrorResponse.error instanceof ErrorEvent) {
+         Util.logConsole(httpErrorResponse, "Client-side error occurred.");
+       } else {
+         this.toaster.error('There is a problem with the service. We are notified and working on it');
+         Util.logConsole(httpErrorResponse, "Server Side error occurred");
+       }
+       return;
+     });
+ }
+
   private populateDataTable(): void {
     // Util.logConsole("Populate table");
 
@@ -308,9 +363,14 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private showEntryForm():void{
+    jQuery('html, body').animate({scrollTop: $("#collapseInputForm").height()-150}, 500);
     jQuery('#collapseInputForm').collapse('show');
-    jQuery('html, body').animate({scrollTop: '0px'}, 500);
-    jQuery("#collapseInputForm").scrollTop();
+
+  }
+
+
+  public onClickCancelUpdate(){
+   this.hideEntryForm();
   }
 
   private hideEntryForm():void{

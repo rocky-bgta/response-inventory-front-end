@@ -492,7 +492,6 @@
                    [dropSpecialCharacters]="true" mask="coma_separator"
                    #dynamicTotalPrice="ngModel"
                    autocomplete="off"
-                   [ngClass]="{ 'is-invalid': dynamicTotalPrice.errors?.pattern}"
                    id="dynamicTotalPrice{{i}}"
                    name="dynamicTotalPrice{{i}}"
                    [(ngModel)]="product.totalPrice">
