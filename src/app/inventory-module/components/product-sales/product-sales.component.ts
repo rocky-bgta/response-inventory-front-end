@@ -597,7 +597,7 @@ export class ProductSalesComponent implements OnInit {
     return productDropDownList;
   }
 
-  private checkIsProductAlreadyAddedToList(storeId: string, productId: string, availableQty: number, buyPrice: number): boolean {
+  private checkIsProductAlreadyAddedToList(storeId: string, productId: string, availableQty: number, buyPrice: number,vendorId:string): boolean {
     let isProductContainedInList: boolean = false;
     let isAllowedInputSalesQty: boolean;
 
@@ -612,6 +612,7 @@ export class ProductSalesComponent implements OnInit {
         && x.storeId == storeId
         && x.available == availableQty
         && x.buyPrice == buyPrice
+        && x.vendorId == vendorId
     );
 
     if (salesProductViewModel != null && !_.isEmpty(salesProductViewModel)) {
@@ -638,7 +639,7 @@ export class ProductSalesComponent implements OnInit {
     let salesProductViewModel: SalesProductViewModel;
     let index: number;
     for (let product of availableProductList) {
-      isProductContainedInList = this.checkIsProductAlreadyAddedToList(product.storeId, product.productId, product.available, product.buyPrice);
+      isProductContainedInList = this.checkIsProductAlreadyAddedToList(product.storeId, product.productId, product.available, product.buyPrice, product.vendorId);
       if (!isProductContainedInList) {
         salesProductViewModel = new SalesProductViewModel();
         salesProductViewModel = _.clone(product);

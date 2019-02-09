@@ -12,6 +12,8 @@ export class SalesProductViewModel {
   barcode: string;
   image: string;
   discount:number;
+  vendorId:string;
+  vendorName:string;
 
 
   //=========================

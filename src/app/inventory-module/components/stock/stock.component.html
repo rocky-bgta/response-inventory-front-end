@@ -173,16 +173,18 @@
             <thead>
             <tr>
               <th style="width: 2%">SL No</th>
-              <th style="width: 10%">Name</th>
+              <th style="width: 10%">Vendor</th>
+              <th style="width: 12%">Name</th>
               <th style="width: 8%">Category</th>
               <th style="width: 5%">Model No</th>
               <th style="width: 4%">Stock Qty</th>
-              <th style="width: 8%">Buy Price</th>
-              <th style="width: 8%">Total Price</th>
+              <th style="width: 6%">Buy Price</th>
+              <th style="width: 6%">Total Price</th>
             </thead>
             <tbody>
             <tr *ngFor="let product of currentStockProductList; let i=index">
               <td>{{i+1}}</td>
+              <td>{{product.vendorName}}</td>
               <td>{{product.productName }}</td>
               <td>{{product.categoryName}}</td>
               <td>{{product.modelNo }}</td>

@@ -22,6 +22,7 @@ import * as _ from 'lodash';
 import {SalesProductViewModel} from "../../model/view-model/sales-product-view-model";
 import {ProductSalesService} from "../../service/product-sales.service";
 import {NgxSmartModalService} from "ngx-smart-modal";
+import {RequestMessage} from "../../../core/model/request-message";
 declare var jQuery: any;
 @Component({
   selector: 'app-stock',
@@ -57,9 +58,9 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public currentStockProductList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
   public updatedStockProductList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
 
-  //private _storeId:string;
-  //private _productId:string;
-  //private _categoryId:string;
+  private _storeId:string;
+  private _productId:string;
+  private _categoryId:string;
 
   private searchRequestParameter: CustomObject = {};
 
@@ -74,7 +75,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(//private formBuilder: FormBuilder,
               private productSalesService: ProductSalesService,
-              private storeInProductService: StoreInProductsService,
+              //private storeInProductService: StoreInProductsService,
               private ngxSmartModalService: NgxSmartModalService,
               private categoryService: CategoryService,
               private stockService: StockService,
@@ -161,7 +162,39 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private updateStock(){
+    let requestMessage: RequestMessage;
+    let stockViewModel: StockViewModel = new StockViewModel();
+    stockViewModel.storeId = this._storeId;
+    stockViewModel.categoryId = this._categoryId;
+    stockViewModel.productId = this._productId;
+    stockViewModel.stockProductListForUpdate = this.currentStockProductList;
+    requestMessage = Util.getRequestMessage(stockViewModel);
+    this.stockService.update(requestMessage).subscribe
+    (
+      (responseMessage: ResponseMessage) => {
+        if (responseMessage.httpStatus == HttpStatusCode.CONFLICT) {
+          this.toaster.info(responseMessage.message, this.pageTitle);
+        }else if (responseMessage.httpStatus == HttpStatusCode.OK) {
+          this.toaster.success(responseMessage.message, this.pageTitle);
+          this.resetPage();
+          return;
+        } else {
+          this.toaster.error(responseMessage.message, this.pageTitle);
+          return;
+        }
+      },
 
+      (httpErrorResponse: HttpErrorResponse) => {
+        this.toaster.error('Failed to Update Stock', this.pageTitle);
+        if (httpErrorResponse.error instanceof ErrorEvent) {
+          Util.logConsole("Client Side error occurred: " + httpErrorResponse.error.message);
+        } else {
+          this.toaster.error('There is a problem with the service. We are notified and working on it', this.pageTitle);
+          Util.logConsole(httpErrorResponse, "Server Side error occurred");
+        }
+        return;
+      }
+    );
   }
 
  /* public onChangeProduct(productId: string) {
@@ -314,6 +347,11 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   }*/
 
   public onClickEditStock(selectedItem:AvailableStockModel){
+
+    this._storeId = selectedItem.store_id;
+    this._categoryId = selectedItem.category_id;
+    this._productId =  selectedItem.product_id;
+
     this.searchRequestParameter.storeId = selectedItem.store_id;
     this.searchRequestParameter.categoryId = selectedItem.category_id;
     this.searchRequestParameter.productId = selectedItem.product_id;
@@ -397,7 +435,6 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-
   public onClickCancelUpdate(){
    this.isPageInUpdateState=false;
    this.hideEntryForm();
@@ -438,6 +475,12 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
       this.currentStockProductList[index].totalPrice = grandTotal;
 
     }
+  }
+
+  private resetPage(){
+    this.isPageInUpdateState=false;
+    this.hideEntryForm();
+    this.currentStockProductList=null;
   }
 
   /*private clearCategoryAndProductList() {

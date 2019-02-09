@@ -102,7 +102,7 @@ export class HttpRequestHelperService {
       putUrl,
       requestPayload,
       this.httpHeaderOptions
-    ).pipe(retry(3),delay(this.delayTimeForResponse),catchError(this.handleError));
+    ).pipe(retry(1),delay(this.delayTimeForResponse),catchError(this.handleError));
     return response;
   }
 

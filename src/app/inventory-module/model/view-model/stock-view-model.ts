@@ -1,4 +1,5 @@
 import {AvailableStockModel} from "../available-stock-model";
+import {SalesProductViewModel} from "./sales-product-view-model";
 
 export class StockViewModel{
   storeId:string;
@@ -13,4 +14,5 @@ export class StockViewModel{
   toDate:Date;
   availableStockViewList: Array<AvailableStockModel>;
   totalStockProductPrice:number;
+  stockProductListForUpdate: Array<SalesProductViewModel>
 }
