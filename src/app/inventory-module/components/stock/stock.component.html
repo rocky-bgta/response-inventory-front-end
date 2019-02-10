@@ -164,7 +164,7 @@
   <div class="card bg-light mb-3" style="margin-top: 1%;">
         <div class="card-header">
 
-          <strong>Update Stock</strong>
+          <strong>Stock Details</strong>
 
         </div>
         <div class="card-body" style="height: 300px; overflow-x: hidden;overflow-y: scroll;">
@@ -192,6 +192,7 @@
                 <input class="form-control form-control-sm"
                        type="text"
                        maxlength="8"
+                       disabled
                        pattern="^(?!(0))(\d*\.)?\d+$"
                        onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)"
                        [dropSpecialCharacters]="true" mask="coma_separator"
@@ -207,6 +208,7 @@
               <td>
                 <input class="form-control form-control-sm"
                        type="text"
+                       disabled
                        maxlength="8"
                        pattern="^(?!(0))(\d*\.)?\d+$"
                        onkeypress="return (event.charCode > 31) && (event.charCode >= 48 && event.charCode <= 57)
@@ -234,13 +236,13 @@
 
              <!-- (click)="onClickSave(dynamicForm)"-->
               <!--(click)="onClickReset()"-->
-
+<!--
               <button
                 type="button"
                 (click)="onClickUpdateStock(dynamicForm)"
                 class="btn btn-sm btn-success pull-right">
                 Update Stock
-              </button>
+              </button>-->
 
               <button
                 type="button"
@@ -298,23 +300,32 @@
           <td>{{item.total_price | mask:'coma_separator'}}</td>
          <!-- <td>{{item.stockDate | date: 'dd/MM/yyyy'}}</td>-->
           <td>
-            <!--(click)="onClickEdit(item.id)"-->
             <button type="button"
                     class="btn btn-sm btn-secondary"
-                    (click)="onClickEditStock(item)"
+                    (click)="onClickStockDetails(item)"
                     style="margin-left: 1%">
-              <i class="fa fa-edit"></i>
-            </button>
-
-            <!--(click)="onClickDetails(item.id)"-->
-            <button type="button" class="btn btn-sm btn-info"  style="margin-left: 1%">
               <i class="fa fa-info"></i>
             </button>
 
-            <!--(click)="onClickDelete(item.id)"-->
-            <button type="button" class="btn btn-sm btn-danger"  style="margin-left: 1%">
+            <button
+              type="button"
+              (click)="onClickDeleteStock(item)"
+              class="btn btn-sm btn-success pull-right">
               <i class="fa fa-trash"></i>
             </button>
+
+            <!--(click)="onClickDetails(item.id)"-->
+           <!-- <button type="button" class="btn btn-sm btn-info"  style="margin-left: 1%">
+              <i class="fa fa-info"></i>
+            </button>-->
+
+            <!--(click)="onClickDelete(item.id)"-->
+
+          <!--  <button type="button"
+                    (click)="onClickDeleteStock(item)"
+                    class="btn btn-sm btn-danger"  style="margin-left: 1%">
+              <i class="fa fa-trash"></i>
+            </button>-->
 
           </td>
 
