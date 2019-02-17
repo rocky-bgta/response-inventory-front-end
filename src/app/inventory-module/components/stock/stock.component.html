@@ -179,7 +179,8 @@
               <th style="width: 5%">Model No</th>
               <th style="width: 4%">Stock Qty</th>
               <th style="width: 6%">Buy Price</th>
-              <th style="width: 6%">Total Price</th>
+              <th style="width: 6%">Sales Price</th>
+              <th style="width: 6%">Date</th>
             </thead>
             <tbody>
             <tr *ngFor="let product of currentStockProductList; let i=index">
@@ -188,8 +189,8 @@
               <td>{{product.productName }}</td>
               <td>{{product.categoryName}}</td>
               <td>{{product.modelNo }}</td>
-              <td>
-                <input class="form-control form-control-sm"
+              <td>{{product.stockQty}}
+                <!--<input class="form-control form-control-sm"
                        type="text"
                        maxlength="8"
                        disabled
@@ -202,9 +203,11 @@
                        [ngClass]="{ 'is-invalid': dynamicStockQty.errors?.pattern}"
                        id="dynamicStockQty{{i}}"
                        name="dynamicStockQty{{i}}"
-                       [(ngModel)]="product.available">
+                       [(ngModel)]="product.available">-->
 
               </td>
+
+              <!--
               <td>
                 <input class="form-control form-control-sm"
                        type="text"
@@ -222,7 +225,11 @@
                        name="dynamicTotalPrice{{i}}"
                        [(ngModel)]="product.buyPrice">
               </td>
-              <td>{{product.totalPrice | mask:'coma_separator'}}</td>
+              -->
+
+              <td>{{product.buyPrice  | mask:'coma_separator'}}</td>
+              <td>{{product.salePrice | mask:'coma_separator'}}</td>
+              <td>{{product.entryDate | date: 'dd/MM/yyyy'}}</td>
 
             </tr>
             </tbody>

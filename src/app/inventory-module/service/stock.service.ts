@@ -36,6 +36,10 @@ export class StockService {
     return this.httpRequestHelperService.getRequestById(InventoryApiEndPoint.stock, id);
   }
 
+  getStockProductDetails(queryParameter:any): Observable<any> {
+    return this.httpRequestHelperService.getRequest(InventoryApiEndPoint.stock+"/product-details-list",null,queryParameter);
+  }
+
   update(data) {
     return this.httpRequestHelperService.updateRequest(InventoryApiEndPoint.stock, data);
   }

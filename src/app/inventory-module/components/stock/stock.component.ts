@@ -23,6 +23,7 @@ import {SalesProductViewModel} from "../../model/view-model/sales-product-view-m
 import {ProductSalesService} from "../../service/product-sales.service";
 import {NgxSmartModalService} from "ngx-smart-modal";
 import {RequestMessage} from "../../../core/model/request-message";
+import {StockProductDetailsViewModel} from "../../model/view-model/stock-product-details-view-model";
 
 declare var jQuery: any;
 
@@ -57,7 +58,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   public availableStockModelList: Array<AvailableStockModel> = new Array<AvailableStockModel>();
   public categoryModelList: Array<CategoryModel> = new Array<CategoryModel>();
 
-  public currentStockProductList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
+  public currentStockProductList: Array<StockProductDetailsViewModel> = new Array<StockProductDetailsViewModel>();
   //public updatedStockProductList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
 
   private _storeId: string;
@@ -76,7 +77,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   constructor(//private formBuilder: FormBuilder,
-    private productSalesService: ProductSalesService,
+    //private productSalesService: ProductSalesService,
     //private storeInProductService: StoreInProductsService,
     private ngxSmartModalService: NgxSmartModalService,
     private categoryService: CategoryService,
@@ -314,14 +315,14 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getCurrentStockProductList(searchRequestParameter: CustomObject) {
-    let currentStockProductList: Array<SalesProductViewModel> = new Array<SalesProductViewModel>();
-    this.productSalesService.getAllAvailableProduct(searchRequestParameter).subscribe
+    let currentStockProductList: Array<StockProductDetailsViewModel> = new Array<StockProductDetailsViewModel>();
+    this.stockService.getStockProductDetails(searchRequestParameter).subscribe
     (
       (responseMessage: ResponseMessage) => {
         if (responseMessage.httpStatus == HttpStatusCode.FOUND) {
-          currentStockProductList = <Array<SalesProductViewModel>>responseMessage.data;
+          currentStockProductList = <Array<StockProductDetailsViewModel>>responseMessage.data;
           this.currentStockProductList = currentStockProductList;
-          this.setTotalPrice();
+          //this.setTotalPrice();
           Util.logConsole(currentStockProductList);
         } else if (responseMessage.httpStatus == HttpStatusCode.NOT_FOUND) {
           this.toaster.error(responseMessage.message, this.pageTitle);
@@ -399,17 +400,17 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
     return;
   }
 
-  public onFocusOutStockQty(stockQty) {
+ /* public onFocusOutStockQty(stockQty) {
     if (stockQty > 0)
       this.setTotalPrice();
-  }
+  }*/
 
   public onFocusOutBuyPrice(buyPrice) {
-    if (buyPrice > 0)
-      this.setTotalPrice();
+    /*if (buyPrice > 0)
+      this.setTotalPrice();*/
   }
 
-  private setTotalPrice() {
+ /* private  () {
     let grandTotal: number;
     let stockQty: number;
     let unitPrice: number;
@@ -421,7 +422,7 @@ export class StockComponent implements OnInit, AfterViewInit, OnDestroy {
       this.currentStockProductList[index].totalPrice = grandTotal;
 
     }
-  }
+  }*/
 
   private resetPage() {
     this.isPageInUpdateState = false;
