@@ -11,13 +11,18 @@
       <span>{{ 'Stock' | translate }}</span>
     </a>
 
+    <a routerLink="/inventory/transfer-product" [routerLinkActive]="['router-link-active']" class="list-group-item">
+      <i class="fa fa-fw fa-balance-scale"></i>&nbsp;
+      <span>{{ 'Transfer' | translate }}</span>
+    </a>
+
     <a routerLink="/inventory/category" [routerLinkActive]="['router-link-active']" class="list-group-item">
       <i class="fa fa-fw fa-bandcamp"></i>&nbsp;
       <span>{{ 'Category' | translate }}</span>
     </a>
 
     <a routerLink="/inventory/product" [routerLinkActive]="['router-link-active']" class="list-group-item">
-      <i class="fa fa-fw fa-balance-scale"></i>&nbsp;
+      <i class="fa fa-fw fa-briefcase"></i>&nbsp;
       <span>{{ 'Product' | translate }}</span>
     </a>
 

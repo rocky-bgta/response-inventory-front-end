@@ -13,6 +13,7 @@ import {ProductSalesComponent} from "./components/product-sales/product-sales.co
 import {CustomerPaymentComponent} from "./components/customer-payment/customer-payment.component";
 import {InvoiceHistoryComponent} from "./components/invoice-history/invoice-history.component";
 import {AuthGuard} from "../shared/guard/auth.guard";
+import {TransferProductComponent} from "./components/transfer-product/transfer-product.component";
 
 
 export const inventoryRoutes: Routes = [
@@ -20,6 +21,7 @@ export const inventoryRoutes: Routes = [
     path: '',
     children: [
       {path: 'stock', component: StockComponent, pathMatch: 'full'},
+      {path: 'transfer-product', component: TransferProductComponent, pathMatch: 'full'},
       {path: 'category', component: CategoryComponent, pathMatch: 'full'},
       {path: 'product', component: ProductComponent, pathMatch: 'full'},
       {path: 'brand', component: BrandComponent, pathMatch: 'full'},
