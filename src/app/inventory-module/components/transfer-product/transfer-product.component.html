@@ -1,3 +1,175 @@
-<p>
-  transfer-product works!
-</p>
+<div [ngClass]="{ 'disabled-div': isPageInUpdateState}">
+  <form>
+  <div class="card" style="padding: 0;">
+    <div class="card-header">
+      <strong>Transfer Stock Product</strong>
+    </div>
+    <div class="card-body">
+      <div class="row" style="padding: 0">
+
+        <div class="col-sm-4" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="store" class="lb-sm">From Store:</label>
+              <ng-select [items]="storeModelList"
+                         #store
+                         id="store"
+                         name="store"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeStore(transferProductModel.fromStoreId)"
+                         (clear)="onClearStore()"
+                         [(ngModel)]="transferProductModel.fromStoreId"
+                         placeholder="Select Store">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="category" class="lb-sm">Category:</label>
+              <ng-select [items]="categoryModelList"
+                         #category
+                         id="category"
+                         name="category"
+                         bindLabel="name"
+                         bindValue="id"
+                         (change)="onChangeCategory(category.value)"
+                         (clear)="onClearCategory()"
+
+                         placeholder="Select Category">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+
+        <!--
+
+        <div class="col-sm-2" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="fromDate" class="lb-sm">From Date:</label>
+              <div class="input-group datepicker-input">
+                <input type="text"
+                       name="fromDate"
+                       id="fromDate"
+                       #fromDate="bsDatepicker"
+                       [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                       placeholder="Select a date"
+                       [(ngModel)]="stockViewModel.fromDate"
+                       class="form-control lb-sm"
+                       bsDatepicker>
+                <button class="input-group-addon" (click)="fromDate.toggle()" type="button">
+                  <span class="fa fa-calendar"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-3" style="padding-left: 0">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label for="toDate" class="lb-sm">To Date:</label>
+              <div class="input-group datepicker-input">
+                <input type="text"
+                       name="toDate"
+                       id="toDate"
+                       #toDate="bsDatepicker"
+                       [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }"
+                       placeholder="Select to date"
+                       [(ngModel)]="stockViewModel.toDate"
+                       class="form-control"
+                       bsDatepicker>
+                <button class="input-group-addon" (click)="toDate.toggle()" type="button">
+                  <span class="fa fa-calendar"></span>
+                </button>
+                <button type="button"
+                        style="margin-left: 1%"
+                        name="btnSearch"
+                        id="btnSearch"
+                        (click)="onClickSearch()"
+                        class="btn btn-outline-success btn-sm pull-right">Search
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        -->
+
+
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+
+<div [ngClass]="{ 'disabled-div': isPageInUpdateState}">
+
+  <div class="card" style="margin-top: 1%">
+    <div class="card-header">
+      <strong>{{pageTitle}} List</strong>
+    </div>
+    <div class="card-body">
+      <table datatable [dtOptions]="dataTableOptions" [dtTrigger]="dtTrigger"
+             class="table-hover table table-sm table-striped table-bordered nowrap"
+             style="width: 100%">
+        <thead>
+        <tr>
+          <th style="width: 15%">Store</th>
+          <th style="width: 10%">Category</th>
+          <th style="width: 20%">Product</th>
+          <th style="width: 10%">Model No</th>
+          <th style="width: 10%">Qty</th>
+          <th style="width: 10%">Price</th>
+          <th style="width: 10%">Action</th>
+        </tr>
+        </thead>
+        <tbody *ngIf="availableStockModelList?.length != 0">
+        <tr *ngFor="let item of availableStockModelList">
+          <td>{{item.store_name}}</td>
+          <td>{{item.category_name}}</td>
+          <td>{{item.product_name}}</td>
+          <td>{{item.model_no}}</td>
+          <td>{{item.available_qty}}</td>
+          <td>{{item.total_price | mask:'coma_separator'}}</td>
+          <td></td>
+
+        <!--  <td>
+            <button type="button"
+                    class="btn btn-sm btn-secondary"
+                    (click)="onClickStockDetails(item)"
+                    style="margin-left: 1%">
+              <i class="fa fa-info"></i>
+            </button>
+
+            <button
+              type="button"
+              (click)="onClickDeleteStock(item)"
+              class="btn btn-sm btn-success pull-right">
+              <i class="fa fa-trash"></i>
+            </button>
+          </td>-->
+
+
+        </tr>
+        </tbody>
+        <tbody *ngIf="availableStockModelList?.length == 0">
+        <tr>
+          <td colspan="7" class="no-data-available">No data!</td>
+        </tr>
+        <tbody>
+      </table>
+
+
+    </div>
+    <div class="">
+
+    </div>
+  </div>
+
+</div>
