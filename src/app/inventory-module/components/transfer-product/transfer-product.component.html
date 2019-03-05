@@ -26,6 +26,8 @@
           </div>
         </div>
 
+        <!--(change)="onChangeCategory($event?.id)"-->
+
         <div class="col-sm-3" style="padding-left: 0">
           <div class="form-group">
             <div class="col-sm-12">
@@ -36,8 +38,9 @@
                          name="category"
                          bindLabel="name"
                          bindValue="id"
-                         (change)="onChangeCategory($event?.id)"
+                         (change)="onChangeCategory(transferProductModel.categoryId)"
                          (clear)="onClearCategory()"
+                         [(ngModel)]="transferProductModel.categoryId"
                          placeholder="Select Category">
               </ng-select>
             </div>

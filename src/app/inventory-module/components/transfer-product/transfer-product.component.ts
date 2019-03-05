@@ -95,13 +95,10 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public onClearStore() {
-    /* this.stockViewModel.productId = null;
-     this.stockViewModel.categoryId = null;
-     this.productModelList = null;
+     this.transferProductModel.categoryId = null;
      this.categoryModelList = null;
      this.searchParameter = {};
-     //this.clearCategoryAndProductList();
-     this.rerender();*/
+     this.rerender();
   }
 
   public onChangeCategory(categoryId: string) {
@@ -207,7 +204,6 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
       });
     return stockViewModel;
   }
-
 
   private populateDataTable(): void {
     // Util.logConsole("Populate table");
