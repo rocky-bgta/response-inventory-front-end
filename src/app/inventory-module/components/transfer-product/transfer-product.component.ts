@@ -54,11 +54,12 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
   private searchParameter: CustomObject = {};
 
 
-  constructor( private ngxSmartModalService: NgxSmartModalService,
-               private categoryService: CategoryService,
-               private stockService: StockService,
-               private storeService: StoreService,
-               private toaster: ToastrService) { }
+  constructor(private ngxSmartModalService: NgxSmartModalService,
+              private categoryService: CategoryService,
+              private stockService: StockService,
+              private storeService: StoreService,
+              private toaster: ToastrService) {
+  }
 
   ngOnInit() {
     this.getStoreList();
@@ -94,25 +95,26 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public onClearStore() {
-   /* this.stockViewModel.productId = null;
-    this.stockViewModel.categoryId = null;
-    this.productModelList = null;
-    this.categoryModelList = null;
-    this.searchParameter = {};
-    //this.clearCategoryAndProductList();
-    this.rerender();*/
+    /* this.stockViewModel.productId = null;
+     this.stockViewModel.categoryId = null;
+     this.productModelList = null;
+     this.categoryModelList = null;
+     this.searchParameter = {};
+     //this.clearCategoryAndProductList();
+     this.rerender();*/
   }
 
   public onChangeCategory(categoryId: string) {
-   /* if (categoryId != null) {
+    //console.log("Category Id: " + categoryId);
+    if (categoryId != null) {
       this.searchParameter.categoryId = categoryId;
       this.rerender();
-    }*/
+    }
   }
 
   public onClearCategory() {
-  /*  this.searchParameter.categoryId = "";
-    this.rerender();*/
+    this.searchParameter.categoryId = "";
+    this.rerender();
   }
 
   private getStoreList() {

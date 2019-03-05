@@ -36,9 +36,8 @@
                          name="category"
                          bindLabel="name"
                          bindValue="id"
-                         (change)="onChangeCategory(category.value)"
+                         (change)="onChangeCategory($event?.id)"
                          (clear)="onClearCategory()"
-
                          placeholder="Select Category">
               </ng-select>
             </div>
