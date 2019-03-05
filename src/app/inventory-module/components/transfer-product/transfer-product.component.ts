@@ -11,7 +11,6 @@ import {StoreModel} from "../../model/store-model";
 import {ResponseMessage} from "../../../core/model/response-message";
 import {TransferProductModel} from "../../model/transfer-product-model";
 import {CategoryModel} from "../../model/category-model";
-import {StockProductDetailsViewModel} from "../../model/view-model/stock-product-details-view-model";
 import {Subject} from "rxjs/index";
 import {DataTableDirective} from "angular-datatables";
 import {DataTableRequest} from "../../../core/model/data-table-request";
@@ -102,7 +101,6 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   public onChangeCategory(categoryId: string) {
-    //console.log("Category Id: " + categoryId);
     if (categoryId != null) {
       this.searchParameter.categoryId = categoryId;
       this.rerender();
