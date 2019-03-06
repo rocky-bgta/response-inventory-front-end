@@ -17,6 +17,7 @@ import {DataTableRequest} from "../../../core/model/data-table-request";
 import {CustomObject} from "../../../core/interface/CustomObject";
 import {StockViewModel} from "../../model/view-model/stock-view-model";
 import {AvailableStockModel} from "../../model/available-stock-model";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-transfer-product',
@@ -40,7 +41,7 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
   //public selectedStoreStockProductList: Array<StockProductDetailsViewModel> = new Array<StockProductDetailsViewModel>();
   public availableStockModelList: Array<AvailableStockModel> = new Array<AvailableStockModel>();
 
-  private selectedProductForTransfer: Array<AvailableStockModel> = new Array<AvailableStockModel>();
+  private _selectedProductListForTransfer: Array<AvailableStockModel> = new Array<AvailableStockModel>();
 
   //======== page state variables star ===========
   public isPageInUpdateState: boolean;
@@ -111,6 +112,26 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
   public onClickSelect(index:number, isSelected:boolean){
     //this
     console.log("index: "+index+ "Selected working: "+isSelected);
+    let id:string;
+    let selectedProduct: AvailableStockModel;
+    //let productRemoved:boolean;
+    selectedProduct = this.availableStockModelList[index];
+    //id=selectedProduct.id;
+    if(isSelected){
+      this.availableStockModelList[index].selected_product=true;
+      this._selectedProductListForTransfer.push(selectedProduct);
+    }else {
+
+      /*
+      //remove product
+      this._selectedProductListForTransfer =_.remove(this._selectedProductListForTransfer, (currentObject) => {
+        return currentObject.id !== id;
+      });
+      */
+
+      //Util.logConsole(this._selectedProductListForTransfer,"After remove Product");
+    }
+
   }
 
   public onClearCategory() {
