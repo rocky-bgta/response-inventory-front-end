@@ -40,6 +40,7 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
   //public selectedStoreStockProductList: Array<StockProductDetailsViewModel> = new Array<StockProductDetailsViewModel>();
   public availableStockModelList: Array<AvailableStockModel> = new Array<AvailableStockModel>();
 
+  private selectedProductForTransfer: Array<AvailableStockModel> = new Array<AvailableStockModel>();
 
   //======== page state variables star ===========
   public isPageInUpdateState: boolean;
@@ -105,6 +106,11 @@ export class TransferProductComponent implements OnInit, AfterViewInit, OnDestro
       this.searchParameter.categoryId = categoryId;
       this.rerender();
     }
+  }
+
+  public onClickSelect(index:number, isSelected:boolean){
+    //this
+    console.log("index: "+index+ "Selected working: "+isSelected);
   }
 
   public onClearCategory() {

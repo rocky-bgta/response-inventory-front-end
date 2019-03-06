@@ -9,5 +9,6 @@ export class AvailableStockModel{
   total_price:number;
   available_qty:number;
   //============
+  selected_product:boolean;
 
 }
